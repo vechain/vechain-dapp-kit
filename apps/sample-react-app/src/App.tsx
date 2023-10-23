@@ -1,27 +1,50 @@
+import type { JSX } from "react";
 import React from "react";
-import { Link } from "ui";
-import "./App.css";
+import type { Options } from "@vechain/connex";
+import type { WalletConnectOptions } from "wallet-connect/dist";
+import { ConnexProvider } from "react-vendor/dist";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
+import { NavBar, StyledContainer } from "./Components/layout";
+import { Homepage } from "./Screens/Homepage";
+import { Fonts, theme } from "./Styles";
 
-function App(): JSX.Element {
+const nodeOptions: Omit<Options, "signer"> = {
+  node: "https://testnet.vechain.org/",
+  network: "test",
+};
+
+const walletConnectOptions: WalletConnectOptions = {
+  projectId: "8dfc5cac972ee656e6edeb8309ab30ec",
+  metadata: {
+    name: "Sample VeChain dApp",
+    description: "A sample VeChain dApp",
+    url: window.location.origin,
+    icons: [`${window.location.origin}/images/logo/my-dapp.png`],
+  },
+};
+
+export const App = (): JSX.Element => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1 className="header">
-          Web
-          <div className="Turborepo">Turborepo Example</div>
-        </h1>
-        <div>
-          <Link className="App-link" href="https://turbo.build/repo">
-            Turborepo Docs
-          </Link>
-          <span> | </span>
-          <Link className="App-link" href="https://reactjs.org">
-            React Docs
-          </Link>
-        </div>
-      </header>
-    </div>
+    <>
+      <Fonts />
+      <ChakraProvider theme={theme}>
+        <ConnexProvider
+          key="connex"
+          nodeOptions={nodeOptions}
+          persistState
+          walletConnectOptions={walletConnectOptions}
+        >
+          <NavBar />
+          <StyledContainer>
+            <BrowserRouter>
+              <Routes>
+                <Route element={<Homepage />} path="/" />
+              </Routes>
+            </BrowserRouter>
+          </StyledContainer>
+        </ConnexProvider>
+      </ChakraProvider>
+    </>
   );
-}
-
-export default App;
+};

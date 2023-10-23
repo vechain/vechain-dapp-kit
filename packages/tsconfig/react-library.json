@@ -4,8 +4,12 @@
   "extends": "./base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "lib": ["ES2015"],
+    "lib": [
+      "ES2020",
+      "dom"
+    ],
+    "sourceMap": false,
     "module": "ESNext",
-    "target": "es6"
+    "target": "ES6"
   }
 }

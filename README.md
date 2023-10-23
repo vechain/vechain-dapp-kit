@@ -1,34 +1,33 @@
-# Turborepo Create React App starter
+# vechain-dapp-kit
 
-This is an official starter Turborepo.
+This is a DApp Kit for Vechain.
 
-## Using this example
+## Why ?
 
-Run the following command:
+- Allow easy interaction with all wallets.
+- Currently, connex only plays nice with Sync / Sync2
+- Enable a better UX for users
 
-```sh
-npx create-turbo@latest -e with-create-react-app
+## Setting up the project
+
+### Install dependencies
+
+```bash
+pnpm install
 ```
 
-## What's inside?
+### Build the packages & apps
 
-This Turborepo includes the following packages/apps:
+```bash
+pnpm build
+```
 
-### Apps and Packages
+### Run in Dev Mode
 
-- `docs`: a [create-react-app](https://create-react-app.dev) app
-- `web`: another [create-react-app](https://create-react-app.dev) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-plugin-react` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+```bash
+pnpm dev
+```
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Future Work
 
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Jest](https://jestjs.io) test runner for all things JavaScript
-- [Prettier](https://prettier.io) for code formatting
+- Create a Modal/ Library in React / Vue / Angular

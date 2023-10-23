@@ -35,5 +35,15 @@ module.exports = {
   rules: {
     "import/no-default-export": "off",
     "unicorn/filename-case": "off",
+    "react-hooks/exhaustive-deps": "error",
+    "react/function-component-definition": [
+      "error",
+      {
+        namedComponents: "arrow-function",
+        unnamedComponents: "arrow-function",
+      },
+    ],
+    "prefer-arrow-callback": ["error", { allowNamedFunctions: true }],
+    "func-style": ["error", "expression", { allowArrowFunctions: true }],
   },
 };

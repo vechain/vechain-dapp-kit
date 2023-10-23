@@ -31,4 +31,8 @@ module.exports = {
     },
   },
   ignorePatterns: ["node_modules/", "dist/"],
+  rules: {
+    "prefer-arrow-callback": ["error", { allowNamedFunctions: true }],
+    "func-style": ["error", "expression", { allowArrowFunctions: true }],
+  },
 };

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/apps/sample-react-app/build" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/sample-react-app/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/eslint-config-custom/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/eslint-config-custom/node_modules/@vercel/style-guide/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/eslint-config-custom/node_modules/eslint-config-turbo/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/react-vendor/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/react-vendor/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/wallet-connect/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/wallet-connect/node_modules" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

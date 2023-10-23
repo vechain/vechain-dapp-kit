@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="test-package2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/node_modules/.pnpm/thread-stream@0.15.2/node_modules/thread-stream/test/dir with spaces/test-package.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

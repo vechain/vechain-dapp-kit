@@ -1,0 +1,25 @@
+{
+  "name": "wallet-connect",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs --dts",
+    "clean": "rm -rf dist node_modules dist .turbo",
+    "dev": "tsup src/index.ts --format cjs --watch --dts",
+    "lint": "eslint src/**/*"
+  },
+  "dependencies": {
+    "@walletconnect/modal": "2.6.2",
+    "@walletconnect/sign-client": "2.10.2",
+    "@walletconnect/utils": "2.10.2"
+  },
+  "devDependencies": {
+    "@walletconnect/types": "2.10.2",
+    "@vechain/connex-types": "2.1.0",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
+    "eslint": "^8.4.1",
+    "tsup": "^5.10.1",
+    "typescript": "4.9.5"
+  }
+}
