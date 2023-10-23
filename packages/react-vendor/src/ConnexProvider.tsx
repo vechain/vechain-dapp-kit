@@ -1,10 +1,23 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from "react";
 import { Connex } from "@vechain/connex";
 import { newVendor } from "@vechain/connex-framework";
-import type { WalletConnectOptions, WCSigner } from "wallet-connect/dist";
-import { newWcClient, newWcSigner, newWeb3Modal } from "wallet-connect/dist";
+import type { WalletConnectOptions, WCSigner } from "wallet-connect";
+import { newWcClient, newWcSigner, newWeb3Modal } from "wallet-connect";
 import { accountReducer, defaultAccountState } from "./AccountReducer";
-import type { ConnexContext, ConnexProviderOptions, SetAccount, SetSource } from "./types";
+import type {
+  ConnexContext,
+  ConnexProviderOptions,
+  SetAccount,
+  SetSource,
+} from "./types";
 import { WalletSource } from "./types";
 
 /**

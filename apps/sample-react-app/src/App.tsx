@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import React from "react";
 import type { Options } from "@vechain/connex";
-import type { WalletConnectOptions } from "wallet-connect/dist";
+import type { WalletConnectOptions } from "wallet-connect";
 import { ConnexProvider } from "react-vendor/dist";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
