@@ -1,11 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "build": "turbo run build",
     "clean": "turbo run clean; rm -rf node_modules .turbo",
-    "dev": "turbo run dev --no-cache --continue",
+    "build:deps": "turbo build --no-daemon --filter=react-vendor --filter=wallet-connect",
+    "install:all": "pnpm i && pnpm run build:deps",
+    "reinstall": "pnpm clean && pnpm i && pnpm run build:deps",
+    "dev": "turbo run dev --no-daemon",
+    "start": "turbo run start --no-daemon",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
+    "build": "turbo run build",
     "test": "turbo run test"
   },
   "devDependencies": {

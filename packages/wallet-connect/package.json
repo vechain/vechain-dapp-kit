@@ -2,11 +2,12 @@
   "name": "wallet-connect",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts --format cjs --dts",
-    "clean": "rm -rf dist node_modules dist .turbo",
+    "clean": "rm -rf dist node_modules .turbo",
     "dev": "tsup src/index.ts --format cjs --watch --dts",
     "lint": "eslint src/**/*"
   },

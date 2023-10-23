@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "homepage": ".",
+  "main": "src/index.js",
   "scripts": {
     "start": "HTTPS=true react-app-rewired start",
     "dev": "react-app-rewired start",
