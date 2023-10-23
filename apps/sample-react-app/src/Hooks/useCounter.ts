@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useConnex } from "react-vendor/dist";
+import { useConnex } from "react-vendor";
 import type { abi } from "thor-devkit";
 
 const _counter: abi.Function.Definition = {
