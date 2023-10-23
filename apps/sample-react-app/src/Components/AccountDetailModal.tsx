@@ -1,6 +1,6 @@
 import { HStack, Text } from "@chakra-ui/react";
-import type { WalletSource } from "react-vendor/dist";
-import { useWallet } from "react-vendor/dist";
+import type { WalletSource } from "react-vendor";
+import { useWallet } from "react-vendor";
 import React, { useCallback } from "react";
 import { getPicassoImgSrc } from "../Utils/AccountUtils";
 import { Dialog } from "./shared";
