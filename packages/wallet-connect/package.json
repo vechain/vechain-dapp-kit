@@ -2,6 +2,8 @@
   "name": "wallet-connect",
   "version": "0.0.0",
   "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts --format cjs --dts",
     "clean": "rm -rf dist node_modules dist .turbo",
