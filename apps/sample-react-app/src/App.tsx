@@ -2,7 +2,7 @@ import type { JSX } from "react";
 import React from "react";
 import type { Options } from "@vechain/connex";
 import type { WalletConnectOptions } from "wallet-connect";
-import { ConnexProvider } from "react-vendor/dist";
+import { ConnexProvider } from "react-vendor";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import { NavBar, StyledContainer } from "./Components/layout";
