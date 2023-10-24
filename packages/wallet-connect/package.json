@@ -9,7 +9,7 @@
     "build": "tsup src/index.ts --format cjs --dts",
     "clean": "rm -rf dist node_modules .turbo",
     "dev": "tsup src/index.ts --format cjs --watch --dts",
-    "lint": "eslint src/**/*"
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
     "@walletconnect/modal": "2.6.2",

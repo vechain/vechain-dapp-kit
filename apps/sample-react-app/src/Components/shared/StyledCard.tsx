@@ -1,10 +1,5 @@
-import type {
-  HTMLChakraProps} from "@chakra-ui/react";
-import {
-  Card,
-  CardBody,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import type { HTMLChakraProps } from "@chakra-ui/react";
+import { Card, CardBody, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 
 interface StyledCardProps extends HTMLChakraProps<"div"> {

@@ -10,14 +10,34 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "build": "turbo run build",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "prepare": "husky install"
   },
   "devDependencies": {
+    "@commitlint/config-conventional": "^18.0.0",
+    "commitlint": "^18.0.0",
     "eslint": "^8.4.1",
+    "eslint-config-custom": "workspace:*",
     "eslint-plugin-prefer-arrow": "1.2.3",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.0.2",
     "prettier": "^2.5.1",
     "tsconfig": "workspace:*",
     "turbo": "latest"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,jsx,ts,tsx}": [
+      "eslint"
+    ]
   },
   "packageManager": "pnpm@8.6.10"
 }
