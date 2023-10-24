@@ -1,4 +1,4 @@
-import type { HTMLChakraProps} from "@chakra-ui/react";
+import type { HTMLChakraProps } from "@chakra-ui/react";
 import { Image, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 

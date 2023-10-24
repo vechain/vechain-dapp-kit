@@ -17,6 +17,9 @@ importers:
       eslint:
         specifier: ^8.4.1
         version: 8.28.0
+      eslint-config-custom:
+        specifier: workspace:*
+        version: link:packages/eslint-config-custom
       eslint-plugin-prefer-arrow:
         specifier: 1.2.3
         version: 1.2.3(eslint@8.28.0)

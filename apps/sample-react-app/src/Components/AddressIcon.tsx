@@ -1,5 +1,5 @@
 import React from "react";
-import type { HTMLChakraProps} from "@chakra-ui/react";
+import type { HTMLChakraProps } from "@chakra-ui/react";
 import { Img } from "@chakra-ui/react";
 import { getPicassoImgSrc } from "../Utils/AccountUtils";
 
