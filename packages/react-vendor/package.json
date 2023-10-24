@@ -10,7 +10,7 @@
     "build": "tsup src/index.tsx --format cjs --dts --external react",
     "clean": "rm -rf dist node_modules .turbo",
     "dev": "tsup src/index.tsx --format cjs --watch --dts --external react",
-    "lint": "eslint src/**/*"
+    "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@vechain/connex": "2.1.0",
