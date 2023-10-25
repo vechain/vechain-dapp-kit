@@ -7,7 +7,7 @@ let previousDriver: DriverNoVendor | undefined;
 
 const createDriverNoVendor = (
     nodeUrl: string,
-    genesis: Genesis
+    genesis: Genesis,
 ): DriverNoVendor => {
     const genesisBlock = normalizeGenesisBlock(genesis);
 

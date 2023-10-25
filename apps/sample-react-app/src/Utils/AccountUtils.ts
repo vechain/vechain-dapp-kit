@@ -12,7 +12,7 @@ export const getPicassoImgSrc = (address: string, base64 = false): string => {
 export const friendlyAddress = (
     address: string,
     lengthBefore = 6,
-    lengthAfter = 4
+    lengthAfter = 4,
 ): string => {
     const before = address.substring(0, lengthBefore);
     const after = address.substring(address.length - lengthAfter);

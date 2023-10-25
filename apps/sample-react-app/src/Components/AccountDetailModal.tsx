@@ -17,7 +17,7 @@ export const AccountDetailModal: React.FC<AccountDetailModalProps> = ({
     isOpen,
     onClose,
     address,
-    source
+    source,
 }) => {
     const { disconnect } = useWallet();
 

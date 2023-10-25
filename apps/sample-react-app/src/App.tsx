@@ -11,7 +11,7 @@ import { Fonts, theme } from './Styles';
 
 const nodeOptions: Omit<Options, 'signer'> = {
     node: 'https://testnet.vechain.org/',
-    network: 'test'
+    network: 'test',
 };
 
 const walletConnectOptions: WalletConnectOptions = {
@@ -20,8 +20,8 @@ const walletConnectOptions: WalletConnectOptions = {
         name: 'Sample VeChain dApp',
         description: 'A sample VeChain dApp',
         url: window.location.origin,
-        icons: [`${window.location.origin}/images/logo/my-dapp.png`]
-    }
+        icons: [`${window.location.origin}/images/logo/my-dapp.png`],
+    },
 };
 
 export const App = (): JSX.Element => {

@@ -6,7 +6,7 @@ import {
     Image,
     Text,
     Tooltip,
-    VStack
+    VStack,
 } from '@chakra-ui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 import React, { useCallback } from 'react';
@@ -24,7 +24,7 @@ export const WalletSourceRadio: React.FC = () => {
                 setSource(source);
             }
         },
-        [setSource]
+        [setSource],
     );
 
     return (
@@ -58,7 +58,7 @@ const WalletSourceButton: React.FC<WalletSourceButtonProps> = ({
     source,
     isSelected,
     isDisabled,
-    onClick
+    onClick,
 }) => {
     const sourceInfo = WalletSources[source];
     return (
@@ -93,7 +93,7 @@ interface SourceNotDetectedIconProps {
 }
 
 const SourceNotDetectedIcon: React.FC<SourceNotDetectedIconProps> = ({
-    source
+    source,
 }) => {
     const sourceInfo = WalletSources[source];
 

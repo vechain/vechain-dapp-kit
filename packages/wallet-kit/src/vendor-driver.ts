@@ -5,7 +5,7 @@ const _cachedDrivers: Record<string, LazyDriver | undefined> = {};
 
 const createVendorDriver = (
     signer: Promise<Connex.Signer>,
-    source: WalletSource
+    source: WalletSource,
 ): LazyDriver => {
     const cachedDriver = _cachedDrivers[source];
 

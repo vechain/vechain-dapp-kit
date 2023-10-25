@@ -7,7 +7,7 @@ import {
     Icon,
     Text,
     useToast,
-    VStack
+    VStack,
 } from '@chakra-ui/react';
 import type { JSX } from 'react';
 import React, { useCallback, useMemo } from 'react';
@@ -29,7 +29,7 @@ export const Counter = (): JSX.Element => {
                     title: 'Counter incremented',
                     status: 'success',
                     duration: 2000,
-                    isClosable: true
+                    isClosable: true,
                 });
             })
             // eslint-disable-next-line no-console

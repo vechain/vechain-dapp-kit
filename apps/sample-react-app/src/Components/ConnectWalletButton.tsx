@@ -12,12 +12,12 @@ interface ConnectWalletButtonProps {
 }
 
 export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
-    buttonProps
+    buttonProps,
 }): React.ReactElement => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const {
-        accountState: { address, source }
+        accountState: { address, source },
     } = useWallet();
 
     if (address && source)

@@ -9,11 +9,11 @@ const _counter: abi.Function.Definition = {
         {
             internalType: 'uint256',
             name: 'count',
-            type: 'uint256'
-        }
+            type: 'uint256',
+        },
     ],
     stateMutability: 'view',
-    type: 'function'
+    type: 'function',
 };
 
 const _increment: abi.Function.Definition = {
@@ -21,7 +21,7 @@ const _increment: abi.Function.Definition = {
     name: 'increment',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function'
+    type: 'function',
 };
 
 type IncrementStatus = 'idle' | 'in-wallet' | 'pending' | 'error';
@@ -41,7 +41,7 @@ export const useCounter = (): UseCounter => {
 
     const contract = useMemo(
         () => thor.account('0x8384738c995d49c5b692560ae688fc8b51af1059'),
-        [thor]
+        [thor],
     );
 
     const setValue = useCallback(async () => {

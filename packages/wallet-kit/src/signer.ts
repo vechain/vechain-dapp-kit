@@ -1,11 +1,11 @@
 import type {
     WalletConnectOptions,
-    WCSigner
+    WCSigner,
 } from '@vechain/wallet-connect/dist';
 import {
     newWcClient,
     newWcSigner,
-    newWeb3Modal
+    newWeb3Modal,
 } from '@vechain/wallet-connect/dist';
 import type { Connex } from '@vechain/connex';
 import { createSync, createSync2 } from '@vechain/connex/esm/signer';
@@ -52,7 +52,7 @@ export const createSigner = (params: ICreateVendor): Promise<Connex.Signer> => {
 
         const wcClient = newWcClient({
             projectId,
-            metadata
+            metadata,
         });
 
         const web3Modal = newWeb3Modal(projectId);
@@ -61,7 +61,7 @@ export const createSigner = (params: ICreateVendor): Promise<Connex.Signer> => {
             genesisId,
             wcClient,
             web3Modal,
-            onDisconnected
+            onDisconnected,
         });
 
         return Promise.resolve(wcSigner);

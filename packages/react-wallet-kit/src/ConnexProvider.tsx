@@ -5,7 +5,7 @@ import React, {
     useEffect,
     useMemo,
     useReducer,
-    useRef
+    useRef,
 } from 'react';
 import { Connex } from '@vechain/connex';
 import { newVendor } from '@vechain/connex-framework';
@@ -13,7 +13,7 @@ import type { WalletConnectOptions, WCSigner } from '@vechain/wallet-connect';
 import {
     newWcClient,
     newWcSigner,
-    newWeb3Modal
+    newWeb3Modal,
 } from '@vechain/wallet-connect';
 import { WalletSource } from '@vechain/wallet-kit';
 import { accountReducer, defaultAccountState } from './AccountReducer';
@@ -21,7 +21,7 @@ import type {
     ConnexContext,
     ConnexProviderOptions,
     SetAccount,
-    SetSource
+    SetSource,
 } from './types';
 
 /**
@@ -33,11 +33,11 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     children,
     nodeOptions,
     walletConnectOptions,
-    persistState = false
+    persistState = false,
 }): React.ReactElement => {
     const [accountState, dispatch] = useReducer(
         accountReducer,
-        defaultAccountState
+        defaultAccountState,
     );
 
     const wcSignerRef = useRef<WCSigner | undefined>();
@@ -112,15 +112,15 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
 
             dispatch({
                 type: 'set-wallet-source',
-                payload: { source: wallet, persist: persistState }
+                payload: { source: wallet, persist: persistState },
             });
         },
-        [walletConnectOptions, persistState]
+        [walletConnectOptions, persistState],
     );
 
     const thor: Connex.Thor = useMemo(
         () => new Connex.Thor(nodeOptions),
-        [nodeOptions]
+        [nodeOptions],
     );
 
     const createWalletConnectVendor = useCallback(
@@ -129,7 +129,7 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
 
             const wcClient = newWcClient({
                 projectId,
-                metadata
+                metadata,
             });
 
             const web3Modal = newWeb3Modal(projectId);
@@ -138,14 +138,14 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
                 genesisId: thor.genesis.id,
                 wcClient,
                 web3Modal,
-                onDisconnected
+                onDisconnected,
             });
 
             wcSignerRef.current = wcSigner;
 
             return newVendor(wcSigner);
         },
-        [onDisconnected, thor.genesis.id]
+        [onDisconnected, thor.genesis.id],
     );
 
     /**
@@ -168,7 +168,7 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
 
         if (source === WalletSource.VeWorldExtension && window.vechain) {
             const extensionSigner = window.vechain.newConnexSigner(
-                thor.genesis.id
+                thor.genesis.id,
             );
 
             return newVendor(extensionSigner);
@@ -193,17 +193,17 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
         createWalletConnectVendor,
         thor.genesis.id,
         walletConnectOptions,
-        accountState
+        accountState,
     ]);
 
     const updateAccount: SetAccount = useCallback(
         (address: string) => {
             dispatch({
                 type: 'set-address',
-                payload: { address, persist: persistState }
+                payload: { address, persist: persistState },
             });
         },
-        [persistState]
+        [persistState],
     );
 
     const wallets: WalletSource[] = useMemo(() => {
@@ -214,7 +214,7 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
         return {
             connex: {
                 thor,
-                vendor
+                vendor,
             },
             wallet: {
                 setSource: updateSource,
@@ -222,8 +222,8 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
                 availableWallets,
                 wallets,
                 accountState,
-                disconnect: onDisconnected
-            }
+                disconnect: onDisconnected,
+            },
         };
     }, [
         onDisconnected,
@@ -233,7 +233,7 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
         vendor,
         updateSource,
         wallets,
-        availableWallets
+        availableWallets,
     ]);
 
     return <Context.Provider value={context}>{children}</Context.Provider>;
