@@ -28,7 +28,10 @@ jobs:
         name: Install pnpm
         with:
           version: 8
-          run_install: true
+          run_install: false
+
+      - name: Install
+        run: pnpm install:all
 
       - name: Lint
         run: pnpm run lint
