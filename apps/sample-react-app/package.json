@@ -5,19 +5,38 @@
   "homepage": ".",
   "main": "src/index.js",
   "scripts": {
-    "postinstall": "pnpm compile",
-    "start": "HTTPS=true react-app-rewired start",
+    "build": "yarn compile && react-app-rewired build",
+    "clean": "rm -rf build node_modules .turbo cache artifacts src/hardhat",
+    "compile": "yarn hardhat compile",
     "dev": "react-app-rewired start",
-    "build": "pnpm compile && react-app-rewired build",
-    "test": "echo 'Not yet testing'",
     "eject": "react-app-rewired eject",
-    "compile": "hardhat compile",
+    "postinstall": "yarn compile",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "clean": "rm -rf build node_modules .turbo cache artifacts src/hardhat"
+    "start": "HTTPS=true react-app-rewired start",
+    "test": "echo 'Not yet testing'"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@heroicons/react": "^2.0.18",
     "@vechain/connex": "2.1.0",
     "@vechain/hardhat-vechain": "^0.1.4",
@@ -27,6 +46,7 @@
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "ethers": "^6.8.0",
+    "framer-motion": "3.10.6",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
     "process": "^0.11.10",
@@ -34,11 +54,11 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
-    "react-vendor": "workspace:*",
+    "react-vendor": "*",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "thor-devkit": "^2.0.9",
-    "wallet-connect": "workspace:*",
+    "wallet-connect": "*",
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {
@@ -53,33 +73,16 @@
     "@types/testing-library__jest-dom": "^5.14.5",
     "copy-webpack-plugin": "^11.0.0",
     "customize-cra": "^1.0.0",
-    "eslint-config-custom": "workspace:*",
+    "eslint-config-custom": "*",
     "filemanager-webpack-plugin": "^8.0.0",
     "hardhat": "^2.18.2",
     "mini-css-extract-plugin": "^2.7.6",
     "react-app-rewired": "^2.2.1",
     "ts-import-plugin": "^3.0.0",
     "ts-loader": "^9.5.0",
-    "tsconfig": "workspace:*",
+    "ts-node": "^10.9.1",
+    "tsconfig": "*",
     "typescript": "4.9.5",
     "webpack": "^5.88.2"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }

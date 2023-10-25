@@ -1,29 +1,20 @@
 {
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "clean": "turbo run clean; rm -rf node_modules .turbo",
-    "build:deps": "turbo build --no-daemon --filter=react-vendor --filter=wallet-connect",
-    "install:all": "pnpm i && pnpm run build:deps",
-    "reinstall": "pnpm clean && pnpm i && pnpm run build:deps",
-    "dev": "turbo run dev --no-daemon",
-    "start": "turbo run start --no-daemon",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "lint": "turbo run lint",
     "build": "turbo run build",
-    "test": "turbo run test",
-    "prepare": "husky install"
-  },
-  "devDependencies": {
-    "@commitlint/config-conventional": "^18.0.0",
-    "commitlint": "^18.0.0",
-    "eslint": "^8.4.1",
-    "eslint-config-custom": "workspace:*",
-    "eslint-plugin-prefer-arrow": "1.2.3",
-    "husky": "^8.0.0",
-    "lint-staged": "^15.0.2",
-    "prettier": "^2.5.1",
-    "tsconfig": "workspace:*",
-    "turbo": "latest"
+    "build:deps": "turbo build --no-daemon --filter=react-vendor --filter=wallet-connect",
+    "clean": "npx turbo@latest run clean && rm -rf node_modules .turbo",
+    "dev": "turbo run dev --no-daemon",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "install:all": "yarn && yarn run build:deps",
+    "lint": "turbo run lint",
+    "prepare": "husky install",
+    "reinstall": "yarn clean && yarn && yarn run build:deps",
+    "test": "turbo run test"
   },
   "husky": {
     "hooks": {
@@ -39,5 +30,30 @@
       "eslint"
     ]
   },
-  "packageManager": "pnpm@8.6.10"
+  "devDependencies": {
+    "@commitlint/config-conventional": "^18.0.0",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.2",
+    "@nomicfoundation/hardhat-ethers": "^3.0.4",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.9",
+    "@nomicfoundation/hardhat-verify": "^1.1.1",
+    "@typechain/ethers-v6": "^0.4.3",
+    "@typechain/hardhat": "^8.0.3",
+    "@types/chai": "^4.3.9",
+    "@types/mocha": "^10.0.3",
+    "chai": "^4.3.10",
+    "commitlint": "^18.0.0",
+    "eslint": "^8.4.1",
+    "eslint-config-custom": "*",
+    "eslint-plugin-prefer-arrow": "1.2.3",
+    "ethers": "^6.8.0",
+    "hardhat-gas-reporter": "^1.0.9",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.0.2",
+    "prettier": "^2.5.1",
+    "solidity-coverage": "^0.8.5",
+    "tsconfig": "*",
+    "turbo": "latest",
+    "typechain": "^8.3.2"
+  },
+  "packageManager": "yarn@1.22.19"
 }

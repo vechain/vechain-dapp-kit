@@ -19,22 +19,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Node.js
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
-
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
+          node-version-file: .nvmrc
+          cache: "yarn"
 
       - name: Install
-        run: pnpm install:all
+        run: yarn install:all
 
       - name: Lint
-        run: pnpm run lint
+        run: yarn run lint
 
       - name: Build
-        run: pnpm run build
+        run: yarn run build
