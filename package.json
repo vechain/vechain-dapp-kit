@@ -32,15 +32,28 @@
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^18.0.0",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.2",
+    "@nomicfoundation/hardhat-ethers": "^3.0.4",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.9",
+    "@nomicfoundation/hardhat-verify": "^1.1.1",
+    "@typechain/ethers-v6": "^0.4.3",
+    "@typechain/hardhat": "^8.0.3",
+    "@types/chai": "^4.3.9",
+    "@types/mocha": "^10.0.3",
+    "chai": "^4.3.10",
     "commitlint": "^18.0.0",
     "eslint": "^8.4.1",
     "eslint-config-custom": "*",
     "eslint-plugin-prefer-arrow": "1.2.3",
+    "ethers": "^6.8.0",
+    "hardhat-gas-reporter": "^1.0.9",
     "husky": "^8.0.0",
     "lint-staged": "^15.0.2",
     "prettier": "^2.5.1",
+    "solidity-coverage": "^0.8.5",
     "tsconfig": "*",
-    "turbo": "latest"
+    "turbo": "latest",
+    "typechain": "^8.3.2"
   },
   "packageManager": "yarn@1.22.19"
 }

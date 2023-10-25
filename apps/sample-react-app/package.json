@@ -7,7 +7,7 @@
   "scripts": {
     "build": "yarn compile && react-app-rewired build",
     "clean": "rm -rf build node_modules .turbo cache artifacts src/hardhat",
-    "compile": "hardhat compile",
+    "compile": "yarn hardhat compile",
     "dev": "react-app-rewired start",
     "eject": "react-app-rewired eject",
     "postinstall": "yarn compile",
