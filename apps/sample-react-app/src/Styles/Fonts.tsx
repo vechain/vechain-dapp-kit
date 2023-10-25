@@ -1,9 +1,9 @@
-import { Global } from "@emotion/react";
-import React from "react";
+import { Global } from '@emotion/react';
+import React from 'react';
 
 export const Fonts = (): React.ReactElement => (
-  <Global
-    styles={`
+    <Global
+        styles={`
     @font-face {
       font-family: "Inter";
       src: local("./fonts/Inter-Light.woff2") format("woff2");
@@ -60,5 +60,5 @@ export const Fonts = (): React.ReactElement => (
       font-style: normal;
     }
       `}
-  />
+    />
 );

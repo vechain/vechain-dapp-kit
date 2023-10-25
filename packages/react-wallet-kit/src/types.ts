@@ -1,28 +1,11 @@
-import type { Options } from "@vechain/connex";
-import type React from "react";
-import type { WalletConnectOptions } from "wallet-connect";
+import type { Options } from '@vechain/connex';
+import type React from 'react';
+import type { WalletConnectOptions } from '@vechain/wallet-connect';
+import type { WalletSource } from '@vechain/wallet-kit';
 
 export interface AccountState {
-  address: string | null;
-  source: WalletSource | null;
-}
-
-declare global {
-  interface Window {
-    vechain?: {
-      newConnexSigner: (genesisId: string) => Connex.Signer;
-    };
-  }
-}
-
-/**
- * The wallet source
- */
-export enum WalletSource {
-  WalletConnect = "wallet-connect",
-  VeWorldExtension = "veworld-extension",
-  Sync2 = "sync2",
-  Sync = "sync",
+    address: string | null;
+    source: WalletSource | null;
 }
 
 /**
@@ -45,10 +28,10 @@ export type SetSource = (wallet: WalletSource) => void;
  * @param persistState - An option to persist state. Defaults to false
  */
 export interface ConnexProviderOptions {
-  children: React.ReactNode;
-  nodeOptions: Omit<Options, "signer">;
-  walletConnectOptions?: WalletConnectOptions;
-  persistState?: boolean;
+    children: React.ReactNode;
+    nodeOptions: Omit<Options, 'signer'>;
+    walletConnectOptions?: WalletConnectOptions;
+    persistState?: boolean;
 }
 
 /**
@@ -65,13 +48,13 @@ export interface ConnexProviderOptions {
  */
 
 export interface ConnexContext {
-  connex: Connex;
-  wallet: {
-    setSource: SetSource;
-    setAccount: SetAccount;
-    availableWallets: WalletSource[];
-    wallets: WalletSource[];
-    accountState: AccountState;
-    disconnect: () => void;
-  };
+    connex: Connex;
+    wallet: {
+        setSource: SetSource;
+        setAccount: SetAccount;
+        availableWallets: WalletSource[];
+        wallets: WalletSource[];
+        accountState: AccountState;
+        disconnect: () => void;
+    };
 }

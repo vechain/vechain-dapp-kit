@@ -20,6 +20,7 @@ module.exports = {
   parserOptions: {
     project,
   },
+  parser: "@typescript-eslint/parser",
   globals: {
     JSX: true,
   },
