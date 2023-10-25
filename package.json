@@ -1,29 +1,20 @@
 {
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "clean": "turbo run clean; rm -rf node_modules .turbo",
-    "build:deps": "turbo build --no-daemon --filter='@vechain/**'",
-    "install:all": "pnpm i && pnpm run build:deps",
-    "reinstall": "pnpm clean && pnpm i && pnpm run build:deps",
-    "dev": "turbo run dev --no-daemon",
-    "start": "turbo run start --no-daemon",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "lint": "turbo run lint",
     "build": "turbo run build",
-    "test": "turbo run test",
-    "prepare": "husky install"
-  },
-  "devDependencies": {
-    "@commitlint/config-conventional": "^18.0.0",
-    "commitlint": "^18.0.0",
-    "eslint": "^8.4.1",
-    "eslint-config-custom": "workspace:*",
-    "eslint-plugin-prefer-arrow": "1.2.3",
-    "husky": "^8.0.0",
-    "lint-staged": "^15.0.2",
-    "prettier": "^2.5.1",
-    "tsconfig": "workspace:*",
-    "turbo": "latest"
+    "build:deps": "turbo build --no-daemon --filter='@vechain/*'",
+    "clean": "npx turbo@latest run clean && rm -rf node_modules .turbo",
+    "dev": "turbo run dev --no-daemon",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "install:all": "yarn && yarn run build:deps",
+    "lint": "turbo run lint",
+    "prepare": "husky install",
+    "reinstall": "yarn clean && yarn && yarn run build:deps",
+    "test": "turbo run test"
   },
   "husky": {
     "hooks": {
@@ -39,5 +30,17 @@
       "eslint"
     ]
   },
-  "packageManager": "pnpm@8.6.10"
+  "devDependencies": {
+    "@commitlint/config-conventional": "^18.0.0",
+    "commitlint": "^18.0.0",
+    "eslint": "^8.4.1",
+    "eslint-config-custom": "*",
+    "eslint-plugin-prefer-arrow": "1.2.3",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.0.2",
+    "prettier": "^2.5.1",
+    "tsconfig": "*",
+    "turbo": "latest"
+  },
+  "packageManager": "yarn@1.22.19"
 }

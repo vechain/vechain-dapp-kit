@@ -1,6 +1,6 @@
 # vechain-dapp-kit
 
-This is a DApp Kit for Vechain.
+VeWorld WalletKit is a typescript library that facilitates seamless interaction between VeChain wallets (veworld, sync 2) and dApps, enhancing user experience and developer convenience.
 
 ## Why ?
 
@@ -8,24 +8,64 @@ This is a DApp Kit for Vechain.
 - Currently, connex only plays nice with Sync / Sync2
 - Enable a better UX for users
 
-## Setting up the project
+## Key features
 
-### Install dependencies
+Key Features a.k.a scope
+
+1. wallet connectivity
+
+   key components that handle interaction with veworld and sync 2
+
+2. customizable UI
+
+   ability to totally customize the UI of components
+
+3. User Experience
+
+   Consistent experience with Ethereum and other chains
+
+4. Developer friendly
+
+   Easy to adopt with proper documentation.
+
+## Setting up the project (Common flow)
+
+### Install & build dependencies
 
 ```bash
-pnpm install
-```
-
-### Build the packages & apps
-
-```bash
-pnpm build
+yarn install:all
 ```
 
 ### Run in Dev Mode
 
 ```bash
-pnpm dev
+yarn dev
+```
+
+## Useful scripts
+
+### Clean project
+
+```bash
+yarn clean
+```
+
+### Install yarn packages
+
+```bash
+yarn
+```
+
+### Build dependencies
+
+```bash
+yarn build:deps
+```
+
+### Build release
+
+```bash
+yarn build
 ```
 
 ### Future Work
