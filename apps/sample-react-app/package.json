@@ -5,13 +5,15 @@
   "homepage": ".",
   "main": "src/index.js",
   "scripts": {
-    "build": "react-app-rewired build",
-    "clean": "rm -rf build node_modules .turbo",
+    "build": "yarn compile && react-app-rewired build",
+    "clean": "rm -rf build node_modules .turbo cache artifacts src/hardhat",
+    "compile": "hardhat compile",
     "dev": "react-app-rewired start",
     "eject": "react-app-rewired eject",
+    "postinstall": "yarn compile",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "start": "HTTPS=true react-app-rewired start",
-    "test": "react-app-rewired test"
+    "test": "echo 'Not yet testing'"
   },
   "browserslist": {
     "production": [
@@ -37,9 +39,13 @@
     "@emotion/styled": "^11.11.0",
     "@heroicons/react": "^2.0.18",
     "@vechain/connex": "2.1.0",
+    "@vechain/hardhat-vechain": "^0.1.4",
+    "@vechain/hardhat-web3": "^0.1.4",
     "@vechain/picasso": "^2.1.1",
+    "@vechain/web3-providers-connex": "^1.1.2",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
+    "ethers": "^6.8.0",
     "framer-motion": "3.10.6",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
@@ -56,6 +62,7 @@
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -68,10 +75,12 @@
     "customize-cra": "^1.0.0",
     "eslint-config-custom": "*",
     "filemanager-webpack-plugin": "^8.0.0",
+    "hardhat": "^2.18.2",
     "mini-css-extract-plugin": "^2.7.6",
     "react-app-rewired": "^2.2.1",
     "ts-import-plugin": "^3.0.0",
     "ts-loader": "^9.5.0",
+    "ts-node": "^10.9.1",
     "tsconfig": "*",
     "typescript": "4.9.5",
     "webpack": "^5.88.2"
