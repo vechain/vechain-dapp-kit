@@ -1,2 +1,2 @@
-export * from "./NavBar";
-export * from "./StyledContainer";
+export * from './NavBar';
+export * from './StyledContainer';

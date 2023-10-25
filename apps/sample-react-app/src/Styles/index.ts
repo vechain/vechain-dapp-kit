@@ -1,2 +1,2 @@
-export * from "./Fonts";
-export * from "./Theme";
+export * from './Fonts';
+export * from './Theme';

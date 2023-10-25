@@ -1,2 +1,2 @@
-export * from "./connex";
-export * from "./wallet";
+export * from './connex';
+export * from './wallet';
