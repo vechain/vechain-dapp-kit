@@ -22,16 +22,16 @@ export const newWeb3Modal = (projectId: string): WalletConnectModal => {
                 id: 'veworld-mobile',
                 links: {
                     native: 'veworld://org.vechain.veworld.app/',
-                    universal: 'https://veworld.com'
-                }
-            }
+                    universal: 'https://veworld.com',
+                },
+            },
         ],
         themeVariables: {
-            '--wcm-z-index': '99999999'
+            '--wcm-z-index': '99999999',
         },
         walletImages: {
-            'veworld-mobile': 'https://www.veworld.net/assets/logo/logo.svg'
-        }
+            'veworld-mobile': 'https://www.veworld.net/assets/logo/logo.svg',
+        },
     });
 
     _cachedModals[projectId] = modal;

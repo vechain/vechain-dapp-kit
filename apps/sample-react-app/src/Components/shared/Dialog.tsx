@@ -6,7 +6,7 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
-    ModalOverlay
+    ModalOverlay,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -29,7 +29,7 @@ export const Dialog: React.FC<DialogProps> = ({
     body,
     footer,
     showCloseButton = true,
-    closeButtonStyle = {}
+    closeButtonStyle = {},
 }) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose} trapFocus={false}>

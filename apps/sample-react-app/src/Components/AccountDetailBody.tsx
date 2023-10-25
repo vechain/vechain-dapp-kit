@@ -13,7 +13,7 @@ interface AccountDetailBodyProps {
 export const AccountDetailBody: React.FC<AccountDetailBodyProps> = ({
     accountAddress,
     source,
-    disconnectWallet
+    disconnectWallet,
 }) => {
     const sourceInfo = useMemo(() => WalletSources[source], [source]);
 

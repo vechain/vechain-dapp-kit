@@ -2,14 +2,14 @@ import { SignClient } from '@walletconnect/sign-client';
 import type {
     ResolvedSignClient,
     WalletConnectOptions,
-    WCClient
+    WCClient,
 } from './types';
 
 const _cachedClients: Record<string, WCClient | undefined> = {};
 
 export const newWcClient = ({
     projectId,
-    metadata
+    metadata,
 }: WalletConnectOptions): WCClient => {
     const cachedClient = _cachedClients[projectId];
 
@@ -19,7 +19,7 @@ export const newWcClient = ({
 
     const _signClient = SignClient.init({
         projectId,
-        metadata
+        metadata,
     });
 
     const client: WCClient = {
@@ -28,10 +28,10 @@ export const newWcClient = ({
                 return await _signClient;
             } catch (e) {
                 throw new Error(
-                    `Failed to initialise the wallet connect sign client`
+                    `Failed to initialise the wallet connect sign client`,
                 );
             }
-        }
+        },
     };
 
     _cachedClients[projectId] = client;

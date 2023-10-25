@@ -12,7 +12,7 @@ import {
     useColorModeValue,
     useDisclosure,
     useMediaQuery,
-    VStack
+    VStack,
 } from '@chakra-ui/react';
 import type { JSX } from 'react';
 import React from 'react';
@@ -82,7 +82,7 @@ interface MobileNavBarDrawerProps {
 
 const MobileNavBarDrawer = ({
     isOpen,
-    onClose
+    onClose,
 }: MobileNavBarDrawerProps): JSX.Element => {
     const { accountState, disconnect } = useWallet();
 

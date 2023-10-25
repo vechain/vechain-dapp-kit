@@ -27,7 +27,7 @@ export const AddressButton: React.FC<AddressButtonProps> = ({
             if (onClick) onClick(e);
             if (showCopyIcon) onCopy();
         },
-        [onClick, showCopyIcon, onCopy]
+        [onClick, showCopyIcon, onCopy],
     );
 
     useEffect(() => {

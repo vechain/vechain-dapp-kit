@@ -9,7 +9,7 @@ import {
     Spinner,
     Text,
     useToast,
-    VStack
+    VStack,
 } from '@chakra-ui/react';
 import { LinkIcon, WalletIcon } from '@heroicons/react/24/solid';
 import React, { useCallback, useState } from 'react';
@@ -25,7 +25,7 @@ interface ConnectedWalletDialogProps {
 
 export const ConnectWalletModal: React.FC<ConnectedWalletDialogProps> = ({
     isOpen,
-    onClose
+    onClose,
 }) => {
     const header = (
         <HStack spacing={2}>
@@ -49,7 +49,7 @@ interface ConnectedWalletBodyProps {
 }
 
 const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
-    onClose
+    onClose,
 }) => {
     const toast = useToast();
     const { setAccount } = useWallet();
@@ -64,8 +64,8 @@ const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
                 purpose: 'identification',
                 payload: {
                     type: 'text',
-                    content: 'Sign a certificate to prove your identity'
-                }
+                    content: 'Sign a certificate to prove your identity',
+                },
             };
 
             const certResponse = await vendor.sign('cert', message).request();
@@ -76,7 +76,7 @@ const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
                 domain: certResponse.annex.domain,
                 timestamp: certResponse.annex.timestamp,
                 signer: certResponse.annex.signer,
-                signature: certResponse.signature
+                signature: certResponse.signature,
             };
 
             Certificate.verify(cert);
@@ -94,10 +94,10 @@ const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
                 status: 'success',
                 position: 'bottom-left',
                 duration: 5000,
-                isClosable: true
+                isClosable: true,
             });
         },
-        [toast, setAccount, onClose]
+        [toast, setAccount, onClose],
     );
 
     const connectHandler = useCallback(async () => {
@@ -121,7 +121,7 @@ const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
         onSuccessfullConnection,
         setConnectionError,
         setConnectionLoading,
-        connectToWalletHandler
+        connectToWalletHandler,
     ]);
 
     const connect = useCallback(() => {

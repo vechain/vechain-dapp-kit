@@ -6,7 +6,7 @@ enum WalletSource {
     WalletConnect = 'wallet-connect',
     VeWorldExtension = 'veworld-extension',
     Sync2 = 'sync2',
-    Sync = 'sync'
+    Sync = 'sync',
 }
 
 interface WalletConfig {
@@ -14,16 +14,16 @@ interface WalletConfig {
 }
 
 const DEFAULT_CONFIG: WalletConfig = {
-    requiresCertificate: true
+    requiresCertificate: true,
 };
 
 const WalletMapping: Record<WalletSource, WalletConfig> = {
     [WalletSource.WalletConnect]: {
-        requiresCertificate: false
+        requiresCertificate: false,
     },
     [WalletSource.VeWorldExtension]: DEFAULT_CONFIG,
     [WalletSource.Sync2]: DEFAULT_CONFIG,
-    [WalletSource.Sync]: DEFAULT_CONFIG
+    [WalletSource.Sync]: DEFAULT_CONFIG,
 };
 
 export { WalletSource, WalletMapping };

@@ -14,12 +14,12 @@ export type AccountAction =
 
 export const defaultAccountState: AccountState = {
     address: localStorage.getItem(ACCOUNT_KEY),
-    source: localStorage.getItem(WALLET_SOURCE_KEY) as WalletSource
+    source: localStorage.getItem(WALLET_SOURCE_KEY) as WalletSource,
 };
 
 export const accountReducer = (
     state: AccountState,
-    action: AccountAction
+    action: AccountAction,
 ): AccountState => {
     switch (action.type) {
         case 'set-address': {

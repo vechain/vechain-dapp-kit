@@ -17,7 +17,7 @@ export const newWcSigner = ({
     genesisId,
     wcClient,
     web3Modal,
-    onDisconnected
+    onDisconnected,
 }: WCSignerOptions): WCSigner => {
     const chainId = `vechain:${genesisId.slice(-32)}`;
     let session: SessionTypes.Struct | undefined;
@@ -30,13 +30,13 @@ export const newWcSigner = ({
         })
         .catch(() => {
             throw new Error(
-                `Failed to initialise the wallet connect sign client`
+                `Failed to initialise the wallet connect sign client`,
             );
         });
 
     const makeRequest = async <T>(
         params: EngineTypes.RequestParams['request'],
-        signer?: string
+        signer?: string,
     ): Promise<T> => {
         const sessionTopic = await getSessionTopic(signer);
 
@@ -45,27 +45,27 @@ export const newWcSigner = ({
         return signClient.request({
             topic: sessionTopic,
             chainId,
-            request: params
+            request: params,
         });
     };
 
     const signTx = async (
         message: Connex.Vendor.TxMessage,
-        options: Connex.Signer.TxOptions
+        options: Connex.Signer.TxOptions,
     ): Promise<Connex.Vendor.TxResponse> => {
         return makeRequest<Connex.Vendor.TxResponse>({
             method: DefaultMethods.RequestTransaction,
-            params: [{ message, options }]
+            params: [{ message, options }],
         });
     };
 
     const signCert = async (
         message: Connex.Vendor.CertMessage,
-        options: Connex.Signer.CertOptions
+        options: Connex.Signer.CertOptions,
     ): Promise<Connex.Vendor.CertResponse> => {
         return makeRequest<Connex.Vendor.CertResponse>({
             method: DefaultMethods.SignCertificate,
-            params: [{ message, options }]
+            params: [{ message, options }],
         });
     };
 
@@ -80,7 +80,7 @@ export const newWcSigner = ({
         try {
             await signClient.disconnect({
                 topic,
-                reason: getSdkError('USER_DISCONNECTED')
+                reason: getSdkError('USER_DISCONNECTED'),
             });
         } catch (e) {
             throw new Error(`SignClient.disconnect failed`);
@@ -92,7 +92,7 @@ export const newWcSigner = ({
      * @param requestedAddress - The optional requested account address
      */
     const validateSession = (
-        requestedAddress?: string
+        requestedAddress?: string,
     ): SessionAccount | undefined => {
         if (!session) return;
 
@@ -114,12 +114,12 @@ export const newWcSigner = ({
         return {
             address,
             networkIdentifier,
-            topic: session.topic
+            topic: session.topic,
         };
     };
 
     const getSessionTopic = async (
-        requestedAccount?: string
+        requestedAccount?: string,
     ): Promise<string> => {
         const validation = validateSession(requestedAccount);
 
@@ -136,7 +136,7 @@ export const newWcSigner = ({
         const namespace: ProposalTypes.RequiredNamespace = {
             methods: Object.values(DefaultMethods),
             chains: [chainId],
-            events: Object.values(DefaultEvents)
+            events: Object.values(DefaultEvents),
         };
 
         try {
@@ -144,11 +144,11 @@ export const newWcSigner = ({
                 string,
                 ProposalTypes.RequiredNamespace
             > = {
-                vechain: namespace
+                vechain: namespace,
             };
 
             const { uri, approval } = await signClient.connect({
-                requiredNamespaces
+                requiredNamespaces,
             });
 
             if (uri) {
@@ -211,6 +211,6 @@ export const newWcSigner = ({
         signTx,
         signCert,
         disconnect,
-        genesisId
+        genesisId,
     };
 };

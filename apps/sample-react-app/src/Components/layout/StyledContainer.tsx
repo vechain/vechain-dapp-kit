@@ -6,7 +6,7 @@ interface StyledContainerProps {
 }
 
 export const StyledContainer: React.FC<StyledContainerProps> = ({
-    children
+    children,
 }) => {
     const bodyBg = useColorModeValue('gray.50', 'gray.900');
 

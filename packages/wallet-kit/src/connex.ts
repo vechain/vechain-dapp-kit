@@ -39,12 +39,12 @@ const createConnexInstance = (options: ConnexOptions): Connex => {
             source: options.source,
             genesis: options.genesis,
             options: options.options,
-            onDisconnected: options.onDisconnected
+            onDisconnected: options.onDisconnected,
         });
     } else {
         signer = createSigner({
             source: options.source,
-            genesis: options.genesis
+            genesis: options.genesis,
         });
     }
 
@@ -60,7 +60,7 @@ const createConnexInstance = (options: ConnexOptions): Connex => {
 
     return {
         thor: framework.thor,
-        vendor: framework.vendor
+        vendor: framework.vendor,
     };
 };
 
