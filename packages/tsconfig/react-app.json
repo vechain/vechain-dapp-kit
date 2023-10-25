@@ -9,7 +9,7 @@
     "incremental": true,
     "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
+    "module": "commonjs",
     "noEmit": true,
     "resolveJsonModule": true,
     "target": "ES6"
