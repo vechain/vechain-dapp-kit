@@ -4,6 +4,8 @@ import { App } from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./Styles/index.css";
 
+document.createElement("vechain-wallet-modal");
+
 const rootElement = document.getElementById("root");
 
 if (rootElement) {

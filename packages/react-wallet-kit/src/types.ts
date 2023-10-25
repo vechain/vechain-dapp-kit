@@ -1,28 +1,11 @@
 import type { Options } from "@vechain/connex";
 import type React from "react";
-import type { WalletConnectOptions } from "wallet-connect";
+import type { WalletConnectOptions } from "@vechain/wallet-connect";
+import type { WalletSource } from "@vechain/wallet-kit";
 
 export interface AccountState {
   address: string | null;
   source: WalletSource | null;
-}
-
-declare global {
-  interface Window {
-    vechain?: {
-      newConnexSigner: (genesisId: string) => Connex.Signer;
-    };
-  }
-}
-
-/**
- * The wallet source
- */
-export enum WalletSource {
-  WalletConnect = "wallet-connect",
-  VeWorldExtension = "veworld-extension",
-  Sync2 = "sync2",
-  Sync = "sync",
 }
 
 /**

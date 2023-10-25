@@ -2,7 +2,7 @@ import type { HTMLChakraProps } from "@chakra-ui/react";
 import { Button, Icon, useDisclosure } from "@chakra-ui/react";
 import { WalletIcon } from "@heroicons/react/24/solid";
 import React from "react";
-import { useWallet } from "react-vendor";
+import { useWallet } from "@vechain/react-wallet-kit";
 import { AccountDetailModal } from "./AccountDetailModal";
 import { AddressButton } from "./AddressButton";
 import { ConnectWalletModal } from "./ConnectWalletModal";

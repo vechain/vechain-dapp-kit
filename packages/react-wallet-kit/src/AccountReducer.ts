@@ -1,4 +1,5 @@
-import type { AccountState, WalletSource } from "./types";
+import type { WalletSource } from "@vechain/wallet-kit";
+import type { AccountState } from "./types";
 
 const ACCOUNT_KEY = "sample-app@account";
 const WALLET_SOURCE_KEY = "sample-app@wallet-source";

@@ -1,5 +1,5 @@
 {
-  "name": "react-vendor",
+  "name": "@vechain/react-wallet-kit",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
@@ -15,8 +15,9 @@
   "dependencies": {
     "@vechain/connex": "2.1.0",
     "@vechain/connex-framework": "2.1.0",
-    "thor-devkit": "^2.0.9",
-    "wallet-connect": "workspace:*"
+    "@vechain/wallet-connect": "workspace:*",
+    "@vechain/wallet-kit": "workspace:*",
+    "thor-devkit": "^2.0.9"
   },
   "devDependencies": {
     "@types/react": "^18.2.28",

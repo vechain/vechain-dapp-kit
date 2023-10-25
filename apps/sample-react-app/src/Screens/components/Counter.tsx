@@ -12,7 +12,7 @@ import {
 import type { JSX } from "react";
 import React, { useCallback, useMemo } from "react";
 import { ArrowUpIcon } from "@heroicons/react/24/solid";
-import { useWallet } from "react-vendor";
+import { useWallet } from "@vechain/react-wallet-kit";
 import { StyledCard } from "../../Components/shared";
 import { useCounter } from "../../Hooks/useCounter";
 import { AddressButton } from "../../Components";

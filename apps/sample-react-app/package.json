@@ -19,6 +19,9 @@
     "@heroicons/react": "^2.0.18",
     "@vechain/connex": "2.1.0",
     "@vechain/picasso": "^2.1.1",
+    "@vechain/react-wallet-kit": "workspace:*",
+    "@vechain/wallet-connect": "workspace:*",
+    "@vechain/wallet-kit": "workspace:*",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "https-browserify": "^1.0.0",
@@ -28,11 +31,10 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
-    "react-vendor": "workspace:*",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "thor-devkit": "^2.0.9",
-    "wallet-connect": "workspace:*",
+    "url": "^0.11.3",
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {

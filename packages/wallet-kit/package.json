@@ -1,8 +1,7 @@
 {
-  "name": "@vechain/wallet-connect",
+  "name": "@vechain/wallet-kit",
   "version": "0.0.0",
   "private": true,
-  "license": "MIT",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -12,13 +11,12 @@
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@walletconnect/modal": "2.6.2",
-    "@walletconnect/sign-client": "2.10.2",
-    "@walletconnect/utils": "2.10.2"
+    "@vechain/connex": "2.1.0",
+    "@vechain/connex-framework": "2.1.0",
+    "@vechain/connex-driver": "2.1.0",
+    "@vechain/wallet-connect": "workspace:*"
   },
   "devDependencies": {
-    "@walletconnect/types": "2.10.2",
-    "@vechain/connex-types": "2.1.0",
     "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*",
     "eslint": "^8.4.1",

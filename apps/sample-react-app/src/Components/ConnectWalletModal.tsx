@@ -14,7 +14,7 @@ import {
 import { LinkIcon, WalletIcon } from "@heroicons/react/24/solid";
 import React, { useCallback, useState } from "react";
 import { Certificate } from "thor-devkit";
-import { useConnex, useWallet } from "react-vendor";
+import { useConnex, useWallet } from "@vechain/react-wallet-kit";
 import { Dialog } from "./shared";
 import { WalletSourceRadio } from "./WalletSourceRadio";
 

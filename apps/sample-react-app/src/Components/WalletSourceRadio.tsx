@@ -10,8 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import React, { useCallback } from "react";
-import type { WalletSource } from "react-vendor";
-import { useWallet } from "react-vendor";
+import type { WalletSource } from "@vechain/wallet-kit";
+import { useWallet } from "@vechain/react-wallet-kit";
 import { WalletSources } from "../Constants";
 import { RadioCard } from "./shared";
 

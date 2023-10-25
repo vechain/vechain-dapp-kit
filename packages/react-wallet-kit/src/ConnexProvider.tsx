@@ -9,8 +9,13 @@ import React, {
 } from "react";
 import { Connex } from "@vechain/connex";
 import { newVendor } from "@vechain/connex-framework";
-import type { WalletConnectOptions, WCSigner } from "wallet-connect";
-import { newWcClient, newWcSigner, newWeb3Modal } from "wallet-connect";
+import type { WalletConnectOptions, WCSigner } from "@vechain/wallet-connect";
+import {
+  newWcClient,
+  newWcSigner,
+  newWeb3Modal,
+} from "@vechain/wallet-connect";
+import { WalletSource } from "@vechain/wallet-kit";
 import { accountReducer, defaultAccountState } from "./AccountReducer";
 import type {
   ConnexContext,
@@ -18,7 +23,6 @@ import type {
   SetAccount,
   SetSource,
 } from "./types";
-import { WalletSource } from "./types";
 
 /**
  * Context
@@ -160,9 +164,7 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     }
 
     if (source === WalletSource.VeWorldExtension && window.vechain) {
-      const extensionSigner: Connex.Signer = window.vechain.newConnexSigner(
-        thor.genesis.id
-      );
+      const extensionSigner = window.vechain.newConnexSigner(thor.genesis.id);
 
       return newVendor(extensionSigner);
     }

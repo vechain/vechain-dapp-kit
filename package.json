@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "clean": "turbo run clean; rm -rf node_modules .turbo",
-    "build:deps": "turbo build --no-daemon --filter=react-vendor --filter=wallet-connect",
+    "build:deps": "turbo build --no-daemon --filter='@vechain/**'",
     "install:all": "pnpm i && pnpm run build:deps",
     "reinstall": "pnpm clean && pnpm i && pnpm run build:deps",
     "dev": "turbo run dev --no-daemon",

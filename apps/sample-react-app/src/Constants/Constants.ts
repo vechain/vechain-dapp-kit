@@ -1,4 +1,4 @@
-import { WalletSource } from "react-vendor";
+import { WalletSource } from "@vechain/wallet-kit";
 
 export const NODE_URL = "https://testnet.vechain.org/";
 export const NODE_NETWORK = "test";
