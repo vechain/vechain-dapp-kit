@@ -1,4 +1,4 @@
 {
-  "extends": "tsconfig/react-app.json",
-  "include": ["src"]
+    "extends": "@vechain/repo-config/src/tsconfig/react.json",
+    "include": ["src"]
 }

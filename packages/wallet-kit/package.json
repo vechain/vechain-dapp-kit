@@ -17,7 +17,7 @@
         "@vechain/wallet-connect": "*"
     },
     "devDependencies": {
-        "@vechain/repo-config": "https://github.com/vechainfoundation/prettier-config",
+        "@vechain/repo-config": "https://github.com/vechainfoundation/repo-config",
         "eslint": "^8.4.1",
         "tsconfig": "*",
         "tsup": "^5.10.1",
