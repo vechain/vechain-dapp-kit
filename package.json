@@ -32,9 +32,9 @@
     },
     "devDependencies": {
         "@commitlint/config-conventional": "^18.0.0",
+        "@vechain/repo-config": "https://github.com/vechainfoundation/repo-config#v0.0.1",
         "commitlint": "^18.0.0",
         "eslint": "^8.4.1",
-        "eslint-config-custom": "*",
         "eslint-plugin-prefer-arrow": "1.2.3",
         "husky": "^8.0.0",
         "lint-staged": "^15.0.2",
