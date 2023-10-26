@@ -34,7 +34,7 @@ interface UseCounter {
 }
 
 export const useCounter = (): UseCounter => {
-    const { vendor, thor } = useConnex();
+    const { thor } = useConnex();
 
     const [count, setCount] = useState<number>(0);
     const [status, setStatus] = useState<IncrementStatus>('idle');
@@ -55,12 +55,11 @@ export const useCounter = (): UseCounter => {
     }, [setValue]);
 
     const increment = useCallback(async (): Promise<void> => {
-        const clause = contract.method(_increment).asClause();
-
         setStatus('in-wallet');
 
-        await vendor
-            .sign('tx', [clause])
+        await contract
+            .method(_increment)
+            .transact()
             .delegate('https://sponsor-testnet.vechain.energy/by/90')
             .request();
 
@@ -71,7 +70,7 @@ export const useCounter = (): UseCounter => {
         await setValue()
             .then(() => setStatus('idle'))
             .catch(() => setStatus('error'));
-    }, [thor, vendor, contract, setValue]);
+    }, [thor, contract, setValue]);
 
     return { count, increment, status, address: contract.address };
 };

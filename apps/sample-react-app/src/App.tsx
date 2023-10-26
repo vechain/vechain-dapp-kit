@@ -15,7 +15,7 @@ const nodeOptions: Omit<Options, 'signer'> = {
 };
 
 const walletConnectOptions: WalletConnectOptions = {
-    projectId: '8dfc5cac972ee656e6edeb8309ab30ec',
+    projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
     metadata: {
         name: 'Sample VeChain dApp',
         description: 'A sample VeChain dApp',

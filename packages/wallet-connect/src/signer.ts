@@ -5,7 +5,7 @@ import type { EngineTypes } from '@walletconnect/types/dist/types/sign-client/en
 import { getSdkError } from '@walletconnect/utils';
 import type { SignClient } from '@walletconnect/sign-client/dist/types/client';
 import type { WCSigner, WCSignerOptions } from './types';
-import { DefaultEvents, DefaultMethods } from './constants';
+import { DefaultMethods } from './constants';
 
 interface SessionAccount {
     networkIdentifier: string;
@@ -136,7 +136,7 @@ export const newWcSigner = ({
         const namespace: ProposalTypes.RequiredNamespace = {
             methods: Object.values(DefaultMethods),
             chains: [chainId],
-            events: Object.values(DefaultEvents),
+            events: [],
         };
 
         try {

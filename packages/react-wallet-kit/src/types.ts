@@ -38,17 +38,13 @@ export interface ConnexProviderOptions {
  * Connex Context
  * This context is used to provide the Connex instance and the Connex Vendor instance
  * to the application.
- *
- * @param thor - {@link Connex.Thor}: used to interact with the blockchain
- * @param vendor - {@link Connex.Vendor}: used to interact with the wallet
- * @param setWallet - used to set the wallet source
- * @param availableWallets - list of available wallets
- * @param accountState - current account state
- * @param dispatch - used to dispatch account actions
  */
 
 export interface ConnexContext {
-    connex: Connex;
+    connex: {
+        thor: Connex.Thor;
+        vendor?: Connex.Vendor;
+    };
     wallet: {
         setSource: SetSource;
         setAccount: SetAccount;
