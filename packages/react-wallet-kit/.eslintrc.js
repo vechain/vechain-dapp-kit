@@ -1,3 +1,3 @@
-module.exports = {
-  extends: ["custom/react"],
-};
+const Config = require('@vechain/repo-config');
+
+module.exports = Config.EslintReact;

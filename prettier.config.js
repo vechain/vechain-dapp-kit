@@ -1,3 +1,3 @@
 const Config = require('@vechain/repo-config');
 
-module.exports = Config.EslintLibrary;
+module.exports = Config.Prettier;

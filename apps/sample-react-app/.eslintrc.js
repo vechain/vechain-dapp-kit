@@ -1,4 +1,6 @@
+const Config = require('@vechain/repo-config');
+
 module.exports = {
-  extends: ["custom/react"],
-  ignorePatterns: ["src/hardhat/**/*"],
+    ...Config.EslintReact,
+    ignorePatterns: [...Config.EslintReact.ignorePatterns, 'src/hardhat/**/*'],
 };
