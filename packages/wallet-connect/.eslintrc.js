@@ -1,3 +1,3 @@
-module.exports = {
-  extends: ["custom/library"],
-};
+const Config = require('@vechain/repo-config');
+
+module.exports = Config.EslintLibrary;
