@@ -68,6 +68,8 @@ const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
                 },
             };
 
+            if (!vendor) throw new Error('Vendor not available');
+
             const certResponse = await vendor.sign('cert', message).request();
 
             const cert: Certificate = {

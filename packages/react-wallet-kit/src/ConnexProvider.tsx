@@ -2,20 +2,11 @@ import React, {
     createContext,
     useCallback,
     useContext,
-    useEffect,
     useMemo,
     useReducer,
-    useRef,
 } from 'react';
-import { Connex } from '@vechain/connex';
-import { newVendor } from '@vechain/connex-framework';
-import type { WalletConnectOptions, WCSigner } from '@vechain/wallet-connect';
-import {
-    newWcClient,
-    newWcSigner,
-    newWeb3Modal,
-} from '@vechain/wallet-connect';
-import { WalletSource } from '@vechain/wallet-kit';
+import type { ConnexInstance } from '@vechain/wallet-kit';
+import { createConnexInstance, WalletSource } from '@vechain/wallet-kit';
 import { accountReducer, defaultAccountState } from './AccountReducer';
 import type {
     ConnexContext,
@@ -40,18 +31,35 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
         defaultAccountState,
     );
 
-    const wcSignerRef = useRef<WCSigner | undefined>();
-
-    const disconnectMobile = useCallback(() => {
-        const client = wcSignerRef.current;
-
-        if (client) {
-            client.disconnect().catch((err) => {
-                throw err;
-            });
-            wcSignerRef.current = undefined;
-        }
+    const onDisconnected = useCallback((): void => {
+        dispatch({ type: 'clear' });
     }, []);
+
+    const connexInstance: ConnexInstance = useMemo(
+        () =>
+            createConnexInstance({
+                nodeUrl: nodeOptions.node,
+                genesis: nodeOptions.network,
+                source: accountState.source ?? undefined,
+                walletConnectOptions,
+                onDisconnected,
+            }),
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+        [
+            nodeOptions.node,
+            nodeOptions.network,
+            walletConnectOptions,
+            onDisconnected,
+        ],
+    );
+
+    const disconnect = useCallback((): void => {
+        dispatch({ type: 'clear' });
+
+        connexInstance.disconnect().catch(() => {
+            // do nothing
+        });
+    }, [connexInstance]);
 
     const availableWallets = useMemo(() => {
         const wallets: WalletSource[] = [WalletSource.Sync2];
@@ -71,132 +79,19 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
         return wallets;
     }, [walletConnectOptions]);
 
-    const onDisconnected = useCallback((): void => {
-        if (accountState.source === WalletSource.WalletConnect) {
-            disconnectMobile();
-        }
-
-        dispatch({ type: 'clear' });
-    }, [disconnectMobile, accountState]);
-
-    useEffect(() => {
-        if (
-            accountState.source === WalletSource.WalletConnect &&
-            !walletConnectOptions
-        ) {
-            onDisconnected();
-        }
-
-        if (
-            accountState.source === WalletSource.VeWorldExtension &&
-            !window.vechain
-        ) {
-            onDisconnected();
-        }
-    }, [accountState, walletConnectOptions, onDisconnected]);
-
-    const updateSource: SetSource = useCallback(
+    const setSource: SetSource = useCallback(
         (wallet: WalletSource): void => {
-            // We can't set VeWorld Mobile if there is no Wallet Connect config
-            if (
-                wallet === WalletSource.WalletConnect &&
-                !walletConnectOptions
-            ) {
-                throw new Error('Wallet Connect config not found');
-            }
-
-            // We can't set VeWorld Extension if there is no VeChain extension
-            if (wallet === WalletSource.VeWorldExtension && !window.vechain) {
-                throw new Error('VeWorld extension not found');
-            }
+            connexInstance.setSource(wallet);
 
             dispatch({
                 type: 'set-wallet-source',
                 payload: { source: wallet, persist: persistState },
             });
         },
-        [walletConnectOptions, persistState],
+        [connexInstance, persistState],
     );
 
-    const thor: Connex.Thor = useMemo(
-        () => new Connex.Thor(nodeOptions),
-        [nodeOptions],
-    );
-
-    const createWalletConnectVendor = useCallback(
-        (options: WalletConnectOptions) => {
-            const { projectId, metadata } = options;
-
-            const wcClient = newWcClient({
-                projectId,
-                metadata,
-            });
-
-            const web3Modal = newWeb3Modal(projectId);
-
-            const wcSigner: WCSigner = newWcSigner({
-                genesisId: thor.genesis.id,
-                wcClient,
-                web3Modal,
-                onDisconnected,
-            });
-
-            wcSignerRef.current = wcSigner;
-
-            return newVendor(wcSigner);
-        },
-        [onDisconnected, thor.genesis.id],
-    );
-
-    /**
-     * Create the vendor
-     * Create a vendor for the provided options. If that vendor is not available, the priority is:
-     * 1. Wallet Connect - If the options are provided
-     * 2. VeWorld Extension - If the extension is available
-     * 3. Sync2 - As a fallback, as it is always available
-     */
-    const vendor: Connex.Vendor = useMemo(() => {
-        const { source } = accountState;
-
-        if (source === WalletSource.WalletConnect && walletConnectOptions) {
-            return createWalletConnectVendor(walletConnectOptions);
-        }
-
-        if (source === WalletSource.Sync2 || source === WalletSource.Sync) {
-            return new Connex.Vendor(thor.genesis.id, source);
-        }
-
-        if (source === WalletSource.VeWorldExtension && window.vechain) {
-            const extensionSigner = window.vechain.newConnexSigner(
-                thor.genesis.id,
-            );
-
-            return newVendor(extensionSigner);
-        }
-
-        // We've exhausted all options, so default to Wallet Connect if the options are provided
-        if (walletConnectOptions) {
-            return createWalletConnectVendor(walletConnectOptions);
-        }
-
-        // No wallet connect options, so use the extension if it's available
-        if (window.vechain) {
-            const extensionSigner: Connex.Signer =
-                window.vechain.newConnexSigner(thor.genesis.id);
-
-            return newVendor(extensionSigner);
-        }
-
-        // Default to Sync2
-        return new Connex.Vendor(thor.genesis.id, WalletSource.Sync2);
-    }, [
-        createWalletConnectVendor,
-        thor.genesis.id,
-        walletConnectOptions,
-        accountState,
-    ]);
-
-    const updateAccount: SetAccount = useCallback(
+    const setAccount: SetAccount = useCallback(
         (address: string) => {
             dispatch({
                 type: 'set-address',
@@ -206,40 +101,34 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
         [persistState],
     );
 
-    const wallets: WalletSource[] = useMemo(() => {
-        return Object.values(WalletSource);
-    }, []);
-
     const context: ConnexContext = useMemo(() => {
         return {
             connex: {
-                thor,
-                vendor,
+                thor: connexInstance.thor,
+                vendor: connexInstance.vendor,
             },
             wallet: {
-                setSource: updateSource,
-                setAccount: updateAccount,
+                setSource,
+                setAccount,
                 availableWallets,
-                wallets,
+                wallets: Object.values(WalletSource),
                 accountState,
-                disconnect: onDisconnected,
+                disconnect,
             },
         };
     }, [
-        onDisconnected,
-        updateAccount,
         accountState,
-        thor,
-        vendor,
-        updateSource,
-        wallets,
+        connexInstance,
+        setAccount,
+        setSource,
         availableWallets,
+        disconnect,
     ]);
 
     return <Context.Provider value={context}>{children}</Context.Provider>;
 };
 
-export const useConnex = (): Connex => {
+export const useConnex = (): ConnexContext['connex'] => {
     const context = useContext(Context);
     return context.connex;
 };

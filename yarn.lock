@@ -39,6 +39,10 @@
     jsonpointer "^5.0.0"
     leven "^3.1.0"
 
+"@azz/prettier-config@https://github.com/azz/prettier-config":
+  version "1.0.0"
+  resolved "https://github.com/azz/prettier-config#5c26f2e40caa21168c257661304ed45e7e0ecbe4"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.16.0", "@babel/code-frame@^7.22.13", "@babel/code-frame@^7.8.3":
   version "7.22.13"
   resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.22.13.tgz"

@@ -1,66 +1,57 @@
-import { Framework } from '@vechain/connex-framework';
-import type { WalletConnectOptions } from '@vechain/wallet-connect';
-import type { Genesis } from './types';
-import { WalletSource } from './wallet';
-import { createSigner } from './signer';
+import { createNoVendor } from '@vechain/connex/esm/driver';
+import { newThor } from '@vechain/connex-framework/dist/thor';
+import type { DriverNoVendor } from '@vechain/connex-driver';
+import { newVendor } from '@vechain/connex-framework';
+import type { ConnexInstance, ConnexOptions } from './types';
 import { normalizeGenesisBlock } from './genesis';
-import { createVendorDriver } from './vendor-driver';
-import { createDriverNoVendor } from './thor-driver';
+import { WalletSource } from './wallet';
+import { FullDriver } from './full-driver';
+import { SignerManager } from './signer-manager';
 
-interface BaseConnexOptions {
-    nodeUrl: string;
-    genesis: Genesis;
-}
-
-interface NoWalletConfigOptions extends BaseConnexOptions {
-    source:
-        | WalletSource.VeWorldExtension
-        | WalletSource.Sync
-        | WalletSource.Sync2;
-}
-
-interface WalletConnectConfigOptions extends BaseConnexOptions {
-    source: WalletSource.WalletConnect;
-    options: WalletConnectOptions;
-    onDisconnected: () => void;
-}
-
-type ConnexOptions = NoWalletConfigOptions | WalletConnectConfigOptions;
-
-const createConnexInstance = (options: ConnexOptions): Connex => {
-    const { source, genesis } = options;
+const createConnexInstance = (options: ConnexOptions): ConnexInstance => {
+    const { nodeUrl, genesis, source, walletConnectOptions } = options;
 
     const genesisBlock = normalizeGenesisBlock(genesis);
 
-    let signer: Promise<Connex.Signer>;
+    const thorOnlyDriver: DriverNoVendor = createNoVendor(
+        nodeUrl,
+        genesisBlock,
+    );
 
-    if (source === WalletSource.WalletConnect) {
-        signer = createSigner({
-            source: options.source,
-            genesis: options.genesis,
-            options: options.options,
-            onDisconnected: options.onDisconnected,
-        });
-    } else {
-        signer = createSigner({
-            source: options.source,
-            genesis: options.genesis,
-        });
-    }
+    const _source = source;
 
-    // This is cached, so the `DriverNoVendor` is shared between wallet sources
-    const driverNoVendor = createDriverNoVendor(options.nodeUrl, genesisBlock);
+    const signerManager: SignerManager = new SignerManager(options, source);
+    const fullDriver = new FullDriver(thorOnlyDriver, signerManager);
 
-    // This is also cached based on the source
-    const vendorDriver = createVendorDriver(signer, source);
+    const thor = newThor(fullDriver);
+    const vendor = newVendor(fullDriver);
 
-    vendorDriver.setNoVendor(driverNoVendor);
+    const disconnect = async (): Promise<void> => {
+        await signerManager.disconnect();
+    };
 
-    const framework = new Framework(vendorDriver);
+    const setSource = (src: WalletSource): void => {
+        if (src === WalletSource.WalletConnect && !walletConnectOptions) {
+            throw new Error('WalletConnect options are not provided');
+        }
+
+        if (src === WalletSource.VeWorldExtension && !window.vechain) {
+            throw new Error('VeWorld Extension is not installed');
+        }
+
+        if (src === WalletSource.Sync && !window.connex) {
+            throw new Error('User is not in a Sync wallet');
+        }
+
+        signerManager.setSigner(src);
+    };
 
     return {
-        thor: framework.thor,
-        vendor: framework.vendor,
+        setSource,
+        thor,
+        vendor,
+        disconnect,
+        source: _source,
     };
 };
 
