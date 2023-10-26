@@ -1,3 +1,3 @@
-const PrettierConfig = require('@vechain/prettier');
+const Config = require('@vechain/repo-config');
 
-module.exports = PrettierConfig;
+module.exports = Config.Prettier;
