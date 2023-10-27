@@ -1,17 +1,15 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
-import { Button, Icon, useDisclosure } from '@chakra-ui/react';
-import { WalletIcon } from '@heroicons/react/24/solid';
+import { useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-import { useWallet } from '@vechain/react-wallet-kit';
+import { ConnectWalletButton, useWallet } from '@vechain/react-wallet-kit';
 import { AccountDetailModal } from './AccountDetailModal';
 import { AddressButton } from './AddressButton';
-import { ConnectWalletModal } from './ConnectWalletModal';
 
-interface ConnectWalletButtonProps {
+interface SwitchWalletButtonProps {
     buttonProps?: HTMLChakraProps<'button'>;
 }
 
-export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
+export const SwitchWalletButton: React.FC<SwitchWalletButtonProps> = ({
     buttonProps,
 }): React.ReactElement => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,16 +36,5 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
             </>
         );
 
-    return (
-        <>
-            <ConnectWalletModal isOpen={isOpen} onClose={onClose} />
-            <Button
-                {...buttonProps}
-                leftIcon={<Icon as={WalletIcon} />}
-                onClick={onOpen}
-            >
-                Connect Wallet
-            </Button>
-        </>
-    );
+    return <ConnectWalletButton buttonProps={buttonProps} />;
 };

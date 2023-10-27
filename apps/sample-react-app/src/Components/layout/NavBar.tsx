@@ -20,7 +20,7 @@ import { Bars3Icon } from '@heroicons/react/24/solid';
 import { useWallet } from '@vechain/react-wallet-kit';
 import { VechainLogo } from '../../Logos';
 import { AccountDetailBody } from '../AccountDetailBody';
-import { ConnectWalletButton } from '../ConnectWalletButton';
+import { SwitchWalletButton } from '../SwitchWalletButton';
 
 export const NavBar = (): JSX.Element => {
     const bg = useColorModeValue('gray.50', 'gray.900');
@@ -101,7 +101,7 @@ const MobileNavBarDrawer = ({
                                     source={accountState.source}
                                 />
                             ) : (
-                                <ConnectWalletButton />
+                                <SwitchWalletButton />
                             )}
                         </VStack>
                     </VStack>
@@ -114,7 +114,7 @@ const MobileNavBarDrawer = ({
 const NavBarWalletConnect = (): JSX.Element => {
     return (
         <HStack spacing={4}>
-            <ConnectWalletButton />
+            <SwitchWalletButton />
         </HStack>
     );
 };
