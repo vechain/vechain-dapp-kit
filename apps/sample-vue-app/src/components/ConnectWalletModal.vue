@@ -15,13 +15,15 @@
                 <section id="modalDescription" class="modal-body">
                     <ul>
                         <li>
-                            <button @click="connect('walletConnect')">
+                            <button @click="connect('wallet-connect')">
                                 Wallet Connect
                             </button>
                         </li>
 
                         <li>
-                            <button @click="connect('veWorld')">VeWorld</button>
+                            <button @click="connect('veworld-extension')">
+                                VeWorld
+                            </button>
                         </li>
                     </ul>
                 </section>
@@ -30,20 +32,21 @@
     </transition>
 </template>
 
-<script>
-export default {
-    name: 'ConnectWalletModal',
-    methods: {
-        close() {
-            this.$emit('close');
-        },
+<script lang="ts">
+import { Vue } from 'vue-class-component';
+import { WalletSource } from '@vechain/wallet-kit';
 
-        connect(id) {
-            console.log(`Connect function called with ID: ${id}`);
-        },
-    },
-};
+export default class ConnectWalletModal extends Vue {
+    close() {
+        this.$emit('close');
+    }
+
+    connect(source: WalletSource) {
+        console.log(`Connect function called with ID: ${source}`);
+    }
+}
 </script>
+
 <style>
 .modal-backdrop {
     position: fixed;

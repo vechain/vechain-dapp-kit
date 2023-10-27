@@ -5,8 +5,8 @@ import React, {
     useMemo,
     useReducer,
 } from 'react';
-import type { ConnexInstance } from '@vechain/wallet-kit';
-import { createConnexInstance, WalletSource } from '@vechain/wallet-kit';
+import type { ConnexInstance, WalletSource } from '@vechain/wallet-kit';
+import { createConnexInstance, WalletMapping } from '@vechain/wallet-kit';
 import { accountReducer, defaultAccountState } from './AccountReducer';
 import type {
     ConnexContext,
@@ -62,18 +62,18 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     }, [connexInstance]);
 
     const availableWallets = useMemo(() => {
-        const wallets: WalletSource[] = [WalletSource.Sync2];
+        const wallets: WalletSource[] = ['sync2'];
 
         if (window.vechain) {
-            wallets.push(WalletSource.VeWorldExtension);
+            wallets.push('veworld-extension');
         }
 
         if (window.connex) {
-            wallets.push(WalletSource.Sync);
+            wallets.push('sync');
         }
 
         if (walletConnectOptions) {
-            wallets.push(WalletSource.WalletConnect);
+            wallets.push('wallet-connect');
         }
 
         return wallets;
@@ -111,7 +111,7 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
                 setSource,
                 setAccount,
                 availableWallets,
-                wallets: Object.values(WalletSource),
+                wallets: Object.keys(WalletMapping) as WalletSource[],
                 accountState,
                 disconnect,
             },

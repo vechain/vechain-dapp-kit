@@ -4,7 +4,7 @@ import type { DriverNoVendor } from '@vechain/connex-driver';
 import { newVendor } from '@vechain/connex-framework';
 import type { ConnexInstance, ConnexOptions } from './types';
 import { normalizeGenesisBlock } from './genesis';
-import { WalletSource } from './wallet';
+import type { WalletSource } from './wallet';
 import { FullDriver } from './full-driver';
 import { SignerManager } from './signer-manager';
 
@@ -31,15 +31,15 @@ const createConnexInstance = (options: ConnexOptions): ConnexInstance => {
     };
 
     const setSource = (src: WalletSource): void => {
-        if (src === WalletSource.WalletConnect && !walletConnectOptions) {
+        if (src === 'wallet-connect' && !walletConnectOptions) {
             throw new Error('WalletConnect options are not provided');
         }
 
-        if (src === WalletSource.VeWorldExtension && !window.vechain) {
+        if (src === 'veworld-extension' && !window.vechain) {
             throw new Error('VeWorld Extension is not installed');
         }
 
-        if (src === WalletSource.Sync && !window.connex) {
+        if (src === 'sync' && !window.connex) {
             throw new Error('User is not in a Sync wallet');
         }
 

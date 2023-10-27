@@ -2,12 +2,7 @@
  * Wallet types
  */
 
-enum WalletSource {
-    WalletConnect = 'wallet-connect',
-    VeWorldExtension = 'veworld-extension',
-    Sync2 = 'sync2',
-    Sync = 'sync',
-}
+type WalletSource = 'wallet-connect' | 'veworld-extension' | 'sync2' | 'sync';
 
 interface WalletConfig {
     requiresCertificate: boolean;
@@ -18,14 +13,14 @@ const DEFAULT_CONFIG: WalletConfig = {
 };
 
 const WalletMapping: Record<WalletSource, WalletConfig> = {
-    [WalletSource.WalletConnect]: {
+    'wallet-connect': {
         requiresCertificate: false,
     },
-    [WalletSource.VeWorldExtension]: DEFAULT_CONFIG,
-    [WalletSource.Sync2]: DEFAULT_CONFIG,
-    [WalletSource.Sync]: DEFAULT_CONFIG,
+    'veworld-extension': DEFAULT_CONFIG,
+    sync2: DEFAULT_CONFIG,
+    sync: DEFAULT_CONFIG,
 };
 
-export { WalletSource, WalletMapping };
+export { WalletMapping };
 
-export type { WalletConfig };
+export type { WalletConfig, WalletSource };

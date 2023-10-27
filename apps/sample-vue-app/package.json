@@ -18,11 +18,12 @@
             "node": true
         },
         "parserOptions": {
-            "parser": "@babel/eslint-parser"
+            "parser": "@typescript-eslint/parser"
         },
         "extends": [
             "plugin:vue/vue3-essential",
-            "eslint:recommended"
+            "eslint:recommended",
+            "@vue/typescript"
         ],
         "rules": {},
         "root": true
@@ -30,15 +31,22 @@
     "dependencies": {
         "@vechain/wallet-kit": "*",
         "core-js": "^3.8.3",
-        "vue": "^3.2.13"
+        "vue": "^3.2.13",
+        "vue-class-component": "^8.0.0-0"
     },
     "devDependencies": {
         "@babel/core": "^7.12.16",
         "@babel/eslint-parser": "^7.12.16",
-        "@vue/cli-plugin-babel": "~5.0.0",
-        "@vue/cli-plugin-eslint": "~5.0.0",
-        "@vue/cli-service": "~5.0.0",
+        "@typescript-eslint/eslint-plugin": "^5.4.0",
+        "@typescript-eslint/parser": "^5.4.0",
+        "@vechain/repo-config": "https://github.com/vechainfoundation/repo-config#v0.0.2",
+        "@vue/cli-plugin-babel": "~5.0.8",
+        "@vue/cli-plugin-eslint": "~5.0.8",
+        "@vue/cli-plugin-typescript": "~5.0.0",
+        "@vue/cli-service": "~5.0.8",
+        "@vue/eslint-config-typescript": "^9.1.0",
         "eslint": "^7.32.0",
-        "eslint-plugin-vue": "^8.0.3"
+        "eslint-plugin-vue": "^8.0.3",
+        "typescript": "~4.5.5"
     }
 }
