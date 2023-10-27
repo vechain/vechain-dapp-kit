@@ -13,8 +13,11 @@
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx"
     },
     "dependencies": {
+        "@chakra-ui/react": "^2.8.1",
+        "@heroicons/react": "^2.0.18",
         "@vechain/connex": "2.1.0",
         "@vechain/connex-framework": "2.1.0",
+        "@vechain/picasso": "^2.1.1",
         "@vechain/wallet-connect": "*",
         "@vechain/wallet-kit": "*",
         "thor-devkit": "^2.0.9"

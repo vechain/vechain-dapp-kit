@@ -3,3 +3,4 @@ import * as React from 'react';
 
 export * from './ConnexProvider';
 export * from './types';
+export * from './ConnectWalletButton';
