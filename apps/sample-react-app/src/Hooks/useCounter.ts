@@ -31,6 +31,7 @@ interface UseCounter {
     increment: () => Promise<void>;
     status: IncrementStatus;
     address: string;
+    error: string | null;
 }
 
 export const useCounter = (): UseCounter => {
@@ -38,6 +39,7 @@ export const useCounter = (): UseCounter => {
 
     const [count, setCount] = useState<number>(0);
     const [status, setStatus] = useState<IncrementStatus>('idle');
+    const [error, setError] = useState<string | null>(null);
 
     const contract = useMemo(
         () => thor.account('0x8384738c995d49c5b692560ae688fc8b51af1059'),
@@ -55,22 +57,34 @@ export const useCounter = (): UseCounter => {
     }, [setValue]);
 
     const increment = useCallback(async (): Promise<void> => {
-        setStatus('in-wallet');
+        setError(null);
 
-        await contract
-            .method(_increment)
-            .transact()
-            .delegate('https://sponsor-testnet.vechain.energy/by/90')
-            .request();
+        try {
+            setStatus('in-wallet');
 
-        setStatus('pending');
+            await contract
+                .method(_increment)
+                .transact()
+                .delegate('https://sponsor-testnet.vechain.energy/by/90')
+                .request();
 
-        await thor.ticker().next();
+            setStatus('pending');
 
-        await setValue()
-            .then(() => setStatus('idle'))
-            .catch(() => setStatus('error'));
+            await thor.ticker().next();
+
+            await setValue()
+                .then(() => setStatus('idle'))
+                .catch(() => setStatus('error'));
+        } catch (e) {
+            setStatus('error');
+            if (e instanceof Error) {
+                setError(e.message);
+            } else {
+                setError('Unknown error');
+            }
+            throw e;
+        }
     }, [thor, contract, setValue]);
 
-    return { count, increment, status, address: contract.address };
+    return { count, increment, status, address: contract.address, error };
 };

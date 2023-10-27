@@ -28,6 +28,8 @@ class SignerManager implements ConnexSigner {
         if (signer) {
             await signer.disconnect?.();
         }
+
+        this.currentSource = undefined;
     }
 
     async signTx(

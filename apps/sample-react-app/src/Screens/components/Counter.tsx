@@ -19,7 +19,7 @@ import { AddressButton } from '../../Components';
 
 export const Counter = (): JSX.Element => {
     const { accountState } = useWallet();
-    const { count, increment, status, address } = useCounter();
+    const { count, increment, status, address, error } = useCounter();
     const toast = useToast();
 
     const incrementCounter = useCallback(() => {
@@ -65,7 +65,7 @@ export const Counter = (): JSX.Element => {
                 return (
                     <Alert status="error">
                         <AlertIcon />
-                        There was an unexpected error
+                        {error ? error : 'Unknown error'}
                     </Alert>
                 );
             case 'pending':
@@ -78,7 +78,7 @@ export const Counter = (): JSX.Element => {
             case 'idle':
                 return null;
         }
-    }, [status]);
+    }, [error, status]);
 
     return (
         <StyledCard h={['auto', 'auto', 'full']} p={4}>
