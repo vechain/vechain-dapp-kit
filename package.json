@@ -9,7 +9,7 @@
         "build:deps": "turbo build --no-daemon --filter='@vechain/*'",
         "clean": "npx turbo@latest run clean && rm -rf node_modules .turbo",
         "dev": "turbo run dev --no-daemon",
-        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "format": "prettier --write \"**/*.{ts,tsx,md,json,js,jsx}\"",
         "install:all": "yarn && yarn run build:deps",
         "lint": "turbo run lint",
         "prepare": "husky install",
@@ -40,8 +40,8 @@
         "husky": "^8.0.0",
         "lint-staged": "^15.0.2",
         "prettier": "^2.5.1",
-        "tsconfig": "*",
-        "turbo": "latest"
+        "turbo": "latest",
+        "typescript": "4.9.5"
     },
     "packageManager": "yarn@1.22.19"
 }

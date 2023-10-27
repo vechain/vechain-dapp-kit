@@ -1,21 +1,21 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
-    "build": {
-      "outputs": ["build/**", "dist/**"],
-      "dependsOn": ["^build"]
-    },
-    "test": {
-      "outputs": ["coverage/**"],
-      "dependsOn": ["build"]
-    },
-    "lint": {},
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "clean": {
-      "cache": false
+    "$schema": "https://turbo.build/schema.json",
+    "pipeline": {
+        "build": {
+            "outputs": ["build/**", "dist/**"],
+            "dependsOn": ["^build"]
+        },
+        "test": {
+            "outputs": ["coverage/**"],
+            "dependsOn": ["build"]
+        },
+        "lint": {},
+        "dev": {
+            "cache": false,
+            "persistent": true
+        },
+        "clean": {
+            "cache": false
+        }
     }
-  }
 }
