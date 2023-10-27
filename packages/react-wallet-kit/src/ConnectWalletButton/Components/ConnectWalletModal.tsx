@@ -8,7 +8,6 @@ import {
     Icon,
     Spinner,
     Text,
-    useToast,
     VStack,
 } from '@chakra-ui/react';
 import { LinkIcon, WalletIcon } from '@heroicons/react/24/solid';
@@ -51,7 +50,6 @@ interface ConnectedWalletBodyProps {
 const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
     onClose,
 }) => {
-    const toast = useToast();
     const { setAccount } = useWallet();
     const { vendor } = useConnex();
 
@@ -90,16 +88,8 @@ const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
         (cert: Certificate): void => {
             setAccount(cert.signer);
             onClose();
-            toast({
-                title: 'Wallet connected.',
-                description: `You've succesfully connected with wallet ${cert.signer}`,
-                status: 'success',
-                position: 'bottom-left',
-                duration: 5000,
-                isClosable: true,
-            });
         },
-        [toast, setAccount, onClose],
+        [setAccount, onClose],
     );
 
     const connectHandler = useCallback(async () => {
