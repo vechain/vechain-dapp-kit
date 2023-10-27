@@ -5,7 +5,7 @@ interface SourceInfo {
     logo: string;
 }
 
-const baseLogoUrl = `${process.env.PUBLIC_URL}/images/logo`;
+const baseLogoUrl = `${process.env.PUBLIC_URL || ''}/images/logo`;
 
 export const WalletSources: Record<WalletSource, SourceInfo> = {
     [WalletSource.WalletConnect]: {

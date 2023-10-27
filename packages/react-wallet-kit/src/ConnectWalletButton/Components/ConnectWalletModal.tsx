@@ -14,9 +14,9 @@ import {
 import { LinkIcon, WalletIcon } from '@heroicons/react/24/solid';
 import React, { useCallback, useState } from 'react';
 import { Certificate } from 'thor-devkit';
+import { useConnex, useWallet } from '../../ConnexProvider';
 import { Dialog } from './Dialog';
 import { WalletSourceRadio } from './WalletSourceRadio';
-import { useConnex, useWallet } from '../../ConnexProvider';
 
 interface ConnectedWalletDialogProps {
     isOpen: boolean;
