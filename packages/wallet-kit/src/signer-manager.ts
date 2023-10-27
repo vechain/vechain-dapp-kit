@@ -1,14 +1,9 @@
 import type { ConnexOptions, ConnexSigner } from './types';
-import { WalletSource } from './wallet';
+import type { WalletSource } from './wallet';
 import { createSigner } from './signer';
 
 class SignerManager implements ConnexSigner {
-    private signers: Record<WalletSource, ConnexSigner | undefined> = {
-        [WalletSource.WalletConnect]: undefined,
-        [WalletSource.VeWorldExtension]: undefined,
-        [WalletSource.Sync]: undefined,
-        [WalletSource.Sync2]: undefined,
-    };
+    private signers: Record<string, ConnexSigner | undefined> = {};
 
     private currentSource: WalletSource | undefined;
 

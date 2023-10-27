@@ -20,9 +20,8 @@
         "@vechain/connex-types": "2.1.0",
         "@vechain/repo-config": "https://github.com/vechainfoundation/repo-config#v0.0.1",
         "@walletconnect/types": "2.10.2",
-        "eslint": "^8.4.1",
-        "tsconfig": "*",
-        "tsup": "^5.10.1",
-        "typescript": "4.9.5"
+        "eslint": "*",
+        "tsup": "*",
+        "typescript": "*"
     }
 }
