@@ -1,0 +1,17 @@
+{
+    "name": "sample-vanilla-app",
+    "version": "1.0.0",
+    "description": "",
+    "license": "ISC",
+    "author": "",
+    "type": "module",
+    "scripts": {
+        "dev": "wds --watch",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "@vechain/vanilla-wallet-kit": "*",
+        "@web/dev-server": "^0.1.31",
+        "@web/dev-server-legacy": "^1.0.0"
+    }
+}
