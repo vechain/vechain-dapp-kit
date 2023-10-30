@@ -1,4 +1,5 @@
 {
+  "extends": "@vechain/repo-config/src/tsconfig/base.json",
   "compilerOptions": {
     "target": "es2021",
     "module": "es2020",

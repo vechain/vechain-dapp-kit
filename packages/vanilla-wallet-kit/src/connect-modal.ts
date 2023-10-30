@@ -1,42 +1,39 @@
-/**
- * @license
- * Copyright 2019 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
-
-import {LitElement, html, css} from 'lit';
+import {LitElement, html, css, nothing} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
+import {CloseSvg} from './assets';
 
-/**
- * An example element.
- *
- * @fires count-changed - Indicates when the count changes
- * @slot - This element has a slot
- * @csspart button - The button
- */
 @customElement('connect-modal')
-export class ConnectModal extends LitElement {
+class ConnectModal extends LitElement {
+  @property({type: Boolean})
+  open = false;
+
   static override styles = css`
-    button {
-      display: block;
-      border: none;
-      border-radius: 20px;
-      background-color: color(
-        display-p3 0.9647058823529412 0.9686274509803922 0.9764705882352941
-      );
-      padding: 8px 12px;
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .close-icon {
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
     }
   `;
 
-  @property()
-  text = 'Connect Wallet';
+  @property({type: Function})
+  onClose = () => {};
 
   override render() {
-    return html` <button @click=${this._onClick}>${this.text}</button> `;
-  }
-
-  private _onClick() {
-    this.dispatchEvent(new CustomEvent('count-changed'));
+    return html`
+      <base-modal open=${this.open || nothing} .onClose=${this.onClose}>
+        <div class="modal-header">
+          <div></div>
+          <h3>Connect Wallet</h3>
+          <div class="close-icon" @click=${this.onClose}>${CloseSvg}</div>
+          <w3m-button />
+        </div>
+      </base-modal>
+    `;
   }
 }
 

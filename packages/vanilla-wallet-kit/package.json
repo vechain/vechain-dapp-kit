@@ -18,13 +18,13 @@
     "analyze": "cem analyze --litelement --globs \"src/**/*.ts\"",
     "analyze:watch": "cem analyze --litelement --globs \"src/**/*.ts\" --watch",
     "build": "tsc",
-    "build:watch": "tsc --watch",
     "checksize": "rollup -c ; cat my-element.bundled.js | gzip -9 | wc -c ; rm my-element.bundled.js",
-    "clean": "rimraf my-element.{d.ts,d.ts.map,js,js.map} test/my-element.{d.ts,d.ts.map,js,js.map} test/my-element_test.{d.ts,d.ts.map,js,js.map}",
+    "clean": "yarn rimraf my-element.{d.ts,d.ts.map,js,js.map} test/my-element.{d.ts,d.ts.map,js,js.map} test/my-element_test.{d.ts,d.ts.map,js,js.map}",
+    "dev": "wds --watch",
     "docs": "npm run docs:clean && npm run build && npm run analyze && npm run docs:build && npm run docs:assets && npm run docs:gen",
     "docs:assets": "cp node_modules/prismjs/themes/prism-okaidia.css docs/",
     "docs:build": "rollup -c --file docs/my-element.bundled.js",
-    "docs:clean": "rimraf docs",
+    "docs:clean": "yarn rimraf docs",
     "docs:gen": "eleventy --config=.eleventy.cjs",
     "docs:gen:watch": "eleventy --config=.eleventy.cjs --watch",
     "docs:serve": "wds --root-dir=docs --node-resolve --watch",
@@ -32,16 +32,19 @@
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",
     "lint:lit-analyzer": "lit-analyzer",
-    "serve": "wds --watch",
-    "serve:prod": "MODE=prod npm run serve",
+    "serve": "MODE=prod npm run serve",
     "test": "npm run test:dev && npm run test:prod",
     "test:dev": "wtr",
     "test:prod": "MODE=prod wtr",
     "test:prod:watch": "MODE=prod wtr --watch",
-    "test:watch": "wtr --watch"
+    "test:watch": "wtr --watch",
+    "watch": "tsc --watch"
   },
   "dependencies": {
-    "lit": "^3.0.0"
+    "@wagmi/core": "^1.4.5",
+    "@web3modal/wagmi": "^3.2.0",
+    "lit": "^3.0.0",
+    "viem": "^1.18.1"
   },
   "devDependencies": {
     "@11ty/eleventy": "^1.0.1",
@@ -52,6 +55,7 @@
     "@rollup/plugin-replace": "^5.0.2",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
     "@typescript-eslint/parser": "^5.25.0",
+    "@vechain/repo-config": "https://github.com/vechainfoundation/repo-config#v0.0.1",
     "@web/dev-server": "^0.1.31",
     "@web/dev-server-legacy": "^1.0.0",
     "@web/test-runner": "^0.15.0",
