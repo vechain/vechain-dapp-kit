@@ -23,7 +23,7 @@ interface ConnexOptions {
 
 interface ConnexInstance {
     thor: Connex.Thor;
-    vendor?: Connex.Vendor;
+    vendor: Connex.Vendor;
     setSource: (source: WalletSource) => void;
     disconnect: () => Promise<void>;
     source: WalletSource | undefined;

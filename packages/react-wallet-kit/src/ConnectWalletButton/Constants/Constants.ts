@@ -1,4 +1,4 @@
-import { WalletSource } from '@vechain/wallet-kit';
+import type { WalletSource } from '@vechain/wallet-kit';
 
 interface SourceInfo {
     name: string;
@@ -8,19 +8,19 @@ interface SourceInfo {
 const baseLogoUrl = `${process.env.PUBLIC_URL || ''}/images/logo`;
 
 export const WalletSources: Record<WalletSource, SourceInfo> = {
-    [WalletSource.WalletConnect]: {
+    'wallet-connect': {
         name: 'Wallet Connect',
         logo: `${baseLogoUrl}/wallet-connect-logo.png`,
     },
-    [WalletSource.VeWorldExtension]: {
+    'veworld-extension': {
         name: 'VeWorld Extension',
         logo: `${baseLogoUrl}/veworld_black.png`,
     },
-    [WalletSource.Sync]: {
+    sync: {
         name: 'Sync',
         logo: `${baseLogoUrl}/sync.png`,
     },
-    [WalletSource.Sync2]: {
+    sync2: {
         name: 'Sync 2',
         logo: `${baseLogoUrl}/sync2.png`,
     },

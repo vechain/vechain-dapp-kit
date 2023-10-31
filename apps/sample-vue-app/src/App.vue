@@ -1,36 +1,45 @@
 <template>
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <div id="app">
-        <button class="btn" type="button" @click="showModal">
-            Open Modal!
-        </button>
+    <ConnexProvider>
+        <img alt="Vue logo" src="./assets/logo.png" />
+        <div id="app">
+            <button class="btn" type="button" @click="showModal">
+                Open Modal!
+            </button>
 
-        <ConnectWalletModal v-show="isModalVisible" @close="closeModal" />
-    </div>
+            <ConnectWalletModal v-show="isModalVisible" @close="closeModal" />
+        </div>
+    </ConnexProvider>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
 import ConnectWalletModal from './components/ConnectWalletModal.vue';
-import { WalletSource } from '@vechain/wallet-kit';
+import { defineComponent, ref } from 'vue';
+import ConnexProvider from '@/providers/ConnexProvider.vue';
 
-@Options({
+export default defineComponent({
     components: {
+        ConnexProvider,
         ConnectWalletModal,
     },
-})
-export default class App extends Vue {
-    isModalVisible = false;
 
-    showModal(source: WalletSource) {
-        console.log(`Connect function called with ID: ${source}`);
-        this.isModalVisible = true;
-    }
+    setup() {
+        const isModalVisible = ref(false);
 
-    closeModal() {
-        this.isModalVisible = false;
-    }
-}
+        const showModal = () => {
+            isModalVisible.value = true;
+        };
+
+        const closeModal = () => {
+            isModalVisible.value = false;
+        };
+
+        return {
+            isModalVisible,
+            showModal,
+            closeModal,
+        };
+    },
+});
 </script>
 
 <style>

@@ -13,11 +13,12 @@
                 </header>
 
                 <section id="modalDescription" class="modal-body">
+                    <slot name="current">{{ account }}</slot>
+                    <slot name="current">{{ source }}</slot>
+
                     <ul>
                         <li>
-                            <button @click="connect('wallet-connect')">
-                                Wallet Connect
-                            </button>
+                            <button @click="connect('sync2')">Sync2</button>
                         </li>
 
                         <li>
@@ -33,18 +34,56 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
-import { WalletSource } from '@vechain/wallet-kit';
+import type { WalletSource } from '@vechain/wallet-kit';
+import { defineComponent } from 'vue';
+import { injectConnex, injectWallet } from '@/providers/injections';
 
-export default class ConnectWalletModal extends Vue {
-    close() {
-        this.$emit('close');
-    }
+export default defineComponent({
+    setup() {
+        const { vendor } = injectConnex();
+        const { source, account, updateSource, updateAccount } = injectWallet();
 
-    connect(source: WalletSource) {
-        console.log(`Connect function called with ID: ${source}`);
-    }
-}
+        return {
+            vendor,
+            account,
+            source,
+            updateSource,
+            updateAccount,
+        };
+    },
+
+    watch: {
+        wallet(val) {
+            if (val) {
+                this.close();
+            }
+        },
+    },
+
+    emits: ['close'],
+
+    methods: {
+        close() {
+            this.$emit('close');
+        },
+
+        async connect(source: WalletSource) {
+            this.updateSource(source);
+
+            const res = await this.vendor
+                .sign('cert', {
+                    purpose: 'identification',
+                    payload: {
+                        content: 'Hello World!',
+                        type: 'text',
+                    },
+                })
+                .request();
+
+            this.updateAccount(res.annex.signer);
+        },
+    },
+});
 </script>
 
 <style>
@@ -68,8 +107,7 @@ export default class ConnectWalletModal extends Vue {
     overflow: hidden;
 }
 
-.modal-header,
-.modal-footer {
+.modal-header {
     padding: 15px;
     display: flex;
     justify-content: space-between;
@@ -78,11 +116,6 @@ export default class ConnectWalletModal extends Vue {
     color: white;
     border-bottom: 1px solid #4aae9b;
     border-radius: 10px 10px 0 0;
-}
-
-.modal-footer {
-    border-top: 1px solid #4aae9b;
-    border-radius: 0 0 10px 10px;
 }
 
 .modal-body {
@@ -101,24 +134,5 @@ export default class ConnectWalletModal extends Vue {
 
 .btn-close:hover {
     color: #4aae9b;
-}
-
-.btn-green {
-    color: white;
-    background: #4aae9b;
-    border: none;
-    border-radius: 2px;
-    padding: 10px 20px;
-    cursor: pointer;
-}
-
-.modal-fade-enter,
-.modal-fade-leave-to {
-    opacity: 0;
-}
-
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-    transition: opacity 0.5s ease;
 }
 </style>

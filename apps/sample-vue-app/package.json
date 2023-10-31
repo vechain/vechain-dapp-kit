@@ -31,6 +31,7 @@
     "dependencies": {
         "@vechain/wallet-kit": "*",
         "core-js": "^3.8.3",
+        "node-polyfill-webpack-plugin": "^2.0.1",
         "vue": "^3.2.13",
         "vue-class-component": "^8.0.0-0"
     },

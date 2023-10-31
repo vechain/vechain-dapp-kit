@@ -8,12 +8,7 @@ import React, {
 import type { ConnexInstance, WalletSource } from '@vechain/wallet-kit';
 import { createConnexInstance, WalletMapping } from '@vechain/wallet-kit';
 import { accountReducer, defaultAccountState } from './AccountReducer';
-import type {
-    ConnexContext,
-    ConnexProviderOptions,
-    SetAccount,
-    SetSource,
-} from './types';
+import type { ConnexContext, ConnexProviderOptions } from './types';
 
 /**
  * Context
@@ -79,7 +74,7 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
         return wallets;
     }, [walletConnectOptions]);
 
-    const setSource: SetSource = useCallback(
+    const setSource = useCallback(
         (wallet: WalletSource): void => {
             connexInstance.setSource(wallet);
 
@@ -91,7 +86,7 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
         [connexInstance, persistState],
     );
 
-    const setAccount: SetAccount = useCallback(
+    const setAccount = useCallback(
         (address: string) => {
             dispatch({
                 type: 'set-address',

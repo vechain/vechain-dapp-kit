@@ -21,6 +21,11 @@ const WalletMapping: Record<WalletSource, WalletConfig> = {
     sync: DEFAULT_CONFIG,
 };
 
-export { WalletMapping };
+const WalletSources = Object.keys(WalletMapping) as WalletSource[];
+
+Object.freeze(WalletMapping);
+Object.freeze(WalletSources);
+
+export { WalletMapping, WalletSources };
 
 export type { WalletConfig, WalletSource };
