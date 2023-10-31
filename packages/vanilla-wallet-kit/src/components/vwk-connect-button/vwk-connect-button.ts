@@ -1,26 +1,27 @@
 import {LitElement, html, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {Theme, ThemeMode, Colors} from './wallet-kit';
+import {Theme, ThemeMode, Colors} from '../../wallet-kit';
 
-@customElement('connect-button')
-export class ConnectButton extends LitElement {
+@customElement('vwk-connect-button')
+class ConnectButton extends LitElement {
   static override styles = css`
     button {
       cursor: pointer;
       display: block;
       border: none;
-      border-radius: 20px;
+      border-radius: 12px;
       padding: 8px 12px;
+      font-family: 'Inter', sans-serif;
     }
     button:hover {
       opacity: 0.9;
     }
 
-    button.light {
+    button.LIGHT {
       background-color: ${Colors.LightGray};
       color: ${Colors.Dark};
     }
-    button.dark {
+    button.DARK {
       background-color: ${Colors.Dark};
       color: ${Colors.LightGray};
     }
@@ -49,6 +50,6 @@ export class ConnectButton extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'connect-button': ConnectButton;
+    'vwk-connect-button': ConnectButton;
   }
 }

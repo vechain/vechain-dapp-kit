@@ -1,8 +1,8 @@
-import {LitElement, html, nothing} from 'lit';
+import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {Theme, ThemeMode} from './wallet-kit';
+import {SourceInfo, Theme, ThemeMode} from '../../wallet-kit';
 
-@customElement('connect-button-with-modal')
+@customElement('vwk-connect-button-with-modal')
 class ConnectButtonWithModal extends LitElement {
   @property({type: String})
   override title = 'Connect Wallet';
@@ -16,6 +16,9 @@ class ConnectButtonWithModal extends LitElement {
   @property({type: Boolean})
   open = false;
 
+  @property({type: Function})
+  onSourceClick?: (source?: SourceInfo) => {} = undefined;
+
   private handleOpen = () => {
     this.open = true;
   };
@@ -27,16 +30,20 @@ class ConnectButtonWithModal extends LitElement {
   override render() {
     return html`
       <div>
-        <connect-button
+        <vwk-fonts></vwk-fonts>
+        <vwk-connect-button
           .title=${this.title}
           .mode=${this.mode}
           .theme=${this.theme}
           .onClick=${this.handleOpen}
-        ></connect-button>
-        <connect-modal
-          open=${this.open || nothing}
+        ></vwk-connect-button>
+        <vwk-connect-modal
+          .mode=${this.mode}
+          .theme=${this.theme}
+          .open=${this.open}
           .onClose=${this.handleClose}
-        ></connect-modal>
+          .onSourceClick=${this.onSourceClick}
+        ></vwk-connect-modal>
       </div>
     `;
   }
@@ -44,6 +51,6 @@ class ConnectButtonWithModal extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'connect-button-with-modal': ConnectButtonWithModal;
+    'vwk-connect-button-with-modal': ConnectButtonWithModal;
   }
 }
