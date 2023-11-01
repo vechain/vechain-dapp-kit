@@ -16,15 +16,26 @@
                     <slot name="current">{{ account }}</slot>
                     <slot name="current">{{ source }}</slot>
 
-                    <ul>
+                    <ul class="radio-list">
                         <li>
-                            <button @click="connect('sync2')">Sync2</button>
+                            <input
+                                id="sync2"
+                                v-model="source"
+                                name="walletSource"
+                                type="radio"
+                                value="sync2"
+                                @change="connect('sync2')"
+                            />
+                            <label for="sync2">Sync2</label>
                         </li>
 
                         <li>
-                            <button @click="connect('veworld-extension')">
-                                VeWorld
-                            </button>
+                            <input
+                                id="veworld-extension"
+                                type="radio"
+                                @change="connect('veworld-extension')"
+                            />
+                            <label for="veworld-extension">VeWorld</label>
                         </li>
                     </ul>
                 </section>
@@ -36,12 +47,17 @@
 <script lang="ts">
 import type { WalletSource } from '@vechain/wallet-kit';
 import { defineComponent } from 'vue';
-import { injectConnex, injectWallet } from '@/providers/injections';
+import {
+    injectConnex,
+    injectWalletActions,
+    injectWalletState,
+} from '@/connex/injections';
 
 export default defineComponent({
     setup() {
         const { vendor } = injectConnex();
-        const { source, account, updateSource, updateAccount } = injectWallet();
+        const { source, account } = injectWalletState();
+        const { updateSource, updateAccount } = injectWalletActions();
 
         return {
             vendor,
@@ -53,10 +69,11 @@ export default defineComponent({
     },
 
     watch: {
-        wallet(val) {
-            if (val) {
-                this.close();
-            }
+        source: {
+            immediate: true,
+            handler(source: WalletSource) {
+                console.log('source', source);
+            },
         },
     },
 
@@ -134,5 +151,26 @@ export default defineComponent({
 
 .btn-close:hover {
     color: #4aae9b;
+}
+
+.radio-list {
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+}
+
+.radio-list li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.radio-list input[type='radio'] {
+    margin-right: 10px;
+}
+
+.radio-list label {
+    font-size: 18px;
+    color: #333;
+    cursor: pointer;
 }
 </style>

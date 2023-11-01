@@ -14,7 +14,7 @@
 <script lang="ts">
 import ConnectWalletModal from './components/ConnectWalletModal.vue';
 import { defineComponent, ref } from 'vue';
-import ConnexProvider from '@/providers/ConnexProvider.vue';
+import ConnexProvider from '@/connex/ConnexProvider.vue';
 
 export default defineComponent({
     components: {

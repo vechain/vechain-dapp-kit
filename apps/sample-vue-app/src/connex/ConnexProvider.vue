@@ -6,8 +6,12 @@ import {
     WalletSources,
 } from '@vechain/wallet-kit';
 import type Connex from '@vechain/connex';
-import { ConnexSymbol, WalletSymbol } from '@/providers/keys';
-import { Wallet, WalletContext, WalletUpdate } from '@/providers/types';
+import {
+    ConnexSymbol,
+    WalletActionsSymbol,
+    WalletStateSymbol,
+} from '@/connex/keys';
+import { WalletActions, WalletState } from '@/connex/types';
 
 const initWallets = (hasWcOptions: boolean) => {
     const wallets: WalletSource[] = ['sync2'];
@@ -29,7 +33,7 @@ const initWallets = (hasWcOptions: boolean) => {
 
 export default defineComponent({
     setup() {
-        const wallet = reactive<WalletContext>({
+        const walletState: WalletState = reactive<WalletState>({
             wallets: WalletSources,
             availableWallets: initWallets(true),
             source: null,
@@ -37,8 +41,8 @@ export default defineComponent({
         });
 
         const onDisconnected = () => {
-            wallet.account = null;
-            wallet.source = null;
+            walletState.account = null;
+            walletState.source = null;
         };
 
         const connexInstance = createConnexInstance({
@@ -47,12 +51,12 @@ export default defineComponent({
         });
 
         const updateAccount = (addr: string) => {
-            wallet.account = addr;
+            walletState.account = addr;
         };
 
         const updateSource = (source: WalletSource) => {
             connexInstance.setSource(source);
-            wallet.source = source;
+            walletState.source = source;
         };
 
         const connex: Connex = {
@@ -60,21 +64,17 @@ export default defineComponent({
             vendor: connexInstance.vendor,
         };
 
-        const walletUpdate: WalletUpdate = {
+        const walletActions: WalletActions = {
             updateAccount,
             updateSource,
         };
 
-        const _wallet: Wallet = {
-            ...walletUpdate,
-            ...wallet,
-        };
-
         provide(ConnexSymbol, readonly(connex));
-        provide(WalletSymbol, toRefs(readonly(_wallet)));
+        provide(WalletStateSymbol, toRefs(readonly(walletState)));
+        provide(WalletActionsSymbol, readonly(walletActions));
     },
     render() {
-        return this.$slots?.default?.();
+        return this.$slots.default?.();
     },
 });
 </script>

@@ -1,15 +1,13 @@
 import { WalletSource } from '@vechain/wallet-kit';
 
-type WalletContext = {
+type WalletState = {
     wallets: WalletSource[];
     availableWallets: WalletSource[];
     source: WalletSource | null;
     account: string | null;
 };
 
-type WalletUpdate = {
+type WalletActions = {
     updateAccount: (account: string) => void;
     updateSource: (source: WalletSource) => void;
 };
-
-type Wallet = WalletContext & WalletUpdate;
