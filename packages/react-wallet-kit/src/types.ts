@@ -9,18 +9,6 @@ export interface AccountState {
 }
 
 /**
- * Set the wallet account
- * @param account - account address
- */
-export type SetAccount = (account: string) => void;
-
-/**
- * Set the wallet source
- * @param wallet - wallet source
- */
-export type SetSource = (wallet: WalletSource) => void;
-
-/**
  * Connex Provider Options
  * @param children - React children
  * @param nodeOptions - Connex node options
@@ -46,8 +34,8 @@ export interface ConnexContext {
         vendor?: Connex.Vendor;
     };
     wallet: {
-        setSource: SetSource;
-        setAccount: SetAccount;
+        setSource: (source: WalletSource) => void;
+        setAccount: (account: string) => void;
         availableWallets: WalletSource[];
         wallets: WalletSource[];
         accountState: AccountState;
