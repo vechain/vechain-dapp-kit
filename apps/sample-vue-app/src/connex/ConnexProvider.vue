@@ -12,6 +12,7 @@ import {
     WalletStateSymbol,
 } from '@/connex/keys';
 import { WalletActions, WalletState } from '@/connex/types';
+import { WalletConnectOptions } from '@vechain/wallet-connect';
 
 const initWallets = (hasWcOptions: boolean) => {
     const wallets: WalletSource[] = ['sync2'];
@@ -31,6 +32,16 @@ const initWallets = (hasWcOptions: boolean) => {
     return wallets;
 };
 
+const walletConnectOptions: WalletConnectOptions = {
+    projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
+    metadata: {
+        name: 'Sample VeChain dApp',
+        description: 'A sample VeChain dApp',
+        url: window.location.origin,
+        icons: [`${window.location.origin}/images/logo/my-dapp.png`],
+    },
+};
+
 export default defineComponent({
     setup() {
         const walletState: WalletState = reactive<WalletState>({
@@ -48,6 +59,7 @@ export default defineComponent({
         const connex = new MultiWalletConnex({
             nodeUrl: 'https://mainnet.vechain.org/',
             onDisconnected,
+            walletConnectOptions,
         });
 
         const updateAccount = (addr: string) => {
@@ -64,9 +76,16 @@ export default defineComponent({
             vendor: connex.vendor,
         };
 
+        const disconnect = () => {
+            connex.wallet.disconnect();
+            walletState.source = null;
+            walletState.account = null;
+        };
         const walletActions: WalletActions = {
             updateAccount,
             updateSource,
+            disconnect,
+            connect: connex.wallet.connect,
         };
 
         provide(ConnexSymbol, readonly(_connex));

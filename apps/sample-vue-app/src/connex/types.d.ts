@@ -1,4 +1,5 @@
 import { WalletSource } from '@vechain/wallet-kit';
+import { ConnectResponse } from '@vechain/wallet-kit/src/types';
 
 type WalletState = {
     wallets: WalletSource[];
@@ -10,4 +11,6 @@ type WalletState = {
 type WalletActions = {
     updateAccount: (account: string) => void;
     updateSource: (source: WalletSource) => void;
+    connect: () => Promise<ConnectResponse>;
+    disconnect: () => void;
 };

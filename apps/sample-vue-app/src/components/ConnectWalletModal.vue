@@ -14,6 +14,7 @@
 
                 <section id="modalDescription" class="modal-body">
                     <slot name="current">{{ account }}</slot>
+                    <br />
                     <slot name="current">{{ source }}</slot>
 
                     <ul class="radio-list">
@@ -21,24 +22,41 @@
                             <input
                                 id="sync2"
                                 v-model="source"
-                                name="walletSource"
                                 type="radio"
                                 value="sync2"
-                                @change="connect('sync2')"
+                                @change="connectWallet('sync2')"
                             />
                             <label for="sync2">Sync2</label>
                         </li>
-
                         <li>
                             <input
                                 id="veworld-extension"
+                                v-model="source"
                                 type="radio"
-                                @change="connect('veworld-extension')"
+                                value="veworld-extension"
+                                @change="connectWallet('veworld-extension')"
                             />
                             <label for="veworld-extension">VeWorld</label>
                         </li>
+                        <li>
+                            <input
+                                id="wallet-connect"
+                                v-model="source"
+                                type="radio"
+                                value="wallet-connect"
+                                @change="connectWallet('wallet-connect')"
+                            />
+                            <label for="wallet-connect">Wallet Connect</label>
+                        </li>
                     </ul>
                 </section>
+
+                <!-- Footer Section -->
+                <footer class="modal-footer">
+                    <button class="disconnect-button" @click="disconnect">
+                        Disconnect
+                    </button>
+                </footer>
             </div>
         </div>
     </transition>
@@ -47,20 +65,17 @@
 <script lang="ts">
 import type { WalletSource } from '@vechain/wallet-kit';
 import { defineComponent } from 'vue';
-import {
-    injectConnex,
-    injectWalletActions,
-    injectWalletState,
-} from '@/connex/injections';
+import { injectWalletActions, injectWalletState } from '@/connex/injections';
 
 export default defineComponent({
     setup() {
-        const { vendor } = injectConnex();
         const { source, account } = injectWalletState();
-        const { updateSource, updateAccount } = injectWalletActions();
+        const { updateSource, updateAccount, connect, disconnect } =
+            injectWalletActions();
 
         return {
-            vendor,
+            connect,
+            disconnect,
             account,
             source,
             updateSource,
@@ -71,8 +86,12 @@ export default defineComponent({
     watch: {
         source: {
             immediate: true,
-            handler(source: WalletSource) {
-                console.log('source', source);
+            async handler(source: WalletSource | null) {
+                if (source) {
+                    const res = await this.connect();
+
+                    this.updateAccount(res.account);
+                }
             },
         },
     },
@@ -84,20 +103,12 @@ export default defineComponent({
             this.$emit('close');
         },
 
-        async connect(source: WalletSource) {
+        async connectWallet(source: WalletSource) {
+            if (source !== this.source) {
+                this.disconnect();
+            }
+
             this.updateSource(source);
-
-            const res = await this.vendor
-                .sign('cert', {
-                    purpose: 'identification',
-                    payload: {
-                        content: 'Hello World!',
-                        type: 'text',
-                    },
-                })
-                .request();
-
-            this.updateAccount(res.annex.signer);
         },
     },
 });
@@ -172,5 +183,42 @@ export default defineComponent({
     font-size: 18px;
     color: #333;
     cursor: pointer;
+}
+
+.modal-footer {
+    padding: 15px;
+    display: flex;
+    justify-content: flex-end; /* Adjust alignment as needed */
+    background-color: #4aae9b;
+    border-radius: 0 0 10px 10px;
+}
+
+.modal-footer button {
+    /* Style your footer button here */
+    background-color: #4aae9b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.modal-footer button:hover {
+    background-color: #357a72;
+}
+
+.disconnect-button {
+    /* Style for the Disconnect button */
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px; /* Rounded border */
+    transition: background-color 0.3s; /* Smooth color transition on hover */
+}
+
+.disconnect-button:hover {
+    background-color: #c0392b;
 }
 </style>
