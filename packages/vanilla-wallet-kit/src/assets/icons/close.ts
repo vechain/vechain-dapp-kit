@@ -1,4 +1,4 @@
-import {html, svg} from 'lit';
+import { html, svg } from 'lit';
 
 export const CloseSvg = svg`
       <path
@@ -6,12 +6,12 @@ export const CloseSvg = svg`
     `;
 
 export const LightCloseSvg = html`
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#777777">
-    ${CloseSvg}
-  </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#777777">
+        ${CloseSvg}
+    </svg>
 `;
 export const DarkCloseSvg = html`
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#999999">
-    ${CloseSvg}
-  </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#999999">
+        ${CloseSvg}
+    </svg>
 `;
