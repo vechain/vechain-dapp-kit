@@ -1,4 +1,3 @@
 node_modules/*
-docs/*
-docs-src/*
+dist/*
 web-dev-server.config.js
