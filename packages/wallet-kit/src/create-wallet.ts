@@ -4,20 +4,21 @@ import {
     newWeb3Modal,
 } from '@vechain/wallet-connect/dist';
 import { createSync, createSync2 } from '@vechain/connex/esm/signer';
-import type { ConnexOptions, ConnexWallet } from './types';
+import type { ConnexOptions, ConnexWallet, WalletSource } from './types';
+import { CertificateBasedWallet } from './wallets/certificate-wallet';
+import { WCWallet } from './wallets/wc-wallet';
 import { normalizeGenesisId } from './genesis';
-import { CertificateConnectionWallet } from './wallets/certificate-connection';
-import { WcConnectionWallet } from './wallets/wc-connection';
 
-export const createWallet = (
-    params: ConnexOptions,
-): ConnexWallet | undefined => {
-    const { source, genesis } = params;
+type ICreateWallet = ConnexOptions & {
+    source: WalletSource;
+};
 
-    if (!source) {
-        return;
-    }
-
+export const createWallet = ({
+    source,
+    genesis,
+    walletConnectOptions,
+    onDisconnected,
+}: ICreateWallet): ConnexWallet | undefined => {
     const genesisId = normalizeGenesisId(genesis);
 
     switch (source) {
@@ -28,12 +29,12 @@ export const createWallet = (
 
             const signer = createSync(genesisId);
 
-            return new CertificateConnectionWallet(signer);
+            return new CertificateBasedWallet(signer);
         }
         case 'sync2': {
             const signer = createSync2(genesisId);
 
-            return new CertificateConnectionWallet(signer);
+            return new CertificateBasedWallet(signer);
         }
         case 'veworld-extension': {
             if (!window.vechain) {
@@ -42,11 +43,9 @@ export const createWallet = (
 
             const signer = window.vechain.newConnexSigner(genesisId);
 
-            return new CertificateConnectionWallet(Promise.resolve(signer));
+            return new CertificateBasedWallet(Promise.resolve(signer));
         }
         case 'wallet-connect': {
-            const { walletConnectOptions, onDisconnected } = params;
-
             if (!walletConnectOptions) {
                 onDisconnected();
                 return;
@@ -68,7 +67,7 @@ export const createWallet = (
                 onDisconnected,
             });
 
-            return new WcConnectionWallet(wallet);
+            return new WCWallet(wallet);
         }
     }
 };

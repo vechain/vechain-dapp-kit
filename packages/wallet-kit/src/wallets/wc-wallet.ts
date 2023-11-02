@@ -1,11 +1,8 @@
 import type { WCSigner } from '@vechain/wallet-connect';
 import type { ConnectResponse, ConnexWallet } from '../types';
-import { DEFAULT_CONNECT_CERT_MESSAGE } from '../certificates';
+import { DEFAULT_SIGN_IN_MESSAGE } from '../certificates';
 
-/**
- * A `ConnexWallet` for wallet's that use a certificate connection
- */
-export class WcConnectionWallet implements ConnexWallet {
+class WCWallet implements ConnexWallet {
     constructor(private readonly signer: WCSigner) {}
 
     connect = async (): Promise<ConnectResponse> => {
@@ -27,7 +24,7 @@ export class WcConnectionWallet implements ConnexWallet {
         msg?: Connex.Vendor.CertMessage | undefined,
         options?: Connex.Signer.CertOptions | undefined,
     ): Promise<Connex.Vendor.CertResponse> => {
-        const _msg = msg || DEFAULT_CONNECT_CERT_MESSAGE;
+        const _msg = msg || DEFAULT_SIGN_IN_MESSAGE;
         const _options = options || {};
 
         return this.signCert(_msg, _options);
@@ -40,3 +37,5 @@ export class WcConnectionWallet implements ConnexWallet {
 
     disconnect = (): Promise<void> => this.signer.disconnect();
 }
+
+export { WCWallet };

@@ -1,11 +1,14 @@
 import { Certificate } from 'thor-devkit';
 import type { BaseWallet, ConnectResponse, ConnexWallet } from '../types';
-import { DEFAULT_CONNECT_CERT_MESSAGE } from '../certificates';
+import {
+    DEFAULT_CONNECT_CERT_MESSAGE,
+    DEFAULT_SIGN_IN_MESSAGE,
+} from '../certificates';
 
 /**
  * A `ConnexWallet` for wallet's that use a certificate connection
  */
-export class CertificateConnectionWallet implements ConnexWallet {
+class CertificateBasedWallet implements ConnexWallet {
     constructor(private readonly wallet: Promise<BaseWallet>) {}
 
     connect = async (): Promise<ConnectResponse> => {
@@ -47,7 +50,7 @@ export class CertificateConnectionWallet implements ConnexWallet {
         msg?: Connex.Vendor.CertMessage | undefined,
         options?: Connex.Signer.CertOptions | undefined,
     ): Promise<Connex.Vendor.CertResponse> => {
-        const _msg = msg || DEFAULT_CONNECT_CERT_MESSAGE;
+        const _msg = msg || DEFAULT_SIGN_IN_MESSAGE;
         const _options = options || {};
 
         return this.signCert(_msg, _options);
@@ -59,9 +62,8 @@ export class CertificateConnectionWallet implements ConnexWallet {
     ): Promise<Connex.Vendor.TxResponse> =>
         this.wallet.then((w) => w.signTx(msg, options));
 
-    async disconnect(): Promise<void> {
-        const _wallet = await this.wallet;
-
-        return _wallet.disconnect?.() || Promise.resolve();
-    }
+    disconnect = async (): Promise<void> =>
+        this.wallet.then((w) => w.disconnect?.());
 }
+
+export { CertificateBasedWallet };

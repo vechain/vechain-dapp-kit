@@ -22,7 +22,6 @@ interface ConnexOptions {
     nodeUrl: string;
     genesis?: Genesis;
     onDisconnected: () => void;
-    source?: WalletSource;
     walletConnectOptions?: WalletConnectOptions;
 }
 

@@ -2,32 +2,36 @@ import { createNoVendor } from '@vechain/connex/esm/driver';
 import { newThor } from '@vechain/connex-framework/dist/thor';
 import type { DriverNoVendor } from '@vechain/connex-driver';
 import { newVendor } from '@vechain/connex-framework';
-import type { ConnexInstance, ConnexOptions } from './types';
+import type { ConnexOptions, ConnexWalletManager } from './types';
 import { normalizeGenesisBlock } from './genesis';
 import { FullDriver } from './full-driver';
 import { WalletManager } from './wallet-manager';
 
-const createConnexInstance = (options: ConnexOptions): ConnexInstance => {
-    const { nodeUrl, genesis } = options;
+class MultiWalletConnex {
+    public readonly thor: Connex.Thor;
+    public readonly vendor: Connex.Vendor;
+    public readonly wallet: ConnexWalletManager;
 
-    const genesisBlock = normalizeGenesisBlock(genesis);
+    constructor(options: ConnexOptions) {
+        const { nodeUrl, genesis } = options;
 
-    const thorOnlyDriver: DriverNoVendor = createNoVendor(
-        nodeUrl,
-        genesisBlock,
-    );
+        const genesisBlock = normalizeGenesisBlock(genesis);
 
-    const walletManager = new WalletManager(options);
-    const fullDriver = new FullDriver(thorOnlyDriver, walletManager);
+        const thorOnlyDriver: DriverNoVendor = createNoVendor(
+            nodeUrl,
+            genesisBlock,
+        );
 
-    const thor = newThor(fullDriver);
-    const vendor = newVendor(fullDriver);
+        const walletManager = new WalletManager(options);
+        const fullDriver = new FullDriver(thorOnlyDriver, walletManager);
 
-    return {
-        thor,
-        vendor,
-        wallet: walletManager,
-    };
-};
+        const thor = newThor(fullDriver);
+        const vendor = newVendor(fullDriver);
 
-export { createConnexInstance };
+        this.thor = thor;
+        this.vendor = vendor;
+        this.wallet = walletManager;
+    }
+}
+
+export { MultiWalletConnex };

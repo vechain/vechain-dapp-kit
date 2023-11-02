@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, provide, reactive, readonly, toRefs } from 'vue';
 import {
-    createConnexInstance,
+    MultiWalletConnex,
     WalletSource,
     WalletSources,
 } from '@vechain/wallet-kit';
@@ -45,7 +45,7 @@ export default defineComponent({
             walletState.source = null;
         };
 
-        const connex = createConnexInstance({
+        const connex = new MultiWalletConnex({
             nodeUrl: 'https://mainnet.vechain.org/',
             onDisconnected,
         });

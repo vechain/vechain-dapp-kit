@@ -6,7 +6,7 @@ import React, {
     useReducer,
 } from 'react';
 import type { ConnexInstance } from '@vechain/wallet-kit';
-import { createConnexInstance, WalletSources } from '@vechain/wallet-kit';
+import { MultiWalletConnex, WalletSources } from '@vechain/wallet-kit';
 import type { WalletSource } from '@vechain/wallet-kit/src/types';
 import { accountReducer, defaultAccountState } from './AccountReducer';
 import type { ConnexContext, ConnexProviderOptions } from './types';
@@ -33,14 +33,13 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
 
     const connex: ConnexInstance = useMemo(
         () =>
-            createConnexInstance({
+            new MultiWalletConnex({
                 nodeUrl: nodeOptions.node,
                 genesis: nodeOptions.network,
-                source: accountState.source ?? undefined,
                 walletConnectOptions,
                 onDisconnected,
             }),
-        //eslint-disable-next-line react-hooks/exhaustive-deps
+
         [
             nodeOptions.node,
             nodeOptions.network,
