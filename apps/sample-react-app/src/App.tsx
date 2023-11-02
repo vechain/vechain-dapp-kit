@@ -3,7 +3,6 @@ import React from 'react';
 import type { Options } from '@vechain/connex';
 import type { WalletConnectOptions } from '@vechain/wallet-connect';
 import { ConnexProvider } from '@vechain/react-wallet-kit';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { NavBar, StyledContainer } from './Components/layout';
 import { Homepage } from './Screens/Homepage';
@@ -37,17 +36,7 @@ export const App = (): JSX.Element => {
                 >
                     <NavBar />
                     <StyledContainer>
-                        <BrowserRouter
-                            basename={
-                                process.env.NODE_ENV === 'production'
-                                    ? '/vechain-dapp-kit/react/'
-                                    : '/'
-                            }
-                        >
-                            <Routes>
-                                <Route element={<Homepage />} path="/" />
-                            </Routes>
-                        </BrowserRouter>
+                        <Homepage />
                     </StyledContainer>
                 </ConnexProvider>
             </ChakraProvider>

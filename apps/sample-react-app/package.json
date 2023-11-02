@@ -2,7 +2,7 @@
     "name": "sample-app-react",
     "version": "0.0.0",
     "private": true,
-    "homepage": "https://vechainfoundation.github.io/vechain-dapp-kit/react/",
+    "homepage": ".",
     "main": "src/index.js",
     "scripts": {
         "build": "yarn compile && react-app-rewired build",
