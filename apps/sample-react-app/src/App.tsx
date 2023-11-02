@@ -40,7 +40,7 @@ export const App = (): JSX.Element => {
                         <BrowserRouter
                             basename={
                                 process.env.NODE_ENV === 'production'
-                                    ? '/vechain-dapp-kit/react'
+                                    ? '/vechain-dapp-kit/react/'
                                     : '/'
                             }
                         >
