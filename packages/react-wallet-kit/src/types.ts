@@ -2,6 +2,7 @@ import type { Options } from '@vechain/connex';
 import type React from 'react';
 import type { WalletConnectOptions } from '@vechain/wallet-connect';
 import type { WalletSource } from '@vechain/wallet-kit';
+import type { ConnectResponse } from '@vechain/wallet-kit/src/types';
 
 export interface AccountState {
     address: string | null;
@@ -31,7 +32,7 @@ export interface ConnexProviderOptions {
 export interface ConnexContext {
     connex: {
         thor: Connex.Thor;
-        vendor?: Connex.Vendor;
+        vendor: Connex.Vendor;
     };
     wallet: {
         setSource: (source: WalletSource) => void;
@@ -40,5 +41,6 @@ export interface ConnexContext {
         wallets: WalletSource[];
         accountState: AccountState;
         disconnect: () => void;
+        connect: () => Promise<ConnectResponse>;
     };
 }

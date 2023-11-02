@@ -5,8 +5,9 @@ import React, {
     useMemo,
     useReducer,
 } from 'react';
-import type { ConnexInstance, WalletSource } from '@vechain/wallet-kit';
-import { createConnexInstance, WalletMapping } from '@vechain/wallet-kit';
+import type { ConnexInstance } from '@vechain/wallet-kit';
+import { createConnexInstance, WalletSources } from '@vechain/wallet-kit';
+import type { WalletSource } from '@vechain/wallet-kit/src/types';
 import { accountReducer, defaultAccountState } from './AccountReducer';
 import type { ConnexContext, ConnexProviderOptions } from './types';
 
@@ -30,7 +31,7 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
         dispatch({ type: 'clear' });
     }, []);
 
-    const connexInstance: ConnexInstance = useMemo(
+    const connex: ConnexInstance = useMemo(
         () =>
             createConnexInstance({
                 nodeUrl: nodeOptions.node,
@@ -51,10 +52,8 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     const disconnect = useCallback((): void => {
         dispatch({ type: 'clear' });
 
-        connexInstance.disconnect().catch(() => {
-            // do nothing
-        });
-    }, [connexInstance]);
+        void connex.wallet.disconnect();
+    }, [connex]);
 
     const availableWallets = useMemo(() => {
         const wallets: WalletSource[] = ['sync2'];
@@ -76,14 +75,14 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
 
     const setSource = useCallback(
         (wallet: WalletSource): void => {
-            connexInstance.setSource(wallet);
+            connex.wallet.setSource(wallet);
 
             dispatch({
                 type: 'set-wallet-source',
                 payload: { source: wallet, persist: persistState },
             });
         },
-        [connexInstance, persistState],
+        [connex, persistState],
     );
 
     const setAccount = useCallback(
@@ -99,21 +98,22 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     const context: ConnexContext = useMemo(() => {
         return {
             connex: {
-                thor: connexInstance.thor,
-                vendor: connexInstance.vendor,
+                thor: connex.thor,
+                vendor: connex.vendor,
             },
             wallet: {
                 setSource,
                 setAccount,
                 availableWallets,
-                wallets: Object.keys(WalletMapping) as WalletSource[],
+                wallets: WalletSources,
                 accountState,
                 disconnect,
+                connect: connex.wallet.connect,
             },
         };
     }, [
         accountState,
-        connexInstance,
+        connex,
         setAccount,
         setSource,
         availableWallets,

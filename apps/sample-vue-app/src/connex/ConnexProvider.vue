@@ -45,7 +45,7 @@ export default defineComponent({
             walletState.source = null;
         };
 
-        const connexInstance = createConnexInstance({
+        const connex = createConnexInstance({
             nodeUrl: 'https://mainnet.vechain.org/',
             onDisconnected,
         });
@@ -55,13 +55,13 @@ export default defineComponent({
         };
 
         const updateSource = (source: WalletSource) => {
-            connexInstance.setSource(source);
+            connex.wallet.setSource(source);
             walletState.source = source;
         };
 
-        const connex: Connex = {
-            thor: connexInstance.thor,
-            vendor: connexInstance.vendor,
+        const _connex: Connex = {
+            thor: connex.thor,
+            vendor: connex.vendor,
         };
 
         const walletActions: WalletActions = {
@@ -69,7 +69,7 @@ export default defineComponent({
             updateSource,
         };
 
-        provide(ConnexSymbol, readonly(connex));
+        provide(ConnexSymbol, readonly(_connex));
         provide(WalletStateSymbol, toRefs(readonly(walletState)));
         provide(WalletActionsSymbol, readonly(walletActions));
     },

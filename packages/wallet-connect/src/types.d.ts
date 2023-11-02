@@ -18,6 +18,11 @@ export type WCSigner = Connex.Signer & {
      * The genesis ID of the current signer
      */
     genesisId: string;
+
+    /**
+     * Connects to the WalletConnect session
+     */
+    connect: () => Promise<string>;
 };
 
 export interface WCClient {

@@ -1,16 +1,17 @@
-import type { WCSigner } from '@vechain/wallet-connect/dist';
 import {
     newWcClient,
     newWcSigner,
     newWeb3Modal,
 } from '@vechain/wallet-connect/dist';
 import { createSync, createSync2 } from '@vechain/connex/esm/signer';
-import type { ConnexOptions, ConnexSigner } from './types';
+import type { ConnexOptions, ConnexWallet } from './types';
 import { normalizeGenesisId } from './genesis';
+import { CertificateConnectionWallet } from './wallets/certificate-connection';
+import { WcConnectionWallet } from './wallets/wc-connection';
 
-export const createSigner = (
+export const createWallet = (
     params: ConnexOptions,
-): Promise<ConnexSigner> | undefined => {
+): ConnexWallet | undefined => {
     const { source, genesis } = params;
 
     if (!source) {
@@ -25,10 +26,14 @@ export const createSigner = (
                 throw new Error('User is not in a Sync wallet');
             }
 
-            return createSync(genesisId);
+            const signer = createSync(genesisId);
+
+            return new CertificateConnectionWallet(signer);
         }
         case 'sync2': {
-            return createSync2(genesisId);
+            const signer = createSync2(genesisId);
+
+            return new CertificateConnectionWallet(signer);
         }
         case 'veworld-extension': {
             if (!window.vechain) {
@@ -37,7 +42,7 @@ export const createSigner = (
 
             const signer = window.vechain.newConnexSigner(genesisId);
 
-            return Promise.resolve(signer);
+            return new CertificateConnectionWallet(Promise.resolve(signer));
         }
         case 'wallet-connect': {
             const { walletConnectOptions, onDisconnected } = params;
@@ -56,14 +61,14 @@ export const createSigner = (
 
             const web3Modal = newWeb3Modal(projectId);
 
-            const wcSigner: WCSigner = newWcSigner({
+            const wallet = newWcSigner({
                 genesisId,
                 wcClient,
                 web3Modal,
                 onDisconnected,
             });
 
-            return Promise.resolve(wcSigner);
+            return new WcConnectionWallet(wallet);
         }
     }
 };

@@ -14,72 +14,65 @@ export class FullDriver implements Connex.Driver {
         return this.driver.head;
     }
 
-    pollHead(): Promise<Connex.Thor.Status['head']> {
-        return this.driver.pollHead();
-    }
+    pollHead = (): Promise<Connex.Thor.Status['head']> =>
+        this.driver.pollHead();
 
-    getBlock(revision: string | number): Promise<Connex.Thor.Block | null> {
-        return this.driver.getBlock(revision);
-    }
+    getBlock = (revision: string | number): Promise<Connex.Thor.Block | null> =>
+        this.driver.getBlock(revision);
 
-    getTransaction(
+    getTransaction = (
         id: string,
         allowPending: boolean,
-    ): Promise<Connex.Thor.Transaction | null> {
-        return this.driver.getTransaction(id, allowPending);
-    }
+    ): Promise<Connex.Thor.Transaction | null> =>
+        this.driver.getTransaction(id, allowPending);
 
-    getReceipt(id: string): Promise<Connex.Thor.Transaction.Receipt | null> {
-        return this.driver.getReceipt(id);
-    }
+    getReceipt = (
+        id: string,
+    ): Promise<Connex.Thor.Transaction.Receipt | null> =>
+        this.driver.getReceipt(id);
 
-    getAccount(addr: string, revision: string): Promise<Connex.Thor.Account> {
-        return this.driver.getAccount(addr, revision);
-    }
+    getAccount = (
+        addr: string,
+        revision: string,
+    ): Promise<Connex.Thor.Account> => this.driver.getAccount(addr, revision);
 
-    getCode(addr: string, revision: string): Promise<Connex.Thor.Account.Code> {
-        return this.driver.getCode(addr, revision);
-    }
+    getCode = (
+        addr: string,
+        revision: string,
+    ): Promise<Connex.Thor.Account.Code> => this.driver.getCode(addr, revision);
 
-    getStorage(
+    getStorage = (
         addr: string,
         key: string,
         revision: string,
-    ): Promise<Connex.Thor.Account.Storage> {
-        return this.driver.getStorage(addr, key, revision);
-    }
+    ): Promise<Connex.Thor.Account.Storage> =>
+        this.driver.getStorage(addr, key, revision);
 
-    explain(
+    explain = (
         arg: Connex.Driver.ExplainArg,
         revision: string,
         cacheHints?: string[],
-    ): Promise<Connex.VM.Output[]> {
-        return this.driver.explain(arg, revision, cacheHints);
-    }
+    ): Promise<Connex.VM.Output[]> =>
+        this.driver.explain(arg, revision, cacheHints);
 
-    filterEventLogs(
+    filterEventLogs = (
         arg: Connex.Driver.FilterEventLogsArg,
-    ): Promise<Connex.Thor.Filter.Row<'event'>[]> {
-        return this.driver.filterEventLogs(arg);
-    }
+    ): Promise<Connex.Thor.Filter.Row<'event'>[]> =>
+        this.driver.filterEventLogs(arg);
 
-    filterTransferLogs(
+    filterTransferLogs = (
         arg: Connex.Driver.FilterTransferLogsArg,
-    ): Promise<Connex.Thor.Filter.Row<'transfer'>[]> {
-        return this.driver.filterTransferLogs(arg);
-    }
+    ): Promise<Connex.Thor.Filter.Row<'transfer'>[]> =>
+        this.driver.filterTransferLogs(arg);
 
-    async signTx(
+    signTx = async (
         msg: Connex.Vendor.TxMessage,
         options: Connex.Signer.TxOptions,
-    ): Promise<Connex.Vendor.TxResponse> {
-        return this.signer.signTx(msg, options);
-    }
+    ): Promise<Connex.Vendor.TxResponse> => this.signer.signTx(msg, options);
 
-    async signCert(
+    signCert = async (
         msg: Connex.Vendor.CertMessage,
         options: Connex.Signer.CertOptions,
-    ): Promise<Connex.Vendor.CertResponse> {
-        return this.signer.signCert(msg, options);
-    }
+    ): Promise<Connex.Vendor.CertResponse> =>
+        this.signer.signCert(msg, options);
 }
