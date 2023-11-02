@@ -37,7 +37,13 @@ export const App = (): JSX.Element => {
                 >
                     <NavBar />
                     <StyledContainer>
-                        <BrowserRouter>
+                        <BrowserRouter
+                            basename={
+                                process.env.NODE_ENV === 'production'
+                                    ? '/vechain-dapp-kit/react'
+                                    : '/'
+                            }
+                        >
                             <Routes>
                                 <Route element={<Homepage />} path="/" />
                             </Routes>
