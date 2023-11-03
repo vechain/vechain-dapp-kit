@@ -20,6 +20,8 @@
         "@vechain/picasso": "^2.1.1",
         "@vechain/wallet-connect": "*",
         "@vechain/wallet-kit": "*",
+        "react-icons": "^4.11.0",
+        "styled-components": "^6.1.0",
         "thor-devkit": "^2.0.9"
     },
     "devDependencies": {

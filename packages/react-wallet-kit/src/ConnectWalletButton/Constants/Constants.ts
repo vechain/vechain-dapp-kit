@@ -25,3 +25,8 @@ export const WalletSources: Record<WalletSource, SourceInfo> = {
         logo: `${baseLogoUrl}/sync2.png`,
     },
 };
+
+export const ThemeMode = {
+    Light: 'LIGHT',
+    Dark: 'DARK',
+};
