@@ -2,11 +2,7 @@
  * Wallet types
  */
 
-type WalletSource = 'wallet-connect' | 'veworld-extension' | 'sync2' | 'sync';
-
-interface WalletConfig {
-    requiresCertificate: boolean;
-}
+import type { WalletConfig, WalletSource } from './types';
 
 const DEFAULT_CONFIG: WalletConfig = {
     requiresCertificate: true,
@@ -27,5 +23,3 @@ Object.freeze(WalletMapping);
 Object.freeze(WalletSources);
 
 export { WalletMapping, WalletSources };
-
-export type { WalletConfig, WalletSource };

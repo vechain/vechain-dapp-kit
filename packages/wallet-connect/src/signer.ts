@@ -207,10 +207,33 @@ export const newWcSigner = ({
         }
     };
 
+    const connectAccount = async (): Promise<string> => {
+        if (!session) {
+            session = await connect();
+        }
+
+        const vechainNamespace = session.namespaces.vechain;
+
+        if (!vechainNamespace) {
+            throw new Error(
+                'Failed to create a vechain session with wallet connect',
+            );
+        }
+
+        const firstAccount = vechainNamespace.accounts[0];
+
+        try {
+            return firstAccount.split(':')[2];
+        } catch (e) {
+            throw new Error('Failed to get account from session');
+        }
+    };
+
     return {
         signTx,
         signCert,
         disconnect,
         genesisId,
+        connect: connectAccount,
     };
 };

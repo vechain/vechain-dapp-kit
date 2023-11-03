@@ -12,8 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { LinkIcon, WalletIcon } from '@heroicons/react/24/solid';
 import React, { useCallback, useState } from 'react';
-import { Certificate } from 'thor-devkit';
-import { useConnex, useWallet } from '../../ConnexProvider';
+import { useWallet } from '../../ConnexProvider';
 import { Dialog } from './Dialog';
 import { WalletSourceRadio } from './WalletSourceRadio';
 
@@ -50,56 +49,20 @@ interface ConnectedWalletBodyProps {
 const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
     onClose,
 }) => {
-    const { setAccount } = useWallet();
-    const { vendor } = useConnex();
+    const { setAccount, connect } = useWallet();
 
     const [connectionLoading, setConnectionLoading] = useState(false);
     const [connectionError, setConnectionError] = useState('');
-
-    const connectToWalletHandler =
-        useCallback(async (): Promise<Certificate> => {
-            const message: Connex.Vendor.CertMessage = {
-                purpose: 'identification',
-                payload: {
-                    type: 'text',
-                    content: 'Sign a certificate to prove your identity',
-                },
-            };
-
-            if (!vendor) throw new Error('Vendor not available');
-
-            const certResponse = await vendor.sign('cert', message).request();
-
-            const cert: Certificate = {
-                purpose: message.purpose,
-                payload: message.payload,
-                domain: certResponse.annex.domain,
-                timestamp: certResponse.annex.timestamp,
-                signer: certResponse.annex.signer,
-                signature: certResponse.signature,
-            };
-
-            Certificate.verify(cert);
-
-            return cert;
-        }, [vendor]);
-
-    const onSuccessfullConnection = useCallback(
-        (cert: Certificate): void => {
-            setAccount(cert.signer);
-            onClose();
-        },
-        [setAccount, onClose],
-    );
 
     const connectHandler = useCallback(async () => {
         try {
             setConnectionError('');
             setConnectionLoading(true);
 
-            const cert = await connectToWalletHandler();
+            const { account } = await connect();
 
-            onSuccessfullConnection(cert);
+            setAccount(account);
+            onClose();
         } catch (e) {
             if (e instanceof Error) {
                 setConnectionError(e.message);
@@ -110,15 +73,16 @@ const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
             setConnectionLoading(false);
         }
     }, [
-        onSuccessfullConnection,
+        connect,
+        onClose,
+        setAccount,
         setConnectionError,
         setConnectionLoading,
-        connectToWalletHandler,
     ]);
 
-    const connect = useCallback(() => {
-        connectHandler().catch((e) => {
-            throw e;
+    const _connect = useCallback(() => {
+        connectHandler().catch(() => {
+            // do nothing
         });
     }, [connectHandler]);
 
@@ -150,7 +114,7 @@ const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
                     leftIcon={
                         connectionLoading ? <Spinner /> : <Icon as={LinkIcon} />
                     }
-                    onClick={connect}
+                    onClick={_connect}
                     w="full"
                 >
                     {connectionLoading ? 'Connecting...' : 'Connect'}

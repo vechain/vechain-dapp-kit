@@ -1,22 +1,24 @@
-import type { WCSigner } from '@vechain/wallet-connect/dist';
 import {
     newWcClient,
     newWcSigner,
     newWeb3Modal,
 } from '@vechain/wallet-connect/dist';
 import { createSync, createSync2 } from '@vechain/connex/esm/signer';
-import type { ConnexOptions, ConnexSigner } from './types';
+import type { ConnexOptions, ConnexWallet, WalletSource } from './types';
+import { CertificateBasedWallet } from './wallets/certificate-wallet';
+import { WCWallet } from './wallets/wc-wallet';
 import { normalizeGenesisId } from './genesis';
 
-export const createSigner = (
-    params: ConnexOptions,
-): Promise<ConnexSigner> | undefined => {
-    const { source, genesis } = params;
+type ICreateWallet = ConnexOptions & {
+    source: WalletSource;
+};
 
-    if (!source) {
-        return;
-    }
-
+export const createWallet = ({
+    source,
+    genesis,
+    walletConnectOptions,
+    onDisconnected,
+}: ICreateWallet): ConnexWallet | undefined => {
     const genesisId = normalizeGenesisId(genesis);
 
     switch (source) {
@@ -25,10 +27,14 @@ export const createSigner = (
                 throw new Error('User is not in a Sync wallet');
             }
 
-            return createSync(genesisId);
+            const signer = createSync(genesisId);
+
+            return new CertificateBasedWallet(signer);
         }
         case 'sync2': {
-            return createSync2(genesisId);
+            const signer = createSync2(genesisId);
+
+            return new CertificateBasedWallet(signer);
         }
         case 'veworld-extension': {
             if (!window.vechain) {
@@ -37,11 +43,9 @@ export const createSigner = (
 
             const signer = window.vechain.newConnexSigner(genesisId);
 
-            return Promise.resolve(signer);
+            return new CertificateBasedWallet(Promise.resolve(signer));
         }
         case 'wallet-connect': {
-            const { walletConnectOptions, onDisconnected } = params;
-
             if (!walletConnectOptions) {
                 onDisconnected();
                 return;
@@ -56,14 +60,14 @@ export const createSigner = (
 
             const web3Modal = newWeb3Modal(projectId);
 
-            const wcSigner: WCSigner = newWcSigner({
+            const wallet = newWcSigner({
                 genesisId,
                 wcClient,
                 web3Modal,
                 onDisconnected,
             });
 
-            return Promise.resolve(wcSigner);
+            return new WCWallet(wallet);
         }
     }
 };

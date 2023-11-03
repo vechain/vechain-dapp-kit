@@ -18,7 +18,8 @@
         "@vechain/connex": "2.1.0",
         "@vechain/connex-driver": "2.1.0",
         "@vechain/connex-framework": "2.1.0",
-        "@vechain/wallet-connect": "*"
+        "@vechain/wallet-connect": "*",
+        "thor-devkit": "^2.0.9"
     },
     "devDependencies": {
         "@types/react": "^18.2.28",
