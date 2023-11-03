@@ -1,7 +1,8 @@
 import { LitElement, html, css } from 'lit';
 import type { TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Colors, Theme, ThemeMode } from '../../../wallet-kit';
+import { Theme, ThemeMode } from '@vechain/wallet-kit';
+import { Colors } from '../../../wallet-kit';
 
 @customElement('vwk-base-modal')
 class Modal extends LitElement {

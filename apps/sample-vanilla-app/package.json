@@ -6,12 +6,13 @@
     "author": "",
     "type": "module",
     "scripts": {
-        "dev": "wds --watch",
+        "dev": "parcel index.html --open",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "@vechain/vanilla-wallet-kit": "*",
-        "@web/dev-server": "^0.1.31",
-        "@web/dev-server-legacy": "^1.0.0"
+        "@vechain/vanilla-wallet-kit": "*"
+    },
+    "devDependencies": {
+        "parcel": "^2.10.2"
     }
 }

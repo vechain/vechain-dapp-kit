@@ -1,11 +1,11 @@
 import { LitElement, html } from 'lit';
 import type { TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Theme, ThemeMode } from '../../wallet-kit';
+import { ThemeMode, Theme } from '@vechain/wallet-kit';
 
 @customElement('vwk-connect-button-with-modal')
 class ConnectButtonWithModal extends LitElement {
-    @property({ type: String })
+    @property()
     override title = 'Connect Wallet';
 
     @property({ type: ThemeMode })

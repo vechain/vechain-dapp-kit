@@ -214,6 +214,7 @@ export const newWcSigner = ({
 
         const vechainNamespace = session.namespaces.vechain;
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!vechainNamespace) {
             throw new Error(
                 'Failed to create a vechain session with wallet connect',
