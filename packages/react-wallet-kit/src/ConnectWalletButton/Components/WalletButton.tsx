@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
 const Button = styled.button`
-    background-color: #0074d9;
-    color: #fff;
     padding: 15px 20px;
     border: none;
     cursor: pointer;
@@ -10,6 +8,14 @@ const Button = styled.button`
     border-radius: 12px;
     font-family: 'Inter';
     font-weight: 500;
+    color: ${(props) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return props.theme.textColor;
+    }};
+    background-color: ${(props) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return props.theme.modalButtonBackgroundColor;
+    }};
 `;
 
 const ButtonContent = styled.div`

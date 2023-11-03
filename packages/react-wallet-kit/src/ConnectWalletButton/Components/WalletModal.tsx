@@ -25,9 +25,15 @@ const ModalDiv = styled.div`
     transform: translate(-50%, -50%);
     width: 360px;
     max-width: 90%;
-    background-color: white;
+    color: ${(props) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return props.theme.textColor;
+    }};
+    background-color: ${(props) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return props.theme.backgroundColor;
+    }};
     z-index: 1010;
-    border: 1px solid #ccc;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
     padding: 10px 25px 30px 25px;
     border-radius: 12px;
