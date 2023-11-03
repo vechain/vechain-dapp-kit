@@ -41,6 +41,7 @@
         "husky": "^8.0.0",
         "lint-staged": "^15.0.2",
         "prettier": "^2.5.1",
+        "punycode": "^1.4.1",
         "turbo": "latest",
         "typescript": "4.9.5"
     },

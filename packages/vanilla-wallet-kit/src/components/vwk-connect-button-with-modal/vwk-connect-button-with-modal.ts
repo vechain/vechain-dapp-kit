@@ -5,6 +5,9 @@ import { ThemeMode, Theme } from '@vechain/wallet-kit';
 
 @customElement('vwk-connect-button-with-modal')
 class ConnectButtonWithModal extends LitElement {
+    @property()
+    override title = 'Connect Wallet';
+
     @property({ type: ThemeMode })
     mode = ThemeMode.Light;
 
@@ -30,7 +33,7 @@ class ConnectButtonWithModal extends LitElement {
             <div>
                 <vwk-fonts></vwk-fonts>
                 <vwk-connect-button
-                    .title=${'gino'}
+                    .title=${this.title}
                     .mode=${this.mode}
                     .theme=${this.theme}
                     .onClick=${this.handleOpen}

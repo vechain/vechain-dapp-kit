@@ -1,8 +1,18 @@
 {
     "extends": "@vechain/repo-config/src/tsconfig/base.json",
     "compilerOptions": {
+        "target": "es2021",
+        "module": "es2020",
+        "lib": ["es2021", "DOM", "DOM.Iterable"],
+        "sourceMap": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
-        "outDir": "./dist",
+        "noImplicitOverride": true,
         "plugins": [
             {
                 "name": "ts-lit-plugin",
@@ -10,5 +20,6 @@
             }
         ]
     },
-    "include": ["src/**/*.ts"]
+    "include": ["src/**/*.ts"],
+    "exclude": []
 }
