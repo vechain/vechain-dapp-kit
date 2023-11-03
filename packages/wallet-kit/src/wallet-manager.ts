@@ -6,6 +6,7 @@ import type {
     WalletSource,
 } from './types';
 import { createWallet } from './create-wallet';
+import { WalletSources } from './wallet';
 
 class WalletManager implements ConnexWalletManager {
     private wallets: Record<string, ConnexWallet | undefined> = {};
@@ -28,16 +29,14 @@ class WalletManager implements ConnexWalletManager {
         let wallet = this.wallets[source];
 
         if (!wallet) {
+            // If it's not a built-in wallet, we can't create it
+            if (!WalletSources.includes(source))
+                throw new Error(`No wallet found for: ${source}`);
+
             const opts = { ...this.connexOptions, source };
             wallet = createWallet(opts);
 
-            if (wallet) {
-                this.wallets[source] = wallet;
-            }
-        }
-
-        if (!wallet) {
-            throw new Error('Signer is not initialized');
+            this.wallets[source] = wallet;
         }
 
         return wallet;
