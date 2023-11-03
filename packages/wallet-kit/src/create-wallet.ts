@@ -18,7 +18,7 @@ export const createWallet = ({
     genesis,
     walletConnectOptions,
     onDisconnected,
-}: ICreateWallet): ConnexWallet | undefined => {
+}: ICreateWallet): ConnexWallet => {
     const genesisId = normalizeGenesisId(genesis);
 
     switch (source) {
@@ -47,8 +47,7 @@ export const createWallet = ({
         }
         case 'wallet-connect': {
             if (!walletConnectOptions) {
-                onDisconnected();
-                return;
+                throw new Error('WalletConnect options are not provided');
             }
 
             const { projectId, metadata } = walletConnectOptions;

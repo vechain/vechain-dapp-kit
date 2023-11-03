@@ -18,10 +18,17 @@ interface WalletConfig {
 
 export type Genesis = 'main' | 'test' | Connex.Thor.Block;
 
+/**
+ * Options for the MultiWalletConnex class
+ * @param nodeUrl - The URL of the VeChain node to connect to
+ * @param genesis - Optional. The genesis block of the VeChain network you want to connect to. Eg, 'main', 'test', or a Connex.Thor.Block object
+ * @param onDisconnected - A callback that will be called when the session is disconnected
+ * @param walletConnectOptions - Optional. Options for the WalletConnect integration
+ */
 interface ConnexOptions {
     nodeUrl: string;
     genesis?: Genesis;
-    onDisconnected: () => void;
+    onDisconnected?: () => void;
     walletConnectOptions?: WalletConnectOptions;
 }
 
