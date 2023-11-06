@@ -2,6 +2,7 @@ import type { WalletSource } from '@vechain/wallet-kit';
 import { MultiWalletConnex } from '@vechain/wallet-kit';
 import type { ConnexOptions } from '@vechain/wallet-kit/src';
 import type { SourceInfo } from './constants';
+import './components';
 
 export type VechainWalletKitOptions = MultiWalletConnex | ConnexOptions;
 
