@@ -16,10 +16,11 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "tsup",
-        "clean": "rm -rf dist && rm -rf node_modules",
+        "clean": "rm -rf dist",
         "dev": "parcel index.html --open",
         "format": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
         "lint": "eslint 'src/**/*.ts'",
+        "purge": "yarn clean && rm -rf node_modules",
         "watch": "tsup --watch"
     },
     "dependencies": {

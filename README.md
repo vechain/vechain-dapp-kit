@@ -1,6 +1,8 @@
 # vechain-dapp-kit
 
-VeWorld WalletKit is a typescript library that facilitates seamless interaction between VeChain wallets (veworld, sync 2) and dApps, enhancing user experience and developer convenience.
+VeWorld WalletKit is a typescript library that facilitates seamless interaction between VeChain wallets (veworld, sync
+
+2. and dApps, enhancing user experience and developer convenience.
 
 ## Why ?
 
@@ -48,6 +50,14 @@ yarn dev
 
 ```bash
 yarn clean
+```
+
+### Purge project
+
+-   Runs yarn clean and removes all node_modules
+
+```bash
+yarn purge
 ```
 
 ### Install yarn packages

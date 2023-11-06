@@ -1,12 +1,12 @@
-import { LitElement, html, css } from 'lit';
 import type { TemplateResult } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { ThemeMode, Theme } from '@vechain/wallet-kit';
-import { Colors } from '../../constants';
+import { Theme, ThemeMode } from '@vechain/wallet-kit';
 import type { SourceInfo } from '../../constants';
+import { Colors } from '../../constants';
 
 @customElement('vwk-source-card')
-class SourceCard extends LitElement {
+export class SourceCard extends LitElement {
     static override styles = css`
         .card {
             padding: 16px;

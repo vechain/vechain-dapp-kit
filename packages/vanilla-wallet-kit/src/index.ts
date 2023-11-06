@@ -1,2 +1,3 @@
-export * from './components';
+import './components';
+
 export * from './client';

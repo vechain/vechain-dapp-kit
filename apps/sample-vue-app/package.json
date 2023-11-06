@@ -4,9 +4,10 @@
     "private": true,
     "scripts": {
         "build": "vue-cli-service build",
-        "clean": "rm -rf dist node_modules .turbo",
+        "clean": "rm -rf dist .turbo",
         "dev": "vue-cli-service serve",
-        "lint": "vue-cli-service lint"
+        "lint": "vue-cli-service lint",
+        "purge": "yarn clean && rm -rf node_modules"
     },
     "browserslist": [
         "> 1%",

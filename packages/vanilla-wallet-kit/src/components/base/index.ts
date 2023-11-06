@@ -1,1 +1,1 @@
-export * from './vwk-base-modal';
+import './vwk-base-modal';

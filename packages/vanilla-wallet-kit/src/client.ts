@@ -18,7 +18,7 @@ export interface VechainWalletKitOptions {
     onDisconnected: () => void;
 }
 
-export class VechainWalletKit {
+class VechainWalletKit {
     connex: MultiWalletConnex;
     account: string | null = null;
 
@@ -41,8 +41,9 @@ export class VechainWalletKit {
     };
 }
 
-export class VechainWalletKitModal {
+class VechainWalletKitModal {
     public walletKit: VechainWalletKit;
+
     constructor(walletKit: VechainWalletKit) {
         this.walletKit = walletKit;
     }
@@ -65,3 +66,11 @@ export class VechainWalletKitModal {
         });
     }
 }
+
+export const configureThorModal = (
+    walletKit: VechainWalletKitOptions,
+): void => {
+    const vechainWalletKit = new VechainWalletKit(walletKit);
+    const vechainWalletKitModal = new VechainWalletKitModal(vechainWalletKit);
+    vechainWalletKitModal.initModalListeners();
+};

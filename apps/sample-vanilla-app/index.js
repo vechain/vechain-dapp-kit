@@ -1,9 +1,6 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable no-undef */
-import {
-    VechainWalletKit,
-    VechainWalletKitModal,
-} from '@vechain/vanilla-wallet-kit';
+import { configureThorModal } from '@vechain/vanilla-wallet-kit';
 
 const walletConnectOptions = {
     projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
@@ -21,6 +18,4 @@ const vechainWalletKitOptions = {
     walletConnectOptions,
 };
 
-const walletKit = new VechainWalletKit(vechainWalletKitOptions);
-const vechainWalletKit = new VechainWalletKitModal(walletKit);
-vechainWalletKit.initModalListeners();
+configureThorModal(vechainWalletKitOptions);
