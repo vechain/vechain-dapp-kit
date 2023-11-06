@@ -3,8 +3,8 @@ import type { TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ThemeMode, Theme } from '@vechain/wallet-kit';
 import { DarkCloseSvg, LightCloseSvg } from '../../assets';
-import { WalletSources } from '../../wallet-kit';
-import type { SourceInfo } from '../../wallet-kit';
+import { WalletSources } from '../../constants';
+import type { SourceInfo } from '../../constants';
 
 @customElement('vwk-connect-modal')
 class ConnectModal extends LitElement {

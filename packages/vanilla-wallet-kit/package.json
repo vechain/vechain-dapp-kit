@@ -24,7 +24,11 @@
     },
     "dependencies": {
         "@vechain/wallet-kit": "*",
-        "lit": "^3.0.0"
+        "@wagmi/core": "^1.4.5",
+        "@web3modal/ethereum": "^2.7.1",
+        "@web3modal/html": "^2.7.1",
+        "lit": "^3.0.0",
+        "viem": "^1.18.4"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^5.25.0",
