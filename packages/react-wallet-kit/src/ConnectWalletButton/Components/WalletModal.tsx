@@ -19,12 +19,11 @@ const ModalBackdropDiv = styled.div`
 `;
 
 const ModalDiv = styled.div`
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 360px;
-    max-width: 90%;
     color: ${(props) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return props.theme.textColor;
@@ -39,6 +38,16 @@ const ModalDiv = styled.div`
     border-radius: 12px;
     font-family: 'Inter';
     font-weight: 500;
+    @media (max-width: 1024px) {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        border-radius: 0;
+        border-top-left-radius: 18px;
+        border-top-right-radius: 18px;
+        transform: translate(0%, 0%);
+    }
 `;
 
 const ModalContent = styled.div`

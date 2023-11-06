@@ -31,14 +31,19 @@ const Image = styled.img`
     height: 35px;
 `;
 
-interface WalletButtonProps {
+interface WalletButtonProps
+    extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     walletName: string;
     walletImageUrl: string;
 }
 
-const WalletButton = ({ walletName, walletImageUrl }: WalletButtonProps) => {
+const WalletButton = ({
+    walletName,
+    walletImageUrl,
+    ...restProps
+}: WalletButtonProps) => {
     return (
-        <Button>
+        <Button {...restProps}>
             <ButtonContent>
                 <div>{walletName}</div>
                 <Image src={walletImageUrl} />
