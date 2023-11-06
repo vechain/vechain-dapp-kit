@@ -16,7 +16,7 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "tsup",
-        "clean": "rm -rf dist",
+        "clean": "rm -rf dist .turbo",
         "dev": "parcel index.html --open",
         "format": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
         "lint": "eslint 'src/**/*.ts'",

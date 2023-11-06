@@ -13,6 +13,7 @@ import {
 } from '@/connex/keys';
 import { WalletActions, WalletState } from '@/connex/types';
 import { WalletConnectOptions } from '@vechain/wallet-connect';
+import { configureThorModal } from '@vechain/vanilla-wallet-kit';
 
 const initWallets = (hasWcOptions: boolean) => {
     const wallets: WalletSource[] = ['sync2'];
@@ -61,6 +62,8 @@ export default defineComponent({
             onDisconnected,
             walletConnectOptions,
         });
+
+        configureThorModal(connex);
 
         const updateAccount = (addr: string) => {
             walletState.account = addr;

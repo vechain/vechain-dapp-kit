@@ -31,6 +31,7 @@
         "root": true
     },
     "dependencies": {
+        "@vechain/vanilla-wallet-kit": "*",
         "@vechain/wallet-kit": "*",
         "core-js": "^3.8.3",
         "node-polyfill-webpack-plugin": "^2.0.1",
