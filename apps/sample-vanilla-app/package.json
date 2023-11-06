@@ -6,6 +6,7 @@
     "author": "",
     "type": "module",
     "scripts": {
+        "build": "parcel build index.html --public-url /vechain-dapp-kit/vanilla",
         "clean": "rm -rf dist",
         "dev": "parcel index.html --open",
         "purge": "yarn clean && rm -rf node_modules",
