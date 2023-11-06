@@ -1,38 +1,20 @@
 import type { WalletSource } from '@vechain/wallet-kit';
 import { MultiWalletConnex } from '@vechain/wallet-kit';
+import type { ConnexOptions } from '@vechain/wallet-kit/src';
 import type { SourceInfo } from './constants';
+import './components';
 
-export interface VechainWalletKitOptions {
-    connex?: MultiWalletConnex;
-    nodeUrl: string;
-    network: string; // TODO: add a type for this
-    walletConnectOptions: {
-        projectId: string;
-        metadata: {
-            name: string;
-            description: string;
-            url: string;
-            icons: string[];
-        };
-    };
-    onDisconnected: () => void;
-}
+export type VechainWalletKitOptions = MultiWalletConnex | ConnexOptions;
 
-export class VechainWalletKit {
+class VechainWalletKit {
     connex: MultiWalletConnex;
     account: string | null = null;
 
     constructor(options: VechainWalletKitOptions) {
-        if (options.connex) {
-            this.connex = options.connex;
+        if ('thor' in options) {
+            this.connex = options;
         } else {
-            this.connex = new MultiWalletConnex({
-                nodeUrl: options.nodeUrl,
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                genesis: options.network as any,
-                walletConnectOptions: options.walletConnectOptions,
-                onDisconnected: options.onDisconnected,
-            });
+            this.connex = new MultiWalletConnex(options);
         }
     }
 
@@ -41,8 +23,9 @@ export class VechainWalletKit {
     };
 }
 
-export class VechainWalletKitModal {
+class VechainWalletKitModal {
     public walletKit: VechainWalletKit;
+
     constructor(walletKit: VechainWalletKit) {
         this.walletKit = walletKit;
     }
@@ -65,3 +48,11 @@ export class VechainWalletKitModal {
         });
     }
 }
+
+export const configureThorModal = (
+    walletKit: VechainWalletKitOptions,
+): void => {
+    const vechainWalletKit = new VechainWalletKit(walletKit);
+    const vechainWalletKitModal = new VechainWalletKitModal(vechainWalletKit);
+    vechainWalletKitModal.initModalListeners();
+};

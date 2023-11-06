@@ -5,6 +5,9 @@
             "outputs": ["build/**", "dist/**"],
             "dependsOn": ["^build"]
         },
+        "purge": {
+            "cache": false
+        },
         "test": {
             "outputs": ["coverage/**"],
             "dependsOn": ["build"]

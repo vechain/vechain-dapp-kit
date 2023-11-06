@@ -6,7 +6,9 @@
     "author": "",
     "type": "module",
     "scripts": {
+        "clean": "rm -rf dist",
         "dev": "parcel index.html --open",
+        "purge": "yarn clean && rm -rf node_modules",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {

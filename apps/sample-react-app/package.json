@@ -6,12 +6,13 @@
     "main": "src/index.js",
     "scripts": {
         "build": "yarn compile && react-app-rewired build",
-        "clean": "rm -rf build node_modules .turbo cache artifacts src/hardhat",
+        "clean": "rm -rf build .turbo cache artifacts src/hardhat",
         "compile": "yarn hardhat compile",
         "dev": "react-app-rewired start",
         "eject": "react-app-rewired eject",
         "postinstall": "yarn compile",
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+        "purge": "yarn clean && rm -rf node_modules",
         "start": "HTTPS=true react-app-rewired start",
         "test": "echo 'Not yet testing'"
     },
