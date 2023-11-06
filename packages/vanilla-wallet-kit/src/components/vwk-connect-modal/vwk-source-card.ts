@@ -2,8 +2,8 @@ import { LitElement, html, css } from 'lit';
 import type { TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ThemeMode, Theme } from '@vechain/wallet-kit';
-import { Colors } from '../../wallet-kit';
-import type { SourceInfo } from '../../wallet-kit';
+import { Colors } from '../../constants';
+import type { SourceInfo } from '../../constants';
 
 @customElement('vwk-source-card')
 class SourceCard extends LitElement {

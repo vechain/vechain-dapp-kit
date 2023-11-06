@@ -3,7 +3,7 @@ import {
     SyncLogo,
     VeWorldLogo,
     WalletConnectLogo,
-} from '../../../assets';
+} from '../../assets';
 
 enum WalletSource {
     WalletConnect = 'wallet-connect',
@@ -13,7 +13,7 @@ enum WalletSource {
 }
 
 export interface SourceInfo {
-    id: string;
+    id: WalletSource;
     name: string;
     logo: string;
 }
