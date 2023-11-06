@@ -7,6 +7,7 @@ import { useConnex, useWallet } from '../../ConnexProvider';
 import { useCallback } from 'react';
 import { WalletSource } from '@vechain/wallet-kit';
 import { Certificate } from 'thor-devkit';
+import { WALLET_CONNECT_LOGO } from '../../../assets/img/wallet-connect';
 
 interface Wallet {
     walletName: string;
@@ -17,10 +18,15 @@ interface Wallet {
 const WalletsContainer = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
 `;
 
 const walletList: Wallet[] = [
+    {
+        walletName: 'WalletConnect',
+        walletImageUrl: WALLET_CONNECT_LOGO,
+        source: 'wallet-connect',
+    },
     {
         walletName: 'VeWorld',
         walletImageUrl: VEWORLD_LOGO,

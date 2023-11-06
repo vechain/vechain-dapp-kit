@@ -23,7 +23,7 @@ const ModalDiv = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 360px;
+    width: 420px;
     color: ${(props) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return props.theme.textColor;
@@ -34,11 +34,12 @@ const ModalDiv = styled.div`
     }};
     z-index: 1010;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
-    padding: 10px 25px 30px 25px;
+    padding: 20px 25px 30px 25px;
     border-radius: 12px;
     font-family: 'Inter';
     font-weight: 500;
     @media (max-width: 1024px) {
+        top: auto;
         left: 0;
         right: 0;
         bottom: 0;
