@@ -6,14 +6,10 @@ import React, {
     useReducer,
 } from 'react';
 import type { ConnexInstance } from '@vechain/wallet-kit';
-import { createConnexInstance, WalletSource } from '@vechain/wallet-kit';
+import { MultiWalletConnex, WalletSources } from '@vechain/wallet-kit';
+import type { WalletSource } from '@vechain/wallet-kit/src/types';
 import { accountReducer, defaultAccountState } from './AccountReducer';
-import type {
-    ConnexContext,
-    ConnexProviderOptions,
-    SetAccount,
-    SetSource,
-} from './types';
+import type { ConnexContext, ConnexProviderOptions } from './types';
 
 /**
  * Context
@@ -35,16 +31,15 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
         dispatch({ type: 'clear' });
     }, []);
 
-    const connexInstance: ConnexInstance = useMemo(
+    const connex: ConnexInstance = useMemo(
         () =>
-            createConnexInstance({
+            new MultiWalletConnex({
                 nodeUrl: nodeOptions.node,
                 genesis: nodeOptions.network,
-                source: accountState.source ?? undefined,
                 walletConnectOptions,
                 onDisconnected,
             }),
-        //eslint-disable-next-line react-hooks/exhaustive-deps
+
         [
             nodeOptions.node,
             nodeOptions.network,
@@ -56,42 +51,40 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     const disconnect = useCallback((): void => {
         dispatch({ type: 'clear' });
 
-        connexInstance.disconnect().catch(() => {
-            // do nothing
-        });
-    }, [connexInstance]);
+        void connex.wallet.disconnect();
+    }, [connex]);
 
     const availableWallets = useMemo(() => {
-        const wallets: WalletSource[] = [WalletSource.Sync2];
+        const wallets: WalletSource[] = ['sync2'];
 
         if (window.vechain) {
-            wallets.push(WalletSource.VeWorldExtension);
+            wallets.push('veworld-extension');
         }
 
         if (window.connex) {
-            wallets.push(WalletSource.Sync);
+            wallets.push('sync');
         }
 
         if (walletConnectOptions) {
-            wallets.push(WalletSource.WalletConnect);
+            wallets.push('wallet-connect');
         }
 
         return wallets;
     }, [walletConnectOptions]);
 
-    const setSource: SetSource = useCallback(
+    const setSource = useCallback(
         (wallet: WalletSource): void => {
-            connexInstance.setSource(wallet);
+            connex.wallet.setSource(wallet);
 
             dispatch({
                 type: 'set-wallet-source',
                 payload: { source: wallet, persist: persistState },
             });
         },
-        [connexInstance, persistState],
+        [connex, persistState],
     );
 
-    const setAccount: SetAccount = useCallback(
+    const setAccount = useCallback(
         (address: string) => {
             dispatch({
                 type: 'set-address',
@@ -104,21 +97,22 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     const context: ConnexContext = useMemo(() => {
         return {
             connex: {
-                thor: connexInstance.thor,
-                vendor: connexInstance.vendor,
+                thor: connex.thor,
+                vendor: connex.vendor,
             },
             wallet: {
                 setSource,
                 setAccount,
                 availableWallets,
-                wallets: Object.values(WalletSource),
+                wallets: WalletSources,
                 accountState,
                 disconnect,
+                connect: connex.wallet.connect,
             },
         };
     }, [
         accountState,
-        connexInstance,
+        connex,
         setAccount,
         setSource,
         availableWallets,

@@ -2,23 +2,12 @@ import type { Options } from '@vechain/connex';
 import type React from 'react';
 import type { WalletConnectOptions } from '@vechain/wallet-connect';
 import type { WalletSource } from '@vechain/wallet-kit';
+import type { ConnectResponse } from '@vechain/wallet-kit/src/types';
 
 export interface AccountState {
     address: string | null;
     source: WalletSource | null;
 }
-
-/**
- * Set the wallet account
- * @param account - account address
- */
-export type SetAccount = (account: string) => void;
-
-/**
- * Set the wallet source
- * @param wallet - wallet source
- */
-export type SetSource = (wallet: WalletSource) => void;
 
 /**
  * Connex Provider Options
@@ -43,14 +32,15 @@ export interface ConnexProviderOptions {
 export interface ConnexContext {
     connex: {
         thor: Connex.Thor;
-        vendor?: Connex.Vendor;
+        vendor: Connex.Vendor;
     };
     wallet: {
-        setSource: SetSource;
-        setAccount: SetAccount;
+        setSource: (source: WalletSource) => void;
+        setAccount: (account: string) => void;
         availableWallets: WalletSource[];
         wallets: WalletSource[];
         accountState: AccountState;
         disconnect: () => void;
+        connect: () => Promise<ConnectResponse>;
     };
 }

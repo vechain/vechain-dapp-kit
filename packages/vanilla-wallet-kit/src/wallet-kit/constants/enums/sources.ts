@@ -1,42 +1,42 @@
 import {
-  Sync2Logo,
-  SyncLogo,
-  VeWorldLogo,
-  WalletConnectLogo,
+    Sync2Logo,
+    SyncLogo,
+    VeWorldLogo,
+    WalletConnectLogo,
 } from '../../../assets';
 
 enum WalletSource {
-  WalletConnect = 'wallet-connect',
-  VeWorldExtension = 'veworld-extension',
-  Sync2 = 'sync2',
-  Sync = 'sync',
+    WalletConnect = 'wallet-connect',
+    VeWorldExtension = 'veworld-extension',
+    Sync2 = 'sync2',
+    Sync = 'sync',
 }
 
-export type SourceInfo = {
-  id: string;
-  name: string;
-  logo: string;
-};
+export interface SourceInfo {
+    id: string;
+    name: string;
+    logo: string;
+}
 
 export const WalletSources: SourceInfo[] = [
-  {
-    id: WalletSource.WalletConnect,
-    name: 'Wallet Connect',
-    logo: WalletConnectLogo,
-  },
-  {
-    id: WalletSource.VeWorldExtension,
-    name: 'VeWorld Extension',
-    logo: VeWorldLogo,
-  },
-  {
-    id: WalletSource.Sync,
-    name: 'Sync',
-    logo: SyncLogo,
-  },
-  {
-    id: WalletSource.Sync2,
-    name: 'Sync 2',
-    logo: Sync2Logo,
-  },
+    {
+        id: WalletSource.WalletConnect,
+        name: 'Wallet Connect',
+        logo: WalletConnectLogo,
+    },
+    {
+        id: WalletSource.VeWorldExtension,
+        name: 'VeWorld Extension',
+        logo: VeWorldLogo,
+    },
+    {
+        id: WalletSource.Sync,
+        name: 'Sync',
+        logo: SyncLogo,
+    },
+    {
+        id: WalletSource.Sync2,
+        name: 'Sync 2',
+        logo: Sync2Logo,
+    },
 ];

@@ -24,17 +24,17 @@ const walletList: Wallet[] = [
     {
         walletName: 'VeWorld',
         walletImageUrl: VEWORLD_LOGO,
-        source: WalletSource.WalletConnect,
+        source: 'veworld-extension',
     },
     {
         walletName: 'Sync',
         walletImageUrl: SYNC_LOGO,
-        source: WalletSource.Sync,
+        source: 'sync',
     },
     {
         walletName: 'Sync2',
         walletImageUrl: SYNC2_LOGO,
-        source: WalletSource.Sync2,
+        source: 'sync2',
     },
 ];
 

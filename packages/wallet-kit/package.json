@@ -2,19 +2,24 @@
     "name": "@vechain/wallet-kit",
     "version": "0.0.0",
     "private": true,
+    "exports": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.js"
+    },
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
-        "build": "tsup src/index.ts --format cjs --dts",
+        "build": "tsup src/index.ts --format cjs,esm --dts",
         "clean": "rm -rf dist node_modules .turbo",
-        "dev": "tsup src/index.ts --format cjs --watch --dts",
-        "lint": "eslint src --ext .js,.jsx,.ts,.tsx"
+        "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+        "watch": "tsup src/index.ts --format cjs,esm --watch --dts"
     },
     "dependencies": {
         "@vechain/connex": "2.1.0",
         "@vechain/connex-driver": "2.1.0",
         "@vechain/connex-framework": "2.1.0",
-        "@vechain/wallet-connect": "*"
+        "@vechain/wallet-connect": "*",
+        "thor-devkit": "^2.0.9"
     },
     "devDependencies": {
         "@types/react": "^18.2.28",
