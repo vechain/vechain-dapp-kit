@@ -2,24 +2,21 @@
     <ConnexProvider>
         <img alt="Vue logo" src="./assets/logo.png" />
         <div id="app">
-            <button class="btn" type="button" @click="showModal">
-                Open Modal!
-            </button>
-
+            <vwk-connect-button-with-modal
+                mode="DARK"
+            ></vwk-connect-button-with-modal>
             <ConnectWalletModal v-show="isModalVisible" @close="closeModal" />
         </div>
     </ConnexProvider>
 </template>
 
 <script lang="ts">
-import ConnectWalletModal from './components/ConnectWalletModal.vue';
 import { defineComponent, ref } from 'vue';
 import ConnexProvider from '@/connex/ConnexProvider.vue';
 
 export default defineComponent({
     components: {
         ConnexProvider,
-        ConnectWalletModal,
     },
 
     setup() {
