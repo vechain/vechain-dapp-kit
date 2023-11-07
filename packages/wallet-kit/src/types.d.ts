@@ -28,7 +28,6 @@ export type Genesis = 'main' | 'test' | Connex.Thor.Block;
 interface ConnexOptions {
     nodeUrl: string;
     genesis?: Genesis;
-    onDisconnected?: () => void;
     walletConnectOptions?: WalletConnectOptions;
 }
 
@@ -52,21 +51,10 @@ export interface ConnectResponse {
     verified: boolean;
 }
 
-type ConnexWalletManager = ConnexWallet & {
-    setSource: (src: WalletSource) => void;
-    disconnect: () => Promise<void> | void;
-};
-
-type ConnexInstance = Connex & {
-    wallet: ConnexWalletManager;
-};
-
 export type {
     BaseWallet,
     ConnexOptions,
-    ConnexInstance,
     ConnexWallet,
     WalletConfig,
     WalletSource,
-    ConnexWalletManager,
 };

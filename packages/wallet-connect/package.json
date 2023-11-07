@@ -6,9 +6,9 @@
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
-        "build": "tsup src/index.ts --format cjs --dts",
+        "build": "tsup src/index.ts --format cjs,esm --dts",
         "clean": "rm -rf dist .turbo",
-        "dev": "tsup src/index.ts --format cjs --watch --dts",
+        "dev": "tsup src/index.ts --format cjs,esm --watch --dts",
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
         "purge": "yarn clean && rm -rf node_modules"
     },

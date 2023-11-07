@@ -38,9 +38,9 @@ export interface ConnexContext {
         setSource: (source: WalletSource) => void;
         setAccount: (account: string) => void;
         availableWallets: WalletSource[];
-        wallets: WalletSource[];
-        accountState: AccountState;
         disconnect: () => void;
         connect: () => Promise<ConnectResponse>;
+        account: string | null;
+        source: WalletSource | null;
     };
 }

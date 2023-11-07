@@ -1,10 +1,6 @@
 <script lang="ts">
 import { defineComponent, provide, reactive, readonly, toRefs } from 'vue';
-import {
-    MultiWalletConnex,
-    WalletSource,
-    WalletSources,
-} from '@vechain/wallet-kit';
+import { MultiWalletConnex, WalletSource } from '@vechain/wallet-kit';
 import type Connex from '@vechain/connex';
 import {
     ConnexSymbol,
@@ -14,6 +10,7 @@ import {
 import { WalletActions, WalletState } from '@/connex/types';
 import { WalletConnectOptions } from '@vechain/wallet-connect';
 import { configureThorModal } from '@vechain/vanilla-wallet-kit';
+import { ConnectResponse } from '@vechain/wallet-kit/src/types';
 
 const initWallets = (hasWcOptions: boolean) => {
     const wallets: WalletSource[] = ['sync2'];
@@ -46,32 +43,38 @@ const walletConnectOptions: WalletConnectOptions = {
 export default defineComponent({
     setup() {
         const walletState: WalletState = reactive<WalletState>({
-            wallets: WalletSources,
-            availableWallets: initWallets(true),
+            availableWallets: initWallets(!!walletConnectOptions),
             source: null,
             account: null,
         });
 
-        const onDisconnected = () => {
-            walletState.account = null;
-            walletState.source = null;
-        };
-
         const connex = new MultiWalletConnex({
             nodeUrl: 'https://mainnet.vechain.org/',
-            onDisconnected,
             walletConnectOptions,
         });
 
+        const onDisconnected = () => {
+            walletState.source = null;
+            walletState.account = null;
+        };
+
+        connex.wallet.onDisconnected(onDisconnected);
+
         configureThorModal(connex);
 
-        const updateAccount = (addr: string) => {
+        const setAccount = (addr: string) => {
             walletState.account = addr;
         };
 
-        const updateSource = (source: WalletSource) => {
+        const setSource = (source: WalletSource) => {
             connex.wallet.setSource(source);
             walletState.source = source;
+        };
+
+        const connect = async (): Promise<ConnectResponse> => {
+            const res = await connex.wallet.connect();
+            walletState.account = res.account;
+            return res;
         };
 
         const _connex: Connex = {
@@ -84,11 +87,12 @@ export default defineComponent({
             walletState.source = null;
             walletState.account = null;
         };
+
         const walletActions: WalletActions = {
-            updateAccount,
-            updateSource,
+            setAccount,
+            setSource,
             disconnect,
-            connect: connex.wallet.connect,
+            connect,
         };
 
         provide(ConnexSymbol, readonly(_connex));
