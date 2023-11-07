@@ -51,6 +51,7 @@ jobs:
           mkdir build
           cp -r apps/sample-vue-app/dist build/vue
           cp -r apps/sample-react-app/build build/react
+          cp -r apps/sample-vanilla-app/dist build/vanilla
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
