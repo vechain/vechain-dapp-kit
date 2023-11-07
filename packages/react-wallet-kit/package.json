@@ -16,9 +16,11 @@
     "dependencies": {
         "@chakra-ui/react": "^2.8.1",
         "@heroicons/react": "^2.0.18",
+        "@lit/react": "^1.0.1",
         "@vechain/connex": "2.1.0",
         "@vechain/connex-framework": "2.1.0",
         "@vechain/picasso": "^2.1.1",
+        "@vechain/vanilla-wallet-kit": "*",
         "@vechain/wallet-connect": "*",
         "@vechain/wallet-kit": "*",
         "react-icons": "^4.11.0",
