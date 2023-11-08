@@ -1,4 +1,3 @@
-import type { WalletConnectModal } from '@walletconnect/modal';
 import type { SignClientTypes } from '@walletconnect/types';
 import type { SignClient } from '@walletconnect/sign-client';
 
@@ -44,6 +43,22 @@ export interface WalletConnectOptions {
     metadata: SignClientTypes.Options['metadata'];
 }
 
+interface SubscribeModalState {
+    open: boolean;
+}
+
+interface OpenOptions {
+    uri: string;
+}
+
+export interface WCModal {
+    openModal: (options: OpenOptions) => Promise<void>;
+    closeModal: () => void;
+    subscribeModal: (
+        callback: (newState: SubscribeModalState) => void,
+    ) => () => void;
+}
+
 /**
  * Options for the {@link WCSigner}
  * @param wcClient - A function to get the initialized WalletConnect SignClient
@@ -53,7 +68,7 @@ export interface WalletConnectOptions {
  */
 export interface WCSignerOptions {
     wcClient: WCClient;
-    web3Modal: WalletConnectModal;
+    web3Modal: WCModal;
     onDisconnected?: () => void;
     genesisId: string;
 }

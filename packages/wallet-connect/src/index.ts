@@ -8,6 +8,7 @@ export type {
     WalletConnectOptions,
     ResolvedSignClient,
     WCClient,
+    WCModal,
 } from './types';
 
 export { newWcSigner, newWeb3Modal, newWcClient };

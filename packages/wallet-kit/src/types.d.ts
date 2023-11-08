@@ -1,5 +1,6 @@
 import type { Connex1 } from '@vechain/connex/esm/signer';
 import type { WalletConnectOptions } from '@vechainfoundation/wallet-connect';
+import type { WCModal } from '@vechainfoundation/wallet-connect/src';
 
 declare global {
     interface Window {
@@ -29,6 +30,7 @@ interface ConnexOptions {
     nodeUrl: string;
     genesis?: Genesis;
     walletConnectOptions?: WalletConnectOptions;
+    customWcModal?: WCModal;
 }
 
 type BaseWallet = Connex.Signer & {
