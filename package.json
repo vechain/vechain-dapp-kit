@@ -9,6 +9,7 @@
         "build-react-kit": "turbo run build  --filter='@vechain/react-wallet-kit'",
         "build:deps": "turbo build --no-daemon --filter='@vechain/*'",
         "clean": "rm -rf .turbo .parcel-cache build && npx turbo@latest run clean",
+        "cucumber": "yarn && cucumber-js",
         "dev": "turbo run dev --no-daemon",
         "format": "prettier --write \"**/*.{ts,tsx,md,json,js,jsx}\"",
         "install:all": "yarn && yarn run build:deps",

@@ -1,0 +1,9 @@
+{
+    "extends": "@vechain/repo-config/src/tsconfig/react.json",
+    "compilerOptions": {
+        "noImplicitAny": false,
+        "noImplicitThis": false,
+        "baseUrl": "src"
+    },
+    "include": ["src"]
+}
