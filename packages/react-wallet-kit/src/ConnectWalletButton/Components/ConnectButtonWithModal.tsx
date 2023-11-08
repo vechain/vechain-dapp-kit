@@ -33,7 +33,7 @@ export const ConnectButtonWithModal = ({
                 const { account } = await connect();
                 setAccount(account);
 
-                onClose ? onClose() : null;
+                onClose?.();
             } catch (e) {
                 if (e instanceof Error) {
                     setConnectionError(e.message);
