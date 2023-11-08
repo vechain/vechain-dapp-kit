@@ -1,5 +1,4 @@
 import type { WalletSource } from '@vechain/wallet-kit';
-import { Colors } from './colors';
 
 interface SourceInfo {
     name: string;
@@ -31,14 +30,8 @@ export const WalletSources: Record<WalletSource, SourceInfo> = {
 
 export const lightTheme = {
     mode: 'LIGHT',
-    backgroundColor: Colors.White,
-    textColor: Colors.DarkGray,
-    modalButtonBackgroundColor: Colors.LightGray,
 };
 
 export const darkTheme = {
     mode: 'DARK',
-    backgroundColor: Colors.Dark,
-    textColor: Colors.White,
-    modalButtonBackgroundColor: Colors.DarkGray,
 };
