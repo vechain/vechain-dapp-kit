@@ -1,6 +1,6 @@
 {
-    "name": "@vechain/vanilla-wallet-kit",
-    "version": "2.0.0",
+    "name": "@vechainfoundation/vanilla-wallet-kit",
+    "version": "0.0.0",
     "private": true,
     "description": "Vanilla js wallet kit",
     "keywords": [

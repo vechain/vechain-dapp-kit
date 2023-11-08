@@ -1,0 +1,34 @@
+name: Publish NPM package
+
+on:
+  push:
+    branches:
+      - test-publishing
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        package: [ wallet-kit,react-wallet-kit,wallet-connect,vanilla-wallet-kit ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+      - run: yarn install:all
+      - run: yarn build
+      - run: |
+          cd packages/${{ matrix.package }}
+          yarn version --no-git-tag-version --new-version 0.0.1-beta
+          yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
