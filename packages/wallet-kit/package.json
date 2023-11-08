@@ -1,7 +1,7 @@
 {
     "name": "@vechainfoundation/wallet-kit",
     "version": "0.0.0",
-    "private": true,
+    "private": false,
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
