@@ -1,4 +1,4 @@
-# `@vecahin/dapp-kit`
+# `@vechainfoundation/wallet-kit`
 
 ## Why ?
 
@@ -21,21 +21,13 @@ yarn build
 ## Usage
 
 ```bash
-yarn add @vechain/dapp-kit
-```
-
--   Create a function to handle remote wallet disconnections. Some wallets can disconnect remotely (eg. Wallet Connect)
-
-```typescript
-const onDisconnected = () => {
-    //TODO: handle disconnect
-};
+yarn add @vechainfoundation/wallet-kit
 ```
 
 -   Optional: Configure wallet connect options
 
 ```typescript
-import type { WalletConnectOptions } from '@vechain/wallet-connect';
+import type { WalletConnectOptions } from '@vechainfoundation/wallet-connect';
 
 const walletConnectOptions: WalletConnectOptions = {
     projectId: '<PROJECT_ID>', // Create your project here: https://cloud.walletconnect.com/sign-up
@@ -56,8 +48,7 @@ const walletConnectOptions: WalletConnectOptions = {
 const { thor, vendor, wallet } = new MultiWalletConnex({
     nodeUrl: 'https://sync-testnet.vechain.org/', //Required
     genesis: 'main', //Optional - "main" | "test" | Connex.Thor.Block
-    walletConnectOptions,
-    onDisconnected,
+    walletConnectOptions, //Optional
 });
 ```
 
@@ -65,6 +56,11 @@ const { thor, vendor, wallet } = new MultiWalletConnex({
 -   Connex is ready to use as normal
 
 ```typescript
+import type { WalletSource } from '@vechainfoundation/wallet-kit';
+
+// type WalletSource = 'wallet-connect' | 'veworld-extension' | 'sync2' | 'sync';
+const mySource: WalletSource = 'veworld-extension';
+
 wallet.setSource('veworld-extension');
 ```
 
@@ -73,10 +69,8 @@ wallet.setSource('veworld-extension');
     verified, you should request a subsequent certificate sign in
 
 ```typescript
-const { account, verified } = await wallet.connect();
-```
+const {account, verified} = await wallet.connect();
 
-```typescript
-const tx = await thor.account("0x...123").method(...).transact().request();
+const tx = await thor.account("0x...123").method(...).transact().signer(account).request();
 const certRes = await vendor.sign("cert", {...}).requset();
 ```

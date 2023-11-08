@@ -1,7 +1,7 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Theme, ThemeMode } from '@vechain/wallet-kit';
+import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
 import { DarkCloseSvg, LightCloseSvg } from '../../assets';
 import type { SourceInfo } from '../../constants';
 import { WalletSources } from '../../constants';

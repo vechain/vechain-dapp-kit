@@ -1,7 +1,7 @@
 {
-    "name": "@vechain/wallet-kit",
+    "name": "@vechainfoundation/wallet-kit",
     "version": "0.0.0",
-    "private": true,
+    "private": false,
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
@@ -15,7 +15,7 @@
         "@vechain/connex": "2.1.0",
         "@vechain/connex-driver": "2.1.0",
         "@vechain/connex-framework": "2.1.0",
-        "@vechain/wallet-connect": "*",
+        "@vechainfoundation/wallet-connect": "*",
         "events": "^3.3.0",
         "thor-devkit": "^2.0.9"
     },

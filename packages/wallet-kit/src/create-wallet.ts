@@ -2,7 +2,7 @@ import {
     newWcClient,
     newWcSigner,
     newWeb3Modal,
-} from '@vechain/wallet-connect/dist';
+} from '@vechainfoundation/wallet-connect/dist';
 import { createSync, createSync2 } from '@vechain/connex/esm/signer';
 import type { ConnexOptions, ConnexWallet, WalletSource } from './types';
 import { CertificateBasedWallet } from './wallets/certificate-wallet';
@@ -19,6 +19,7 @@ export const createWallet = ({
     genesis,
     walletConnectOptions,
     onDisconnected,
+    customWcModal,
 }: ICreateWallet): ConnexWallet => {
     const genesisId = normalizeGenesisId(genesis);
 
@@ -58,7 +59,9 @@ export const createWallet = ({
                 metadata,
             });
 
-            const web3Modal = newWeb3Modal(projectId);
+            const web3Modal = customWcModal
+                ? customWcModal
+                : newWeb3Modal(projectId);
 
             const wallet = newWcSigner({
                 genesisId,

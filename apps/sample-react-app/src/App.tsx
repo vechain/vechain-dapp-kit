@@ -1,8 +1,8 @@
 import type { JSX } from 'react';
 import React from 'react';
 import type { Options } from '@vechain/connex';
-import type { WalletConnectOptions } from '@vechain/wallet-connect';
-import { ConnexProvider } from '@vechain/react-wallet-kit';
+import type { WalletConnectOptions } from '@vechainfoundation/wallet-connect';
+import { ConnexProvider } from '@vechainfoundation/react-wallet-kit';
 import { ChakraProvider } from '@chakra-ui/react';
 import { NavBar, StyledContainer } from './Components/layout';
 import { Homepage } from './Screens/Homepage';

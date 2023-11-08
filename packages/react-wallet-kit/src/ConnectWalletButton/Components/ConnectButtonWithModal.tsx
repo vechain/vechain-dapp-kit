@@ -1,14 +1,14 @@
-import 'react';
-import { ConnectModalWithButtonWrapped } from './Wrapped/ConnectModalWithButtonWrapped';
 import { useCallback, useContext, useState } from 'react';
+import type { WalletSource } from '@vechainfoundation/wallet-kit';
+import type { SourceInfo } from '@vechainfoundation/vanilla-wallet-kit';
 import { ThemeContext } from '../../provider/ThemeProvider';
-import { WalletSource } from '@vechain/wallet-kit';
 import { useWallet } from '../../ConnexProvider';
-import { SourceInfo } from '@vechain/vanilla-wallet-kit';
+import { ConnectModalWithButtonWrapped } from './Wrapped/ConnectModalWithButtonWrapped';
 
 interface ConnectButtonWithModalProps {
     onClose?: () => void;
 }
+
 export const ConnectButtonWithModal = ({
     onClose,
 }: ConnectButtonWithModalProps) => {

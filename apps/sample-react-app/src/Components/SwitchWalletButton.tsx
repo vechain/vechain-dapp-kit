@@ -1,7 +1,10 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-import { ConnectWalletButton, useWallet } from '@vechain/react-wallet-kit';
+import {
+    ConnectWalletButton,
+    useWallet,
+} from '@vechainfoundation/react-wallet-kit';
 import { AccountDetailModal } from './AccountDetailModal';
 import { AddressButton } from './AddressButton';
 

@@ -1,4 +1,4 @@
-import type { WCSigner } from '@vechain/wallet-connect';
+import type { WCSigner } from '@vechainfoundation/wallet-connect';
 import type { ConnectResponse, ConnexWallet } from '../types';
 
 class WCWallet implements ConnexWallet {

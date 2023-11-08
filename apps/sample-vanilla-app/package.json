@@ -8,12 +8,12 @@
     "scripts": {
         "build": "parcel build index.html --public-url /vechain-dapp-kit/vanilla",
         "clean": "rm -rf dist",
-        "dev": "parcel index.html --open",
+        "dev": "parcel index.html --open  --port 3001",
         "purge": "yarn clean && rm -rf node_modules",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "@vechain/vanilla-wallet-kit": "*"
+        "@vechainfoundation/vanilla-wallet-kit": "*"
     },
     "devDependencies": {
         "parcel": "^2.10.2"

@@ -1,7 +1,7 @@
 {
-    "name": "@vechain/wallet-connect",
+    "name": "@vechainfoundation/wallet-connect",
     "version": "0.0.0",
-    "private": true,
+    "private": false,
     "license": "MIT",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",

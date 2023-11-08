@@ -152,11 +152,11 @@ export const newWcSigner = ({
             });
 
             if (uri) {
-                await web3Modal.openModal({ uri, chains: namespace.chains });
+                await web3Modal.openModal({ uri });
             }
 
             return await new Promise((resolve, reject) => {
-                web3Modal.subscribeModal((ev: { open: boolean }) => {
+                web3Modal.subscribeModal((ev) => {
                     if (!ev.open) {
                         reject(new Error('User closed modal'));
                     }

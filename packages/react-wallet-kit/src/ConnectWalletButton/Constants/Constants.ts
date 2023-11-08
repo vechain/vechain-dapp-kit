@@ -1,10 +1,10 @@
-import type { WalletSource } from '@vechain/wallet-kit';
+import type { WalletSource } from '@vechainfoundation/wallet-kit';
 import {
     Sync2Logo,
     SyncLogo,
     VeWorldLogo,
     WalletConnectLogo,
-} from '@vechain/vanilla-wallet-kit';
+} from '@vechainfoundation/vanilla-wallet-kit';
 
 interface SourceInfo {
     name: string;

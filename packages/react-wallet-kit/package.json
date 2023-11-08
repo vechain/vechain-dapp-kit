@@ -1,7 +1,7 @@
 {
-    "name": "@vechain/react-wallet-kit",
+    "name": "@vechainfoundation/react-wallet-kit",
     "version": "0.0.0",
-    "private": true,
+    "private": false,
     "license": "MIT",
     "sideEffects": false,
     "main": "./dist/index.js",
@@ -19,9 +19,9 @@
         "@vechain/connex": "2.1.0",
         "@vechain/connex-framework": "2.1.0",
         "@vechain/picasso": "^2.1.1",
-        "@vechain/vanilla-wallet-kit": "*",
-        "@vechain/wallet-connect": "*",
-        "@vechain/wallet-kit": "*",
+        "@vechainfoundation/vanilla-wallet-kit": "*",
+        "@vechainfoundation/wallet-connect": "*",
+        "@vechainfoundation/wallet-kit": "*",
         "react-icons": "^4.11.0",
         "styled-components": "^6.1.0",
         "thor-devkit": "^2.0.9"

@@ -1,6 +1,6 @@
-import type { WalletSource } from '@vechain/wallet-kit';
-import { MultiWalletConnex } from '@vechain/wallet-kit';
-import type { ConnexOptions } from '@vechain/wallet-kit/src';
+import type { WalletSource } from '@vechainfoundation/wallet-kit';
+import { MultiWalletConnex } from '@vechainfoundation/wallet-kit';
+import type { ConnexOptions } from '@vechainfoundation/wallet-kit/src';
 import type { SourceInfo } from './constants';
 import './components';
 
