@@ -1,6 +1,10 @@
 <script lang="ts">
 import { defineComponent, provide, reactive, readonly, toRefs } from 'vue';
-import { MultiWalletConnex, WalletSource } from '@vechain/wallet-kit';
+import {
+    ConnectResponse,
+    MultiWalletConnex,
+    WalletSource,
+} from '@vechain/wallet-kit';
 import type Connex from '@vechain/connex';
 import {
     ConnexSymbol,
@@ -10,7 +14,6 @@ import {
 import { WalletActions, WalletState } from '@/connex/types';
 import { WalletConnectOptions } from '@vechain/wallet-connect';
 import { configureThorModal } from '@vechain/vanilla-wallet-kit';
-import { ConnectResponse } from '@vechain/wallet-kit/src/types';
 
 const initWallets = (hasWcOptions: boolean) => {
     const wallets: WalletSource[] = ['sync2'];

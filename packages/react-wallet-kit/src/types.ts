@@ -1,8 +1,7 @@
 import type { Options } from '@vechain/connex';
 import type React from 'react';
 import type { WalletConnectOptions } from '@vechain/wallet-connect';
-import type { WalletSource } from '@vechain/wallet-kit';
-import type { ConnectResponse } from '@vechain/wallet-kit/src/types';
+import type { ConnectResponse, WalletSource } from '@vechain/wallet-kit';
 
 export interface AccountState {
     address: string | null;

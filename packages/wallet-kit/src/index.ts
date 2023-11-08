@@ -7,6 +7,7 @@ export type {
     ConnexOptions,
     ConnexWallet,
     WalletSource,
+    ConnectResponse,
     WalletConfig,
     BaseWallet,
 } from './types';
