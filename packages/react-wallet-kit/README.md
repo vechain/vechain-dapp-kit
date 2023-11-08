@@ -72,7 +72,7 @@ export const App = (): JSX.Element => {
 };
 ```
 
--   Use the
+-   Use the hooks provided by the `ConnexProvider`
 
 ```typescript jsx
 import { useWallet, useConnex } from '@vechainfoundation/react-wallet-kit';
