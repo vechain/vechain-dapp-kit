@@ -2,8 +2,8 @@ name: Publish NPM package
 
 on:
   push:
-    branches:
-      - test-publishing
+    tags:
+      - '*'
 
 permissions:
   contents: read
@@ -28,7 +28,7 @@ jobs:
       - run: yarn build
       - run: |
           cd packages/${{ matrix.package }}
-          yarn version --no-git-tag-version --new-version 0.0.1-beta
+          yarn version --no-git-tag-version --new-version ${{ github.ref_name }}
           yarn publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
