@@ -1,7 +1,6 @@
 import { Button, Heading, HStack, Link, Text, VStack } from '@chakra-ui/react';
 import type { JSX } from 'react';
 import { StyledCard } from '../../Components/shared';
-import { SwitchWalletButton } from '../../Components';
 
 export const Welcome = (): JSX.Element => {
     return (
@@ -18,7 +17,6 @@ export const Welcome = (): JSX.Element => {
                     w="full"
                     wrap="wrap"
                 >
-                    <SwitchWalletButton />
                     <Link
                         href="https://github.com/vechainfoundation/veworld-dapp"
                         isExternal

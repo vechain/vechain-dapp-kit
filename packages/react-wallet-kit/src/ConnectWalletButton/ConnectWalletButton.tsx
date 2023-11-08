@@ -1,27 +1,23 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
-import { Button, Icon, useDisclosure } from '@chakra-ui/react';
-import { WalletIcon } from '@heroicons/react/24/solid';
 import React from 'react';
-import { ConnectWalletModal } from './Components/ConnectWalletModal';
+
+import GlobalFonts from '../../assets/fonts/fonts';
+import { ThemeSelector } from './Components/ThemeSelector';
+import { ThemeProvider } from '../provider/ThemeProvider';
+import { ConnectButtonWithModal } from './Components/ConnectButtonWithModal';
 
 interface ConnectWalletButtonProps {
     buttonProps?: HTMLChakraProps<'button'>;
 }
 
-export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
-    buttonProps,
-}): React.ReactElement => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+export const ConnectWalletButton: React.FC<
+    ConnectWalletButtonProps
+> = (): React.ReactElement => {
     return (
-        <>
-            <ConnectWalletModal isOpen={isOpen} onClose={onClose} />
-            <Button
-                {...buttonProps}
-                leftIcon={<Icon as={WalletIcon} />}
-                onClick={onOpen}
-            >
-                Connect Wallet
-            </Button>
-        </>
+        <ThemeProvider>
+            <GlobalFonts />
+            <ConnectButtonWithModal />
+            <ThemeSelector />
+        </ThemeProvider>
     );
 };

@@ -29,3 +29,13 @@ export const WalletSources: Record<WalletSource, SourceInfo> = {
         logo: Sync2Logo,
     },
 };
+
+// themes.js
+
+export const lightTheme = {
+    mode: 'LIGHT',
+};
+
+export const darkTheme = {
+    mode: 'DARK',
+};
