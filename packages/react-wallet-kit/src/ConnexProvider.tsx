@@ -68,7 +68,7 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     }, [connex.wallet]);
 
     useEffect(() => {
-        const listener = (): void => {
+        const onDisconnected = (): void => {
             setAccount(null);
             setSource(null);
 
@@ -78,10 +78,20 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
             }
         };
 
-        connex.wallet.onDisconnected(listener);
+        const onSourceChanged = (_src: WalletSource | null): void => {
+            setSource(_src);
+
+            if (persistState) {
+                _src ? persist('source', _src) : remove('source');
+            }
+        };
+
+        connex.wallet.onDisconnected(onDisconnected);
+        connex.wallet.onSourceChanged(onSourceChanged);
 
         return () => {
-            connex.wallet.removeOnDisconnected(listener);
+            connex.wallet.removeOnDisconnected(onDisconnected);
+            connex.wallet.removeOnSourceChanged(onSourceChanged);
         };
     }, [connex.wallet, persistState]);
 
@@ -112,14 +122,8 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     const updateSource = useCallback(
         (_source: WalletSource) => {
             connex.wallet.setSource(_source);
-
-            setSource(_source);
-
-            if (persistState) {
-                persist('source', _source);
-            }
         },
-        [connex.wallet, persistState],
+        [connex.wallet],
     );
 
     const updateAccount = useCallback(

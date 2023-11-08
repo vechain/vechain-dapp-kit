@@ -9,6 +9,7 @@ import { createWallet } from './create-wallet';
 import { WalletSources } from './wallet';
 
 const DISCONNECTED = 'disconnected';
+const SOURCE_CHANGED = 'source-changed';
 
 class WalletManager {
     private wallets: Record<string, ConnexWallet | undefined> = {};
@@ -47,11 +48,6 @@ class WalletManager {
 
     connect = (): Promise<ConnectResponse> => this.wallet.connect();
 
-    signIn = (
-        msg?: Connex.Vendor.CertMessage,
-        options?: Connex.Signer.CertOptions,
-    ): Promise<Connex.Vendor.CertResponse> => this.wallet.signIn(msg, options);
-
     disconnect = async (remote = false): Promise<void> => {
         if (!this._source) {
             return;
@@ -63,9 +59,9 @@ class WalletManager {
             await wallet.disconnect?.();
         }
 
-        this.eventEmitter.emit(DISCONNECTED);
-
         this._source = null;
+        this.eventEmitter.emit(SOURCE_CHANGED, null);
+        this.eventEmitter.emit(DISCONNECTED);
     };
 
     signTx = (
@@ -96,6 +92,7 @@ class WalletManager {
         }
 
         this._source = src;
+        this.eventEmitter.emit(SOURCE_CHANGED, src);
     };
 
     getSource = (): WalletSource | null => this._source;
@@ -124,6 +121,16 @@ class WalletManager {
 
     removeOnDisconnected(listener: () => void): void {
         this.eventEmitter.off(DISCONNECTED, listener);
+    }
+
+    onSourceChanged(listener: (source: WalletSource | null) => void): void {
+        this.eventEmitter.on(SOURCE_CHANGED, listener);
+    }
+
+    removeOnSourceChanged(
+        listener: (source: WalletSource | null) => void,
+    ): void {
+        this.eventEmitter.off(SOURCE_CHANGED, listener);
     }
 }
 

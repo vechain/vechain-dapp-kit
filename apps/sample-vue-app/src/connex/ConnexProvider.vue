@@ -58,7 +58,12 @@ export default defineComponent({
             walletState.account = null;
         };
 
+        const onSourceChanged = (source: WalletSource | null) => {
+            walletState.source = source;
+        };
+
         connex.wallet.onDisconnected(onDisconnected);
+        connex.wallet.onSourceChanged(onSourceChanged);
 
         configureThorModal(connex);
 
@@ -68,7 +73,6 @@ export default defineComponent({
 
         const setSource = (source: WalletSource) => {
             connex.wallet.setSource(source);
-            walletState.source = source;
         };
 
         const connect = async (): Promise<ConnectResponse> => {
