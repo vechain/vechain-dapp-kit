@@ -49,7 +49,7 @@ interface ConnectedWalletBodyProps {
 const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
     onClose,
 }) => {
-    const { setAccount, connect } = useWallet();
+    const { connect } = useWallet();
 
     const [connectionLoading, setConnectionLoading] = useState(false);
     const [connectionError, setConnectionError] = useState('');
@@ -59,9 +59,8 @@ const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
             setConnectionError('');
             setConnectionLoading(true);
 
-            const { account } = await connect();
+            await connect();
 
-            setAccount(account);
             onClose();
         } catch (e) {
             if (e instanceof Error) {
@@ -72,13 +71,7 @@ const ConnectedWalletBody: React.FC<ConnectedWalletBodyProps> = ({
         } finally {
             setConnectionLoading(false);
         }
-    }, [
-        connect,
-        onClose,
-        setAccount,
-        setConnectionError,
-        setConnectionLoading,
-    ]);
+    }, [connect, onClose, setConnectionError, setConnectionLoading]);
 
     const _connect = useCallback(() => {
         connectHandler().catch(() => {

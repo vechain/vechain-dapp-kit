@@ -44,6 +44,7 @@
         "@vechain/hardhat-web3": "^0.1.4",
         "@vechain/picasso": "^2.1.1",
         "@vechain/react-wallet-kit": "*",
+        "@vechain/vanilla-wallet-kit": "*",
         "@vechain/wallet-connect": "*",
         "@vechain/wallet-kit": "*",
         "@vechain/web3-providers-connex": "^1.1.2",

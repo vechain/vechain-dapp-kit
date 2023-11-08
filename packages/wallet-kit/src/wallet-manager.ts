@@ -1,23 +1,23 @@
+import { EventEmitter } from 'node:events';
 import type {
     ConnectResponse,
     ConnexOptions,
     ConnexWallet,
-    ConnexWalletManager,
     WalletSource,
 } from './types';
 import { createWallet } from './create-wallet';
 import { WalletSources } from './wallet';
 
-class WalletManager implements ConnexWalletManager {
+const DISCONNECTED = 'disconnected';
+const SOURCE_CHANGED = 'source-changed';
+
+class WalletManager {
     private wallets: Record<string, ConnexWallet | undefined> = {};
 
-    constructor(private readonly connexOptions: ConnexOptions) {}
-
+    private eventEmitter = new EventEmitter();
     private _source: WalletSource | null = null;
 
-    public get source(): WalletSource | null {
-        return this._source;
-    }
+    constructor(private readonly connexOptions: ConnexOptions) {}
 
     private get wallet(): ConnexWallet {
         const source = this._source;
@@ -33,7 +33,11 @@ class WalletManager implements ConnexWalletManager {
             if (!WalletSources.includes(source))
                 throw new Error(`No wallet found for: ${source}`);
 
-            const opts = { ...this.connexOptions, source };
+            const opts = {
+                ...this.connexOptions,
+                source,
+                onDisconnected: () => this.disconnect(true),
+            };
             wallet = createWallet(opts);
 
             this.wallets[source] = wallet;
@@ -44,23 +48,20 @@ class WalletManager implements ConnexWalletManager {
 
     connect = (): Promise<ConnectResponse> => this.wallet.connect();
 
-    signIn = (
-        msg?: Connex.Vendor.CertMessage,
-        options?: Connex.Signer.CertOptions,
-    ): Promise<Connex.Vendor.CertResponse> => this.wallet.signIn(msg, options);
-
-    disconnect = async (): Promise<void> => {
+    disconnect = async (remote = false): Promise<void> => {
         if (!this._source) {
             return;
         }
 
         const wallet = this.wallets[this._source];
 
-        if (wallet) {
+        if (wallet && !remote) {
             await wallet.disconnect?.();
         }
 
         this._source = null;
+        this.eventEmitter.emit(SOURCE_CHANGED, null);
+        this.eventEmitter.emit(DISCONNECTED);
     };
 
     signTx = (
@@ -91,7 +92,46 @@ class WalletManager implements ConnexWalletManager {
         }
 
         this._source = src;
+        this.eventEmitter.emit(SOURCE_CHANGED, src);
     };
+
+    getSource = (): WalletSource | null => this._source;
+
+    getAvailableSources = (): WalletSource[] => {
+        const wallets: WalletSource[] = ['sync2'];
+
+        if (window.vechain) {
+            wallets.push('veworld-extension');
+        }
+
+        if (window.connex) {
+            wallets.push('sync');
+        }
+
+        if (this.connexOptions.walletConnectOptions) {
+            wallets.push('wallet-connect');
+        }
+
+        return wallets;
+    };
+
+    onDisconnected(listener: () => void): void {
+        this.eventEmitter.on(DISCONNECTED, listener);
+    }
+
+    removeOnDisconnected(listener: () => void): void {
+        this.eventEmitter.off(DISCONNECTED, listener);
+    }
+
+    onSourceChanged(listener: (source: WalletSource | null) => void): void {
+        this.eventEmitter.on(SOURCE_CHANGED, listener);
+    }
+
+    removeOnSourceChanged(
+        listener: (source: WalletSource | null) => void,
+    ): void {
+        this.eventEmitter.off(SOURCE_CHANGED, listener);
+    }
 }
 
 export { WalletManager };

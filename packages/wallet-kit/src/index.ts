@@ -1,13 +1,13 @@
 export * from './connex';
 export * from './wallet';
 export * from './constants';
+export * from './wallet-manager';
 
 export type {
     ConnexOptions,
-    ConnexInstance,
     ConnexWallet,
     WalletSource,
+    ConnectResponse,
     WalletConfig,
     BaseWallet,
-    ConnexWalletManager,
 } from './types';

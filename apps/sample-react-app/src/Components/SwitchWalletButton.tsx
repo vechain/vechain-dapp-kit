@@ -14,22 +14,20 @@ export const SwitchWalletButton: React.FC<SwitchWalletButtonProps> = ({
 }): React.ReactElement => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const {
-        accountState: { address, source },
-    } = useWallet();
+    const { account, source } = useWallet();
 
-    if (address && source)
+    if (account && source)
         return (
             <>
                 <AccountDetailModal
-                    address={address}
+                    address={account}
                     isOpen={isOpen}
                     onClose={onClose}
                     source={source}
                 />
                 <AddressButton
                     {...buttonProps}
-                    address={address}
+                    address={account}
                     onClick={onOpen}
                     showCopyIcon={false}
                 />

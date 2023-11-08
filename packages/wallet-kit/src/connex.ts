@@ -2,7 +2,7 @@ import { createNoVendor } from '@vechain/connex/esm/driver';
 import { newThor } from '@vechain/connex-framework/dist/thor';
 import type { DriverNoVendor } from '@vechain/connex-driver';
 import { newVendor } from '@vechain/connex-framework';
-import type { ConnexOptions, ConnexWalletManager } from './types';
+import type { ConnexOptions } from './types';
 import { normalizeGenesisBlock } from './genesis';
 import { FullDriver } from './full-driver';
 import { WalletManager } from './wallet-manager';
@@ -10,7 +10,7 @@ import { WalletManager } from './wallet-manager';
 class MultiWalletConnex {
     public readonly thor: Connex.Thor;
     public readonly vendor: Connex.Vendor;
-    public readonly wallet: ConnexWalletManager;
+    public readonly wallet: WalletManager;
 
     constructor(options: ConnexOptions) {
         const { nodeUrl, genesis } = options;

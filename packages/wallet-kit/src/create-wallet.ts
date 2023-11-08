@@ -11,6 +11,7 @@ import { normalizeGenesisId } from './genesis';
 
 type ICreateWallet = ConnexOptions & {
     source: WalletSource;
+    onDisconnected: () => void;
 };
 
 export const createWallet = ({
