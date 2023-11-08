@@ -18,7 +18,7 @@ import { useCounter } from '../../Hooks/useCounter';
 import { AddressButton } from '../../Components';
 
 export const Counter = (): JSX.Element => {
-    const { accountState } = useWallet();
+    const { account } = useWallet();
     const { count, increment, status, address, error } = useCounter();
     const toast = useToast();
 
@@ -40,9 +40,7 @@ export const Counter = (): JSX.Element => {
         return (
             <Button
                 disabled={
-                    !accountState.address ||
-                    status === 'pending' ||
-                    status === 'in-wallet'
+                    !account || status === 'pending' || status === 'in-wallet'
                 }
                 leftIcon={<Icon as={ArrowUpIcon} />}
                 onClick={incrementCounter}
@@ -50,7 +48,7 @@ export const Counter = (): JSX.Element => {
                 Increment
             </Button>
         );
-    }, [accountState.address, incrementCounter, status]);
+    }, [account, incrementCounter, status]);
 
     const message = useMemo(() => {
         switch (status) {

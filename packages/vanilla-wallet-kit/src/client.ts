@@ -39,6 +39,8 @@ class VechainWalletKitModal {
             this.walletKit.connex.wallet
                 .connect()
                 .then(({ account }) => {
+                    // eslint-disable-next-line no-console
+                    console.log('account connected', account);
                     this.walletKit.account = account;
                 })
                 .catch((error) => {
