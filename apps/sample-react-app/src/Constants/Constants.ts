@@ -1,4 +1,4 @@
-import type { WalletSource } from '@vechain/wallet-kit';
+import type { WalletSource } from '@vechainfoundation/wallet-kit';
 
 export const NODE_URL = 'https://testnet.vechain.org/';
 export const NODE_NETWORK = 'test';

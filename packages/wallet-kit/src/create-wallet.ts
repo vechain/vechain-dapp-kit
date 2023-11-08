@@ -2,7 +2,7 @@ import {
     newWcClient,
     newWcSigner,
     newWeb3Modal,
-} from '@vechain/wallet-connect/dist';
+} from '@vechainfoundation/wallet-connect/dist';
 import { createSync, createSync2 } from '@vechain/connex/esm/signer';
 import type { ConnexOptions, ConnexWallet, WalletSource } from './types';
 import { CertificateBasedWallet } from './wallets/certificate-wallet';

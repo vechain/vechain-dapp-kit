@@ -4,7 +4,7 @@ import {
     ConnectResponse,
     MultiWalletConnex,
     WalletSource,
-} from '@vechain/wallet-kit';
+} from '@vechainfoundation/wallet-kit';
 import type Connex from '@vechain/connex';
 import {
     ConnexSymbol,
@@ -12,8 +12,8 @@ import {
     WalletStateSymbol,
 } from '@/connex/keys';
 import { WalletActions, WalletState } from '@/connex/types';
-import { WalletConnectOptions } from '@vechain/wallet-connect';
-import { configureThorModal } from '@vechain/vanilla-wallet-kit';
+import { WalletConnectOptions } from '@vechainfoundation/wallet-connect';
+import { configureThorModal } from '@vechainfoundation/vanilla-wallet-kit';
 
 const initWallets = (hasWcOptions: boolean) => {
     const wallets: WalletSource[] = ['sync2'];

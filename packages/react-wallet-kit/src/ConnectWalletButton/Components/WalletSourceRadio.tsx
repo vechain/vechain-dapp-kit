@@ -1,6 +1,6 @@
 import { HStack, Image, Text, VStack } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
-import type { WalletSource } from '@vechain/wallet-kit';
+import type { WalletSource } from '@vechainfoundation/wallet-kit';
 import { useWallet } from '../../ConnexProvider';
 import { WalletSources } from '../Constants';
 import { RadioCard } from './RadioCard';

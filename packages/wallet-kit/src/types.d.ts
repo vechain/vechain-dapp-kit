@@ -1,5 +1,5 @@
 import type { Connex1 } from '@vechain/connex/esm/signer';
-import type { WalletConnectOptions } from '@vechain/wallet-connect';
+import type { WalletConnectOptions } from '@vechainfoundation/wallet-connect';
 
 declare global {
     interface Window {

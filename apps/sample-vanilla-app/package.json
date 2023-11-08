@@ -13,7 +13,7 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "@vechain/vanilla-wallet-kit": "*"
+        "@vechainfoundation/vanilla-wallet-kit": "*"
     },
     "devDependencies": {
         "parcel": "^2.10.2"

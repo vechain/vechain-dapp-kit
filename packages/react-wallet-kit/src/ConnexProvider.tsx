@@ -6,11 +6,11 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-import type { WalletSource } from '@vechain/wallet-kit';
-import { MultiWalletConnex } from '@vechain/wallet-kit';
+import type { WalletSource } from '@vechainfoundation/wallet-kit';
+import { MultiWalletConnex } from '@vechainfoundation/wallet-kit';
 import type { ConnexContext, ConnexProviderOptions } from './types';
 
-const STORAGE_PREFIX = '@vechain/wallet-kit';
+const STORAGE_PREFIX = '@vechainfoundation/wallet-kit';
 const persist = (key: 'source' | 'account', value: string): void => {
     localStorage.setItem(`${STORAGE_PREFIX}${key}`, value);
 };

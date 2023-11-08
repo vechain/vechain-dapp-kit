@@ -17,7 +17,7 @@ import {
 import type { JSX } from 'react';
 import React from 'react';
 import { Bars3Icon } from '@heroicons/react/24/solid';
-import { useWallet } from '@vechain/react-wallet-kit';
+import { useWallet } from '@vechainfoundation/react-wallet-kit';
 import { AccountDetailBody } from '../AccountDetailBody';
 import { SwitchWalletButton } from '../SwitchWalletButton';
 

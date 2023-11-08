@@ -35,7 +35,7 @@ const onDisconnected = () => {
 -   Optional: Configure wallet connect options
 
 ```typescript
-import type { WalletConnectOptions } from '@vechain/wallet-connect';
+import type { WalletConnectOptions } from '@vechainfoundation/wallet-connect';
 
 const walletConnectOptions: WalletConnectOptions = {
     projectId: '<PROJECT_ID>', // Create your project here: https://cloud.walletconnect.com/sign-up

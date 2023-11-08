@@ -19,9 +19,9 @@
         "@vechain/connex": "2.1.0",
         "@vechain/connex-framework": "2.1.0",
         "@vechain/picasso": "^2.1.1",
-        "@vechain/vanilla-wallet-kit": "*",
-        "@vechain/wallet-connect": "*",
-        "@vechain/wallet-kit": "*",
+        "@vechainfoundation/vanilla-wallet-kit": "*",
+        "@vechainfoundation/wallet-connect": "*",
+        "@vechainfoundation/wallet-kit": "*",
         "thor-devkit": "^2.0.9"
     },
     "devDependencies": {

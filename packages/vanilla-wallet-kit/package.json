@@ -24,7 +24,7 @@
         "watch": "tsup --watch"
     },
     "dependencies": {
-        "@vechain/wallet-kit": "*",
+        "@vechainfoundation/wallet-kit": "*",
         "@wagmi/core": "^1.4.5",
         "@web3modal/ethereum": "^2.7.1",
         "@web3modal/html": "^2.7.1",

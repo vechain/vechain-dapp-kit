@@ -1,4 +1,4 @@
-import { ConnectResponse, WalletSource } from '@vechain/wallet-kit';
+import { ConnectResponse, WalletSource } from '@vechainfoundation/wallet-kit';
 
 type WalletState = {
     availableWallets: WalletSource[];
