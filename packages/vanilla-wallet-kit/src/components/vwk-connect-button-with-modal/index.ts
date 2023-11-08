@@ -2,6 +2,7 @@ import type { TemplateResult } from 'lit';
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
+import { SourceInfo } from '../../constants';
 
 @customElement('vwk-connect-button-with-modal')
 export class ConnectButtonWithModal extends LitElement {
@@ -18,7 +19,7 @@ export class ConnectButtonWithModal extends LitElement {
     open = false;
 
     @property({ type: Function })
-    onSourceClick?: undefined;
+    onSourceClick?: (e: SourceInfo) => void;
 
     override render(): TemplateResult {
         return html`
