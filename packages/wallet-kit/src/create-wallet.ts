@@ -1,8 +1,8 @@
 import {
-    newWcClient,
+    createWcClient,
+    createWcModal,
     newWcSigner,
-    newWeb3Modal,
-} from '@vechainfoundation/wallet-connect/dist';
+} from '@vechainfoundation/wallet-connect';
 import { createSync, createSync2 } from '@vechain/connex/esm/signer';
 import type { ConnexOptions, ConnexWallet, WalletSource } from './types';
 import { CertificateBasedWallet } from './wallets/certificate-wallet';
@@ -54,14 +54,14 @@ export const createWallet = ({
 
             const { projectId, metadata } = walletConnectOptions;
 
-            const wcClient = newWcClient({
+            const wcClient = createWcClient({
                 projectId,
                 metadata,
             });
 
             const web3Modal = customWcModal
                 ? customWcModal
-                : newWeb3Modal(projectId);
+                : createWcModal(projectId);
 
             const wallet = newWcSigner({
                 genesisId,
