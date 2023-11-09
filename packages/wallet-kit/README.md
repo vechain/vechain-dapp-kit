@@ -6,7 +6,6 @@
 -   Connex is designed to play nice with one wallet at a time, this library provides a layer on top of Connex to easily
     allow interaction with all wallets.
 -   Easy setup for wallet connect.
--   Create your own
 
 ## Installation
 
