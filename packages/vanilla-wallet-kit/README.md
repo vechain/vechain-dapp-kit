@@ -27,7 +27,7 @@ yarn add @vechainfoundation/vanilla-wallet-kit
 -   In your root `index.ts`
 
 ```typescript
-import type { WalletConnectOptions } from '@vechainfoundation/wallet-connect';
+import type { WalletConnectOptions } from '@vechainfoundation/wallet-kit';
 import type { Options } from '@vechain/connex';
 import { configureThorModal } from '@vechainfoundation/vanilla-wallet-kit';
 

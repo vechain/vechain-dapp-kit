@@ -20,7 +20,6 @@
         "@vechain/connex-framework": "2.1.0",
         "@vechain/picasso": "^2.1.1",
         "@vechainfoundation/vanilla-wallet-kit": "*",
-        "@vechainfoundation/wallet-connect": "*",
         "@vechainfoundation/wallet-kit": "*",
         "react-icons": "^4.11.0",
         "styled-components": "^6.1.0",

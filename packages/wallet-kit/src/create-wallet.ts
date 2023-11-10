@@ -1,9 +1,5 @@
-import {
-    createWcClient,
-    createWcModal,
-    newWcSigner,
-} from '@vechainfoundation/wallet-connect';
 import { createSync, createSync2 } from '@vechain/connex/esm/signer';
+import { createWcClient, createWcModal, newWcSigner } from './wallet-connect';
 import type { ConnexOptions, ConnexWallet, WalletSource } from './types';
 import { CertificateBasedWallet } from './wallets/certificate-wallet';
 import { WCWallet } from './wallets/wc-wallet';

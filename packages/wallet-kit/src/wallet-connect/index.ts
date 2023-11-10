@@ -9,6 +9,8 @@ export type {
     ResolvedSignClient,
     WCClient,
     WCModal,
+    OpenOptions,
+    SubscribeModalState,
 } from './types';
 
 export { newWcSigner, createWcModal, createWcClient };

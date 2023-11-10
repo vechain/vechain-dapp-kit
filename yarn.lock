@@ -6158,7 +6158,7 @@
     thor-devkit "^2.0.5"
     validator-ts "^0.9.1"
 
-"@vechain/connex-types@2.1.0", "@vechain/connex-types@^2.0.2", "@vechain/connex-types@^2.1.0":
+"@vechain/connex-types@^2.0.2", "@vechain/connex-types@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@vechain/connex-types/-/connex-types-2.1.0.tgz#5a4d97554f659532a0ec00a09e5cf25244c55c8a"
   integrity sha512-8NtOHAO+idy5llrYEmuArWTkwYbwG/FEWqkRScz1f6QuaGvkkj+93IuAnp9E89Pi+kV3t2DKBTaF6mpPjjTmHg==

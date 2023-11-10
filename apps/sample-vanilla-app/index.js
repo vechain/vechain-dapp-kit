@@ -1,6 +1,6 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable no-undef */
-import { configureThorModal } from '@vechainfoundation/vanilla-wallet-kit';
+import { DAppKit } from '@vechainfoundation/vanilla-wallet-kit';
 
 const walletConnectOptions = {
     projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
@@ -18,4 +18,7 @@ const vechainWalletKitOptions = {
     walletConnectOptions,
 };
 
-configureThorModal(vechainWalletKitOptions);
+const connex = DAppKit.configure(vechainWalletKitOptions);
+
+// eslint-disable-next-line no-console
+console.log(`Connex configured`, connex.thor.genesis.id);

@@ -1,6 +1,6 @@
 import type { Connex1 } from '@vechain/connex/esm/signer';
-import type { WalletConnectOptions } from '@vechainfoundation/wallet-connect';
-import type { WCModal } from '@vechainfoundation/wallet-connect/src';
+import type { WalletConnectOptions } from '@vechainfoundation/wallet-kit';
+import type { WCModal } from './wallet-connect';
 
 declare global {
     interface Window {

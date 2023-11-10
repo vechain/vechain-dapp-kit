@@ -2,7 +2,7 @@
 import { defineComponent, provide, reactive, readonly, toRefs } from 'vue';
 import {
     ConnectResponse,
-    MultiWalletConnex,
+    WalletConnectOptions,
     WalletSource,
 } from '@vechainfoundation/wallet-kit';
 import type Connex from '@vechain/connex';
@@ -12,8 +12,7 @@ import {
     WalletStateSymbol,
 } from '@/connex/keys';
 import { WalletActions, WalletState } from '@/connex/types';
-import { WalletConnectOptions } from '@vechainfoundation/wallet-connect';
-import { configureThorModal } from '@vechainfoundation/vanilla-wallet-kit';
+import { DAppKit } from '@vechainfoundation/vanilla-wallet-kit';
 
 const initWallets = (hasWcOptions: boolean) => {
     const wallets: WalletSource[] = ['sync2'];
@@ -51,7 +50,7 @@ export default defineComponent({
             account: null,
         });
 
-        const connex = new MultiWalletConnex({
+        const connex = DAppKit.configure({
             nodeUrl: 'https://mainnet.vechain.org/',
             walletConnectOptions,
         });
@@ -67,8 +66,6 @@ export default defineComponent({
 
         connex.wallet.onDisconnected(onDisconnected);
         connex.wallet.onSourceChanged(onSourceChanged);
-
-        configureThorModal(connex);
 
         const setAccount = (addr: string) => {
             walletState.account = addr;

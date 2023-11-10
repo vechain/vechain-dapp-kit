@@ -42,7 +42,6 @@
         "@vechain/web3-providers-connex": "^1.1.2",
         "@vechainfoundation/react-wallet-kit": "*",
         "@vechainfoundation/vanilla-wallet-kit": "*",
-        "@vechainfoundation/wallet-connect": "*",
         "@vechainfoundation/wallet-kit": "*",
         "buffer": "^6.0.3",
         "crypto-browserify": "^3.12.0",

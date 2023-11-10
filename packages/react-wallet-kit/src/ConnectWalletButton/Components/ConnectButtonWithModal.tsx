@@ -14,7 +14,7 @@ export const ConnectButtonWithModal = ({
 }: ConnectButtonWithModalProps) => {
     const { theme } = useContext(ThemeContext);
 
-    const handleSourceClick = (e: SourceInfo) => {
+    const handleSourceClick = (e: SourceInfo): void => {
         _connect(e.id);
     };
 

@@ -161,15 +161,17 @@ export const newWcSigner = ({
             }
 
             return await new Promise((resolve, reject) => {
-                web3Modal.subscribeModal((ev) => {
+                const endSubscription = web3Modal.subscribeModal((ev) => {
                     if (!ev.open) {
                         reject(new Error('User closed modal'));
+                        endSubscription();
                     }
                 });
 
                 approval()
                     .then((newSession) => {
                         session = newSession;
+                        endSubscription();
                         resolve(newSession);
                     })
                     .catch(reject);
@@ -187,7 +189,7 @@ export const newWcSigner = ({
         });
 
         _client.on('session_delete', () => {
-            if (onDisconnected) onDisconnected();
+            onDisconnected();
             disconnect().catch(() => {
                 throw new Error('Failed to disconnect');
             });

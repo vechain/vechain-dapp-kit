@@ -47,7 +47,7 @@ export interface WalletConnectOptions {
  * Options for the {@link WCModal}
  * @param open - Whether the modal is open
  */
-interface SubscribeModalState {
+export interface SubscribeModalState {
     open: boolean;
 }
 
@@ -55,7 +55,7 @@ interface SubscribeModalState {
  * Options for opening the {@link WCModal}
  * @param uri - The WalletConnect URI to display / open
  */
-interface OpenOptions {
+export interface OpenOptions {
     uri: string;
 }
 

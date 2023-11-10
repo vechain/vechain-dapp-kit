@@ -1,9 +1,11 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import type { WalletManager } from '@vechainfoundation/wallet-kit';
 import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
 import type { SourceInfo } from '../../constants';
 import { Colors } from '../../constants';
+import { DAppKit } from '../../client';
 
 @customElement('vwk-source-card')
 export class SourceCard extends LitElement {
@@ -54,11 +56,26 @@ export class SourceCard extends LitElement {
     @property()
     source?: SourceInfo = undefined;
 
+    get wallet(): WalletManager {
+        return DAppKit.connex.wallet;
+    }
+
     handleSourceClick(): void {
         this.onClick?.(this.source);
-        dispatchEvent(
-            new CustomEvent('vwk-source-card-clicked', { detail: this.source }),
-        );
+
+        if (this.source) {
+            this.wallet.setSource(this.source.id);
+            this.wallet
+                .connect()
+                .then((res) => {
+                    // eslint-disable-next-line no-console
+                    console.log('connected', res);
+                })
+                .catch((e) => {
+                    // eslint-disable-next-line no-console
+                    console.error(e);
+                });
+        }
     }
 
     override render(): TemplateResult {
