@@ -9,14 +9,14 @@ const genesisIds = [
 ];
 
 const chains = genesisIds.map((id) => {
-    return id.slice(-32);
+    return `vechain:${id.slice(-32)}`;
 });
 
 /**
  * Creates a new WalletConnectModal instance
  * @param projectId - Your WalletConnect project ID
  */
-export const newWeb3Modal = (projectId: string): WCModal => {
+export const createWcModal = (projectId: string): WCModal => {
     const cached = _cachedModals[projectId];
 
     if (cached) {
