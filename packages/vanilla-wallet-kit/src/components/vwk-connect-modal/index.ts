@@ -11,10 +11,7 @@ import {
 } from '../../assets';
 import type { SourceInfo } from '../../constants';
 import { Colors, WalletSources } from '../../constants';
-import {
-    dispatchCustomEvent,
-    subscribeToCustomEvent,
-} from '../../utils/events';
+import { dispatchCustomEvent, subscribeToCustomEvent } from '../../utils';
 import { DAppKit } from '../../client';
 
 @customElement('vwk-connect-modal')

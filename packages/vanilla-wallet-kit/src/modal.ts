@@ -5,7 +5,7 @@ import type {
     SubscribeModalState,
     WCModal,
 } from '@vechainfoundation/wallet-kit';
-import { dispatchCustomEvent, subscribeToCustomEvent } from './utils/events';
+import { dispatchCustomEvent, subscribeToCustomEvent } from './utils';
 
 const MODAL_STATE_EVENT = 'vwk-modal-state-change';
 
