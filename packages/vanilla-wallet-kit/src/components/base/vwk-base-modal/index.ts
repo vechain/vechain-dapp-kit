@@ -32,7 +32,7 @@ export class Modal extends LitElement {
 
         .modal.DARK {
             background-color: ${Colors.Dark};
-            color: ${Colors.LightGray};
+            color: ${Colors.LightGrey};
         }
 
         @media (max-width: 600px) {

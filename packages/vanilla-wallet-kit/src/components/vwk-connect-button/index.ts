@@ -21,13 +21,13 @@ export class ConnectButton extends LitElement {
         }
 
         button.LIGHT {
-            background-color: ${Colors.LightGray};
+            background-color: ${Colors.LightGrey};
             color: ${Colors.Dark};
         }
 
         button.DARK {
             background-color: ${Colors.Dark};
-            color: ${Colors.LightGray};
+            color: ${Colors.LightGrey};
         }
     `;
 

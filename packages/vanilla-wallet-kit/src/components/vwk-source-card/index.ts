@@ -26,7 +26,7 @@ export class SourceCard extends LitElement {
         }
 
         .card.LIGHT {
-            background-color: ${Colors.LightGray};
+            background-color: ${Colors.LightGrey};
             color: ${Colors.Dark};
         }
 

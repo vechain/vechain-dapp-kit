@@ -16,7 +16,7 @@
         "lint": "turbo run lint",
         "prepare": "husky install",
         "purge": "npx turbo@latest run purge && rm -rf node_modules",
-        "reinstall": "yarn clean && yarn && yarn run build:deps",
+        "reinstall": "yarn clean && yarn purge && yarn && yarn run build:deps",
         "test": "turbo run test"
     },
     "husky": {
