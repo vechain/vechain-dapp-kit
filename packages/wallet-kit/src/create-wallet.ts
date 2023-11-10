@@ -59,9 +59,7 @@ export const createWallet = ({
                 metadata,
             });
 
-            const web3Modal = customWcModal
-                ? customWcModal
-                : createWcModal(projectId);
+            const web3Modal = customWcModal ?? createWcModal(projectId);
 
             const wallet = newWcSigner({
                 genesisId,

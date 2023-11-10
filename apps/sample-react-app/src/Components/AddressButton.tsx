@@ -23,7 +23,6 @@ export const AddressButton: React.FC<AddressButtonProps> = ({
 
     const onClickHandler = useCallback(
         (e: React.MouseEvent<HTMLButtonElement>): void => {
-            // console.log(onClick)
             if (onClick) onClick(e);
             if (showCopyIcon) onCopy();
         },

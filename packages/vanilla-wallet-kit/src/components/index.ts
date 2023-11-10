@@ -11,3 +11,4 @@ export * from './vwk-connect-button';
 export * from './vwk-connect-button-with-modal';
 export * from './vwk-source-card';
 export * from './vwk-fonts';
+export * from './vwk-wallet-connect-qrcode';
