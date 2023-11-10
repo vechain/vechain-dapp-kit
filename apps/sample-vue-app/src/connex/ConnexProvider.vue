@@ -1,6 +1,10 @@
 <script lang="ts">
 import { defineComponent, provide, reactive, readonly, toRefs } from 'vue';
-import { ConnectResponse, WalletSource } from '@vechainfoundation/wallet-kit';
+import {
+    ConnectResponse,
+    WalletConnectOptions,
+    WalletSource,
+} from '@vechainfoundation/wallet-kit';
 import type Connex from '@vechain/connex';
 import {
     ConnexSymbol,
@@ -8,7 +12,6 @@ import {
     WalletStateSymbol,
 } from '@/connex/keys';
 import { WalletActions, WalletState } from '@/connex/types';
-import { WalletConnectOptions } from '@vechainfoundation/wallet-connect';
 import { DAppKit } from '@vechainfoundation/vanilla-wallet-kit';
 
 const initWallets = (hasWcOptions: boolean) => {
