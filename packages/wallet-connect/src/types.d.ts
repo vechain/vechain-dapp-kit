@@ -19,7 +19,7 @@ export type WCSigner = Connex.Signer & {
     genesisId: string;
 
     /**
-     * Connects to the WalletConnect session
+     * Connects to the Wallet and return the account address
      */
     connect: () => Promise<string>;
 };
@@ -32,7 +32,7 @@ export interface WCClient {
 }
 
 /**
- * Options for the newWcClient function
+ * Options for the createWcClient function
  * @param projectId - Your WalletConnect project ID
  * @param relayUrl - The URL of your WalletConnect relay server
  * @param metadata - The metadata of your WalletConnect dApp
@@ -43,14 +43,28 @@ export interface WalletConnectOptions {
     metadata: SignClientTypes.Options['metadata'];
 }
 
+/**
+ * Options for the {@link WCModal}
+ * @param open - Whether the modal is open
+ */
 interface SubscribeModalState {
     open: boolean;
 }
 
+/**
+ * Options for opening the {@link WCModal}
+ * @param uri - The WalletConnect URI to display / open
+ */
 interface OpenOptions {
     uri: string;
 }
 
+/**
+ * WCModal is a modal that can be used to display a WalletConnect QR code/ URI
+ * @param openModal - A function to open the modal
+ * @param closeModal - A function to close the modal
+ * @param subscribeModal - A function to subscribe to modal state changes
+ */
 export interface WCModal {
     openModal: (options: OpenOptions) => Promise<void>;
     closeModal: () => void;
@@ -61,14 +75,14 @@ export interface WCModal {
 
 /**
  * Options for the {@link WCSigner}
- * @param wcClient - A function to get the initialized WalletConnect SignClient
- * @param web3Modal - A WalletConnectModal instance
+ * @param wcClient - See {@link WCClient}
+ * @param web3Modal - See {@link WCModal}
  * @param onDisconnected - (optional) A callback that will be called when the session is disconnected
  * @param genesisId - The genesis ID of the VeChain network you want to connect to
  */
 export interface WCSignerOptions {
     wcClient: WCClient;
     web3Modal: WCModal;
-    onDisconnected?: () => void;
+    onDisconnected: () => void;
     genesisId: string;
 }

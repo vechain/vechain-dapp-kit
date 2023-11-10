@@ -1,6 +1,6 @@
 import { newWcSigner } from './signer';
-import { newWeb3Modal } from './web3-modal';
-import { newWcClient } from './client';
+import { createWcModal } from './web3-modal';
+import { createWcClient } from './client';
 
 export type {
     WCSigner,
@@ -11,4 +11,4 @@ export type {
     WCModal,
 } from './types';
 
-export { newWcSigner, newWeb3Modal, newWcClient };
+export { newWcSigner, createWcModal, createWcClient };

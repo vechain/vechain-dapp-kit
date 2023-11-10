@@ -13,6 +13,11 @@ interface SessionAccount {
     topic: string;
 }
 
+/**
+ * Creates a new WalletConnect signer
+ * @param options - The signer options. See {@link WCSignerOptions}
+ * @returns A new {@link WCSigner}
+ */
 export const newWcSigner = ({
     genesisId,
     wcClient,

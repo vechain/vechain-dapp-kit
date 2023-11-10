@@ -7,7 +7,12 @@ import type {
 
 const _cachedClients: Record<string, WCClient | undefined> = {};
 
-export const newWcClient = ({
+/**
+ * Create a new wallet connect sign client. Clients are cached by project id.
+ * @param projectId - wallet connect dApp project id
+ * @param metadata - dApp metadata
+ */
+export const createWcClient = ({
     projectId,
     metadata,
 }: WalletConnectOptions): WCClient => {
