@@ -2,7 +2,8 @@ import type { TemplateResult } from 'lit';
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
-import { SourceInfo } from '../../constants';
+import type { SourceInfo } from '../../constants';
+import { DAppKit } from '../../client';
 
 @customElement('vwk-connect-button-with-modal')
 export class ConnectButtonWithModal extends LitElement {
@@ -43,7 +44,9 @@ export class ConnectButtonWithModal extends LitElement {
     }
 
     private handleOpen = (): void => {
-        this.open = true;
+        DAppKit.connex.wallet.disconnect().finally(() => {
+            this.open = true;
+        });
     };
 
     private handleClose = (): void => {
