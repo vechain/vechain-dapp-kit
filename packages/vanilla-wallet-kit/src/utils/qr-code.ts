@@ -53,7 +53,7 @@ function getMatrix(
 }
 
 export const QrCodeUtil = {
-    generate(uri: string, size: number, logoSize: number): TemplateResult {
+    generate(uri: string, size: number, logoSize: number): TemplateResult[] {
         const dotColor = '#141414';
         const edgeColor = '#ffffff';
         const dots: TemplateResult[] = [];
