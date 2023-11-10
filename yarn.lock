@@ -6158,7 +6158,7 @@
     thor-devkit "^2.0.5"
     validator-ts "^0.9.1"
 
-"@vechain/connex-types@2.1.0", "@vechain/connex-types@^2.0.2", "@vechain/connex-types@^2.1.0":
+"@vechain/connex-types@^2.0.2", "@vechain/connex-types@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@vechain/connex-types/-/connex-types-2.1.0.tgz#5a4d97554f659532a0ec00a09e5cf25244c55c8a"
   integrity sha512-8NtOHAO+idy5llrYEmuArWTkwYbwG/FEWqkRScz1f6QuaGvkkj+93IuAnp9E89Pi+kV3t2DKBTaF6mpPjjTmHg==
@@ -6221,6 +6221,15 @@
     eventemitter3 "^4.0.4"
     thor-devkit "^2.0.4"
     web3-utils "^1.7.3"
+
+"@vechainfoundation/wallet-connect@*":
+  version "0.0.1"
+  resolved "https://npm.pkg.github.com/download/@vechainfoundation/wallet-connect/0.0.1/2cec7544e6c9e4adeb98b02332e10957ebd8bb7e#2cec7544e6c9e4adeb98b02332e10957ebd8bb7e"
+  integrity sha512-tdd5HrYCnGDRoMEwbBsJyuW6AUflbZohgHMXUFoHF459WS9kVVT1NL8k1a5H0TVELZJcdiT9OrRPuQkbLVBLNg==
+  dependencies:
+    "@walletconnect/modal" "2.6.2"
+    "@walletconnect/sign-client" "2.10.2"
+    "@walletconnect/utils" "2.10.2"
 
 "@vercel/style-guide@^4.0.2":
   version "4.0.2"

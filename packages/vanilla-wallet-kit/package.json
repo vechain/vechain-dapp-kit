@@ -17,14 +17,13 @@
     "scripts": {
         "build": "tsup",
         "clean": "rm -rf dist .turbo",
-        "dev": "parcel index.html",
+        "dev": "parcel --no-cache index.html",
         "format": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
         "lint": "eslint 'src/**/*.ts'",
         "purge": "yarn clean && rm -rf node_modules",
         "watch": "tsup --watch"
     },
     "dependencies": {
-        "@vechainfoundation/wallet-connect": "*",
         "@vechainfoundation/wallet-kit": "*",
         "@wagmi/core": "^1.4.5",
         "@web3modal/ethereum": "^2.7.1",

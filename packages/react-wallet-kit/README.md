@@ -37,7 +37,7 @@ const nodeOptions: Omit<Options, 'signer'> = {
 -   Optional: Configure wallet connect options
 
 ```typescript
-import type { WalletConnectOptions } from '@vechainfoundation/wallet-connect';
+import type { WalletConnectOptions } from '@vechainfoundation/wallet-kit';
 
 const walletConnectOptions: WalletConnectOptions = {
     projectId: '<PROJECT_ID>', // Create your project here: https://cloud.walletconnect.com/sign-up
