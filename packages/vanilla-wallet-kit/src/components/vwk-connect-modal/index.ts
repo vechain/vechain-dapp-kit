@@ -15,6 +15,7 @@ import {
     dispatchCustomEvent,
     subscribeToCustomEvent,
 } from '../../utils/events';
+import { DAppKit } from '../../client';
 
 @customElement('vwk-connect-modal')
 export class ConnectModal extends LitElement {
@@ -109,6 +110,14 @@ export class ConnectModal extends LitElement {
         });
     }
 
+    private get availableSources(): SourceInfo[] {
+        const availableSources = DAppKit.connex.wallet.getAvailableSources();
+
+        return WalletSources.filter((src) => {
+            return availableSources.includes(src.id);
+        });
+    }
+
     @property({ type: Function })
     onClose: () => void = () => nothing;
 
@@ -156,7 +165,7 @@ export class ConnectModal extends LitElement {
                                   .walletConnectQRcode=${this
                                       .walletConnectQRcode}
                               ></vwk-wallet-connect-qrcode>`
-                            : WalletSources.map(
+                            : this.availableSources.map(
                                   (source) =>
                                       html` <vwk-source-card
                                           .source=${source}
