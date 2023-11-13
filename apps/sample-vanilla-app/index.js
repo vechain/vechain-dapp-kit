@@ -1,6 +1,6 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable no-undef */
-import { DAppKit } from '@vechainfoundation/vanilla-wallet-kit';
+import { DAppKit } from '@vechainfoundation/dapp-kit-ui';
 
 const walletConnectOptions = {
     projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',

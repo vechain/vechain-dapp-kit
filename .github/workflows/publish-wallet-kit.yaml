@@ -17,7 +17,7 @@ jobs:
       packages: write
     strategy:
       matrix:
-        package: [ wallet-kit,react-wallet-kit,vanilla-wallet-kit ]
+        package: [ dapp-kit, dapp-kit-ui, dapp-kit-react ]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3

@@ -5,7 +5,7 @@ import {
     ConnectWalletModal,
     useWallet,
     useWalletModal,
-} from '@vechainfoundation/react-wallet-kit';
+} from '@vechainfoundation/dapp-kit-react';
 import { WalletIcon } from '@heroicons/react/24/solid';
 import { AccountDetailModal } from './AccountDetailModal';
 import { AddressButton } from './AddressButton';

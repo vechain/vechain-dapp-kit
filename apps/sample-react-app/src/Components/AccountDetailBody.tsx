@@ -1,6 +1,6 @@
 import { Button, HStack, Image, Text, VStack } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
-import type { WalletSource } from '@vechainfoundation/wallet-kit';
+import type { WalletSource } from '@vechainfoundation/dapp-kit';
 import { WalletSources } from '../Constants';
 import { AddressButton } from './AddressButton';
 
