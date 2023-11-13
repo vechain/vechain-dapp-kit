@@ -1,7 +1,8 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Colors, Theme, ThemeMode } from '../../constants';
+import type { Theme, ThemeMode } from '../../constants';
+import { Colors } from '../../constants';
 import { DarkCopySvg, LightCopySvg, WalletConnectLogo } from '../../assets';
 import { QrCodeUtil } from '../../utils';
 
@@ -72,9 +73,9 @@ export class WalletConnectQrCode extends LitElement {
     `;
 
     @property()
-    mode = ThemeMode.Light;
+    mode: ThemeMode = 'LIGHT';
     @property()
-    theme = Theme.Default;
+    theme: Theme = 'DEFAULT';
     @property()
     walletConnectQRcode?: string = undefined;
 
@@ -91,7 +92,7 @@ export class WalletConnectQrCode extends LitElement {
                           @click=${this.onCopy}
                       >
                           <div class="icon">
-                              ${this.mode === ThemeMode.Light
+                              ${this.mode === 'LIGHT'
                                   ? LightCopySvg
                                   : DarkCopySvg}
                           </div>

@@ -2,8 +2,8 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { OpenOptions } from '@vechainfoundation/wallet-kit';
-import type { SourceInfo } from '../../constants';
-import { Colors, Theme, ThemeMode, WalletSources } from '../../constants';
+import type { SourceInfo, Theme, ThemeMode } from '../../constants';
+import { Colors, WalletSources } from '../../constants';
 import {
     DarkChevronLeftSvg,
     DarkCloseSvg,
@@ -89,9 +89,9 @@ export class ConnectModal extends LitElement {
     @property({ type: Function })
     onSourceClick?: (source?: SourceInfo) => void = undefined;
     @property()
-    mode = ThemeMode.Light;
+    mode: ThemeMode = 'LIGHT';
     @property()
-    theme = Theme.Default;
+    theme: Theme = 'DEFAULT';
     @property()
     walletConnectQRcode?: string = undefined;
 
@@ -145,7 +145,7 @@ export class ConnectModal extends LitElement {
                                   class="icon back-icon ${this.mode}"
                                   @click=${this.onBack}
                               >
-                                  ${this.mode === ThemeMode.Light
+                                  ${this.mode === 'LIGHT'
                                       ? LightChevronLeftSvg
                                       : DarkChevronLeftSvg}
                               </div>`
@@ -156,11 +156,7 @@ export class ConnectModal extends LitElement {
                             class="icon close-icon ${this.mode}"
                             @click=${this.handleClose}
                     >
-                        ${
-                            this.mode === ThemeMode.Light
-                                ? LightCloseSvg
-                                : DarkCloseSvg
-                        }
+                        ${this.mode === 'LIGHT' ? LightCloseSvg : DarkCloseSvg}
                     </div>
                 </div>
                 <div class="modal-body">

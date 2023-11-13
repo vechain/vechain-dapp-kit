@@ -1,8 +1,3 @@
-export const ThemeMode = {
-    Light: 'LIGHT',
-    Dark: 'DARK',
-};
+export type ThemeMode = 'LIGHT' | 'DARK';
 
-export const Theme = {
-    Default: 'DEFAULT',
-};
+export type Theme = 'DEFAULT';

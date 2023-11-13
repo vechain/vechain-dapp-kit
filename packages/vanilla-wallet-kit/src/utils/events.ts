@@ -1,5 +1,5 @@
 import type { OpenOptions } from '@vechainfoundation/wallet-kit';
-import type { KitTheme } from './theme';
+import type { ThemeMode } from '../constants';
 
 export type EventTypes =
     | 'vwk-open-wc-modal'
@@ -7,14 +7,16 @@ export type EventTypes =
     | 'vwk-open-wallet-modal'
     | 'vwk-close-wallet-modal';
 
-interface ThemeOptions {
-    theme?: KitTheme;
-}
+type ThemeOptions =
+    | undefined
+    | {
+          theme?: ThemeMode;
+      };
 
 export interface EventArgs {
     'vwk-close-wc-modal': undefined;
     'vwk-open-wc-modal': OpenOptions & ThemeOptions;
-    'vwk-open-wallet-modal': ThemeOptions | undefined;
+    'vwk-open-wallet-modal': ThemeOptions;
     'vwk-close-wallet-modal': undefined;
 }
 

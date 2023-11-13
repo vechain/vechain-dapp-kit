@@ -1,7 +1,8 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Colors, Theme, ThemeMode } from '../../../constants';
+import type { Theme, ThemeMode } from '../../../constants';
+import { Colors } from '../../../constants';
 
 @customElement('vwk-base-modal')
 export class Modal extends LitElement {
@@ -58,9 +59,9 @@ export class Modal extends LitElement {
     @property({ type: Boolean })
     open = false;
     @property()
-    mode = ThemeMode.Light;
+    mode: ThemeMode = 'LIGHT';
     @property()
-    theme = Theme.Default;
+    theme: Theme = 'DEFAULT';
 
     @property({ type: Function })
     onClose = (): null => null;

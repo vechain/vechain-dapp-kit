@@ -1,8 +1,7 @@
 import type { TemplateResult } from 'lit';
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { SourceInfo } from '../../constants';
-import { Theme, ThemeMode } from '../../constants';
+import type { SourceInfo, Theme, ThemeMode } from '../../constants';
 import { DAppKit } from '../../client';
 
 @customElement('vwk-connect-button-with-modal')
@@ -10,11 +9,11 @@ export class ConnectButtonWithModal extends LitElement {
     @property()
     override title = 'Connect Wallet';
 
-    @property({ type: ThemeMode })
-    mode = ThemeMode.Light;
+    @property({ type: String })
+    mode: ThemeMode = 'LIGHT';
 
-    @property({ type: Theme })
-    theme = Theme.Default;
+    @property({ type: String })
+    theme: Theme = 'DEFAULT';
 
     @property({ type: Boolean })
     open = false;

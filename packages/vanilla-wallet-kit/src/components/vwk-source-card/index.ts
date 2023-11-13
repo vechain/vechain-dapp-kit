@@ -2,8 +2,8 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechainfoundation/wallet-kit';
-import type { SourceInfo } from '../../constants';
-import { Colors, Theme, ThemeMode } from '../../constants';
+import type { SourceInfo, ThemeMode, Theme } from '../../constants';
+import { Colors } from '../../constants';
 import { DAppKit } from '../../client';
 
 @customElement('vwk-source-card')
@@ -47,10 +47,10 @@ export class SourceCard extends LitElement {
     onClick?: (source?: SourceInfo) => void = undefined;
 
     @property()
-    mode = ThemeMode.Light;
+    mode: ThemeMode = 'LIGHT';
 
     @property()
-    theme = Theme.Default;
+    theme: Theme = 'DEFAULT';
 
     @property()
     source?: SourceInfo = undefined;
