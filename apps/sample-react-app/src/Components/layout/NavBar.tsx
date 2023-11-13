@@ -17,9 +17,11 @@ import {
 import type { JSX } from 'react';
 import React from 'react';
 import { Bars3Icon } from '@heroicons/react/24/solid';
-import { useWallet } from '@vechainfoundation/dapp-kit-react';
+import {
+    ConnectWalletButtonWithModal,
+    useWallet,
+} from '@vechainfoundation/dapp-kit-react';
 import { AccountDetailBody } from '../AccountDetailBody';
-import { SwitchWalletButton } from '../SwitchWalletButton';
 
 export const NavBar = (): JSX.Element => {
     const bg = useColorModeValue('gray.50', 'gray.900');
@@ -96,7 +98,7 @@ const MobileNavBarDrawer = ({
                                     source={source}
                                 />
                             ) : (
-                                <SwitchWalletButton />
+                                <ConnectWalletButtonWithModal />
                             )}
                         </VStack>
                     </VStack>
@@ -109,7 +111,7 @@ const MobileNavBarDrawer = ({
 const NavBarWalletConnect = (): JSX.Element => {
     return (
         <HStack spacing={4}>
-            <SwitchWalletButton />
+            <ConnectWalletButtonWithModal />
         </HStack>
     );
 };
