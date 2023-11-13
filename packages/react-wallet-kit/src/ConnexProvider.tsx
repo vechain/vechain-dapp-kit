@@ -7,7 +7,7 @@ import React, {
     useState,
 } from 'react';
 import type { WalletSource } from '@vechainfoundation/wallet-kit';
-import { MultiWalletConnex } from '@vechainfoundation/wallet-kit';
+import { DAppKit } from '@vechainfoundation/vanilla-wallet-kit';
 import type { ConnexContext, ConnexProviderOptions } from './types';
 
 const STORAGE_PREFIX = '@vechainfoundation/wallet-kit';
@@ -26,7 +26,9 @@ const remove = (key: 'source' | 'account'): void => {
 /**
  * Context
  */
-const Context = createContext<ConnexContext>({} as ConnexContext);
+const ConnexProviderContext = createContext<ConnexContext | undefined>(
+    undefined,
+);
 
 export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     children,
@@ -43,7 +45,7 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
 
     const connex = useMemo(
         () =>
-            new MultiWalletConnex({
+            DAppKit.configure({
                 nodeUrl: nodeOptions.node,
                 genesis: nodeOptions.network,
                 walletConnectOptions,
@@ -137,6 +139,14 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
         [persistState],
     );
 
+    const openModal = useCallback(() => {
+        DAppKit.modal.open();
+    }, []);
+
+    const closeModal = useCallback(() => {
+        DAppKit.modal.close();
+    }, []);
+
     const context: ConnexContext = useMemo(() => {
         return {
             connex: {
@@ -152,6 +162,10 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
                 account,
                 source,
             },
+            modal: {
+                open: openModal,
+                close: closeModal,
+            },
         };
     }, [
         connex.thor,
@@ -163,17 +177,44 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
         availableWallets,
         account,
         source,
+        closeModal,
+        openModal,
     ]);
 
-    return <Context.Provider value={context}>{children}</Context.Provider>;
+    return (
+        <ConnexProviderContext.Provider value={context}>
+            {children}
+        </ConnexProviderContext.Provider>
+    );
 };
 
 export const useConnex = (): ConnexContext['connex'] => {
-    const context = useContext(Context);
+    const context = useContext(ConnexProviderContext);
+
+    if (!context) {
+        throw new Error('"useConnex" must be used within a ConnexProvider');
+    }
+
     return context.connex;
 };
 
 export const useWallet = (): ConnexContext['wallet'] => {
-    const context = useContext(Context);
+    const context = useContext(ConnexProviderContext);
+
+    if (!context) {
+        throw new Error('"useWallet" must be used within a ConnexProvider');
+    }
+
     return context.wallet;
+};
+
+export const useWalletModal = (): ConnexContext['modal'] => {
+    const context = useContext(ConnexProviderContext);
+
+    if (!context) {
+        throw new Error(
+            '"useWalletModal" must be used within a ConnexProvider',
+        );
+    }
+    return context.modal;
 };

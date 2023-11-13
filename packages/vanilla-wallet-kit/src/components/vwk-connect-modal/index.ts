@@ -1,16 +1,15 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
-import type { OpenOptions } from '@vechainfoundation/wallet-kit/src';
+import type { OpenOptions } from '@vechainfoundation/wallet-kit';
+import type { SourceInfo } from '../../constants';
+import { Colors, Theme, ThemeMode, WalletSources } from '../../constants';
 import {
     DarkChevronLeftSvg,
     DarkCloseSvg,
     LightChevronLeftSvg,
     LightCloseSvg,
 } from '../../assets';
-import type { SourceInfo } from '../../constants';
-import { Colors, WalletSources } from '../../constants';
 import {
     dispatchCustomEvent,
     subscribeToCustomEvent,
@@ -107,6 +106,14 @@ export class ConnectModal extends LitElement {
         subscribeToCustomEvent('vwk-close-wc-modal', () => {
             this.open = false;
             this.walletConnectQRcode = undefined;
+        });
+
+        subscribeToCustomEvent('vwk-open-wallet-modal', () => {
+            this.open = true;
+        });
+
+        subscribeToCustomEvent('vwk-close-wallet-modal', () => {
+            this.open = false;
         });
     }
 

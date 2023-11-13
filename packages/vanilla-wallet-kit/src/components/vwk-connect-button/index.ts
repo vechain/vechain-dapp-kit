@@ -1,8 +1,7 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
-import { Colors } from '../../constants';
+import { Colors, Theme, ThemeMode } from '../../constants';
 
 @customElement('vwk-connect-button')
 export class ConnectButton extends LitElement {

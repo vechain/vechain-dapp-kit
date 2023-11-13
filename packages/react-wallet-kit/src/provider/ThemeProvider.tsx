@@ -1,8 +1,8 @@
 // ThemeProvider.js
 
-import React, { useState, createContext } from 'react';
-import { lightTheme, darkTheme } from '../ConnectWalletButton/Constants';
+import React, { createContext, useState } from 'react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+import { darkTheme, lightTheme } from '../Constants';
 
 const ThemeContext = createContext({
     theme: lightTheme,

@@ -23,8 +23,6 @@ yarn build
 yarn add @vechainfoundation/react-wallet-kit
 ```
 
--   Create the node options
-
 ```typescript
 import type { Options } from '@vechain/connex';
 
@@ -88,4 +86,59 @@ const { account } = await connect();
 
 //Start using Connex thor/ vendor
 const { vendor, thor } = useConnex();
+```
+
+### UI Option 1: Modal + Button
+
+-   Use the `ConnectWalletButton` component to display a modal with the available wallets
+
+```typescript jsx
+import { ConnectWalletButton } from '@vechainfoundation/react-wallet-kit';
+import { useWallet } from '@vechainfoundation/react-wallet-kit';
+
+const MyComponent = (): JSX.Element => {
+    const { account } = useWallet();
+
+    useEffect(() => {
+        if (account) {
+            // account connected!!
+        }
+    }, [account]);
+
+    return (
+        <>
+            <ConnectWalletButton />
+        </>
+    );
+};
+```
+
+### Option 2: Modal + Custom Button
+
+-   Use the `ConnectWalletModal` component to display a modal with the available wallets
+
+```typescript jsx
+import {
+    ConnectWalletModal,
+    useWallet,
+    useWalletModal,
+} from '@vechainfoundation/react-wallet-kit';
+
+export const MyComponent = (): JSX.Element => {
+    const { account } = useWallet();
+    const { open, close } = useWalletModal();
+
+    useEffect(() => {
+        if (account) {
+            // account connected!!
+        }
+    }, [account]);
+
+    return (
+        <>
+            <button onClick={open}>Connect Wallet</button>
+            <ConnectWalletModal />
+        </>
+    );
+};
 ```

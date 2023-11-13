@@ -1,9 +1,8 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
-import { WalletConnectLogo, DarkCopySvg, LightCopySvg } from '../../assets';
-import { Colors } from '../../constants';
+import { Colors, Theme, ThemeMode } from '../../constants';
+import { DarkCopySvg, LightCopySvg, WalletConnectLogo } from '../../assets';
 import { QrCodeUtil } from '../../utils';
 
 @customElement('vwk-wallet-connect-qrcode')
@@ -15,6 +14,7 @@ export class WalletConnectQrCode extends LitElement {
             justify-content: center;
             display: flex;
         }
+
         .qrcode-container {
             margin: 20px auto 30px auto;
             background-color: ${Colors.White};
@@ -78,20 +78,6 @@ export class WalletConnectQrCode extends LitElement {
     @property()
     walletConnectQRcode?: string = undefined;
 
-    private onCopy = async (): Promise<void> => {
-        await navigator.clipboard.writeText(this.walletConnectQRcode || '');
-    };
-
-    private svgWCQrCode(uri: string): TemplateResult {
-        const size = 280;
-
-        return svg`
-            <svg height=${size} width=${size}>
-                ${QrCodeUtil.generate(uri, size, size / 4)}
-            </svg>
-            `;
-    }
-
     override render(): TemplateResult | typeof nothing {
         return this.walletConnectQRcode
             ? html`
@@ -114,6 +100,20 @@ export class WalletConnectQrCode extends LitElement {
                   </div>
               `
             : nothing;
+    }
+
+    private onCopy = async (): Promise<void> => {
+        await navigator.clipboard.writeText(this.walletConnectQRcode || '');
+    };
+
+    private svgWCQrCode(uri: string): TemplateResult {
+        const size = 280;
+
+        return svg`
+            <svg height=${size} width=${size}>
+                ${QrCodeUtil.generate(uri, size, size / 4)}
+            </svg>
+            `;
     }
 }
 

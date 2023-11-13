@@ -1,8 +1,8 @@
 // ThemeSelector.js
 
 import React, { useContext } from 'react';
-import { ThemeContext } from '../../provider/ThemeProvider';
 import styled from 'styled-components';
+import { ThemeContext } from '../provider/ThemeProvider';
 
 const Button = styled.button``;
 

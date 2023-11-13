@@ -1,8 +1,8 @@
 import type { TemplateResult } from 'lit';
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
 import type { SourceInfo } from '../../constants';
+import { Theme, ThemeMode } from '../../constants';
 import { DAppKit } from '../../client';
 
 @customElement('vwk-connect-button-with-modal')
