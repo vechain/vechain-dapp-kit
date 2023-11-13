@@ -7,7 +7,7 @@
     "scripts": {
         "build": "tsup src/index.ts --format cjs,esm --dts",
         "clean": "rm -rf dist .turbo",
-        "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+        "lint": "tsc --noEmit && eslint src --ext .js,.jsx,.ts,.tsx",
         "purge": "yarn clean && rm -rf node_modules",
         "watch": "tsup src/index.ts --format cjs,esm --watch --dts"
     },
