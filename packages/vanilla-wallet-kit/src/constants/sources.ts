@@ -1,9 +1,4 @@
-import {
-    Sync2Logo,
-    SyncLogo,
-    VeWorldLogo,
-    WalletConnectLogo,
-} from '../../assets';
+import { Sync2Logo, SyncLogo, VeWorldLogo, WalletConnectLogo } from '../assets';
 
 enum WalletSource {
     WalletConnect = 'wallet-connect',

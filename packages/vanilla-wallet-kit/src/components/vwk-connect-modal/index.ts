@@ -2,7 +2,7 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { OpenOptions } from '@vechainfoundation/wallet-kit';
-import type { SourceInfo, Theme, ThemeMode } from '../../constants';
+import type { SourceInfo } from '../../constants';
 import { Colors, WalletSources } from '../../constants';
 import {
     DarkChevronLeftSvg,
@@ -10,11 +10,9 @@ import {
     LightChevronLeftSvg,
     LightCloseSvg,
 } from '../../assets';
-import {
-    dispatchCustomEvent,
-    subscribeToCustomEvent,
-} from '../../utils/events';
+import { dispatchCustomEvent, subscribeToCustomEvent } from '../../utils';
 import { DAppKit } from '../../client';
+import type { Theme, ThemeMode } from '../../constants/theme';
 
 @customElement('vwk-connect-modal')
 export class ConnectModal extends LitElement {

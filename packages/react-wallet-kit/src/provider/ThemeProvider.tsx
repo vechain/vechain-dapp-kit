@@ -1,5 +1,6 @@
 // ThemeProvider.js
 
+import type { ReactNode } from 'react';
 import React, { createContext, useState } from 'react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { darkTheme, lightTheme } from '../Constants';
@@ -10,10 +11,10 @@ const ThemeContext = createContext({
     toggleTheme: () => {},
 });
 
-const ThemeProvider = ({ children }: any) => {
+const ThemeProvider = ({ children }: { children: ReactNode }): ReactNode => {
     const [currentTheme, setCurrentTheme] = useState(lightTheme);
 
-    const toggleTheme = () => {
+    const toggleTheme = (): void => {
         setCurrentTheme((prevTheme) =>
             prevTheme === lightTheme ? darkTheme : lightTheme,
         );

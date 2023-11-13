@@ -2,9 +2,10 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechainfoundation/wallet-kit';
-import type { SourceInfo, ThemeMode, Theme } from '../../constants';
+import type { SourceInfo } from '../../constants';
 import { Colors } from '../../constants';
 import { DAppKit } from '../../client';
+import type { Theme, ThemeMode } from '../../constants/theme';
 
 @customElement('vwk-source-card')
 export class SourceCard extends LitElement {

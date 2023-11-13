@@ -1,10 +1,10 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { Theme, ThemeMode } from '../../constants';
 import { Colors } from '../../constants';
 import { DarkCopySvg, LightCopySvg, WalletConnectLogo } from '../../assets';
 import { QrCodeUtil } from '../../utils';
+import type { Theme, ThemeMode } from '../../constants/theme';
 
 @customElement('vwk-wallet-connect-qrcode')
 export class WalletConnectQrCode extends LitElement {
