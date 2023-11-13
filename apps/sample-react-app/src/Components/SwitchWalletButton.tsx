@@ -38,14 +38,12 @@ export const SwitchWalletButton: React.FC<SwitchWalletButtonProps> = ({
         );
 
     return (
-        <>
-            <Button
-                {...buttonProps}
-                leftIcon={<Icon as={WalletIcon} />}
-                onClick={open}
-            >
-                Connect Wallet
-            </Button>
-        </>
+        <Button
+            {...buttonProps}
+            leftIcon={<Icon as={WalletIcon} />}
+            onClick={open}
+        >
+            Connect Wallet
+        </Button>
     );
 };
