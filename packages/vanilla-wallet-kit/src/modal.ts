@@ -14,7 +14,7 @@ class CustomWalletConnectModal implements WCModal {
 
     private eventEmitter = new EventEmitter();
 
-    constructor() {
+    private constructor() {
         subscribeToCustomEvent('vwk-close-wc-modal', () => {
             this.updateModalState({ open: false });
         });
@@ -60,6 +60,9 @@ class CustomWalletConnectModal implements WCModal {
 
 export class DAppKitModal {
     private static instance: DAppKitModal | null = null;
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() {}
 
     public static getInstance(): DAppKitModal {
         if (!DAppKitModal.instance) {
