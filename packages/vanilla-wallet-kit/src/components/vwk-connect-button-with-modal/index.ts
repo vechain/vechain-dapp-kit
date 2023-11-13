@@ -1,9 +1,9 @@
 import type { TemplateResult } from 'lit';
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { SourceInfo } from '../../constants';
+import type { WalletManager } from '@vechainfoundation/wallet-kit';
+import type { SourceInfo, Theme, ThemeMode } from '../../constants';
 import { DAppKit } from '../../client';
-import type { Theme, ThemeMode } from '../../constants/theme';
 
 @customElement('vwk-connect-button-with-modal')
 export class ConnectButtonWithModal extends LitElement {
@@ -19,8 +19,23 @@ export class ConnectButtonWithModal extends LitElement {
     @property({ type: Boolean })
     open = false;
 
+    private get wallet(): WalletManager {
+        return DAppKit.connex.wallet;
+    }
+
     @property({ type: Function })
-    onSourceClick?: (e: SourceInfo) => void;
+    onSourceClick = (source?: SourceInfo): void => {
+        if (source) {
+            this.wallet.setSource(source.id);
+            this.wallet
+                .connect()
+                // eslint-disable-next-line no-console
+                .then((res) => console.log(res))
+                .finally(() => {
+                    this.open = false;
+                });
+        }
+    };
 
     override render(): TemplateResult {
         return html`
