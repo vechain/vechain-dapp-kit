@@ -6,7 +6,7 @@
     ],
     "scripts": {
         "build": "turbo run build",
-        "build-react-kit": "turbo run build  --filter='@vechainfoundation/react-wallet-kit'",
+        "build-react-kit": "turbo run build  --filter='@vechainfoundation/dapp-kit-react'",
         "build:deps": "turbo build --no-daemon --filter='@vechainfoundation/*'",
         "clean": "rm -rf .turbo .parcel-cache build && npx turbo@latest run clean",
         "cucumber": "yarn && cucumber-js",

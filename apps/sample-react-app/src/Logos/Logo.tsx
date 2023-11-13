@@ -1,7 +1,7 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
 import { Image } from '@chakra-ui/react';
 import React from 'react';
-import { VeWorldLogo as VWLogo } from '@vechainfoundation/vanilla-wallet-kit';
+import { VeWorldLogo as VWLogo } from '@vechainfoundation/dapp-kit-ui';
 
 type IIMage = HTMLChakraProps<'img'>;
 

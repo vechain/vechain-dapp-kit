@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useConnex } from '@vechainfoundation/react-wallet-kit';
+import { useConnex } from '@vechainfoundation/dapp-kit-react';
 import type { abi } from 'thor-devkit';
 
 const _counter: abi.Function.Definition = {

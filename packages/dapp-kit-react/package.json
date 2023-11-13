@@ -1,0 +1,37 @@
+{
+    "name": "@vechainfoundation/dapp-kit-react",
+    "version": "0.0.0",
+    "private": false,
+    "license": "MIT",
+    "sideEffects": false,
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+        "build": "tsup src/index.tsx --format cjs --dts --external react",
+        "clean": "rm -rf dist .turbo",
+        "dev": "tsup src/index.tsx --format cjs --watch --dts --external react",
+        "lint": "tsc --noEmit && eslint src --ext .js,.jsx,.ts,.tsx",
+        "purge": "yarn clean && rm -rf node_modules"
+    },
+    "dependencies": {
+        "@heroicons/react": "^2.0.18",
+        "@lit/react": "^1.0.1",
+        "@vechain/connex": "2.1.0",
+        "@vechain/connex-framework": "2.1.0",
+        "@vechain/picasso": "^2.1.1",
+        "@vechainfoundation/dapp-kit": "*",
+        "@vechainfoundation/dapp-kit-ui": "*",
+        "react-icons": "^4.11.0",
+        "styled-components": "^6.1.0",
+        "thor-devkit": "^2.0.9"
+    },
+    "devDependencies": {
+        "@types/react": "^18.2.28",
+        "@types/react-dom": "^18.2.13",
+        "@vechain/repo-config": "https://github.com/vechainfoundation/repo-config#v0.0.1",
+        "eslint": "*",
+        "react": "^18.2.0",
+        "tsup": "*",
+        "typescript": "*"
+    }
+}
