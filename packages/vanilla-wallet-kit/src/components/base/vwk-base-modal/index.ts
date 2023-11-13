@@ -1,12 +1,11 @@
 import type { TemplateResult } from 'lit';
-import { css, html } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
-import { Colors } from '../../../constants';
-import { ResponsiveLitElement } from '../../../class';
+import { Breakpoint, Colors } from '../../../constants';
 
 @customElement('vwk-base-modal')
-export class Modal extends ResponsiveLitElement {
+export class Modal extends LitElement {
     static override styles = css`
         .modal-container {
             display: block;
@@ -35,22 +34,25 @@ export class Modal extends ResponsiveLitElement {
             color: ${Colors.LightGrey};
         }
 
-        .modal.mobile {
-            width: 100%;
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
-            bottom: 0;
-            left: 0;
-            right: 0;
+        @media (max-width: ${Breakpoint.Mobile}px) {
+            .modal {
+                width: 100%;
+                border-top-left-radius: 16px;
+                border-top-right-radius: 16px;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
         }
 
-        .modal.desktop,
-        .modal.tablet {
-            width: 350px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 16px;
+        @media (min-width: ${Breakpoint.Mobile}px) {
+            .modal {
+                width: 350px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                border-radius: 16px;
+            }
         }
     `;
 
@@ -73,7 +75,7 @@ export class Modal extends ResponsiveLitElement {
         return html`
             <div class="modal-container" @click=${this.onClose}>
                 <div
-                    class="modal ${this.media} ${this.mode} ${this.theme}"
+                    class="modal ${this.mode} ${this.theme}"
                     @click=${this.stopPropagation}
                 >
                     <slot></slot>
