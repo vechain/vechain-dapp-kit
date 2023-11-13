@@ -1,8 +1,8 @@
 import type { TemplateResult } from 'lit';
-import { css, html, LitElement } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
-import { Colors } from '../../../constants';
+import { Breakpoint, Colors } from '../../../constants';
 
 @customElement('vwk-base-modal')
 export class Modal extends LitElement {
@@ -22,7 +22,6 @@ export class Modal extends LitElement {
         .modal {
             position: absolute;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            box-sizing: border-box;
         }
 
         .modal.LIGHT {
@@ -35,7 +34,7 @@ export class Modal extends LitElement {
             color: ${Colors.LightGrey};
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: ${Breakpoint.Mobile}px) {
             .modal {
                 width: 100%;
                 border-top-left-radius: 16px;
@@ -46,7 +45,7 @@ export class Modal extends LitElement {
             }
         }
 
-        @media (min-width: 600px) {
+        @media (min-width: ${Breakpoint.Mobile}px) {
             .modal {
                 width: 350px;
                 top: 50%;
@@ -56,6 +55,7 @@ export class Modal extends LitElement {
             }
         }
     `;
+
     @property({ type: Boolean })
     open = false;
     @property()
