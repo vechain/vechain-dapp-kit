@@ -14,7 +14,7 @@ class CustomWalletConnectModal implements WCModal {
 
     private eventEmitter = new EventEmitter();
 
-    constructor() {
+    private constructor() {
         subscribeToCustomEvent('vwk-close-wc-modal', () => {
             this.updateModalState({ open: false });
         });
@@ -31,6 +31,9 @@ class CustomWalletConnectModal implements WCModal {
         return CustomWalletConnectModal.instance;
     }
 
+    /**
+     * WalletConnect
+     */
     openModal(options: OpenOptions): Promise<void> {
         dispatchCustomEvent('vwk-open-wc-modal', options);
         return Promise.resolve();
@@ -40,9 +43,6 @@ class CustomWalletConnectModal implements WCModal {
         dispatchCustomEvent('vwk-close-wc-modal', undefined);
     }
 
-    /**
-     * Subscribe to modal state change
-     */
     subscribeModal(
         callback: (newState: SubscribeModalState) => void,
     ): () => void {
@@ -53,8 +53,31 @@ class CustomWalletConnectModal implements WCModal {
         };
     }
 
-    updateModalState(state: SubscribeModalState): void {
+    private updateModalState(state: SubscribeModalState): void {
         this.eventEmitter.emit(MODAL_STATE_EVENT, state);
+    }
+}
+
+export class DAppKitModal {
+    private static instance: DAppKitModal | null = null;
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() {}
+
+    public static getInstance(): DAppKitModal {
+        if (!DAppKitModal.instance) {
+            DAppKitModal.instance = new DAppKitModal();
+        }
+
+        return DAppKitModal.instance;
+    }
+
+    open(): void {
+        dispatchCustomEvent('vwk-open-wallet-modal', undefined);
+    }
+
+    close(): void {
+        dispatchCustomEvent('vwk-close-wallet-modal', undefined);
     }
 }
 

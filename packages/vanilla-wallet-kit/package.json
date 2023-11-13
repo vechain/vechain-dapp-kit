@@ -19,7 +19,7 @@
         "clean": "rm -rf dist .turbo",
         "dev": "parcel --no-cache index.html",
         "format": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
-        "lint": "eslint 'src/**/*.ts'",
+        "lint": "tsc --noEmit &&  eslint src --ext .js,.jsx,.ts,.tsx",
         "purge": "yarn clean && rm -rf node_modules",
         "watch": "tsup --watch"
     },

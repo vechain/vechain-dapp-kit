@@ -1,9 +1,8 @@
-import type { ReactNode } from 'react';
 import { useCallback, useContext, useState } from 'react';
 import type { WalletSource } from '@vechainfoundation/wallet-kit';
 import type { SourceInfo } from '@vechainfoundation/vanilla-wallet-kit';
-import { ThemeContext } from '../../provider/ThemeProvider';
-import { useWallet } from '../../ConnexProvider';
+import { ThemeContext } from '../../../provider/ThemeProvider';
+import { useWallet } from '../../../ConnexProvider';
 import { ConnectModalWithButtonWrapped } from './Wrapped/ConnectModalWithButtonWrapped';
 
 interface ConnectButtonWithModalProps {
@@ -12,10 +11,12 @@ interface ConnectButtonWithModalProps {
 
 export const ConnectButtonWithModal = ({
     onClose,
-}: ConnectButtonWithModalProps): ReactNode => {
+}: ConnectButtonWithModalProps) => {
     const { theme } = useContext(ThemeContext);
 
-    const handleSourceClick = (e: SourceInfo): void => {
+    const handleSourceClick = (e: SourceInfo | undefined): void => {
+        if (!e) return;
+
         _connect(e.id);
     };
 

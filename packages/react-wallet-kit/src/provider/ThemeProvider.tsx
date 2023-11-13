@@ -1,23 +1,40 @@
 // ThemeProvider.js
 
 import type { ReactNode } from 'react';
-import React, { useState, createContext } from 'react';
+import React, { createContext, useState } from 'react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { lightTheme, darkTheme } from '../ConnectWalletButton/Constants';
+import type { ThemeMode } from '@vechainfoundation/vanilla-wallet-kit';
 
-const ThemeContext = createContext({
-    theme: lightTheme,
+interface Theme {
+    mode: ThemeMode;
+}
+
+interface ContextProperties {
+    theme: Theme;
+    toggleTheme: () => void;
+}
+
+const defaultTheme: Theme = {
+    mode: 'LIGHT',
+};
+
+const ThemeContext = createContext<ContextProperties>({
+    theme: defaultTheme,
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     toggleTheme: () => {},
 });
 
-const ThemeProvider = ({ children }: { children: ReactNode }): ReactNode => {
-    const [currentTheme, setCurrentTheme] = useState(lightTheme);
+const ThemeProvider = ({ children }: { children: ReactNode }) => {
+    const [currentTheme, setCurrentTheme] = useState(defaultTheme);
 
     const toggleTheme = (): void => {
-        setCurrentTheme((prevTheme) =>
-            prevTheme === lightTheme ? darkTheme : lightTheme,
-        );
+        setCurrentTheme((prevTheme) => {
+            if (prevTheme.mode === 'LIGHT') {
+                return { mode: 'DARK' };
+            }
+
+            return { mode: 'LIGHT' };
+        });
     };
 
     return (

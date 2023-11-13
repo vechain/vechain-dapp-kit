@@ -1,8 +1,8 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
 import { Colors } from '../../constants';
+import type { Theme, ThemeMode } from '../../constants/theme';
 
 @customElement('vwk-connect-button')
 export class ConnectButton extends LitElement {
@@ -35,10 +35,10 @@ export class ConnectButton extends LitElement {
     override title = 'Connect Wallet';
 
     @property()
-    mode = ThemeMode.Light;
+    mode: ThemeMode = 'LIGHT';
 
     @property()
-    theme = Theme.Default;
+    theme: Theme = 'DEFAULT';
 
     @property({ type: Function })
     onClick? = undefined;

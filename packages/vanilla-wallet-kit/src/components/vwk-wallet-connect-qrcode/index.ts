@@ -1,10 +1,10 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
-import { WalletConnectLogo, DarkCopySvg, LightCopySvg } from '../../assets';
 import { Colors } from '../../constants';
+import { DarkCopySvg, LightCopySvg, WalletConnectLogo } from '../../assets';
 import { QrCodeUtil } from '../../utils';
+import type { Theme, ThemeMode } from '../../constants/theme';
 
 @customElement('vwk-wallet-connect-qrcode')
 export class WalletConnectQrCode extends LitElement {
@@ -15,6 +15,7 @@ export class WalletConnectQrCode extends LitElement {
             justify-content: center;
             display: flex;
         }
+
         .qrcode-container {
             margin: 20px auto 30px auto;
             background-color: ${Colors.White};
@@ -72,25 +73,11 @@ export class WalletConnectQrCode extends LitElement {
     `;
 
     @property()
-    mode = ThemeMode.Light;
+    mode: ThemeMode = 'LIGHT';
     @property()
-    theme = Theme.Default;
+    theme: Theme = 'DEFAULT';
     @property()
     walletConnectQRcode?: string = undefined;
-
-    private onCopy = async (): Promise<void> => {
-        await navigator.clipboard.writeText(this.walletConnectQRcode || '');
-    };
-
-    private svgWCQrCode(uri: string): TemplateResult {
-        const size = 280;
-
-        return svg`
-            <svg height=${size} width=${size}>
-                ${QrCodeUtil.generate(uri, size, size / 4)}
-            </svg>
-            `;
-    }
 
     override render(): TemplateResult | typeof nothing {
         return this.walletConnectQRcode
@@ -105,7 +92,7 @@ export class WalletConnectQrCode extends LitElement {
                           @click=${this.onCopy}
                       >
                           <div class="icon">
-                              ${this.mode === ThemeMode.Light
+                              ${this.mode === 'LIGHT'
                                   ? LightCopySvg
                                   : DarkCopySvg}
                           </div>
@@ -114,6 +101,20 @@ export class WalletConnectQrCode extends LitElement {
                   </div>
               `
             : nothing;
+    }
+
+    private onCopy = async (): Promise<void> => {
+        await navigator.clipboard.writeText(this.walletConnectQRcode || '');
+    };
+
+    private svgWCQrCode(uri: string): TemplateResult {
+        const size = 280;
+
+        return svg`
+            <svg height=${size} width=${size}>
+                ${QrCodeUtil.generate(uri, size, size / 4)}
+            </svg>
+            `;
     }
 }
 

@@ -1,10 +1,23 @@
 import type { OpenOptions } from '@vechainfoundation/wallet-kit';
+import type { ThemeMode } from '../constants';
 
-export type EventTypes = 'vwk-open-wc-modal' | 'vwk-close-wc-modal';
+export type EventTypes =
+    | 'vwk-open-wc-modal'
+    | 'vwk-close-wc-modal'
+    | 'vwk-open-wallet-modal'
+    | 'vwk-close-wallet-modal';
+
+type ThemeOptions =
+    | undefined
+    | {
+          theme?: ThemeMode;
+      };
 
 export interface EventArgs {
     'vwk-close-wc-modal': undefined;
-    'vwk-open-wc-modal': OpenOptions;
+    'vwk-open-wc-modal': OpenOptions & ThemeOptions;
+    'vwk-open-wallet-modal': ThemeOptions;
+    'vwk-close-wallet-modal': undefined;
 }
 
 export const dispatchCustomEvent = <T extends EventTypes>(

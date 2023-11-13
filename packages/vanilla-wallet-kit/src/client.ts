@@ -1,6 +1,6 @@
 import type { ConnexOptions } from '@vechainfoundation/wallet-kit';
 import { MultiWalletConnex } from '@vechainfoundation/wallet-kit';
-import { CustomWalletConnectModal } from './modal';
+import { CustomWalletConnectModal, DAppKitModal } from './modal';
 
 let connex: MultiWalletConnex | null = null;
 
@@ -25,8 +25,8 @@ const DAppKit = {
         return connex;
     },
 
-    get modal(): CustomWalletConnectModal {
-        return CustomWalletConnectModal.getInstance();
+    get modal(): DAppKitModal {
+        return DAppKitModal.getInstance();
     },
 };
 

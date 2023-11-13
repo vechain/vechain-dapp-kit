@@ -1,8 +1,8 @@
 import type { TemplateResult } from 'lit';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
 import { Breakpoint, Colors } from '../../../constants';
+import type { Theme, ThemeMode } from '../../../constants/theme';
 
 @customElement('vwk-base-modal')
 export class Modal extends LitElement {
@@ -55,13 +55,12 @@ export class Modal extends LitElement {
             }
         }
     `;
-
     @property({ type: Boolean })
     open = false;
     @property()
-    mode = ThemeMode.Light;
+    mode: ThemeMode = 'LIGHT';
     @property()
-    theme = Theme.Default;
+    theme: Theme = 'DEFAULT';
 
     @property({ type: Function })
     onClose = (): null => null;

@@ -2,10 +2,10 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechainfoundation/wallet-kit';
-import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
 import type { SourceInfo } from '../../constants';
 import { Colors } from '../../constants';
 import { DAppKit } from '../../client';
+import type { Theme, ThemeMode } from '../../constants/theme';
 
 @customElement('vwk-source-card')
 export class SourceCard extends LitElement {
@@ -48,10 +48,10 @@ export class SourceCard extends LitElement {
     onClick?: (source?: SourceInfo) => void = undefined;
 
     @property()
-    mode = ThemeMode.Light;
+    mode: ThemeMode = 'LIGHT';
 
     @property()
-    theme = Theme.Default;
+    theme: Theme = 'DEFAULT';
 
     @property()
     source?: SourceInfo = undefined;
@@ -62,20 +62,6 @@ export class SourceCard extends LitElement {
 
     handleSourceClick(): void {
         this.onClick?.(this.source);
-
-        if (this.source) {
-            this.wallet.setSource(this.source.id);
-            this.wallet
-                .connect()
-                .then((res) => {
-                    // eslint-disable-next-line no-console
-                    console.log('connected', res);
-                })
-                .catch((e) => {
-                    // eslint-disable-next-line no-console
-                    console.error(e);
-                });
-        }
     }
 
     override render(): TemplateResult {

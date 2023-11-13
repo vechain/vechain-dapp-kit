@@ -1,8 +1,8 @@
 import type { TemplateResult } from 'lit';
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Theme, ThemeMode } from '@vechainfoundation/wallet-kit';
-import type { SourceInfo } from '../../constants';
+import type { WalletManager } from '@vechainfoundation/wallet-kit';
+import type { SourceInfo, Theme, ThemeMode } from '../../constants';
 import { DAppKit } from '../../client';
 
 @customElement('vwk-connect-button-with-modal')
@@ -10,17 +10,32 @@ export class ConnectButtonWithModal extends LitElement {
     @property()
     override title = 'Connect Wallet';
 
-    @property({ type: ThemeMode })
-    mode = ThemeMode.Light;
+    @property({ type: String })
+    mode: ThemeMode = 'LIGHT';
 
-    @property({ type: Theme })
-    theme = Theme.Default;
+    @property({ type: String })
+    theme: Theme = 'DEFAULT';
 
     @property({ type: Boolean })
     open = false;
 
+    private get wallet(): WalletManager {
+        return DAppKit.connex.wallet;
+    }
+
     @property({ type: Function })
-    onSourceClick?: (e: SourceInfo) => void;
+    onSourceClick = (source?: SourceInfo): void => {
+        if (source) {
+            this.wallet.setSource(source.id);
+            this.wallet
+                .connect()
+                // eslint-disable-next-line no-console
+                .then((res) => console.log(res))
+                .finally(() => {
+                    this.open = false;
+                });
+        }
+    };
 
     override render(): TemplateResult {
         return html`

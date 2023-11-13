@@ -45,4 +45,8 @@ export interface ConnexContext {
         account: string | null;
         source: WalletSource | null;
     };
+    modal: {
+        open: () => void;
+        close: () => void;
+    };
 }
