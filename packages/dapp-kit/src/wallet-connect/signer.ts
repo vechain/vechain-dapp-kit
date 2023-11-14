@@ -1,4 +1,3 @@
-/// <reference types="@vechain/connex-types" />
 import type { SessionTypes } from '@walletconnect/types';
 import type { ProposalTypes } from '@walletconnect/types/dist/types/sign-client/proposal';
 import type { EngineTypes } from '@walletconnect/types/dist/types/sign-client/engine';
@@ -152,12 +151,12 @@ export const newWcSigner = ({
                 vechain: namespace,
             };
 
-            const { uri, approval } = await signClient.connect({
+            const res = await signClient.connect({
                 requiredNamespaces,
             });
 
-            if (uri) {
-                await web3Modal.openModal({ uri });
+            if (res.uri) {
+                await web3Modal.openModal({ uri: res.uri });
             }
 
             return await new Promise((resolve, reject) => {
@@ -168,7 +167,7 @@ export const newWcSigner = ({
                     }
                 });
 
-                approval()
+                res.approval()
                     .then((newSession) => {
                         session = newSession;
                         endSubscription();
