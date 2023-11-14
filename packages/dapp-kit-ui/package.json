@@ -24,6 +24,7 @@
         "watch": "tsup --watch"
     },
     "dependencies": {
+        "@vechain/picasso": "2.1.1",
         "@vechainfoundation/dapp-kit": "*",
         "@wagmi/core": "^1.4.5",
         "@web3modal/ethereum": "^2.7.1",
