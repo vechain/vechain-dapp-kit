@@ -1,11 +1,7 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
 import { Button, Icon, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-import {
-    ConnectWalletModal,
-    useWallet,
-    useWalletModal,
-} from '@vechainfoundation/dapp-kit-react';
+import { useWallet, useWalletModal } from '@vechainfoundation/dapp-kit-react';
 import { WalletIcon } from '@heroicons/react/24/solid';
 import { AccountDetailModal } from './AccountDetailModal';
 import { AddressButton } from './AddressButton';
@@ -42,16 +38,12 @@ export const SwitchWalletButton: React.FC<SwitchWalletButtonProps> = ({
         );
 
     return (
-        <>
-            <ConnectWalletModal />
-
-            <Button
-                {...buttonProps}
-                leftIcon={<Icon as={WalletIcon} />}
-                onClick={open}
-            >
-                Connect Wallet
-            </Button>
-        </>
+        <Button
+            {...buttonProps}
+            leftIcon={<Icon as={WalletIcon} />}
+            onClick={open}
+        >
+            Connect Wallet
+        </Button>
     );
 };
