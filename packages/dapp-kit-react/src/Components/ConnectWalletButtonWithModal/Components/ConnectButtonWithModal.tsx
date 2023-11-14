@@ -1,66 +1,33 @@
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext } from 'react';
 import type { WalletSource } from '@vechainfoundation/dapp-kit';
 import type { SourceInfo } from '@vechainfoundation/dapp-kit-ui';
 import { ThemeContext } from '../../../provider/ThemeProvider';
 import { useWallet } from '../../../ConnexProvider';
 import { ConnectModalWithButtonWrapped } from './Wrapped/ConnectModalWithButtonWrapped';
 
-interface ConnectButtonWithModalProps {
-    onClose?: () => void;
-}
-
-export const ConnectButtonWithModal = ({
-    onClose,
-}: ConnectButtonWithModalProps) => {
+export const ConnectButtonWithModal = () => {
     const { theme } = useContext(ThemeContext);
 
-    const handleSourceClick = (e: SourceInfo | undefined): void => {
-        if (!e) return;
-
-        _connect(e.id);
-    };
-
-    const { setAccount, connect, setSource } = useWallet();
-
-    const [connectionLoading, setConnectionLoading] = useState(false);
-    const [connectionError, setConnectionError] = useState('');
+    const { setSource, connect, setAccount } = useWallet();
 
     const connectHandler = useCallback(
         async (source: WalletSource) => {
-            try {
-                setSource(source);
-                setConnectionError('');
-                setConnectionLoading(true);
+            setSource(source);
 
-                const { account } = await connect();
-                setAccount(account);
+            const { account } = await connect();
 
-                onClose?.();
-            } catch (e) {
-                if (e instanceof Error) {
-                    setConnectionError(e.message);
-                } else {
-                    setConnectionError('Failed to connect to wallet');
-                }
-            } finally {
-                setConnectionLoading(false);
-            }
+            setAccount(account);
         },
-        [
-            connect,
-            onClose,
-            setAccount,
-            setConnectionError,
-            setConnectionLoading,
-            setSource,
-        ],
+        [connect, setAccount, setSource],
     );
 
     const _connect = useCallback(
-        (source: WalletSource) => {
-            connectHandler(source).catch(() => {
-                // do nothing
-            });
+        (source?: SourceInfo) => {
+            if (source) {
+                connectHandler(source.id).catch(() => {
+                    // do nothing
+                });
+            }
         },
         [connectHandler],
     );
@@ -69,10 +36,8 @@ export const ConnectButtonWithModal = ({
         <>
             <ConnectModalWithButtonWrapped
                 mode={theme.mode}
-                onSourceClick={handleSourceClick}
+                onSourceClick={_connect}
             />
-            {connectionError}
-            {connectionLoading}
         </>
     );
 };
