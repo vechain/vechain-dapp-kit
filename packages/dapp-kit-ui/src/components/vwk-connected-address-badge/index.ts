@@ -19,6 +19,11 @@ class ConnectedAddressBadge extends LitElement {
             border-radius: 12px;
         }
 
+        .wallet-badge:hover {
+            opacity: 0.9;
+            cursor: pointer;
+        }
+
         .wallet-badge.DARK {
             background-color: ${Colors.Dark};
             color: ${Colors.LightGrey};
@@ -39,25 +44,30 @@ class ConnectedAddressBadge extends LitElement {
             width: 23px;
             height: 23px;
             margin-right: 4px;
+            border-radius: 50%;
         }
     `;
 
     @property()
-    address?: string = '0x123456789ABCDEF';
+    address?: string = '0x6511C57775eAaAd4b57F9Be9A14c6C026BC21216';
 
     @property()
     mode: ThemeMode = 'DARK';
 
+    @property({ type: Function })
+    onClick? = undefined;
+
     render() {
-        return html` <div class="wallet-badge ${this.mode}">
+        return html` <div
+            class="wallet-badge ${this.mode}"
+            @click=${this.onClick}
+        >
             <img
                 class="address-icon"
                 src=${getPicassoImage(this.address ?? '')}
             />
             <span class="wallet-address"
-                >${friendlyAddress(
-                    '0x6511C57775eAaAd4b57F9Be9A14c6C026BC21216',
-                )}</span
+                >${friendlyAddress(this.address ?? '')}</span
             >
         </div>`;
     }
