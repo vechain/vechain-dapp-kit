@@ -1,9 +1,7 @@
 import type { TemplateResult } from 'lit';
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { WalletManager } from '@vechainfoundation/dapp-kit';
 import type { Theme, ThemeMode } from '../../constants';
-import { DAppKit } from '../../client';
 
 @customElement('vwk-connected-address-badge-with-modal')
 export class ConnectedAddressBadgeWithModal extends LitElement {
@@ -13,12 +11,14 @@ export class ConnectedAddressBadgeWithModal extends LitElement {
     @property({ type: String })
     theme: Theme = 'DEFAULT';
 
+    @property({ type: String })
+    address?: string;
+
     @property({ type: Boolean })
     open = false;
 
-    private get wallet(): WalletManager {
-        return DAppKit.connex.wallet;
-    }
+    @property({ type: Function })
+    onDisconnectClick?: () => void = undefined;
 
     override render(): TemplateResult {
         return html`
@@ -27,6 +27,7 @@ export class ConnectedAddressBadgeWithModal extends LitElement {
                 <vwk-connected-address-badge
                     .mode=${this.mode}
                     .theme=${this.theme}
+                    .address=${this.address}
                     .onClick=${this.handleOpen}
                 ></vwk-connected-address-badge>
                 <vwk-connected-address-modal
@@ -34,6 +35,8 @@ export class ConnectedAddressBadgeWithModal extends LitElement {
                     .theme=${this.theme}
                     .open=${this.open}
                     .onClose=${this.handleClose}
+                    .address=${this.address}
+                    .onDisconnectClick=${this.onDisconnectClick}
                 ></vwk-connected-address-modal>
             </div>
         `;

@@ -114,10 +114,13 @@ export class ConnectedAddressModal extends LitElement {
     open = false;
 
     @property({ type: String })
-    address?: string = '0x6511C57775eAaAd4b57F9Be9A14c6C026BC21216';
+    address?: string;
 
     @property({ type: Function })
     onSourceClick?: (source?: SourceInfo) => void = undefined;
+
+    @property({ type: Function })
+    onDisconnectClick?: () => void = undefined;
 
     @property()
     mode: ThemeMode = 'LIGHT';
@@ -179,7 +182,7 @@ export class ConnectedAddressModal extends LitElement {
                 <div class="modal-footer">
                             <button
                                 class="${this.mode} ${this.theme}"
-                                @click=${this.onBack}
+                                @click=${this.onDisconnectClick}
                             >
                             <div class="icon ${this.mode}">
                             ${
