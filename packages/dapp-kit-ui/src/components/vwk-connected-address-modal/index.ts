@@ -21,6 +21,7 @@ export class ConnectedAddressModal extends LitElement {
             gap: 15px;
             padding: 20px;
             transition: width 5s, height 4s;
+            font-family: 'Inter', sans-serif;
         }
 
         .modal-header {
