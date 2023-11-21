@@ -24,6 +24,10 @@ export class SourceCard extends LitElement {
         }
 
         .card:hover {
+            opacity: 0.9;
+        }
+
+        .card:active {
             opacity: 0.8;
         }
 

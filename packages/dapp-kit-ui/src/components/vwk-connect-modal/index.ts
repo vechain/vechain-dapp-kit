@@ -10,7 +10,7 @@ import {
     LightChevronLeftSvg,
     LightCloseSvg,
 } from '../../assets';
-import { dispatchCustomEvent, subscribeToCustomEvent } from '../../utils';
+import { subscribeToCustomEvent } from '../../utils';
 import { DAppKit } from '../../client';
 import type { Theme, ThemeMode } from '../../constants/theme';
 
@@ -19,7 +19,6 @@ export class ConnectModal extends LitElement {
     static override styles = css`
         .modal-container {
             padding: 20px;
-            transition: width 5s, height 4s;
         }
 
         .modal-header {
@@ -32,7 +31,6 @@ export class ConnectModal extends LitElement {
 
         .modal-body {
             flex-direction: column;
-            transition: width 2s, height 4s;
         }
 
         .modal-footer {
@@ -126,6 +124,18 @@ export class ConnectModal extends LitElement {
     @property({ type: Function })
     onClose: () => void = () => nothing;
 
+    private onBack = (): void => {
+        this.walletConnectQRcode = undefined;
+    };
+
+    private handleClose = (): void => {
+        // this timeout is to avoid flickering on close modal animation when the user is in the wallet connect modal
+        setTimeout(() => {
+            this.onBack();
+        }, 500);
+        this.onClose();
+    };
+
     override render(): TemplateResult {
         return html`
         <vwk-fonts></vwk-fonts>
@@ -180,16 +190,6 @@ export class ConnectModal extends LitElement {
         </vwk-base-modal>
     `;
     }
-
-    private onBack = (): void => {
-        this.walletConnectQRcode = undefined;
-    };
-
-    private handleClose = (): void => {
-        this.onBack();
-        dispatchCustomEvent('vwk-close-wc-modal', undefined);
-        this.onClose();
-    };
 }
 
 declare global {

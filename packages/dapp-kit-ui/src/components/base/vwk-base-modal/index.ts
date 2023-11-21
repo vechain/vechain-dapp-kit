@@ -17,15 +17,18 @@ export class Modal extends LitElement {
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
+            opacity: 1;
+            transition: opacity 0.3s;
         }
         .modal-container.hidden {
-            display: none;
+            opacity: 0;
+            pointer-events: none;
         }
 
         .modal {
             position: absolute;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            transition: height 0.2s, opacity 1s;
+            transition: height 0.2s, opacity 0.3s;
             overflow: hidden;
             opacity: 1;
         }
