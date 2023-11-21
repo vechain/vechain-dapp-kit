@@ -9,6 +9,7 @@
         "clean": "rm -rf dist .turbo",
         "lint": "tsc --noEmit && eslint src --ext .js,.jsx,.ts,.tsx",
         "purge": "yarn clean && rm -rf node_modules",
+        "test": "vitest run --coverage",
         "watch": "tsup src/index.ts --format cjs,esm --watch --dts"
     },
     "dependencies": {
@@ -25,9 +26,14 @@
         "@types/react": "^18.2.28",
         "@types/react-dom": "^18.2.13",
         "@vechain/repo-config": "https://github.com/vechainfoundation/repo-config#v0.0.1",
+        "@vitest/coverage-v8": "^0.34.6",
         "@walletconnect/types": "2.10.2",
         "eslint": "*",
+        "happy-dom": "^12.10.3",
+        "lokijs": "^1.5.12",
         "tsup": "*",
-        "typescript": "*"
+        "typescript": "*",
+        "vite": "^4.5.0",
+        "vitest": "^0.34.6"
     }
 }
