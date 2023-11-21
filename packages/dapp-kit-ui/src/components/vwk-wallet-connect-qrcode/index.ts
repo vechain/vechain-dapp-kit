@@ -2,7 +2,12 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Colors } from '../../constants';
-import { DarkCopySvg, LightCopySvg, WalletConnectLogo } from '../../assets';
+import {
+    CheckSvg,
+    DarkCopySvg,
+    LightCopySvg,
+    WalletConnectLogo,
+} from '../../assets';
 import { QrCodeUtil } from '../../utils';
 import type { Theme, ThemeMode } from '../../constants/theme';
 
@@ -17,11 +22,11 @@ export class WalletConnectQrCode extends LitElement {
         }
 
         .qrcode-container {
-            margin: 20px auto 30px auto;
+            margin: 20px auto 20px auto;
             background-color: ${Colors.White};
             width: 280px;
             padding: 10px;
-            border: 1px solid ${Colors.LightGrey};
+            border: 1px solid ${Colors.Grey};
             border-radius: 20px;
             display: flex;
             justify-content: center;
@@ -33,6 +38,40 @@ export class WalletConnectQrCode extends LitElement {
             width: 65px;
             height: 65px;
             object-fit: contain;
+        }
+
+        .separator {
+            display: flex;
+            align-items: center;
+            padding-bottom: 20px;
+        }
+
+        .line {
+            display: flex;
+            flex-grow: 1;
+            height: 1px;
+        }
+
+        .line.LIGHT {
+            background-color: ${Colors.Grey};
+        }
+
+        .line.DARK {
+            background-color: ${Colors.Grey};
+        }
+
+        .or {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            padding: 0 12px;
+        }
+
+        .or.LIGHT {
+            color: ${Colors.Grey};
+        }
+
+        .or.DARK {
+            color: ${Colors.Grey};
         }
 
         button {
@@ -52,7 +91,7 @@ export class WalletConnectQrCode extends LitElement {
         }
 
         button:active {
-            opacity: 0.7;
+            opacity: 0.8;
         }
 
         button.LIGHT {
@@ -66,8 +105,8 @@ export class WalletConnectQrCode extends LitElement {
         }
 
         .icon {
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             margin-right: 10px;
         }
     `;
@@ -78,8 +117,14 @@ export class WalletConnectQrCode extends LitElement {
     theme: Theme = 'DEFAULT';
     @property()
     walletConnectQRcode?: string = undefined;
+    @property()
+    showCopiedIcon = false;
 
     override render(): TemplateResult | typeof nothing {
+        let copyIcon = this.mode === 'LIGHT' ? LightCopySvg : DarkCopySvg;
+        if (this.showCopiedIcon) {
+            copyIcon = CheckSvg;
+        }
         return this.walletConnectQRcode
             ? html`
                   <div class="qrcode-body">
@@ -87,15 +132,16 @@ export class WalletConnectQrCode extends LitElement {
                           ${this.svgWCQrCode(this.walletConnectQRcode)}
                           <img src=${WalletConnectLogo} />
                       </div>
+                      <div class="separator">
+                          <div class="line ${this.mode} ${this.theme}"></div>
+                          <div class="or ${this.mode} ${this.theme}">or</div>
+                          <div class="line ${this.mode} ${this.theme}"></div>
+                      </div>
                       <button
                           class="${this.mode} ${this.theme}"
                           @click=${this.onCopy}
                       >
-                          <div class="icon">
-                              ${this.mode === 'LIGHT'
-                                  ? LightCopySvg
-                                  : DarkCopySvg}
-                          </div>
+                          <div class="icon">${copyIcon}</div>
                           Copy to Clipboard
                       </button>
                   </div>
@@ -105,6 +151,10 @@ export class WalletConnectQrCode extends LitElement {
 
     private onCopy = async (): Promise<void> => {
         await navigator.clipboard.writeText(this.walletConnectQRcode || '');
+        this.showCopiedIcon = true;
+        setTimeout(() => {
+            this.showCopiedIcon = false;
+        }, 3000);
     };
 
     private svgWCQrCode(uri: string): TemplateResult {
