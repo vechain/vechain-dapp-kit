@@ -1,9 +1,10 @@
-import { createSync, createSync2 } from '@vechain/connex/esm/signer';
+import { Connex } from '@vechain/connex';
 import { createWcClient, createWcModal, newWcSigner } from './wallet-connect';
 import type { ConnexOptions, ConnexWallet, WalletSource } from './types';
 import { CertificateBasedWallet } from './wallets/certificate-wallet';
 import { WCWallet } from './wallets/wc-wallet';
 import { normalizeGenesisId } from './genesis';
+import { convertVendorToSigner } from './vendor-signer';
 
 type ICreateWallet = ConnexOptions & {
     source: WalletSource;
@@ -25,14 +26,14 @@ export const createWallet = ({
                 throw new Error('User is not in a Sync wallet');
             }
 
-            const signer = createSync(genesisId);
+            const vendor = new Connex.Vendor(genesisId, 'sync');
 
-            return new CertificateBasedWallet(signer);
+            return new CertificateBasedWallet(convertVendorToSigner(vendor));
         }
         case 'sync2': {
-            const signer = createSync2(genesisId);
+            const vendor = new Connex.Vendor(genesisId, 'sync2');
 
-            return new CertificateBasedWallet(signer);
+            return new CertificateBasedWallet(convertVendorToSigner(vendor));
         }
         case 'veworld-extension': {
             if (!window.vechain) {
@@ -41,7 +42,7 @@ export const createWallet = ({
 
             const signer = window.vechain.newConnexSigner(genesisId);
 
-            return new CertificateBasedWallet(Promise.resolve(signer));
+            return new CertificateBasedWallet(signer);
         }
         case 'wallet-connect': {
             if (!walletConnectOptions) {

@@ -7,6 +7,7 @@ import './vwk-connected-address-modal';
 import './vwk-connected-address-badge-with-modal';
 import './vwk-source-card';
 import './vwk-fonts';
+import './vwk-wallet-connect-qrcode';
 
 export * from './base';
 export * from './vwk-connect-modal';

@@ -15,8 +15,8 @@ export const ConnectWalletButtonWithModal: React.FC<
     return (
         <ThemeProvider>
             <GlobalFonts />
-            <ConnectButtonWithModal />
             <ThemeSelector />
+            <ConnectButtonWithModal />
         </ThemeProvider>
     );
 };
