@@ -1,21 +1,43 @@
 import { beforeEach, expect, vi } from 'vitest';
 import { mockedConnexSigner } from '../helpers/mocked-signer';
 import { createUnitTestConnex } from '../helpers/connex-helper';
+import { genesisBlocks } from '../../src';
+import { Connex } from '@vechain/connex';
 
-vi.mock('@vechain/connex/esm/signer', () => {
+vi.mock('@vechain/connex');
+
+vi.mocked(Connex.Vendor).mockImplementation((): Connex.Vendor => {
     return {
-        createSync: (): Promise<Connex.Signer> =>
-            Promise.resolve(mockedConnexSigner),
+        sign: (type, msg) => {
+            if (type === 'tx') {
+                return {
+                    request: () => {
+                        return mockedConnexSigner.signTx(msg, {});
+                    },
+                };
+            } else {
+                return {
+                    request: () => {
+                        return mockedConnexSigner.signCert(msg, {});
+                    },
+                };
+            }
+        },
     };
 });
 
 describe('sync', () => {
     describe('is in sync browser', () => {
         beforeEach(() => {
+            // @ts-ignore
             window.connex = {
-                //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                //@ts-expect-error
-                test: 'hello world',
+                thor: {
+                    genesis: genesisBlocks.main,
+                },
+                vendor: {
+                    // @ts-ignore
+                    sign: () => Promise.reject('Not implemented'),
+                },
             };
         });
 
