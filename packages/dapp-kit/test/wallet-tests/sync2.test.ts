@@ -1,11 +1,27 @@
 import { expect, vi } from 'vitest';
-import { mockedConnexSigner } from '../helpers/mocked-signer';
 import { createUnitTestConnex } from '../helpers/connex-helper';
+import { Connex } from '@vechain/connex';
+import { mockedConnexSigner } from '../helpers/mocked-signer';
 
-vi.mock('@vechain/connex/esm/signer', () => {
+vi.mock('@vechain/connex');
+
+vi.mocked(Connex.Vendor).mockImplementation((): Connex.Vendor => {
     return {
-        createSync2: (): Promise<Connex.Signer> =>
-            Promise.resolve(mockedConnexSigner),
+        sign: (type, msg) => {
+            if (type === 'tx') {
+                return {
+                    request: () => {
+                        return mockedConnexSigner.signTx(msg, {});
+                    },
+                };
+            } else {
+                return {
+                    request: () => {
+                        return mockedConnexSigner.signCert(msg, {});
+                    },
+                };
+            }
+        },
     };
 });
 

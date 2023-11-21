@@ -1,10 +1,30 @@
-import { createNoVendor, LazyDriver } from '@vechain/connex/esm/driver';
-import { newThor } from '@vechain/connex-framework/dist/thor';
-import type { DriverNoVendor } from '@vechain/connex-driver';
-import { newVendor } from '@vechain/connex-framework';
+import { DriverNoVendor, SimpleNet } from '@vechain/connex-driver';
+import { Framework } from '@vechain/connex-framework';
+import { blake2b256 } from 'thor-devkit';
 import type { ConnexOptions } from './types';
 import { normalizeGenesisBlock } from './genesis';
 import { WalletManager } from './wallet-manager';
+
+const cache: Record<string, DriverNoVendor | undefined> = {};
+
+const createThorDriver = (
+    node: string,
+    genesis: Connex.Thor.Block,
+): DriverNoVendor => {
+    const key = blake2b256(
+        JSON.stringify({
+            node,
+            genesis,
+        }),
+    ).toString('hex');
+
+    let driver = cache[key];
+    if (!driver) {
+        driver = new DriverNoVendor(new SimpleNet(node), genesis);
+        cache[key] = driver;
+    }
+    return driver;
+};
 
 class MultiWalletConnex {
     public readonly thor: Connex.Thor;
@@ -16,20 +36,17 @@ class MultiWalletConnex {
 
         const genesisBlock = normalizeGenesisBlock(genesis);
 
-        const thorOnlyDriver: DriverNoVendor = createNoVendor(
-            nodeUrl,
-            genesisBlock,
-        );
+        const driver = createThorDriver(nodeUrl, genesisBlock);
 
         const walletManager = new WalletManager(options);
-        const lazyDriver = new LazyDriver(Promise.resolve(walletManager));
-        lazyDriver.setNoVendor(thorOnlyDriver);
 
-        const thor = newThor(lazyDriver);
-        const vendor = newVendor(lazyDriver);
+        driver.signTx = walletManager.signTx.bind(walletManager);
+        driver.signCert = walletManager.signCert.bind(walletManager);
 
-        this.thor = thor;
-        this.vendor = vendor;
+        const framework = new Framework(driver);
+
+        this.thor = framework.thor;
+        this.vendor = framework.vendor;
         this.wallet = walletManager;
     }
 }
