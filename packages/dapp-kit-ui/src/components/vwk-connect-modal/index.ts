@@ -182,11 +182,12 @@ export class ConnectModal extends LitElement {
     }
 
     private onBack = (): void => {
-        dispatchCustomEvent('vwk-close-wc-modal', undefined);
+        this.walletConnectQRcode = undefined;
     };
 
     private handleClose = (): void => {
         this.onBack();
+        dispatchCustomEvent('vwk-close-wc-modal', undefined);
         this.onClose();
     };
 }
