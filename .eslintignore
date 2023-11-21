@@ -2,5 +2,5 @@ node_modules/*
 dist/*
 web-dev-server.config.js
 tsup.config.ts
-test
+**/test/**
 vite.config.ts
