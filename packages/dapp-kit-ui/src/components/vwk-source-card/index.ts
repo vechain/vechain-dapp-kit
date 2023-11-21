@@ -56,8 +56,6 @@ export class SourceCard extends LitElement {
     @property()
     source?: SourceInfo = undefined;
 
-    override id = `vwk-source-card-${this.source?.id ?? 'undefined'}`;
-
     get wallet(): WalletManager {
         return DAppKit.connex.wallet;
     }
