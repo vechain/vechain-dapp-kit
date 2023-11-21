@@ -49,7 +49,7 @@ class ConnectedAddressBadge extends LitElement {
     `;
 
     @property()
-    address?: string = '0x6511C57775eAaAd4b57F9Be9A14c6C026BC21216';
+    address?: string;
 
     @property()
     mode: ThemeMode = 'DARK';
