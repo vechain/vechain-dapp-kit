@@ -1,4 +1,3 @@
-import type { Connex1 } from '@vechain/connex/esm/signer';
 import type { WalletConnectOptions } from '@vechainfoundation/dapp-kit';
 import type { WCModal } from './wallet-connect';
 
@@ -7,7 +6,7 @@ declare global {
         vechain?: {
             newConnexSigner: (genesisId: string) => Connex.Signer;
         };
-        connex?: Connex1;
+        connex?: unknown;
     }
 }
 

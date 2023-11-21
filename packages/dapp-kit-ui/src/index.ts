@@ -1,3 +1,5 @@
+import './components';
+
 export * from './client';
 export * from './assets';
 export * from './components';

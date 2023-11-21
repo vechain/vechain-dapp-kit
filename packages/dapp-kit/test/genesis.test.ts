@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { genesisBlocks } from '@vechain/connex/esm/config';
-import { normalizeGenesisBlock, normalizeGenesisId } from '../src/genesis';
+import {
+    genesisBlocks,
+    normalizeGenesisBlock,
+    normalizeGenesisId,
+} from '../src/genesis';
 
 const customBlock = {
     number: 0,
