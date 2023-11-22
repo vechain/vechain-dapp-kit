@@ -6,12 +6,12 @@ export const ChevronLeftSvg = svg`
     `;
 
 export const LightChevronLeftSvg = html`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#999999">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#777777">
         ${ChevronLeftSvg}
     </svg>
 `;
 export const DarkChevronLeftSvg = html`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#777777">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#999999">
         ${ChevronLeftSvg}
     </svg>
 `;
