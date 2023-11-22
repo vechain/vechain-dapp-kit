@@ -1,13 +1,16 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
     ConnectButton,
     ConnectButtonWithModal,
     ConnectModal,
+    ConnectedAddressBadge,
+    ConnectedAddressBadgeWithModal,
+    ConnectedAddressModal,
     DAppKit,
     SourceInfo,
 } from '../src';
-import { elementQueries } from './helpers/elemnt-queries';
+import { elementQueries } from './helpers/element-queries';
 import { WalletSource } from '@vechainfoundation/dapp-kit/src';
 
 describe('connect-button-with-modal', () => {
@@ -15,7 +18,7 @@ describe('connect-button-with-modal', () => {
         DAppKit.configure({ nodeUrl: 'https://mainnet.vechain.org/' });
     });
 
-    it('Should callback with source when user clicks a wallet', async () => {
+    it('Should callback with source when user clicks a wallet and should render the connected address badge once connected', async () => {
         const element: ConnectButtonWithModal = window.document.createElement(
             'vwk-connect-button-with-modal',
         );
@@ -27,6 +30,8 @@ describe('connect-button-with-modal', () => {
         };
 
         window.document.body.appendChild(element);
+
+        // testing the connect button
 
         const connectButton =
             (await elementQueries.getConnectButton()) as ConnectButton;
@@ -53,5 +58,35 @@ describe('connect-button-with-modal', () => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
         expect(selectedSource).toBeDefined();
+
+        // testing the connected address badge
+
+        // mock a connection to the wallet by setting the address
+        element.address = '0x00000';
+
+        const connectedAddressBadgeWithModal =
+            (await elementQueries.getConnectedAddressBadgeWithModal()) as ConnectedAddressBadgeWithModal;
+
+        expect(connectedAddressBadgeWithModal).toBeDefined();
+
+        const connectedAddressBadge =
+            (await elementQueries.getConnectedAddressBadge()) as ConnectedAddressBadge;
+
+        expect(connectedAddressBadge).toBeDefined();
+
+        // open the connected address modal
+        connectedAddressBadge.shadowRoot?.querySelector('div')?.click();
+
+        const connectedAddressModal =
+            (await elementQueries.getConnectedAddressModal()) as ConnectedAddressModal;
+
+        expect(connectedAddressModal).toBeDefined();
+
+        // disconnect from the wallet by clicking the disconnect button
+        connectedAddressModal.shadowRoot?.querySelector('button')?.click();
+
+        await element.updateComplete;
+
+        expect(element.address).toBeUndefined();
     });
 });
