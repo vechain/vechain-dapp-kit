@@ -20,13 +20,17 @@ export class ConnectButton extends LitElement {
             opacity: 0.9;
         }
 
+        button:active {
+            opacity: 0.8;
+        }
+
         button.LIGHT {
             background-color: ${Colors.LightGrey};
             color: ${Colors.Dark};
         }
 
         button.DARK {
-            background-color: ${Colors.Dark};
+            background-color: ${Colors.DarkGrey};
             color: ${Colors.LightGrey};
         }
     `;

@@ -1,6 +1,6 @@
 import type { TemplateResult } from 'lit';
-import { LitElement, css, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { css, html, LitElement } from 'lit';
+import { customElement, property, query } from 'lit/decorators.js';
 import { Breakpoint, Colors } from '../../../constants';
 import type { Theme, ThemeMode } from '../../../constants/theme';
 
@@ -17,11 +17,23 @@ export class Modal extends LitElement {
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+        .modal-container.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .modal {
             position: absolute;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: height 0.2s, opacity 0.3s;
+            overflow: hidden;
+            opacity: 1;
+        }
+        .modal-container.hidden .modal {
+            opacity: 0;
         }
 
         .modal.LIGHT {
@@ -55,6 +67,30 @@ export class Modal extends LitElement {
             }
         }
     `;
+
+    changeHeightOnResize = (): void => {
+        if (!this.modalSubContainer) {
+            return;
+        }
+        this.modalHeight = this.modalSubContainer.clientHeight;
+        new ResizeObserver(() => {
+            this.modalHeight = this.modalSubContainer?.clientHeight ?? 0;
+        }).observe(this.modalSubContainer);
+    };
+
+    override connectedCallback(): void {
+        super.connectedCallback();
+        addEventListener('load', this.changeHeightOnResize);
+    }
+    override disconnectedCallback(): void {
+        super.disconnectedCallback();
+        window.removeEventListener('load', this.changeHeightOnResize);
+    }
+
+    @query('.modal-sub-container')
+    modalSubContainer?: Element;
+    @property()
+    modalHeight?: number;
     @property({ type: Boolean })
     open = false;
     @property()
@@ -70,14 +106,21 @@ export class Modal extends LitElement {
     };
 
     override render(): TemplateResult {
-        if (!this.open) return html``;
         return html`
-            <div class="modal-container" @click=${this.onClose}>
+            <div
+                class="modal-container ${!this.open ? 'hidden' : ''}"
+                @click=${this.onClose}
+            >
                 <div
                     class="modal ${this.mode} ${this.theme}"
                     @click=${this.stopPropagation}
+                    style="height: ${this.modalHeight
+                        ? `${this.modalHeight}px`
+                        : 'auto'}"
                 >
-                    <slot></slot>
+                    <div class="modal-sub-container">
+                        <slot></slot>
+                    </div>
                 </div>
             </div>
         `;
