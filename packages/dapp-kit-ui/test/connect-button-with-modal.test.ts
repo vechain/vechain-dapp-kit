@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
     ConnectButton,
@@ -61,6 +61,7 @@ describe('connect-button-with-modal', () => {
 
         // testing the connected address badge
 
+        // mock a connection to the wallet by setting the address
         element.address = '0x00000';
 
         const connectedAddressBadgeWithModal =
@@ -73,12 +74,19 @@ describe('connect-button-with-modal', () => {
 
         expect(connectedAddressBadge).toBeDefined();
 
+        // open the connected address modal
         connectedAddressBadge.shadowRoot?.querySelector('div')?.click();
 
-        const ConnectedAddressModal =
+        const connectedAddressModal =
             (await elementQueries.getConnectedAddressModal()) as ConnectedAddressModal;
 
-        expect(ConnectedAddressModal).toBeDefined();
-        expect(ConnectedAddressModal.open).toBe(true);
+        expect(connectedAddressModal).toBeDefined();
+
+        // disconnect from the wallet by clicking the disconnect button
+        connectedAddressModal.shadowRoot?.querySelector('button')?.click();
+
+        await element.updateComplete;
+
+        expect(element.address).toBeUndefined();
     });
 });
