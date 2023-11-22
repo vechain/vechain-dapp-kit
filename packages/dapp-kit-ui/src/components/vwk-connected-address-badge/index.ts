@@ -4,7 +4,7 @@ import { Colors, ThemeMode } from '../../constants';
 import { friendlyAddress, getPicassoImage } from '../../utils/account';
 
 @customElement('vwk-connected-address-badge')
-class ConnectedAddressBadge extends LitElement {
+export class ConnectedAddressBadge extends LitElement {
     static override styles = css`
         /* Style for the badge */
         .wallet-badge {

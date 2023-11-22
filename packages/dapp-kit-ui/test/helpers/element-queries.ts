@@ -1,4 +1,11 @@
-import { ConnectButton, ConnectModal, SourceCard } from '../../src';
+import {
+    ConnectButton,
+    ConnectModal,
+    ConnectedAddressBadge,
+    ConnectedAddressBadgeWithModal,
+    ConnectedAddressModal,
+    SourceCard,
+} from '../../src';
 
 const performQueryWithTimeout = async <T>(
     timeout: number,
@@ -33,6 +40,45 @@ const getConnectModal = (): Promise<ConnectModal | undefined | null> => {
             ?.shadowRoot?.querySelector('vwk-connect-modal'),
     );
 };
+
+const getConnectedAddressBadgeWithModal = (
+    timeout = 2000,
+): Promise<ConnectedAddressBadgeWithModal | undefined | null> => {
+    return performQueryWithTimeout(timeout, () =>
+        window.document.body
+            .querySelector('vwk-connect-button-with-modal')
+            ?.shadowRoot?.querySelector(
+                'vwk-connected-address-badge-with-modal',
+            ),
+    );
+};
+
+const getConnectedAddressBadge = (
+    timeout = 2000,
+): Promise<ConnectedAddressBadge | undefined | null> => {
+    return performQueryWithTimeout(timeout, () =>
+        window.document.body
+            .querySelector('vwk-connect-button-with-modal')
+            ?.shadowRoot?.querySelector(
+                'vwk-connected-address-badge-with-modal',
+            )
+            ?.shadowRoot?.querySelector('vwk-connected-address-badge'),
+    );
+};
+
+const getConnectedAddressModal = (
+    timeout = 2000,
+): Promise<ConnectedAddressModal | undefined | null> => {
+    return performQueryWithTimeout(timeout, () =>
+        window.document.body
+            .querySelector('vwk-connect-button-with-modal')
+            ?.shadowRoot?.querySelector(
+                'vwk-connected-address-badge-with-modal',
+            )
+            ?.shadowRoot?.querySelector('vwk-connected-address-modal'),
+    );
+};
+
 const getAllSourceCards = async (): Promise<SourceCard[]> => {
     const res = await performQueryWithTimeout(2000, () =>
         window.document.body
@@ -66,4 +112,7 @@ export const elementQueries = {
     getConnectModal,
     getAllSourceCards,
     getWalletConnectQrCode,
+    getConnectedAddressBadgeWithModal,
+    getConnectedAddressBadge,
+    getConnectedAddressModal,
 };
