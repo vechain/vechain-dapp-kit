@@ -8,7 +8,6 @@
         "dev": "vite dev"
     },
     "dependencies": {
-        "@vechain/connex-driver": "2.1.0",
         "@vechainfoundation/dapp-kit-ui": "*",
         "lru-cache": "5.1.1",
         "stream-browserify": "^3.0.0",

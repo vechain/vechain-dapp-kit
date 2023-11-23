@@ -1,4 +1,7 @@
-import { DriverNoVendor, SimpleNet } from '@vechain/connex-driver/dist';
+import {
+    DriverNoVendor,
+    SimpleNet,
+} from '@vechain/connex-driver/dist/index.js';
 import { Framework } from '@vechain/connex-framework';
 import { blake2b256 } from 'thor-devkit';
 import type { ConnexOptions } from './types';
