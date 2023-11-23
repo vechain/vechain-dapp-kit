@@ -5,8 +5,7 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite dev",
-        "lint": "prettier --check . && eslint ."
+        "dev": "vite dev"
     },
     "dependencies": {
         "@vechain/connex-driver": "2.1.0",
