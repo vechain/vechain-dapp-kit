@@ -6,7 +6,7 @@ import {
     dispatchCustomEvent,
     WalletConnectQrCode,
 } from '../src';
-import { elementQueries } from './helpers/elemnt-queries';
+import { elementQueries } from './helpers/element-queries';
 
 const sampleUri =
     'wc:59f6594baa77ca343197f60436e5a188708b045e323aa4d6ce93722772e18deb@2?relay-protocol=irn&symKey=0422890abbd3baf75cefad89e822b01071cd906705d6c9282596de866376a824';

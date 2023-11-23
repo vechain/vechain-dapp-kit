@@ -6201,7 +6201,7 @@
     uuid "2.0.1"
     xmlhttprequest "1.8.0"
 
-"@vechain/picasso@^2.1.1":
+"@vechain/picasso@2.1.1", "@vechain/picasso@^2.1.1":
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/@vechain/picasso/-/picasso-2.1.1.tgz#a0adc594a3ce5047c606e7745566a65f341671fb"
   integrity sha512-SOH35A4jxmxQeIn+Q6qA2X+ivRKDE+9n/gvLgCQnacsJrrwh/tSinUbhj9KnfU4ixm+g1aRgTm0IYuz1/uS+uw==
