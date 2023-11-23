@@ -9,10 +9,7 @@
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx"
     },
     "dependencies": {
-        "@vechainfoundation/dapp-kit-ui": "*",
-        "lru-cache": "5.1.1",
-        "stream-browserify": "^3.0.0",
-        "stream-http": "^3.2.0"
+        "@vechainfoundation/dapp-kit-ui": "*"
     },
     "devDependencies": {
         "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
