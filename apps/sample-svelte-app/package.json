@@ -5,7 +5,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite dev"
+        "dev": "vite dev",
+        "lint": "eslint src --ext .js,.jsx,.ts,.tsx"
     },
     "dependencies": {
         "@vechainfoundation/dapp-kit-ui": "*",
@@ -17,6 +18,7 @@
         "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
         "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
         "@sveltejs/adapter-auto": "^2.0.0",
+        "@sveltejs/adapter-static": "^2.0.3",
         "@sveltejs/kit": "^1.27.4",
         "@typescript-eslint/eslint-plugin": "^6.0.0",
         "@typescript-eslint/parser": "^6.0.0",

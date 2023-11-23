@@ -52,7 +52,7 @@ jobs:
                   cp -r apps/sample-react-app/build build/react
                   cp -r apps/sample-vanilla-app/dist build/vanilla
                   cp -r apps/sample-svelte-app/dist build/svelte
-                  cp -r apps/sample-angular-app/dist build/angular
+                  cp -r apps/sample-angular-app/dist/easy-angular build/angular
 
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v1
