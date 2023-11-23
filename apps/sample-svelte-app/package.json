@@ -5,18 +5,15 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-        "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
         "dev": "vite dev",
-        "format": "prettier --write .",
-        "lint": "prettier --check . && eslint .",
-        "preview": "vite preview",
-        "stream-browserify": "^3.0.0",
-        "stream-http": "^3.2.0"
+        "lint": "prettier --check . && eslint ."
     },
     "dependencies": {
+        "@vechain/connex-driver": "2.1.0",
         "@vechainfoundation/dapp-kit-ui": "*",
-        "lru-cache": "5.1.1"
+        "lru-cache": "5.1.1",
+        "stream-browserify": "^3.0.0",
+        "stream-http": "^3.2.0"
     },
     "devDependencies": {
         "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
