@@ -4,10 +4,9 @@
     "private": true,
     "scripts": {
         "add-page": "ng g m pages/page-name --routing && ng g component pages/page-name --skip-tests",
+        "build": "ng build --configuration development",
         "dev": "ng serve",
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-        "ng": "ng",
-        "test": "ng test",
         "watch": "ng build --watch --configuration development"
     },
     "dependencies": {
