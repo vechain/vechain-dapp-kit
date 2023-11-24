@@ -4,6 +4,7 @@
     "private": false,
     "license": "MIT",
     "sideEffects": false,
+    "type": "module",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
