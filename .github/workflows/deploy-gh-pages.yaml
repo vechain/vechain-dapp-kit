@@ -51,7 +51,6 @@ jobs:
                   cp -r apps/sample-vue-app/dist build/vue
                   cp -r apps/sample-react-app/build build/react
                   cp -r apps/sample-vanilla-app/dist build/vanilla
-                  cp -r apps/sample-svelte-app/dist build/svelte
                   cp -r apps/sample-angular-app/dist/easy-angular build/angular
 
             - name: Upload artifact
