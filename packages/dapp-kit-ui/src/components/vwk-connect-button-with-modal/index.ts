@@ -1,19 +1,13 @@
-import type { TemplateResult } from 'lit';
-import { html, LitElement } from 'lit';
+import { consume } from '@lit/context';
+import { LitElement, TemplateResult, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { WalletManager } from '@vechainfoundation/dapp-kit';
-import type { SourceInfo, Theme, ThemeMode } from '../../constants';
+import { dappKitContext } from '../provider';
 import { DAppKit } from '../../client';
-import { consume, provide } from '@lit/context';
-import { DappKitContext, dappKitContext } from '../../context';
+import { SourceInfo, Theme, ThemeMode } from '../../constants';
+import { WalletManager } from '@vechainfoundation/dapp-kit';
 
 @customElement('vwk-connect-button-with-modal')
 export class ConnectButtonWithModal extends LitElement {
-    @provide({ context: dappKitContext })
-    dappKitContextInitialValue: DappKitContext = {
-        address: '',
-    };
-
     @consume({ context: dappKitContext })
     @property({ attribute: false })
     dappKitContext = {
@@ -71,7 +65,6 @@ export class ConnectButtonWithModal extends LitElement {
         return html`
             <div>
                 <vwk-fonts></vwk-fonts>
-
                 ${this.dappKitContext.address
                     ? html`<vwk-connected-address-badge-with-modal
                           .mode=${this.mode}
