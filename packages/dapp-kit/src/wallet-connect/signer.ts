@@ -1,6 +1,8 @@
-import type { SessionTypes } from '@walletconnect/types';
-import type { ProposalTypes } from '@walletconnect/types/dist/types/sign-client/proposal';
-import type { EngineTypes } from '@walletconnect/types/dist/types/sign-client/engine';
+import type {
+    EngineTypes,
+    ProposalTypes,
+    SessionTypes,
+} from '@walletconnect/types';
 import { getSdkError } from '@walletconnect/utils';
 import type { SignClient } from '@walletconnect/sign-client/dist/types/client';
 import type { WCSigner, WCSignerOptions } from './types';
