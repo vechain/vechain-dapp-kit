@@ -25,6 +25,7 @@
         "watch": "tsup --watch"
     },
     "dependencies": {
+        "@lit/context": "^1.1.0",
         "@vechain/picasso": "2.1.1",
         "@vechainfoundation/dapp-kit": "*",
         "@wagmi/core": "^1.4.5",

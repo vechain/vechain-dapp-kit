@@ -4,9 +4,31 @@ import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechainfoundation/dapp-kit';
 import type { SourceInfo, Theme, ThemeMode } from '../../constants';
 import { DAppKit } from '../../client';
+import { consume, provide } from '@lit/context';
+import { DappKitContext, dappKitContext } from '../../context';
 
 @customElement('vwk-connect-button-with-modal')
 export class ConnectButtonWithModal extends LitElement {
+    @provide({ context: dappKitContext })
+    dappKitContextInitialValue: DappKitContext = {
+        address: '',
+    };
+
+    @consume({ context: dappKitContext })
+    @property({ attribute: false })
+    dappKitContext = {
+        address: '',
+    };
+
+    // Use the `connectedCallback` lifecycle hook to retrieve the stored address
+    connectedCallback() {
+        super.connectedCallback();
+        const storedAddress = localStorage.getItem('dappKitAddress');
+        if (storedAddress) {
+            this.dappKitContext.address = storedAddress;
+        }
+    }
+
     @property()
     override title = 'Connect Wallet';
 
@@ -19,9 +41,6 @@ export class ConnectButtonWithModal extends LitElement {
     @property({ type: Boolean })
     open = false;
 
-    @property({ type: String })
-    address?: string;
-
     private get wallet(): WalletManager {
         return DAppKit.connex.wallet;
     }
@@ -32,8 +51,9 @@ export class ConnectButtonWithModal extends LitElement {
             this.wallet.setSource(source.id);
             this.wallet
                 .connect()
-                // eslint-disable-next-line no-console
-                .then((res) => (this.address = res.account))
+                .then((res) => {
+                    this.updateAddress(res.account);
+                })
                 .finally(() => {
                     this.open = false;
                 });
@@ -43,7 +63,7 @@ export class ConnectButtonWithModal extends LitElement {
     @property({ type: Function })
     onDisconnectClick = (): void => {
         this.wallet.disconnect().finally(() => {
-            this.address = undefined;
+            this.updateAddress('');
         });
     };
 
@@ -52,11 +72,11 @@ export class ConnectButtonWithModal extends LitElement {
             <div>
                 <vwk-fonts></vwk-fonts>
 
-                ${this.address
+                ${this.dappKitContext.address
                     ? html`<vwk-connected-address-badge-with-modal
                           .mode=${this.mode}
                           .theme=${this.theme}
-                          .address=${this.address}
+                          .address=${this.dappKitContext.address}
                           .onDisconnectClick=${this.onDisconnectClick}
                       ></vwk-connected-address-badge-with-modal>`
                     : html`<vwk-connect-button
@@ -75,6 +95,13 @@ export class ConnectButtonWithModal extends LitElement {
             </div>
         `;
     }
+
+    private updateAddress = (address: string): void => {
+        this.dappKitContext.address = address;
+        localStorage.setItem('dappKitAddress', address);
+        // render the component again after the address is updated
+        this.requestUpdate();
+    };
 
     private handleOpen = (): void => {
         DAppKit.connex.wallet.disconnect().finally(() => {

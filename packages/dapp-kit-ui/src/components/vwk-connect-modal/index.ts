@@ -80,14 +80,19 @@ export class ConnectModal extends LitElement {
             color: ${Colors.LightGrey};
         }
     `;
+
     @property({ type: Boolean })
     open = false;
+
     @property({ type: Function })
     onSourceClick?: (source?: SourceInfo) => void = undefined;
+
     @property()
     mode: ThemeMode = 'LIGHT';
+
     @property()
     theme: Theme = 'DEFAULT';
+
     @property()
     walletConnectQRcode?: string = undefined;
 
