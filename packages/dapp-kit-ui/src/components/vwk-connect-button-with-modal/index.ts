@@ -1,7 +1,7 @@
 import { consume } from '@lit/context';
 import { LitElement, TemplateResult, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { dappKitContext } from '../provider';
+import { dappKitContext, storeDappKitContext } from '../provider';
 import { DAppKit } from '../../client';
 import { SourceInfo, Theme, ThemeMode } from '../../constants';
 import { WalletManager } from '@vechainfoundation/dapp-kit';
@@ -13,15 +13,6 @@ export class ConnectButtonWithModal extends LitElement {
     dappKitContext = {
         address: '',
     };
-
-    // Use the `connectedCallback` lifecycle hook to retrieve the stored address
-    connectedCallback() {
-        super.connectedCallback();
-        const storedAddress = localStorage.getItem('dappKitAddress');
-        if (storedAddress) {
-            this.dappKitContext.address = storedAddress;
-        }
-    }
 
     @property()
     override title = 'Connect Wallet';
@@ -91,7 +82,7 @@ export class ConnectButtonWithModal extends LitElement {
 
     private updateAddress = (address: string): void => {
         this.dappKitContext.address = address;
-        localStorage.setItem('dappKitAddress', address);
+        storeDappKitContext(this.dappKitContext);
         // render the component again after the address is updated
         this.requestUpdate();
     };

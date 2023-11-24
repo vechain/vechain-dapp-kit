@@ -1,7 +1,11 @@
 import { provide } from '@lit/context';
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { DappKitContext, dappKitContext } from '../dapp-kit-context';
+import {
+    DappKitContext,
+    dappKitContext,
+    getDappKitContext,
+} from '../dapp-kit-context';
 
 @customElement('dapp-kit-context-provider')
 export class DappKitContextProvider extends LitElement {
@@ -10,6 +14,12 @@ export class DappKitContextProvider extends LitElement {
     dappKitContext: DappKitContext = {
         address: '',
     };
+
+    // Use the `connectedCallback` lifecycle hook to retrieve the stored address
+    connectedCallback() {
+        super.connectedCallback();
+        this.dappKitContext = getDappKitContext();
+    }
 
     render() {
         return html`<slot></slot>`;
