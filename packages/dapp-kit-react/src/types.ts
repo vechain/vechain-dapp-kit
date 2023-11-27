@@ -23,6 +23,7 @@ export interface ConnexProviderOptions {
     nodeOptions: Omit<Options, 'signer'>;
     walletConnectOptions?: WalletConnectOptions;
     persistState?: boolean;
+    useWalletKitModal?: boolean;
 }
 
 /**

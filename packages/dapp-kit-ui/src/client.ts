@@ -4,13 +4,20 @@ import { CustomWalletConnectModal, DAppKitModal } from './modal';
 
 let connex: MultiWalletConnex | null = null;
 
+type DAppKitOptions = Omit<ConnexOptions, 'customWcModal'> & {
+    useWalletKitModal?: boolean;
+};
+
 const DAppKit = {
-    configure(options: ConnexOptions): MultiWalletConnex {
-        if (!options.customWcModal) {
-            options.customWcModal = CustomWalletConnectModal.getInstance();
+    configure(options: DAppKitOptions): MultiWalletConnex {
+        const connexOptions: ConnexOptions = options;
+
+        if (options.useWalletKitModal) {
+            connexOptions.customWcModal =
+                CustomWalletConnectModal.getInstance();
         }
 
-        connex = new MultiWalletConnex(options);
+        connex = new MultiWalletConnex(connexOptions);
 
         return connex;
     },
