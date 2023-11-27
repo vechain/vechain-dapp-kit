@@ -21,6 +21,7 @@ const vechainWalletKitOptions = {
     nodeUrl: 'https://testnet.vechain.org/',
     network: 'test',
     walletConnectOptions,
+    useWalletKitModal: true,
 };
 
 DAppKit.configure(vechainWalletKitOptions);
