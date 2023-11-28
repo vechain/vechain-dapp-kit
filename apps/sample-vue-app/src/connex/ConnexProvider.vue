@@ -53,6 +53,7 @@ export default defineComponent({
         const connex = DAppKit.configure({
             nodeUrl: 'https://mainnet.vechain.org/',
             walletConnectOptions,
+            useWalletKitModal: true,
         });
 
         const onDisconnected = () => {

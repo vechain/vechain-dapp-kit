@@ -35,6 +35,7 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     nodeOptions,
     walletConnectOptions,
     persistState = false,
+    useWalletKitModal = false,
 }): React.ReactElement => {
     const [account, setAccount] = useState<string | null>(
         persistState ? retrieve('account') : null,
@@ -49,8 +50,14 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
                 nodeUrl: nodeOptions.node,
                 genesis: nodeOptions.network,
                 walletConnectOptions,
+                useWalletKitModal,
             }),
-        [nodeOptions.network, nodeOptions.node, walletConnectOptions],
+        [
+            useWalletKitModal,
+            nodeOptions.network,
+            nodeOptions.node,
+            walletConnectOptions,
+        ],
     );
 
     /**
