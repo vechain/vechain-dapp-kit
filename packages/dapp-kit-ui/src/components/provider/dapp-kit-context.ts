@@ -1,27 +1,38 @@
 import { createContext } from '@lit/context';
 
-type DappKitContext = {
+interface DappKitContextOptions {
+    notPersistentContext: boolean;
+}
+
+interface DappKitContext {
+    options: DappKitContextOptions;
     address: string;
-};
+}
 
 const dappKitContext = createContext<DappKitContext>(
     Symbol('dapp-kit-context'),
 );
 
-const storeDappKitContext = function (context: DappKitContext) {
+const storeDappKitContext = function (context: DappKitContext): void {
     localStorage.setItem('dapp-kit-context-object', JSON.stringify(context));
 };
 
-const getDappKitContext = function (): DappKitContext {
+const getDappKitContext = function (
+    notPersistentContext = false,
+): DappKitContext {
     const dappKitContextObject = localStorage.getItem(
         'dapp-kit-context-object',
     );
 
-    if (!dappKitContextObject) {
+    if (notPersistentContext || !dappKitContextObject) {
         return {
+            options: {
+                notPersistentContext,
+            },
             address: '',
         };
     }
+
     return JSON.parse(dappKitContextObject) as DappKitContext;
 };
 

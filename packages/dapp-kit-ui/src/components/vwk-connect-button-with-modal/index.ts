@@ -1,16 +1,19 @@
 import { consume } from '@lit/context';
-import { LitElement, TemplateResult, html } from 'lit';
+import { LitElement, type TemplateResult, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import type { WalletManager } from '@vechainfoundation/dapp-kit';
 import { dappKitContext, storeDappKitContext } from '../provider';
 import { DAppKit } from '../../client';
-import { SourceInfo, Theme, ThemeMode } from '../../constants';
-import { WalletManager } from '@vechainfoundation/dapp-kit';
+import type { SourceInfo, Theme, ThemeMode } from '../../constants';
 
 @customElement('vwk-connect-button-with-modal')
 export class ConnectButtonWithModal extends LitElement {
     @consume({ context: dappKitContext })
     @property({ attribute: false })
     dappKitContext = {
+        options: {
+            notPersistentContext: false,
+        },
         address: '',
     };
 
@@ -82,7 +85,11 @@ export class ConnectButtonWithModal extends LitElement {
 
     private updateAddress = (address: string): void => {
         this.dappKitContext.address = address;
-        storeDappKitContext(this.dappKitContext);
+
+        // store the context object in local storage if the context is persistent
+        if (!this.dappKitContext.options.notPersistentContext) {
+            storeDappKitContext(this.dappKitContext);
+        }
         // render the component again after the address is updated
         this.requestUpdate();
     };

@@ -1,8 +1,8 @@
 import { provide } from '@lit/context';
-import { LitElement, html } from 'lit';
+import { LitElement, type TemplateResult, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import {
-    DappKitContext,
+    type DappKitContext,
     dappKitContext,
     getDappKitContext,
 } from '../dapp-kit-context';
@@ -12,16 +12,22 @@ export class DappKitContextProvider extends LitElement {
     @provide({ context: dappKitContext })
     @property({ attribute: false })
     dappKitContext: DappKitContext = {
+        options: {
+            notPersistentContext: false,
+        },
         address: '',
     };
 
+    @property({ type: Boolean })
+    notPersistentContext = false;
+
     // Use the `connectedCallback` lifecycle hook to retrieve the stored address
-    connectedCallback() {
+    connectedCallback(): void {
         super.connectedCallback();
-        this.dappKitContext = getDappKitContext();
+        this.dappKitContext = getDappKitContext(this.notPersistentContext);
     }
 
-    render() {
+    render(): TemplateResult {
         return html`<slot></slot>`;
     }
 }
