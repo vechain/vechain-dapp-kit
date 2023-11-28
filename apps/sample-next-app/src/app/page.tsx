@@ -1,23 +1,17 @@
 'use client'; // This is a client component
 
-import {
-    ConnectWalletButtonWithModal,
-    useWallet,
-} from '@vechainfoundation/dapp-kit-react';
-import React, { useEffect } from 'react';
+import React from 'react';
+import dynamic from 'next/dynamic';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, import/no-default-export
-export default function Home() {
-    const { account } = useWallet();
+const ConnectWalletButton = dynamic(() => import('./pages/homepage'), {
+    ssr: false,
+});
 
-    useEffect(() => {
-        // eslint-disable-next-line no-console
-        console.log('account', account);
-    }, [account]);
-
+// eslint-disable-next-line import/no-default-export
+export default function Page() {
     return (
         <main>
-            <ConnectWalletButtonWithModal />
+            <ConnectWalletButton />
         </main>
     );
 }
