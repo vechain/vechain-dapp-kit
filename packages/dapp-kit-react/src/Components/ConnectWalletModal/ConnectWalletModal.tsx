@@ -5,7 +5,7 @@ import { ConnectModal } from '@vechainfoundation/dapp-kit-ui';
 import type { ConnectResponse } from '@vechainfoundation/dapp-kit/src';
 import { useWallet } from '../../ConnexProvider';
 
-export const createButtonWithModal = () =>
+const createButtonWithModal = () =>
     createComponent({
         tagName: 'vwk-connect-modal',
         elementClass: ConnectModal,
