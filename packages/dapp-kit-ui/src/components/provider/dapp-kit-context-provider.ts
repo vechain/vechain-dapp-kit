@@ -38,15 +38,6 @@ export class DappKitContextProvider extends LitElement {
     }
 
     private initListener(): void {
-        // subscribe(DAppKit.connex.wallet.state, () => {
-        //     const state = snapshot(DAppKit.connex.wallet.state);
-        //
-        //     // eslint-disable-next-line no-console
-        //     console.log('state', state);
-        //
-        //     this.dappKitContext.address = state.address;
-        //     this.dappKitContext.source = state.source;
-        // });
         subscribeKey(DAppKit.connex.wallet.state, 'address', (v) => {
             this.dappKitContext.address = v ?? '';
             this.requestUpdate();
