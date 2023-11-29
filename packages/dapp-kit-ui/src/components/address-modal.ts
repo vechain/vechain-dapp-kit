@@ -1,19 +1,19 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { SourceInfo } from '../../constants';
-import { Colors } from '../../constants';
-import { DarkCloseSvg, LightCloseSvg } from '../../assets';
-import { dispatchCustomEvent, subscribeToCustomEvent } from '../../utils';
-import type { Theme, ThemeMode } from '../../constants/theme';
-import { friendlyAddress, getPicassoImage } from '../../utils/account';
+import type { SourceInfo } from '../constants';
+import { Colors } from '../constants';
+import { DarkCloseSvg, LightCloseSvg } from '../assets';
+import { dispatchCustomEvent, subscribeToCustomEvent } from '../utils';
+import type { Theme, ThemeMode } from '../constants/theme';
+import { friendlyAddress, getPicassoImage } from '../utils/account';
 import {
     DarkDisconnectSvg,
     LightDisconnectSvg,
-} from '../../assets/icons/disconnect';
+} from '../assets/icons/disconnect';
 
 @customElement('vwk-connected-address-modal')
-export class ConnectedAddressModal extends LitElement {
+export class AddressModal extends LitElement {
     static override styles = css`
         .modal-container {
             display: flex;
@@ -102,10 +102,12 @@ export class ConnectedAddressModal extends LitElement {
             margin-right: 4px;
             border-radius: 50%;
         }
+
         .title {
             font-size: 20px;
             font-weight: 600;
         }
+
         .wallet-address {
             font-size: 19px;
         }
@@ -149,53 +151,50 @@ export class ConnectedAddressModal extends LitElement {
 
     override render(): TemplateResult {
         return html`
-            <vwk-fonts></vwk-fonts>
-            <vwk-base-modal
+        <vwk-fonts></vwk-fonts>
+        <vwk-base-modal
                 .open=${this.open}
                 .onClose=${this.handleClose}
                 .mode=${this.mode}
                 .theme=${this.theme}
-            >
-                <div class="modal-container">
-                    <div class="modal-header">
-                        <div class="title">Connected</div>
-                        <div
+        >
+            <div class="modal-container">
+                <div class="modal-header">
+                    <div class="title">Connected</div>
+                    <div
                             class="icon close-icon ${this.mode}"
                             @click=${this.handleClose}
-                        >
-                            ${
-                                this.mode === 'LIGHT'
-                                    ? LightCloseSvg
-                                    : DarkCloseSvg
-                            }
-                        </div>
+                    >
+                        ${this.mode === 'LIGHT' ? LightCloseSvg : DarkCloseSvg}
                     </div>
-                    <div class="modal-body">
-                        <img
+                </div>
+                <div class="modal-body">
+                    <img
                             class="address-icon"
                             src=${getPicassoImage(this.address ?? '')}
-                        />
-                        <span class="wallet-address">
+                    />
+                    <span class="wallet-address">
                             ${friendlyAddress(this.address ?? '')}
                         </span>
-                        
+
                 </div>
                 <div class="modal-footer">
-                            <button
-                                class="${this.mode} ${this.theme}"
-                                @click=${this.onDisconnectClick}
-                            >
-                            <div class="icon ${this.mode}">
+                    <button
+                            class="${this.mode} ${this.theme}"
+                            @click=${this.onDisconnectClick}
+                    >
+                        <div class="icon ${this.mode}">
                             ${
                                 this.mode === 'LIGHT'
                                     ? LightDisconnectSvg
                                     : DarkDisconnectSvg
-                            }</div>
-                                Disconnect
-                            </button>
-                    </div>
-            </vwk-base-modal>
-        `;
+                            }
+                        </div>
+                        Disconnect
+                    </button>
+                </div>
+        </vwk-base-modal>
+    `;
     }
 
     private onBack = (): void => {
@@ -210,6 +209,6 @@ export class ConnectedAddressModal extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-connected-address-modal': ConnectedAddressModal;
+        'vwk-connected-address-modal': AddressModal;
     }
 }

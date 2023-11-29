@@ -1,3 +1,4 @@
+/// <reference types="@vechain/connex" />
 import { blake2b256, Certificate, HDNode, secp256k1 } from 'thor-devkit';
 
 const mnemonicWords =

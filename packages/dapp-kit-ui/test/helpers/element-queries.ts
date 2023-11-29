@@ -1,9 +1,9 @@
 import {
+    AddressBadge,
+    AddressBadgeWithModal,
+    AddressModal,
     ConnectButton,
     ConnectModal,
-    ConnectedAddressBadge,
-    ConnectedAddressBadgeWithModal,
-    ConnectedAddressModal,
     DappKitContextProvider,
     SourceCard,
 } from '../../src';
@@ -44,7 +44,7 @@ const getConnectModal = (): Promise<ConnectModal | undefined | null> => {
 
 const getConnectedAddressBadgeWithModal = (
     timeout = 2000,
-): Promise<ConnectedAddressBadgeWithModal | undefined | null> => {
+): Promise<AddressBadgeWithModal | undefined | null> => {
     return performQueryWithTimeout(timeout, () =>
         window.document.body
             .querySelector('vwk-connect-button-with-modal')
@@ -66,7 +66,7 @@ const getDappKitContextProvider = (): Promise<
 
 const getConnectedAddressBadge = (
     timeout = 2000,
-): Promise<ConnectedAddressBadge | undefined | null> => {
+): Promise<AddressBadge | undefined | null> => {
     return performQueryWithTimeout(timeout, () =>
         window.document.body
             .querySelector('vwk-connect-button-with-modal')
@@ -79,7 +79,7 @@ const getConnectedAddressBadge = (
 
 const getConnectedAddressModal = (
     timeout = 2000,
-): Promise<ConnectedAddressModal | undefined | null> => {
+): Promise<AddressModal | undefined | null> => {
     return performQueryWithTimeout(timeout, () =>
         window.document.body
             .querySelector('vwk-connect-button-with-modal')

@@ -1,27 +1,33 @@
 // eslint-disable-next-line unicorn/prefer-node-protocol
 import { EventEmitter } from 'events';
+import { proxy } from 'valtio';
+import { subscribeKey } from 'valtio/utils';
 import type {
     ConnectResponse,
     ConnexOptions,
     ConnexWallet,
+    WalletManagerState,
     WalletSource,
 } from './types';
 import { createWallet } from './create-wallet';
 import { WalletSources } from './wallet';
+import { Storage } from './local-storage';
 
 const DISCONNECTED = 'disconnected';
 const SOURCE_CHANGED = 'source-changed';
 
 class WalletManager {
+    public readonly state: WalletManagerState;
     private wallets: Record<string, ConnexWallet | undefined> = {};
-
     private eventEmitter = new EventEmitter();
-    private _source: WalletSource | null = null;
 
-    constructor(private readonly connexOptions: ConnexOptions) {}
+    constructor(private readonly connexOptions: ConnexOptions) {
+        this.state = this.initState(connexOptions.usePersistence ?? false);
+        this.initPersistence(connexOptions.usePersistence ?? false);
+    }
 
     private get wallet(): ConnexWallet {
-        const source = this._source;
+        const source = this.state.source;
 
         if (!source) {
             throw new Error('No wallet has been selected');
@@ -47,20 +53,25 @@ class WalletManager {
         return wallet;
     }
 
-    connect = (): Promise<ConnectResponse> => this.wallet.connect();
+    connect = (): Promise<ConnectResponse> =>
+        this.wallet.connect().then((res) => {
+            this.state.address = res.account;
+            return res;
+        });
 
     disconnect = async (remote = false): Promise<void> => {
-        if (!this._source) {
+        if (!this.state.source) {
             return;
         }
 
-        const wallet = this.wallets[this._source];
+        const wallet = this.wallets[this.state.source];
 
         if (wallet && !remote) {
             await wallet.disconnect?.();
         }
 
-        this._source = null;
+        this.state.source = null;
+        this.state.address = null;
         this.eventEmitter.emit(SOURCE_CHANGED, null);
         this.eventEmitter.emit(DISCONNECTED);
     };
@@ -68,13 +79,20 @@ class WalletManager {
     signTx = (
         msg: Connex.Vendor.TxMessage,
         options: Connex.Signer.TxOptions,
-    ): Promise<Connex.Vendor.TxResponse> => this.wallet.signTx(msg, options);
+    ): Promise<Connex.Vendor.TxResponse> =>
+        this.wallet.signTx(msg, options).then((res) => {
+            this.state.address = res.signer;
+            return res;
+        });
 
     signCert = (
         msg: Connex.Vendor.CertMessage,
         options: Connex.Signer.CertOptions,
     ): Promise<Connex.Vendor.CertResponse> =>
-        this.wallet.signCert(msg, options);
+        this.wallet.signCert(msg, options).then((res) => {
+            this.state.address = res.annex.signer;
+            return res;
+        });
 
     setSource = (src: WalletSource): void => {
         if (
@@ -92,28 +110,8 @@ class WalletManager {
             throw new Error('User is not in a Sync wallet');
         }
 
-        this._source = src;
+        this.state.source = src;
         this.eventEmitter.emit(SOURCE_CHANGED, src);
-    };
-
-    getSource = (): WalletSource | null => this._source;
-
-    getAvailableSources = (): WalletSource[] => {
-        const wallets: WalletSource[] = ['sync2'];
-
-        if (window.vechain) {
-            wallets.push('veworld');
-        }
-
-        if (window.connex) {
-            wallets.push('sync');
-        }
-
-        if (this.connexOptions.walletConnectOptions) {
-            wallets.push('wallet-connect');
-        }
-
-        return wallets;
     };
 
     onDisconnected(listener: () => void): void {
@@ -133,6 +131,53 @@ class WalletManager {
     ): void {
         this.eventEmitter.off(SOURCE_CHANGED, listener);
     }
+
+    private initState = (usePersistent: boolean): WalletManagerState => {
+        const availableSources = this.getAvailableSources();
+
+        if (!usePersistent) {
+            return proxy({
+                source: null,
+                address: null,
+                availableSources,
+            });
+        }
+
+        const address = Storage.getAccount();
+        const source = Storage.getSource();
+
+        return proxy({
+            source,
+            address,
+            availableSources,
+        });
+    };
+
+    private initPersistence = (usePersistent: boolean): void => {
+        if (!usePersistent) {
+            return;
+        }
+        subscribeKey(this.state, 'address', Storage.setAccount);
+        subscribeKey(this.state, 'source', Storage.setSource);
+    };
+
+    private getAvailableSources = (): WalletSource[] => {
+        const wallets: WalletSource[] = ['sync2'];
+
+        if (window.vechain) {
+            wallets.push('veworld');
+        }
+
+        if (window.connex) {
+            wallets.push('sync');
+        }
+
+        if (this.connexOptions.walletConnectOptions) {
+            wallets.push('wallet-connect');
+        }
+
+        return wallets;
+    };
 }
 
 export { WalletManager };

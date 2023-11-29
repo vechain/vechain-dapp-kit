@@ -1,6 +1,6 @@
-import { LitElement, type TemplateResult, html } from 'lit';
+import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { Theme, ThemeMode } from '../../constants';
+import type { Theme, ThemeMode } from '../constants';
 
 @customElement('vwk-vechain-dapp-connect-kit')
 export class VechainDappConnectKit extends LitElement {
@@ -10,16 +10,12 @@ export class VechainDappConnectKit extends LitElement {
     @property({ type: String })
     theme: Theme = 'DEFAULT';
 
-    @property({ type: Boolean })
-    notPersistentContext = false;
-
     render(): TemplateResult {
-        return html`<dapp-kit-context-provider
-            ?notPersistentContext=${this.notPersistentContext}
-            ><vwk-connect-button-with-modal
+        return html` <dapp-kit-context-provider>
+            <vwk-connect-button-with-modal
                 mode="DARK"
-            ></vwk-connect-button-with-modal
-        ></dapp-kit-context-provider>`;
+            ></vwk-connect-button-with-modal>
+        </dapp-kit-context-provider>`;
     }
 }
 

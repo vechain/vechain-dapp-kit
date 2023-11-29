@@ -74,7 +74,7 @@ describe('WalletManager', () => {
 
             await walletManager.disconnect();
 
-            expect(walletManager.getSource()).toEqual(null);
+            expect(walletManager.state.source).toEqual(null);
         });
 
         it('from remote', async () => {
@@ -84,7 +84,7 @@ describe('WalletManager', () => {
 
             await walletManager.disconnect(true);
 
-            expect(walletManager.getSource()).toEqual(null);
+            expect(walletManager.state.source).toEqual(null);
         });
     });
 

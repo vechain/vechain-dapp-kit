@@ -8,20 +8,8 @@ import React, {
 } from 'react';
 import type { WalletSource } from '@vechainfoundation/dapp-kit';
 import { DAppKit } from '@vechainfoundation/dapp-kit-ui';
+import { subscribeKey } from 'valtio/utils';
 import type { ConnexContext, ConnexProviderOptions } from './types';
-
-const STORAGE_PREFIX = '@vechainfoundation/dapp-kit';
-const persist = (key: 'source' | 'account', value: string): void => {
-    localStorage.setItem(`${STORAGE_PREFIX}${key}`, value);
-};
-
-const retrieve = (key: 'source' | 'account'): string | null => {
-    return localStorage.getItem(`${STORAGE_PREFIX}${key}`);
-};
-
-const remove = (key: 'source' | 'account'): void => {
-    localStorage.removeItem(`${STORAGE_PREFIX}${key}`);
-};
 
 /**
  * Context
@@ -37,12 +25,8 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     persistState = false,
     useWalletKitModal = false,
 }): React.ReactElement => {
-    const [account, setAccount] = useState<string | null>(
-        persistState ? retrieve('account') : null,
-    );
-    const [source, setSource] = useState<WalletSource | null>(
-        persistState ? (retrieve('source') as WalletSource) : null,
-    );
+    const [account, setAccount] = useState<string | null>(null);
+    const [source, setSource] = useState<WalletSource | null>(null);
 
     const connex = useMemo(
         () =>
@@ -51,8 +35,10 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
                 genesis: nodeOptions.network,
                 walletConnectOptions,
                 useWalletKitModal,
+                usePersistence: persistState,
             }),
         [
+            persistState,
             useWalletKitModal,
             nodeOptions.network,
             nodeOptions.node,
@@ -60,91 +46,10 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
         ],
     );
 
-    /**
-     * Run at start - Set wallet source if it was persisted
-     */
     useEffect(() => {
-        const instanceSource = connex.wallet.getSource();
-
-        if (source && !instanceSource) {
-            connex.wallet.setSource(source);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const availableWallets: WalletSource[] = useMemo(() => {
-        return connex.wallet.getAvailableSources();
-    }, [connex.wallet]);
-
-    useEffect(() => {
-        const onDisconnected = (): void => {
-            setAccount(null);
-            setSource(null);
-
-            if (persistState) {
-                remove('account');
-                remove('source');
-            }
-        };
-
-        const onSourceChanged = (_src: WalletSource | null): void => {
-            setSource(_src);
-
-            if (persistState) {
-                _src ? persist('source', _src) : remove('source');
-            }
-        };
-
-        connex.wallet.onDisconnected(onDisconnected);
-        connex.wallet.onSourceChanged(onSourceChanged);
-
-        return () => {
-            connex.wallet.removeOnDisconnected(onDisconnected);
-            connex.wallet.removeOnSourceChanged(onSourceChanged);
-        };
-    }, [connex.wallet, persistState]);
-
-    const connect = useCallback(async () => {
-        const res = await connex.wallet.connect();
-
-        setAccount(res.account);
-
-        if (persistState) {
-            persist('account', res.account);
-        }
-
-        return res;
-    }, [persistState, connex.wallet, setAccount]);
-
-    const disconnect = useCallback(async () => {
-        await connex.wallet.disconnect();
-
-        setAccount(null);
-        setSource(null);
-
-        if (persistState) {
-            remove('account');
-            remove('source');
-        }
-    }, [persistState, connex.wallet]);
-
-    const updateSource = useCallback(
-        (_source: WalletSource) => {
-            connex.wallet.setSource(_source);
-        },
-        [connex.wallet],
-    );
-
-    const updateAccount = useCallback(
-        (_account: string) => {
-            setAccount(_account);
-
-            if (persistState) {
-                persist('account', _account);
-            }
-        },
-        [persistState],
-    );
+        subscribeKey(connex.wallet.state, 'address', (v) => setAccount(v));
+        subscribeKey(connex.wallet.state, 'source', (v) => setSource(v));
+    }, [connex.wallet.state]);
 
     const openModal = useCallback(() => {
         DAppKit.modal.open();
@@ -161,11 +66,10 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
                 vendor: connex.vendor,
             },
             wallet: {
-                setSource: updateSource,
-                setAccount: updateAccount,
-                disconnect,
-                connect,
-                availableWallets,
+                setSource: connex.wallet.setSource,
+                disconnect: connex.wallet.disconnect,
+                connect: connex.wallet.connect,
+                availableWallets: connex.wallet.state.availableSources,
                 account,
                 source,
             },
@@ -174,19 +78,7 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
                 close: closeModal,
             },
         };
-    }, [
-        connex.thor,
-        connex.vendor,
-        updateSource,
-        updateAccount,
-        disconnect,
-        connect,
-        availableWallets,
-        account,
-        source,
-        closeModal,
-        openModal,
-    ]);
+    }, [connex, account, source, closeModal, openModal]);
 
     return (
         <ConnexProviderContext.Provider value={context}>

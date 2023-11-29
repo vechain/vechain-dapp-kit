@@ -2,17 +2,17 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { OpenOptions } from '@vechainfoundation/dapp-kit';
-import type { SourceInfo } from '../../constants';
-import { Colors, WalletSources } from '../../constants';
+import type { SourceInfo } from '../constants';
+import { Colors, WalletSources } from '../constants';
 import {
     DarkChevronLeftSvg,
     DarkCloseSvg,
     LightChevronLeftSvg,
     LightCloseSvg,
-} from '../../assets';
-import { subscribeToCustomEvent } from '../../utils';
-import { DAppKit } from '../../client';
-import type { Theme, ThemeMode } from '../../constants/theme';
+} from '../assets';
+import { subscribeToCustomEvent } from '../utils';
+import { DAppKit } from '../client';
+import type { Theme, ThemeMode } from '../constants/theme';
 
 @customElement('vwk-connect-modal')
 export class ConnectModal extends LitElement {
@@ -119,9 +119,9 @@ export class ConnectModal extends LitElement {
     }
 
     private get availableSources(): SourceInfo[] {
-        const availableSources = DAppKit.connex.wallet.getAvailableSources();
-
-        return availableSources.map((source) => WalletSources[source]);
+        return DAppKit.connex.wallet.state.availableSources.map(
+            (source) => WalletSources[source],
+        );
     }
 
     @property({ type: Function })

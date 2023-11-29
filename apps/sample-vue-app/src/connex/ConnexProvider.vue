@@ -54,6 +54,7 @@ export default defineComponent({
             nodeUrl: 'https://mainnet.vechain.org/',
             walletConnectOptions,
             useWalletKitModal: true,
+            usePersistence: true,
         });
 
         const onDisconnected = () => {

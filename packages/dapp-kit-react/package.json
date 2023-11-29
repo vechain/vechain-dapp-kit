@@ -30,7 +30,8 @@
         "@vechainfoundation/dapp-kit-ui": "*",
         "react-icons": "^4.11.0",
         "styled-components": "^6.1.0",
-        "thor-devkit": "^2.0.9"
+        "thor-devkit": "^2.0.9",
+        "valtio": "^1.12.1"
     },
     "devDependencies": {
         "@types/react": "^18.2.28",

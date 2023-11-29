@@ -27,7 +27,7 @@ describe('veworld', () => {
 
             await connex.wallet.disconnect();
 
-            const currentSource = connex.wallet.getSource();
+            const currentSource = connex.wallet.state.source;
 
             expect(currentSource).toBe(null);
         });
@@ -35,7 +35,7 @@ describe('veworld', () => {
         it('get available sources - should include veworld', () => {
             const connex = createUnitTestConnex();
 
-            const sources = connex.wallet.getAvailableSources();
+            const sources = connex.wallet.state.availableSources;
 
             expect(sources).toContain('veworld');
         });
@@ -57,7 +57,7 @@ describe('veworld', () => {
         it('get available sources - should not include veworld', () => {
             const connex = createUnitTestConnex();
 
-            const sources = connex.wallet.getAvailableSources();
+            const sources = connex.wallet.state.availableSources;
 
             expect(sources).not.toContain('veworld');
         });

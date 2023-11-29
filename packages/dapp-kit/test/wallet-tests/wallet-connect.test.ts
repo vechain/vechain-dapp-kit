@@ -22,7 +22,7 @@ describe('wallet-connect', () => {
         it('get available sources - should not include WC', () => {
             const connex = createUnitTestConnex();
 
-            const sources = connex.wallet.getAvailableSources();
+            const sources = connex.wallet.state.availableSources;
 
             expect(sources).not.toContain('wallet-connect');
         });
@@ -32,7 +32,7 @@ describe('wallet-connect', () => {
         it('get available sources - should include WC', () => {
             const connex = createUnitTestConnex(wcOptions);
 
-            const sources = connex.wallet.getAvailableSources();
+            const sources = connex.wallet.state.availableSources;
 
             expect(sources).toContain('wallet-connect');
         });

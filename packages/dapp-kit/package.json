@@ -23,11 +23,13 @@
         "@vechain/connex": "2.1.0",
         "@vechain/connex-driver": "2.1.0",
         "@vechain/connex-framework": "2.1.0",
+        "@vechain/connex-types": "^2.1.0",
         "@walletconnect/modal": "2.6.2",
         "@walletconnect/sign-client": "2.10.2",
         "@walletconnect/utils": "2.10.2",
         "events": "^3.3.0",
-        "thor-devkit": "^2.0.9"
+        "thor-devkit": "^2.0.9",
+        "valtio": "^1.12.1"
     },
     "devDependencies": {
         "@types/react": "^18.2.28",
