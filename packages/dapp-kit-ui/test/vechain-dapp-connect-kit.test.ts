@@ -15,8 +15,6 @@ describe('connect-button-with-modal', () => {
 
         window.document.body.appendChild(element);
 
-        // testing the dapp kit context provider
-
         const dappKitContextProvider =
             (await elementQueries.getDappKitContextProvider()) as DappKitContextProvider;
 

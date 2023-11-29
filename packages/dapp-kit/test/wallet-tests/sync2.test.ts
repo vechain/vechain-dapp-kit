@@ -39,7 +39,7 @@ describe('sync2', () => {
     it('is always available', () => {
         const connex = createUnitTestConnex();
 
-        const sources = connex.wallet.getAvailableSources();
+        const sources = connex.wallet.state.availableSources;
 
         expect(sources).toContain('sync2');
     });
