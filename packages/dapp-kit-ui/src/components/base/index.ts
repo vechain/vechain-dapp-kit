@@ -1,1 +1,3 @@
-import './vwk-base-modal';
+import './model';
+
+export * from './model';

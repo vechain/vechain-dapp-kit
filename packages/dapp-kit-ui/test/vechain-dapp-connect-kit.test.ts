@@ -17,16 +17,10 @@ describe('connect-button-with-modal', () => {
 
         // testing the dapp kit context provider
 
-        // set a not persistent context
-        element.notPersistentContext = true;
-
         const dappKitContextProvider =
             (await elementQueries.getDappKitContextProvider()) as DappKitContextProvider;
 
         expect(dappKitContextProvider).toBeDefined();
-
-        // check if the context is not persistent
-        expect(dappKitContextProvider.notPersistentContext).toBe(true);
 
         expect(dappKitContextProvider.dappKitContext).toBeDefined();
         expect(dappKitContextProvider.dappKitContext.address).toBe('');

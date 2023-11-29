@@ -23,6 +23,7 @@ class WalletManager {
 
     constructor(private readonly connexOptions: ConnexOptions) {
         this.state = this.initState(connexOptions.usePersistence ?? false);
+        this.initPersistence(connexOptions.usePersistence ?? false);
     }
 
     private get wallet(): ConnexWallet {
@@ -142,8 +143,6 @@ class WalletManager {
             });
         }
 
-        this.initPersistence();
-
         const address = Storage.getAccount();
         const source = Storage.getSource();
 
@@ -154,7 +153,10 @@ class WalletManager {
         });
     };
 
-    private initPersistence = (): void => {
+    private initPersistence = (usePersistent: boolean): void => {
+        if (!usePersistent) {
+            return;
+        }
         subscribeKey(this.state, 'address', Storage.setAccount);
         subscribeKey(this.state, 'source', Storage.setSource);
     };

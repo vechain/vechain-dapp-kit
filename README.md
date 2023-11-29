@@ -79,4 +79,4 @@ yarn build
 
 ### Future Work
 
--   Create a Modal/ Library in React / Vue / Angular
+-   Create a Model/ Library in React / Vue / Angular

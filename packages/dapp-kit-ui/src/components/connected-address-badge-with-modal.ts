@@ -1,7 +1,7 @@
 import type { TemplateResult } from 'lit';
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { Theme, ThemeMode } from '../../constants';
+import type { Theme, ThemeMode } from '../constants';
 
 @customElement('vwk-connected-address-badge-with-modal')
 export class ConnectedAddressBadgeWithModal extends LitElement {

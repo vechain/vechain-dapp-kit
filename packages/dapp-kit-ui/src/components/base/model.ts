@@ -1,11 +1,11 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { Breakpoint, Colors } from '../../../constants';
-import type { Theme, ThemeMode } from '../../../constants/theme';
+import type { Theme, ThemeMode } from '../../constants';
+import { Breakpoint, Colors } from '../../constants';
 
 @customElement('vwk-base-modal')
-export class Modal extends LitElement {
+export class Model extends LitElement {
     static override styles = css`
         .modal-container {
             display: block;
@@ -20,6 +20,7 @@ export class Modal extends LitElement {
             opacity: 1;
             transition: opacity 0.3s;
         }
+
         .modal-container.hidden {
             opacity: 0;
             pointer-events: none;
@@ -32,6 +33,7 @@ export class Modal extends LitElement {
             overflow: hidden;
             opacity: 1;
         }
+
         .modal-container.hidden .modal {
             opacity: 0;
         }
@@ -67,6 +69,16 @@ export class Modal extends LitElement {
             }
         }
     `;
+    @query('.modal-sub-container')
+    modalSubContainer?: Element;
+    @property()
+    modalHeight?: number;
+    @property({ type: Boolean })
+    open = false;
+    @property()
+    mode: ThemeMode = 'LIGHT';
+    @property()
+    theme: Theme = 'DEFAULT';
 
     changeHeightOnResize = (): void => {
         if (!this.modalSubContainer) {
@@ -82,21 +94,11 @@ export class Modal extends LitElement {
         super.connectedCallback();
         addEventListener('load', this.changeHeightOnResize);
     }
+
     override disconnectedCallback(): void {
         super.disconnectedCallback();
         window.removeEventListener('load', this.changeHeightOnResize);
     }
-
-    @query('.modal-sub-container')
-    modalSubContainer?: Element;
-    @property()
-    modalHeight?: number;
-    @property({ type: Boolean })
-    open = false;
-    @property()
-    mode: ThemeMode = 'LIGHT';
-    @property()
-    theme: Theme = 'DEFAULT';
 
     @property({ type: Function })
     onClose = (): null => null;
@@ -129,6 +131,6 @@ export class Modal extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-base-modal': Modal;
+        'vwk-base-modal': Model;
     }
 }

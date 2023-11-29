@@ -88,7 +88,7 @@ const { account } = await connect();
 const { vendor, thor } = useConnex();
 ```
 
-### UI Option 1: Modal + Button
+### UI Option 1: Model + Button
 
 -   Use the `ConnectWalletButton` component to display a modal with the available wallets
 
@@ -113,7 +113,7 @@ const MyComponent = (): JSX.Element => {
 };
 ```
 
-### Option 2: Modal + Custom Button
+### Option 2: Model + Custom Button
 
 -   Use the `ConnectWalletModal` component to display a modal with the available wallets
 

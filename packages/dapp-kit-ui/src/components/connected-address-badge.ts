@@ -1,12 +1,13 @@
-import { LitElement, type TemplateResult, css, html } from 'lit';
+import { css, html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Colors, type ThemeMode } from '../../constants';
-import { friendlyAddress, getPicassoImage } from '../../utils/account';
+import { Colors, type ThemeMode } from '../constants';
+import { friendlyAddress, getPicassoImage } from '../utils/account';
 
 @customElement('vwk-connected-address-badge')
 export class ConnectedAddressBadge extends LitElement {
     static override styles = css`
         /* Style for the badge */
+
         .wallet-badge {
             display: flex;
             width: fit-content;
@@ -35,11 +36,13 @@ export class ConnectedAddressBadge extends LitElement {
         }
 
         /* Style for the wallet address */
+
         .wallet-address {
             font-size: 14px;
             margin-left: 8px;
             font-family: monospace;
         }
+
         .address-icon {
             width: 23px;
             height: 23px;

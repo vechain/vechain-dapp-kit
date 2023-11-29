@@ -1,8 +1,8 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Colors } from '../../constants';
-import type { Theme, ThemeMode } from '../../constants/theme';
+import { Colors } from '../constants';
+import type { Theme, ThemeMode } from '../constants/theme';
 
 @customElement('vwk-connect-button')
 export class ConnectButton extends LitElement {
