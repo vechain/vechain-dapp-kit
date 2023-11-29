@@ -35,9 +35,15 @@ export class ConnectButtonWithModal extends LitElement {
     onSourceClick = (source?: SourceInfo): void => {
         if (source) {
             this.wallet.setSource(source.id);
-            this.wallet.connect().finally(() => {
-                this.open = false;
-            });
+            this.wallet
+                .connect()
+                .then((res) => {
+                    this.dappKitContext.address = res.account;
+                    this.requestUpdate();
+                })
+                .finally(() => {
+                    this.open = false;
+                });
         }
     };
 
