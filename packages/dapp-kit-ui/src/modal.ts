@@ -5,7 +5,13 @@ import type {
     SubscribeModalState,
     WCModal,
 } from '@vechainfoundation/dapp-kit';
-import { dispatchCustomEvent, subscribeToCustomEvent } from './utils';
+import {
+    dispatchCustomEvent,
+    isAndroid,
+    isMobile,
+    subscribeToCustomEvent,
+} from './utils';
+import { ANDROID_STORE_URL, IOS_STORE_URL } from './constants';
 
 const MODAL_STATE_EVENT = 'vwk-modal-state-change';
 
@@ -35,6 +41,20 @@ class CustomWalletConnectModal implements WCModal {
      * WalletConnect
      */
     openModal(options: OpenOptions): Promise<void> {
+        if (isMobile()) {
+            const newWindow = window.open(
+                `veworld://app.veworld?uri=${encodeURIComponent(options.uri)}`,
+            );
+            setTimeout(() => {
+                if (newWindow) {
+                    if (isAndroid()) {
+                        newWindow.location = ANDROID_STORE_URL;
+                    } else {
+                        newWindow.location = IOS_STORE_URL;
+                    }
+                }
+            }, 5000);
+        }
         dispatchCustomEvent('vwk-open-wc-modal', options);
         return Promise.resolve();
     }
