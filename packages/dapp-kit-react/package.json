@@ -10,7 +10,8 @@
     "files": [
         "dist",
         "package.json",
-        "README.md"
+        "README.md",
+        "LICENSE"
     ],
     "scripts": {
         "build": "tsup src/index.tsx --format esm --dts --external react",
