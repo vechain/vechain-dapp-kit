@@ -44,13 +44,14 @@ class CustomWalletConnectModal implements WCModal {
         if (isMobile()) {
             const newWindow = window.open(
                 `veworld://app.veworld?uri=${encodeURIComponent(options.uri)}`,
+                '_self',
             );
             setTimeout(() => {
                 if (newWindow) {
                     if (isAndroid()) {
-                        newWindow.location = ANDROID_STORE_URL;
+                        window.open(ANDROID_STORE_URL, '_self');
                     } else {
-                        newWindow.location = IOS_STORE_URL;
+                        window.open(IOS_STORE_URL, '_self');
                     }
                 }
             }, 5000);
