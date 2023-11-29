@@ -17,6 +17,7 @@ const vechainWalletKitOptions = {
     network: 'test',
     walletConnectOptions,
     useWalletKitModal: true,
+    usePersistence: true,
 };
 
 DAppKit.configure(vechainWalletKitOptions);
