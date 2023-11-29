@@ -5,7 +5,7 @@ import type { Theme, ThemeMode } from '../../constants';
 import { Breakpoint, Colors } from '../../constants';
 
 @customElement('vwk-base-modal')
-export class Model extends LitElement {
+export class Modal extends LitElement {
     static override styles = css`
         .modal-container {
             display: block;
@@ -131,6 +131,6 @@ export class Model extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-base-modal': Model;
+        'vwk-base-modal': Modal;
     }
 }

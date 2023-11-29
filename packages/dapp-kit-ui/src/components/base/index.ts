@@ -1,3 +1,3 @@
-import './model';
+import './modal';
 
-export * from './model';
+export * from './modal';
