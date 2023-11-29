@@ -4,6 +4,7 @@ import {
     ConnectedAddressBadge,
     ConnectedAddressBadgeWithModal,
     ConnectedAddressModal,
+    DappKitContextProvider,
     SourceCard,
 } from '../../src';
 
@@ -50,6 +51,16 @@ const getConnectedAddressBadgeWithModal = (
             ?.shadowRoot?.querySelector(
                 'vwk-connected-address-badge-with-modal',
             ),
+    );
+};
+
+const getDappKitContextProvider = (): Promise<
+    DappKitContextProvider | undefined | null
+> => {
+    return performQueryWithTimeout(2000, () =>
+        window.document.body
+            .querySelector('vwk-vechain-dapp-connect-kit')
+            ?.shadowRoot?.querySelector('dapp-kit-context-provider'),
     );
 };
 
@@ -115,4 +126,5 @@ export const elementQueries = {
     getConnectedAddressBadgeWithModal,
     getConnectedAddressBadge,
     getConnectedAddressModal,
+    getDappKitContextProvider,
 };

@@ -1,12 +1,22 @@
-import type { TemplateResult } from 'lit';
-import { html, LitElement } from 'lit';
+import { consume } from '@lit/context';
+import { LitElement, type TemplateResult, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechainfoundation/dapp-kit';
-import type { SourceInfo, Theme, ThemeMode } from '../../constants';
+import { dappKitContext, storeDappKitContext } from '../provider';
 import { DAppKit } from '../../client';
+import type { SourceInfo, Theme, ThemeMode } from '../../constants';
 
 @customElement('vwk-connect-button-with-modal')
 export class ConnectButtonWithModal extends LitElement {
+    @consume({ context: dappKitContext })
+    @property({ attribute: false })
+    dappKitContext = {
+        options: {
+            notPersistentContext: false,
+        },
+        address: '',
+    };
+
     @property()
     override title = 'Connect Wallet';
 
@@ -19,9 +29,6 @@ export class ConnectButtonWithModal extends LitElement {
     @property({ type: Boolean })
     open = false;
 
-    @property({ type: String })
-    address?: string;
-
     private get wallet(): WalletManager {
         return DAppKit.connex.wallet;
     }
@@ -32,8 +39,9 @@ export class ConnectButtonWithModal extends LitElement {
             this.wallet.setSource(source.id);
             this.wallet
                 .connect()
-                // eslint-disable-next-line no-console
-                .then((res) => (this.address = res.account))
+                .then((res) => {
+                    this.updateAddress(res.account);
+                })
                 .finally(() => {
                     this.open = false;
                 });
@@ -43,7 +51,7 @@ export class ConnectButtonWithModal extends LitElement {
     @property({ type: Function })
     onDisconnectClick = (): void => {
         this.wallet.disconnect().finally(() => {
-            this.address = undefined;
+            this.updateAddress('');
         });
     };
 
@@ -51,12 +59,11 @@ export class ConnectButtonWithModal extends LitElement {
         return html`
             <div>
                 <vwk-fonts></vwk-fonts>
-
-                ${this.address
+                ${this.dappKitContext.address
                     ? html`<vwk-connected-address-badge-with-modal
                           .mode=${this.mode}
                           .theme=${this.theme}
-                          .address=${this.address}
+                          .address=${this.dappKitContext.address}
                           .onDisconnectClick=${this.onDisconnectClick}
                       ></vwk-connected-address-badge-with-modal>`
                     : html`<vwk-connect-button
@@ -75,6 +82,17 @@ export class ConnectButtonWithModal extends LitElement {
             </div>
         `;
     }
+
+    private updateAddress = (address: string): void => {
+        this.dappKitContext.address = address;
+
+        // store the context object in local storage if the context is persistent
+        if (!this.dappKitContext.options.notPersistentContext) {
+            storeDappKitContext(this.dappKitContext);
+        }
+        // render the component again after the address is updated
+        this.requestUpdate();
+    };
 
     private handleOpen = (): void => {
         DAppKit.connex.wallet.disconnect().finally(() => {

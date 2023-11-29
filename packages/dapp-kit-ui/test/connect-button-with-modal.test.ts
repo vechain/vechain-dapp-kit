@@ -62,7 +62,8 @@ describe('connect-button-with-modal', () => {
         // testing the connected address badge
 
         // mock a connection to the wallet by setting the address
-        element.address = '0x00000';
+        element.dappKitContext.address = '0x00000';
+        element.requestUpdate();
 
         const connectedAddressBadgeWithModal =
             (await elementQueries.getConnectedAddressBadgeWithModal()) as ConnectedAddressBadgeWithModal;
@@ -87,6 +88,6 @@ describe('connect-button-with-modal', () => {
 
         await element.updateComplete;
 
-        expect(element.address).toBeUndefined();
+        expect(element.dappKitContext.address).toBe('');
     });
 });
