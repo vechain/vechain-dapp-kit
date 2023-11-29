@@ -5,6 +5,11 @@
     "type": "module",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
+    "files": [
+        "dist",
+        "package.json",
+        "README.md"
+    ],
     "scripts": {
         "build": "tsup src/index.ts --format cjs,esm --dts",
         "clean": "rm -rf dist .turbo",
