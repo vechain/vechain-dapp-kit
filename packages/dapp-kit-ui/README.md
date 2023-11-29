@@ -24,7 +24,7 @@ yarn build
 yarn add @vechainfoundation/dapp-kit-ui
 ```
 
--   In your root `fonts.ts`
+-   In your root `index.ts`
 
 ```typescript
 import type { WalletConnectOptions } from '@vechainfoundation/dapp-kit';
