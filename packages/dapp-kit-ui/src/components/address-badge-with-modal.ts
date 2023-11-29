@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 import type { Theme, ThemeMode } from '../constants';
 
 @customElement('vwk-connected-address-badge-with-modal')
-export class ConnectedAddressBadgeWithModal extends LitElement {
+export class AddressBadgeWithModal extends LitElement {
     @property({ type: String })
     mode: ThemeMode = 'LIGHT';
 
@@ -53,6 +53,6 @@ export class ConnectedAddressBadgeWithModal extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-connected-address-badge-with-modal': ConnectedAddressBadgeWithModal;
+        'vwk-connected-address-badge-with-modal': AddressBadgeWithModal;
     }
 }

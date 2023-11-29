@@ -1,11 +1,14 @@
 import { createContext, provide } from '@lit/context';
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { snapshot, subscribe } from 'valtio';
-import type { WalletManagerState } from '@vechainfoundation/dapp-kit/src/types';
+import { subscribeKey } from 'valtio/utils';
 import { DAppKit } from '../../client';
 
-export const dappKitContext = createContext<WalletManagerState>(
+export interface DappKitContext {
+    address: string;
+}
+
+export const dappKitContext = createContext<DappKitContext>(
     Symbol('dapp-kit-context'),
 );
 
@@ -13,33 +16,40 @@ export const dappKitContext = createContext<WalletManagerState>(
 export class DappKitContextProvider extends LitElement {
     @provide({ context: dappKitContext })
     @property({ attribute: false })
-    dappKitContext: WalletManagerState = {
-        address: null,
-        source: null,
-        availableSources: [],
+    dappKitContext: DappKitContext = {
+        address: '',
     };
 
     constructor() {
         super();
-        subscribe(DAppKit.connex.wallet.state, () => {
-            const state = snapshot(DAppKit.connex.wallet.state);
-
-            // eslint-disable-next-line no-console
-            console.log('state', state);
-
-            this.dappKitContext.address = state.address;
-            this.dappKitContext.source = state.source;
-        });
+        this.initListener();
     }
 
     // Use the `connectedCallback` lifecycle hook to retrieve the stored address
     connectedCallback(): void {
         super.connectedCallback();
-        this.dappKitContext = DAppKit.connex.wallet.state;
+        this.dappKitContext = {
+            address: DAppKit.connex.wallet.state.address ?? '',
+        };
     }
 
     render(): TemplateResult {
         return html` <slot></slot>`;
+    }
+
+    private initListener(): void {
+        // subscribe(DAppKit.connex.wallet.state, () => {
+        //     const state = snapshot(DAppKit.connex.wallet.state);
+        //
+        //     // eslint-disable-next-line no-console
+        //     console.log('state', state);
+        //
+        //     this.dappKitContext.address = state.address;
+        //     this.dappKitContext.source = state.source;
+        // });
+        subscribeKey(DAppKit.connex.wallet.state, 'address', (v) => {
+            this.dappKitContext.address = v ?? '';
+        });
     }
 }
 

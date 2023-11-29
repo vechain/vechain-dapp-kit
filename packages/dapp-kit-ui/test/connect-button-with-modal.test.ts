@@ -1,12 +1,12 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import {
+    AddressBadge,
+    AddressBadgeWithModal,
+    AddressModal,
     ConnectButton,
     ConnectButtonWithModal,
     ConnectModal,
-    ConnectedAddressBadge,
-    ConnectedAddressBadgeWithModal,
-    ConnectedAddressModal,
     DAppKit,
     SourceInfo,
 } from '../src';
@@ -66,12 +66,12 @@ describe('connect-button-with-modal', () => {
         element.requestUpdate();
 
         const connectedAddressBadgeWithModal =
-            (await elementQueries.getConnectedAddressBadgeWithModal()) as ConnectedAddressBadgeWithModal;
+            (await elementQueries.getConnectedAddressBadgeWithModal()) as AddressBadgeWithModal;
 
         expect(connectedAddressBadgeWithModal).toBeDefined();
 
         const connectedAddressBadge =
-            (await elementQueries.getConnectedAddressBadge()) as ConnectedAddressBadge;
+            (await elementQueries.getConnectedAddressBadge()) as AddressBadge;
 
         expect(connectedAddressBadge).toBeDefined();
 
@@ -79,7 +79,7 @@ describe('connect-button-with-modal', () => {
         connectedAddressBadge.shadowRoot?.querySelector('div')?.click();
 
         const connectedAddressModal =
-            (await elementQueries.getConnectedAddressModal()) as ConnectedAddressModal;
+            (await elementQueries.getConnectedAddressModal()) as AddressModal;
 
         expect(connectedAddressModal).toBeDefined();
 

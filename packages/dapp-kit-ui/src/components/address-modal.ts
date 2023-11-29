@@ -13,7 +13,7 @@ import {
 } from '../assets/icons/disconnect';
 
 @customElement('vwk-connected-address-modal')
-export class ConnectedAddressModal extends LitElement {
+export class AddressModal extends LitElement {
     static override styles = css`
         .modal-container {
             display: flex;
@@ -209,6 +209,6 @@ export class ConnectedAddressModal extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-connected-address-modal': ConnectedAddressModal;
+        'vwk-connected-address-modal': AddressModal;
     }
 }

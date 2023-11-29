@@ -2,19 +2,17 @@ import { consume } from '@lit/context';
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechainfoundation/dapp-kit';
-import type { WalletManagerState } from '@vechainfoundation/dapp-kit/src/types';
 import { DAppKit } from '../client';
 import type { SourceInfo, Theme, ThemeMode } from '../constants';
+import type { DappKitContext } from './provider';
 import { dappKitContext } from './provider';
 
 @customElement('vwk-connect-button-with-modal')
 export class ConnectButtonWithModal extends LitElement {
     @consume({ context: dappKitContext })
     @property({ attribute: false })
-    dappKitContext: WalletManagerState = {
-        address: null,
-        source: null,
-        availableSources: [],
+    dappKitContext: DappKitContext = {
+        address: '',
     };
 
     @property()

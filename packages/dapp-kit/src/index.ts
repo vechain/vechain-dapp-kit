@@ -11,4 +11,5 @@ export type {
     ConnectResponse,
     WalletConfig,
     BaseWallet,
+    WalletManagerState,
 } from './types';

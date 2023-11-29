@@ -4,7 +4,7 @@ import { Colors, type ThemeMode } from '../constants';
 import { friendlyAddress, getPicassoImage } from '../utils/account';
 
 @customElement('vwk-connected-address-badge')
-export class ConnectedAddressBadge extends LitElement {
+export class AddressBadge extends LitElement {
     static override styles = css`
         /* Style for the badge */
 
@@ -78,6 +78,6 @@ export class ConnectedAddressBadge extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-connected-address-badge': ConnectedAddressBadge;
+        'vwk-connected-address-badge': AddressBadge;
     }
 }
