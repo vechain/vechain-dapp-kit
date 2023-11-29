@@ -46,13 +46,19 @@ class CustomWalletConnectModal implements WCModal {
                 `veworld://app.veworld?uri=${encodeURIComponent(options.uri)}`,
                 '_self',
             );
+            const linkingTime = new Date().getTime();
+            const TIMEOUT = 5000;
             setTimeout(() => {
-                if (isAndroid()) {
-                    window.open(ANDROID_STORE_URL, '_self');
-                } else {
-                    window.open(IOS_STORE_URL, '_self');
+                const now = new Date().getTime();
+                // avoid redirecting to the store if coming back from the app
+                if (now - linkingTime < TIMEOUT + 250) {
+                    if (isAndroid()) {
+                        window.open(ANDROID_STORE_URL, '_self');
+                    } else {
+                        window.open(IOS_STORE_URL, '_self');
+                    }
                 }
-            }, 5000);
+            }, TIMEOUT);
         }
         dispatchCustomEvent('vwk-open-wc-modal', options);
         return Promise.resolve();
