@@ -43,9 +43,9 @@ export class ConnectButtonWithModal extends LitElement {
 
     @property({ type: Function })
     onDisconnectClick = (): void => {
-        this.wallet.disconnect().catch((err) => {
-            // eslint-disable-next-line no-console
-            console.error(err);
+        this.wallet.disconnect().finally(() => {
+            this.dappKitContext.address = '';
+            this.requestUpdate();
         });
     };
 

@@ -49,6 +49,7 @@ export class DappKitContextProvider extends LitElement {
         // });
         subscribeKey(DAppKit.connex.wallet.state, 'address', (v) => {
             this.dappKitContext.address = v ?? '';
+            this.requestUpdate();
         });
     }
 }
