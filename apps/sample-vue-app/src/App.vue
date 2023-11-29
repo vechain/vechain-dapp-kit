@@ -2,9 +2,9 @@
     <ConnexProvider>
         <img alt="Vue logo" src="./assets/logo.png" />
         <div id="app">
-            <vwk-connect-button-with-modal
+            <vwk-vechain-dapp-connect-kit
                 mode="DARK"
-            ></vwk-connect-button-with-modal>
+            ></vwk-vechain-dapp-connect-kit>
         </div>
     </ConnexProvider>
 </template>

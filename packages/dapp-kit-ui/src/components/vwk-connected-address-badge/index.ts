@@ -1,6 +1,6 @@
-import { LitElement, css, html } from 'lit';
+import { LitElement, type TemplateResult, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Colors, ThemeMode } from '../../constants';
+import { Colors, type ThemeMode } from '../../constants';
 import { friendlyAddress, getPicassoImage } from '../../utils/account';
 
 @customElement('vwk-connected-address-badge')
@@ -57,7 +57,7 @@ export class ConnectedAddressBadge extends LitElement {
     @property({ type: Function })
     onClick? = undefined;
 
-    render() {
+    render(): TemplateResult {
         return html` <div
             class="wallet-badge ${this.mode}"
             @click=${this.onClick}

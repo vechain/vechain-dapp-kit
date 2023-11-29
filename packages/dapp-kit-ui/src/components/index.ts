@@ -1,4 +1,5 @@
 import './base';
+import './provider';
 import './vwk-connect-modal';
 import './vwk-connect-button';
 import './vwk-connect-button-with-modal';
@@ -8,8 +9,10 @@ import './vwk-connected-address-badge-with-modal';
 import './vwk-source-card';
 import './vwk-fonts';
 import './vwk-wallet-connect-qrcode';
+import './vwk-vechain-dapp-connect-kit';
 
 export * from './base';
+export * from './provider';
 export * from './vwk-connect-modal';
 export * from './vwk-connect-button';
 export * from './vwk-connect-button-with-modal';
@@ -19,3 +22,4 @@ export * from './vwk-connected-address-badge-with-modal';
 export * from './vwk-source-card';
 export * from './vwk-fonts';
 export * from './vwk-wallet-connect-qrcode';
+export * from './vwk-vechain-dapp-connect-kit';
