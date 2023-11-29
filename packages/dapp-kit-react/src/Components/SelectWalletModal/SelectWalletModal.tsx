@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { createComponent } from '@lit/react';
 import type { SourceInfo } from '@vechainfoundation/dapp-kit-ui';
 import { ConnectModal } from '@vechainfoundation/dapp-kit-ui';
-import type { ConnectResponse } from '@vechainfoundation/dapp-kit/src';
+import type { WalletSource } from '@vechainfoundation/dapp-kit/src';
 import { useWallet } from '../../ConnexProvider';
 
 const createButtonWithModal = () =>
@@ -12,33 +12,30 @@ const createButtonWithModal = () =>
         react: React,
     });
 
-interface ConnectWalletProps {
-    onConnectError?: (err: unknown) => void;
-    onConnected?: (res: ConnectResponse) => void;
+interface SelectWalletProps {
+    onSelected?: (source: WalletSource) => void;
 }
 
 /**
- * ConnectWalletModal
+ * SelectWalletModal
  *
- * This component allows the user to select a wallet and then connect. The account address should be available after the connection is successful.
+ * This component is used to select the wallet source. It will not attempt to connect to the wallet
  */
-
-export const ConnectWalletModal: React.FC<ConnectWalletProps> = ({
-    onConnectError,
-    onConnected,
+export const SelectWalletModal: React.FC<SelectWalletProps> = ({
+    onSelected,
 }) => {
     const Modal = useMemo(() => createButtonWithModal(), []);
 
-    const { setSource, connect } = useWallet();
+    const { setSource } = useWallet();
 
     const onSourceClick = useCallback(
         (source?: SourceInfo) => {
             if (source) {
                 setSource(source.id);
-                connect().then(onConnected).catch(onConnectError);
+                onSelected?.(source.id);
             }
         },
-        [onConnectError, onConnected, connect, setSource],
+        [onSelected, setSource],
     );
 
     return <Modal onSourceClick={onSourceClick} />;

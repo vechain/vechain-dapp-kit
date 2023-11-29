@@ -12,7 +12,7 @@ const WalletMapping: Record<WalletSource, WalletConfig> = {
     'wallet-connect': {
         requiresCertificate: false,
     },
-    'veworld-extension': DEFAULT_CONFIG,
+    veworld: DEFAULT_CONFIG,
     sync2: DEFAULT_CONFIG,
     sync: DEFAULT_CONFIG,
 };

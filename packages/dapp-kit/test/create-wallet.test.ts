@@ -42,12 +42,12 @@ describe('createWallet', () => {
         });
     });
 
-    describe('veworld-extension', () => {
+    describe('veworld', () => {
         it('is not installed', () => {
             window.vechain = undefined;
 
             expect(() => {
-                createWallet(createOptions('veworld-extension'));
+                createWallet(createOptions('veworld'));
             }).toThrowError('VeWorld Extension is not installed');
         });
 
@@ -56,7 +56,7 @@ describe('createWallet', () => {
                 newConnexSigner: () => ({} as Connex.Signer),
             };
 
-            const wallet = createWallet(createOptions('veworld-extension'));
+            const wallet = createWallet(createOptions('veworld'));
 
             expect(wallet).toBeDefined();
         });

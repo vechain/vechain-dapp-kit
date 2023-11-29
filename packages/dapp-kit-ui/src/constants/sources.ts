@@ -1,11 +1,5 @@
+import type { WalletSource } from '@vechainfoundation/dapp-kit';
 import { Sync2Logo, SyncLogo, VeWorldLogo, WalletConnectLogo } from '../assets';
-
-enum WalletSource {
-    WalletConnect = 'wallet-connect',
-    VeWorldExtension = 'veworld-extension',
-    Sync2 = 'sync2',
-    Sync = 'sync',
-}
 
 export interface SourceInfo {
     id: WalletSource;
@@ -13,25 +7,25 @@ export interface SourceInfo {
     logo: string;
 }
 
-export const WalletSources: SourceInfo[] = [
-    {
-        id: WalletSource.WalletConnect,
+export const WalletSources: Record<WalletSource, SourceInfo> = {
+    'wallet-connect': {
+        id: 'wallet-connect',
         name: 'Wallet Connect',
         logo: WalletConnectLogo,
     },
-    {
-        id: WalletSource.VeWorldExtension,
-        name: 'VeWorld Extension',
+    veworld: {
+        id: 'veworld',
+        name: 'VeWorld',
         logo: VeWorldLogo,
     },
-    {
-        id: WalletSource.Sync,
+    sync: {
+        id: 'sync',
         name: 'Sync',
         logo: SyncLogo,
     },
-    {
-        id: WalletSource.Sync2,
+    sync2: {
+        id: 'sync2',
         name: 'Sync 2',
         logo: Sync2Logo,
     },
-];
+};
