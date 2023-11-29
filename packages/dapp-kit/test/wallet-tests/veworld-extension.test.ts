@@ -2,8 +2,8 @@ import { beforeEach, expect } from 'vitest';
 import { mockedConnexSigner } from '../helpers/mocked-signer';
 import { createUnitTestConnex } from '../helpers/connex-helper';
 
-describe('veworld-extension', () => {
-    describe('is in veworld-extension browser', () => {
+describe('veworld', () => {
+    describe('is in veworld browser', () => {
         beforeEach(() => {
             window.vechain = {
                 newConnexSigner: (): Connex.Signer => mockedConnexSigner,
@@ -13,7 +13,7 @@ describe('veworld-extension', () => {
         it('should connect', async () => {
             const connex = createUnitTestConnex();
 
-            connex.wallet.setSource('veworld-extension');
+            connex.wallet.setSource('veworld');
 
             const res = await connex.wallet.connect();
 
@@ -23,7 +23,7 @@ describe('veworld-extension', () => {
         it('can disconnect', async () => {
             const connex = createUnitTestConnex();
 
-            connex.wallet.setSource('veworld-extension');
+            connex.wallet.setSource('veworld');
 
             await connex.wallet.disconnect();
 
@@ -32,16 +32,16 @@ describe('veworld-extension', () => {
             expect(currentSource).toBe(null);
         });
 
-        it('get available sources - should include veworld-extension', () => {
+        it('get available sources - should include veworld', () => {
             const connex = createUnitTestConnex();
 
             const sources = connex.wallet.getAvailableSources();
 
-            expect(sources).toContain('veworld-extension');
+            expect(sources).toContain('veworld');
         });
     });
 
-    describe('is NOT in veworld-extension browser', () => {
+    describe('is NOT in veworld browser', () => {
         beforeEach(() => {
             window.vechain = undefined;
         });
@@ -49,17 +49,17 @@ describe('veworld-extension', () => {
         it('not installed - should throw error', () => {
             const connex = createUnitTestConnex();
 
-            expect(() =>
-                connex.wallet.setSource('veworld-extension'),
-            ).toThrowError('VeWorld Extension is not installed');
+            expect(() => connex.wallet.setSource('veworld')).toThrowError(
+                'VeWorld Extension is not installed',
+            );
         });
 
-        it('get available sources - should not include veworld-extension', () => {
+        it('get available sources - should not include veworld', () => {
             const connex = createUnitTestConnex();
 
             const sources = connex.wallet.getAvailableSources();
 
-            expect(sources).not.toContain('veworld-extension');
+            expect(sources).not.toContain('veworld');
         });
     });
 });

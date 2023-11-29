@@ -22,7 +22,7 @@ const initWallets = (hasWcOptions: boolean) => {
     }
 
     if (window.vechain) {
-        wallets.push('veworld-extension');
+        wallets.push('veworld');
     }
 
     if (hasWcOptions) {
