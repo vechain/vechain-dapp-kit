@@ -39,7 +39,6 @@ export interface ConnexContext {
     };
     wallet: {
         setSource: (source: WalletSource) => void;
-        setAccount: (account: string) => void;
         availableWallets: WalletSource[];
         disconnect: () => void;
         connect: () => Promise<ConnectResponse>;

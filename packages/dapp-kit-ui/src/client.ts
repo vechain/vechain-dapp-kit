@@ -4,7 +4,7 @@ import { CustomWalletConnectModal, DAppKitModal } from './modal';
 
 let connex: MultiWalletConnex | null = null;
 
-type DAppKitOptions = Omit<ConnexOptions, 'customWcModal'> & {
+export type DAppKitOptions = Omit<ConnexOptions, 'customWcModal'> & {
     useWalletKitModal?: boolean;
 };
 

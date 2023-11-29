@@ -114,9 +114,9 @@ export class ConnectModal extends LitElement {
     }
 
     private get availableSources(): SourceInfo[] {
-        const availableSources = DAppKit.connex.wallet.getAvailableSources();
-
-        return availableSources.map((source) => WalletSources[source]);
+        return DAppKit.connex.wallet.state.availableSources.map(
+            (source) => WalletSources[source],
+        );
     }
 
     @property({ type: Function })

@@ -16,7 +16,7 @@ interface WalletConfig {
     requiresCertificate: boolean;
 }
 
-export type Genesis = 'main' | 'test' | Connex.Thor.Block;
+type Genesis = 'main' | 'test' | Connex.Thor.Block;
 
 /**
  * Options for the MultiWalletConnex class
@@ -24,12 +24,14 @@ export type Genesis = 'main' | 'test' | Connex.Thor.Block;
  * @param genesis - Optional. The genesis block of the VeChain network you want to connect to. Eg, 'main', 'test', or a Connex.Thor.Block object
  * @param onDisconnected - A callback that will be called when the session is disconnected
  * @param walletConnectOptions - Optional. Options for the WalletConnect integration
+ * @param persistence - Optional. Whether to persist the wallet source/ account
  */
 interface ConnexOptions {
     nodeUrl: string;
     genesis?: Genesis;
     walletConnectOptions?: WalletConnectOptions;
     customWcModal?: WCModal;
+    usePersistence?: boolean;
 }
 
 type BaseWallet = Connex.Signer & {
@@ -43,9 +45,15 @@ type ConnexWallet = BaseWallet & {
     connect: () => Promise<ConnectResponse>;
 };
 
-export interface ConnectResponse {
+interface ConnectResponse {
     account: string;
     verified: boolean;
+}
+
+interface WalletManagerState {
+    source: WalletSource | null;
+    address: string | null;
+    availableSources: WalletSource[];
 }
 
 export type {
@@ -54,4 +62,7 @@ export type {
     ConnexWallet,
     WalletConfig,
     WalletSource,
+    WalletManagerState,
+    ConnectResponse,
+    Genesis,
 };

@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Grid, GridItem, VStack } from '@chakra-ui/react';
+import { useWallet } from '@vechainfoundation/dapp-kit-react';
 import { Counter, MeetVeWorld, Welcome } from './components';
 
 export const Homepage: React.FC = () => {
+    const { account, source } = useWallet();
+
+    useEffect(() => {
+        // eslint-disable-next-line no-console
+        console.log(account, source);
+    }, [account, source]);
+
     return (
         <VStack spacing={8} w="full">
             <Grid
