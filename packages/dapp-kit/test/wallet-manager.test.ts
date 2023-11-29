@@ -45,7 +45,7 @@ describe('WalletManager', () => {
     describe('signTx', () => {
         it('should sign the tx', async () => {
             const walletManager = newWalletManager();
-            walletManager.setSource('veworld-extension');
+            walletManager.setSource('veworld');
             const res = await walletManager.signTx([], {});
 
             expect(res.txid).toBeDefined();
@@ -55,7 +55,7 @@ describe('WalletManager', () => {
     describe('signCert', () => {
         it('should sign the cert', async () => {
             const walletManager = newWalletManager();
-            walletManager.setSource('veworld-extension');
+            walletManager.setSource('veworld');
             const res = await walletManager.signCert(
                 {
                     payload: { content: 'Hello world', type: 'text' },
@@ -80,7 +80,7 @@ describe('WalletManager', () => {
         it('from remote', async () => {
             const walletManager = newWalletManager();
 
-            walletManager.setSource('veworld-extension');
+            walletManager.setSource('veworld');
 
             await walletManager.disconnect(true);
 

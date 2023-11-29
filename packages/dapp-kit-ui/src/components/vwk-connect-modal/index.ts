@@ -121,25 +121,11 @@ export class ConnectModal extends LitElement {
     private get availableSources(): SourceInfo[] {
         const availableSources = DAppKit.connex.wallet.getAvailableSources();
 
-        return WalletSources.filter((src) => {
-            return availableSources.includes(src.id);
-        });
+        return availableSources.map((source) => WalletSources[source]);
     }
 
     @property({ type: Function })
     onClose: () => void = () => nothing;
-
-    private onBack = (): void => {
-        this.walletConnectQRcode = undefined;
-    };
-
-    private handleClose = (): void => {
-        // this timeout is to avoid flickering on close modal animation when the user is in the wallet connect modal
-        setTimeout(() => {
-            this.onBack();
-        }, 500);
-        this.onClose();
-    };
 
     override render(): TemplateResult {
         return html`
@@ -195,6 +181,18 @@ export class ConnectModal extends LitElement {
         </vwk-base-modal>
     `;
     }
+
+    private onBack = (): void => {
+        this.walletConnectQRcode = undefined;
+    };
+
+    private handleClose = (): void => {
+        // this timeout is to avoid flickering on close modal animation when the user is in the wallet connect modal
+        setTimeout(() => {
+            this.onBack();
+        }, 500);
+        this.onClose();
+    };
 }
 
 declare global {

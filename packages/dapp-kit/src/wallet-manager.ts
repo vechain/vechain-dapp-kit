@@ -84,7 +84,7 @@ class WalletManager {
             throw new Error('WalletConnect options are not provided');
         }
 
-        if (src === 'veworld-extension' && !window.vechain) {
+        if (src === 'veworld' && !window.vechain) {
             throw new Error('VeWorld Extension is not installed');
         }
 
@@ -102,7 +102,7 @@ class WalletManager {
         const wallets: WalletSource[] = ['sync2'];
 
         if (window.vechain) {
-            wallets.push('veworld-extension');
+            wallets.push('veworld');
         }
 
         if (window.connex) {

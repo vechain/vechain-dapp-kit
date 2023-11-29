@@ -35,7 +35,7 @@ export const createWallet = ({
 
             return new CertificateBasedWallet(convertVendorToSigner(vendor));
         }
-        case 'veworld-extension': {
+        case 'veworld': {
             if (!window.vechain) {
                 throw new Error('VeWorld Extension is not installed');
             }

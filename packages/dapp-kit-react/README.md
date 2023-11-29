@@ -75,8 +75,8 @@ export const App = (): JSX.Element => {
 import { useWallet, useConnex } from '@vechainfoundation/dapp-kit-react';
 import type { WalletSource } from '@vechainfoundation/dapp-kit';
 
-// type WalletSource = 'wallet-connect' | 'veworld-extension' | 'sync2' | 'sync';
-const mySource: WalletSource = 'veworld-extension';
+// type WalletSource = 'wallet-connect' | 'veworld' | 'sync2' | 'sync';
+const mySource: WalletSource = 'veworld';
 
 const { connect, setSource } = useWallet();
 

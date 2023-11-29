@@ -57,10 +57,10 @@ const { thor, vendor, wallet } = new MultiWalletConnex({
 ```typescript
 import type { WalletSource } from '@vechainfoundation/dapp-kit';
 
-// type WalletSource = 'wallet-connect' | 'veworld-extension' | 'sync2' | 'sync';
-const mySource: WalletSource = 'veworld-extension';
+// type WalletSource = 'wallet-connect' | 'veworld' | 'sync2' | 'sync';
+const mySource: WalletSource = 'veworld';
 
-wallet.setSource('veworld-extension');
+wallet.setSource('veworld');
 ```
 
 -   Connect to the wallet. This will return the user's address

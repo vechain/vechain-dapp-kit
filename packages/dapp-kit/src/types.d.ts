@@ -10,7 +10,7 @@ declare global {
     }
 }
 
-type WalletSource = 'wallet-connect' | 'veworld-extension' | 'sync2' | 'sync';
+type WalletSource = 'wallet-connect' | 'veworld' | 'sync2' | 'sync';
 
 interface WalletConfig {
     requiresCertificate: boolean;
