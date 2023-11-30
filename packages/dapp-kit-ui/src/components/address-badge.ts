@@ -1,55 +1,34 @@
 import { css, html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Colors, type ThemeMode } from '../constants';
+import { type ThemeMode } from '../constants';
 import { friendlyAddress, getPicassoImage } from '../utils/account';
+import { triggerButtonStyle } from '../assets';
 
 @customElement('vwk-connected-address-badge')
 export class AddressBadge extends LitElement {
-    static override styles = css`
-        /* Style for the badge */
+    static override styles = [
+        triggerButtonStyle,
+        css`
+            button {
+                padding: 9px 12px;
+            }
 
-        .wallet-badge {
-            display: flex;
-            width: fit-content;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            padding: 8px;
-            background-color: #4caf50;
-            color: #fff;
-            border-radius: 12px;
-        }
+            /* Style for the wallet address */
 
-        .wallet-badge:hover {
-            opacity: 0.9;
-            cursor: pointer;
-        }
+            .wallet-address {
+                font-size: 14px;
+                margin-left: 8px;
+                font-family: 'Inter', sans-serif;
+            }
 
-        .wallet-badge.DARK {
-            background-color: ${Colors.Dark};
-            color: ${Colors.LightGrey};
-        }
-
-        .wallet-badge.LIGHT {
-            background-color: ${Colors.LightGrey};
-            color: ${Colors.Dark};
-        }
-
-        /* Style for the wallet address */
-
-        .wallet-address {
-            font-size: 14px;
-            margin-left: 8px;
-            font-family: monospace;
-        }
-
-        .address-icon {
-            width: 23px;
-            height: 23px;
-            margin-right: 4px;
-            border-radius: 50%;
-        }
-    `;
+            .address-icon {
+                width: 23px;
+                height: 23px;
+                margin-right: 4px;
+                border-radius: 50%;
+            }
+        `,
+    ];
 
     @property()
     address?: string;
@@ -61,7 +40,7 @@ export class AddressBadge extends LitElement {
     onClick? = undefined;
 
     render(): TemplateResult {
-        return html` <div
+        return html` <button
             class="wallet-badge ${this.mode}"
             @click=${this.onClick}
         >
@@ -72,7 +51,7 @@ export class AddressBadge extends LitElement {
             <span class="wallet-address"
                 >${friendlyAddress(this.address ?? '')}</span
             >
-        </div>`;
+        </button>`;
     }
 }
 

@@ -30,18 +30,11 @@ export class ConnectModal extends LitElement {
             align-items: center;
             padding-bottom: 10px;
             font-family: 'Inter', sans-serif;
+            font-weight: 500;
         }
 
         .modal-body {
             flex-direction: column;
-        }
-
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding-top: 10px;
-            font-family: 'Inter', sans-serif;
         }
 
         .icon {
@@ -53,34 +46,11 @@ export class ConnectModal extends LitElement {
         }
 
         .icon.LIGHT:hover {
-            background-color: ${Colors.LightGrey};
+            background-color: ${Colors.XXLightGrey};
         }
 
         .icon.DARK:hover {
-            background-color: ${Colors.DarkGrey};
-        }
-
-        button {
-            cursor: pointer;
-            display: block;
-            border: none;
-            border-radius: 12px;
-            padding: 8px 12px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        button.LIGHT {
-            background-color: ${Colors.LightGrey};
-            color: ${Colors.Dark};
-        }
-
-        button.DARK {
-            background-color: ${Colors.Dark};
-            color: ${Colors.LightGrey};
+            background-color: ${Colors.XXDarkGrey};
         }
     `;
 
@@ -171,7 +141,7 @@ export class ConnectModal extends LitElement {
                                       ? LightChevronLeftSvg
                                       : DarkChevronLeftSvg}
                               </div>`
-                            : html` <div></div>`
+                            : html` <div class="icon"></div>`
                     }
                     <div>Connect Wallet</div>
                     <div

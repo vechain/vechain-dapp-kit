@@ -13,7 +13,7 @@ export class VechainDappConnectKit extends LitElement {
     render(): TemplateResult {
         return html` <dapp-kit-context-provider>
             <vwk-connect-button-with-modal
-                mode="DARK"
+                .mode=${this.mode}
             ></vwk-connect-button-with-modal>
         </dapp-kit-context-provider>`;
     }
