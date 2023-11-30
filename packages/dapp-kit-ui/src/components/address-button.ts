@@ -4,8 +4,8 @@ import { type ThemeMode } from '../constants';
 import { friendlyAddress, getPicassoImage } from '../utils/account';
 import { triggerButtonStyle } from '../assets';
 
-@customElement('vwk-connected-address-badge')
-export class AddressBadge extends LitElement {
+@customElement('vwk-connected-address-button')
+export class AddressButton extends LitElement {
     static override styles = [
         triggerButtonStyle,
         css`
@@ -41,7 +41,7 @@ export class AddressBadge extends LitElement {
 
     render(): TemplateResult {
         return html` <button
-            class="wallet-badge ${this.mode}"
+            class="wallet-button ${this.mode}"
             @click=${this.onClick}
         >
             <img
@@ -57,6 +57,6 @@ export class AddressBadge extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-connected-address-badge': AddressBadge;
+        'vwk-connected-address-button': AddressButton;
     }
 }

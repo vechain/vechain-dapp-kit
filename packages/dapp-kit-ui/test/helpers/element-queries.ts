@@ -1,6 +1,6 @@
 import {
-    AddressBadge,
-    AddressBadgeWithModal,
+    AddressButton,
+    AddressButtonWithModal,
     AddressModal,
     ConnectButton,
     ConnectModal,
@@ -42,14 +42,14 @@ const getConnectModal = (): Promise<ConnectModal | undefined | null> => {
     );
 };
 
-const getConnectedAddressBadgeWithModal = (
+const getConnectedAddressButtonWithModal = (
     timeout = 2000,
-): Promise<AddressBadgeWithModal | undefined | null> => {
+): Promise<AddressButtonWithModal | undefined | null> => {
     return performQueryWithTimeout(timeout, () =>
         window.document.body
             .querySelector('vwk-connect-button-with-modal')
             ?.shadowRoot?.querySelector(
-                'vwk-connected-address-badge-with-modal',
+                'vwk-connected-address-button-with-modal',
             ),
     );
 };
@@ -64,16 +64,16 @@ const getDappKitContextProvider = (): Promise<
     );
 };
 
-const getConnectedAddressBadge = (
+const getConnectedAddressButton = (
     timeout = 2000,
-): Promise<AddressBadge | undefined | null> => {
+): Promise<AddressButton | undefined | null> => {
     return performQueryWithTimeout(timeout, () =>
         window.document.body
             .querySelector('vwk-connect-button-with-modal')
             ?.shadowRoot?.querySelector(
-                'vwk-connected-address-badge-with-modal',
+                'vwk-connected-address-button-with-modal',
             )
-            ?.shadowRoot?.querySelector('vwk-connected-address-badge'),
+            ?.shadowRoot?.querySelector('vwk-connected-address-button'),
     );
 };
 
@@ -84,7 +84,7 @@ const getConnectedAddressModal = (
         window.document.body
             .querySelector('vwk-connect-button-with-modal')
             ?.shadowRoot?.querySelector(
-                'vwk-connected-address-badge-with-modal',
+                'vwk-connected-address-button-with-modal',
             )
             ?.shadowRoot?.querySelector('vwk-connected-address-modal'),
     );
@@ -123,8 +123,8 @@ export const elementQueries = {
     getConnectModal,
     getAllSourceCards,
     getWalletConnectQrCode,
-    getConnectedAddressBadgeWithModal,
-    getConnectedAddressBadge,
+    getConnectedAddressButtonWithModal,
+    getConnectedAddressButton,
     getConnectedAddressModal,
     getDappKitContextProvider,
 };

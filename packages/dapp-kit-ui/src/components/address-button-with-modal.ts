@@ -3,8 +3,8 @@ import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { Theme, ThemeMode } from '../constants';
 
-@customElement('vwk-connected-address-badge-with-modal')
-export class AddressBadgeWithModal extends LitElement {
+@customElement('vwk-connected-address-button-with-modal')
+export class AddressButtonWithModal extends LitElement {
     @property({ type: String })
     mode: ThemeMode = 'LIGHT';
 
@@ -24,12 +24,12 @@ export class AddressBadgeWithModal extends LitElement {
         return html`
             <div>
                 <vwk-fonts></vwk-fonts>
-                <vwk-connected-address-badge
+                <vwk-connected-address-button
                     .mode=${this.mode}
                     .theme=${this.theme}
                     .address=${this.address}
                     .onClick=${this.handleOpen}
-                ></vwk-connected-address-badge>
+                ></vwk-connected-address-button>
                 <vwk-connected-address-modal
                     .mode=${this.mode}
                     .theme=${this.theme}
@@ -53,6 +53,6 @@ export class AddressBadgeWithModal extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-connected-address-badge-with-modal': AddressBadgeWithModal;
+        'vwk-connected-address-button-with-modal': AddressButtonWithModal;
     }
 }

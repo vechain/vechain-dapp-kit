@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import {
-    AddressBadge,
-    AddressBadgeWithModal,
+    AddressButton,
+    AddressButtonWithModal,
     AddressModal,
     ConnectButton,
     ConnectButtonWithModal,
@@ -18,7 +18,7 @@ describe('connect-button-with-modal', () => {
         DAppKitUI.configure({ nodeUrl: 'https://mainnet.vechain.org/' });
     });
 
-    it('Should callback with source when user clicks a wallet and should render the connected address badge once connected', async () => {
+    it('Should callback with source when user clicks a wallet and should render the connected address button once connected', async () => {
         const element: ConnectButtonWithModal = window.document.createElement(
             'vwk-connect-button-with-modal',
         );
@@ -59,24 +59,24 @@ describe('connect-button-with-modal', () => {
 
         expect(selectedSource).toBeDefined();
 
-        // testing the connected address badge
+        // testing the connected address button
 
         // mock a connection to the wallet by setting the address
         element.dappKitContext.address = '0x00000';
         element.requestUpdate();
 
-        const connectedAddressBadgeWithModal =
-            (await elementQueries.getConnectedAddressBadgeWithModal()) as AddressBadgeWithModal;
+        const connectedAddressButtonWithModal =
+            (await elementQueries.getConnectedAddressButtonWithModal()) as AddressButtonWithModal;
 
-        expect(connectedAddressBadgeWithModal).toBeDefined();
+        expect(connectedAddressButtonWithModal).toBeDefined();
 
-        const connectedAddressBadge =
-            (await elementQueries.getConnectedAddressBadge()) as AddressBadge;
+        const connectedAddressButton =
+            (await elementQueries.getConnectedAddressButton()) as AddressButton;
 
-        expect(connectedAddressBadge).toBeDefined();
+        expect(connectedAddressButton).toBeDefined();
 
         // open the connected address modal
-        connectedAddressBadge.shadowRoot?.querySelector('div')?.click();
+        connectedAddressButton.shadowRoot?.querySelector('div')?.click();
 
         const connectedAddressModal =
             (await elementQueries.getConnectedAddressModal()) as AddressModal;
