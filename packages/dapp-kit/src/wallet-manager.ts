@@ -22,6 +22,8 @@ class WalletManager {
     private eventEmitter = new EventEmitter();
 
     constructor(private readonly connexOptions: ConnexOptions) {
+        // eslint-disable-next-line no-console
+        console.log('WalletManager constructor', connexOptions);
         this.state = this.initState(connexOptions.usePersistence ?? false);
         this.initPersistence(connexOptions.usePersistence ?? false);
     }

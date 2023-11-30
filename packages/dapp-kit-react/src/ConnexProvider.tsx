@@ -25,9 +25,6 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     persistState = false,
     useWalletKitModal = false,
 }): React.ReactElement => {
-    const [account, setAccount] = useState<string | null>(null);
-    const [source, setSource] = useState<WalletSource | null>(null);
-
     const connex = useMemo(
         () =>
             DAppKit.configure({
@@ -44,6 +41,13 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
             nodeOptions.node,
             walletConnectOptions,
         ],
+    );
+
+    const [account, setAccount] = useState<string | null>(
+        connex.wallet.state.address,
+    );
+    const [source, setSource] = useState<WalletSource | null>(
+        connex.wallet.state.source,
     );
 
     useEffect(() => {
