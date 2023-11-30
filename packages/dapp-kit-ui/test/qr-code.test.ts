@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
     ConnectButton,
     ConnectButtonWithModal,
-    DAppKit,
+    DAppKitUI,
     dispatchCustomEvent,
     WalletConnectQrCode,
 } from '../src';
@@ -13,7 +13,7 @@ const sampleUri =
 
 describe('qr-code-modal', () => {
     beforeEach(() => {
-        DAppKit.configure({
+        DAppKitUI.configure({
             nodeUrl: 'https://mainnet.vechain.org/',
             walletConnectOptions: {
                 projectId: '123',

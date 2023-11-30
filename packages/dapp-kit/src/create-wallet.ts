@@ -1,14 +1,14 @@
 import { Connex } from '@vechain/connex';
 import type { WCClient, WCModal } from './wallet-connect';
 import { createWcClient, createWcModal, newWcSigner } from './wallet-connect';
-import type { ConnexOptions, ConnexWallet, WalletSource } from './types';
+import type { ConnexWallet, DAppKitOptions, WalletSource } from './types';
 import { CertificateBasedWallet } from './wallets/certificate-wallet';
 import { WCWallet } from './wallets/wc-wallet';
 import { normalizeGenesisId } from './genesis';
 import { convertVendorToSigner } from './vendor-signer';
 import { DAppKitLogger } from './utils';
 
-type ICreateWallet = ConnexOptions & {
+type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
     onDisconnected: () => void;
 };

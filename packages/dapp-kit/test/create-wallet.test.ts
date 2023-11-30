@@ -1,9 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { Connex1 } from '@vechain/connex/esm/signer';
 import { createWallet } from '../src/create-wallet';
-import type { ConnexOptions, WalletConnectOptions, WalletSource } from '../src';
+import type {
+    DAppKitOptions,
+    WalletConnectOptions,
+    WalletSource,
+} from '../src';
 
-type ICreateWallet = ConnexOptions & {
+type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
     onDisconnected: () => void;
 };
@@ -16,7 +20,6 @@ const createOptions = (
         source,
         walletConnectOptions: wcOptions,
         genesis: 'main',
-        customWcModal: undefined,
         onDisconnected: () => {},
     };
 };

@@ -39,12 +39,12 @@ const walletConnectOptions: WalletConnectOptions = {
 };
 ```
 
--   Create a new instance of `MultiWalletConnex` and pass in the options
+-   Create a new instance of `DAppKit` and pass in the options
 -   `thor` will be ready to use to interact with the chain, but calling any methods requiring a wallet will throw an
     error. See the next step to finalise the setup.
 
 ```typescript
-const { thor, vendor, wallet } = new MultiWalletConnex({
+const { thor, vendor, wallet } = new DAppKit({
     nodeUrl: 'https://sync-testnet.vechain.org/', //Required
     genesis: 'main', //Optional - "main" | "test" | Connex.Thor.Block
     walletConnectOptions, //Optional

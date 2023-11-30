@@ -12,7 +12,7 @@ import {
     LightCloseSvg,
 } from '../assets';
 import { subscribeToCustomEvent } from '../utils';
-import { DAppKit } from '../client';
+import { DAppKitUI } from '../client';
 import type { Theme, ThemeMode } from '../constants/theme';
 import type { DappKitContext } from './provider';
 import { dappKitContext } from './provider';
@@ -122,13 +122,13 @@ export class ConnectModal extends LitElement {
     }
 
     private get availableSources(): SourceInfo[] {
-        return DAppKit.connex.wallet.state.availableSources.map(
+        return DAppKitUI.wallet.state.availableSources.map(
             (source) => WalletSources[source],
         );
     }
 
     private get wallet(): WalletManager {
-        return DAppKit.connex.wallet;
+        return DAppKitUI.wallet;
     }
 
     @property({ type: Function })

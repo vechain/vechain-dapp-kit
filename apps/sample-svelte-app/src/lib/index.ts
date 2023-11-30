@@ -1,6 +1,10 @@
-import { DAppKit } from '@vechainfoundation/dapp-kit-ui';
+import { DAppKitUI } from '@vechainfoundation/dapp-kit-ui';
+import type {
+    DAppKitOptions,
+    WalletConnectOptions,
+} from '@vechainfoundation/dapp-kit';
 
-const walletConnectOptions = {
+const walletConnectOptions: WalletConnectOptions = {
     projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
     metadata: {
         name: 'Sample VeChain dApp',
@@ -10,12 +14,11 @@ const walletConnectOptions = {
     },
 };
 
-const vechainWalletKitOptions = {
+const vechainWalletKitOptions: DAppKitOptions = {
     nodeUrl: 'https://testnet.vechain.org/',
-    network: 'test',
+    genesis: 'test',
     walletConnectOptions,
-    useWalletKitModal: true,
     usePersistence: true,
 };
 
-DAppKit.configure(vechainWalletKitOptions);
+DAppKitUI.configure(vechainWalletKitOptions);

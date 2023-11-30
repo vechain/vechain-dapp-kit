@@ -1,19 +1,22 @@
 import { vi } from 'vitest';
 import type { WalletConnectOptions } from '../../src';
-import { MultiWalletConnex } from '../../src';
+import { DAppKit } from '../../src';
 
 export const createUnitTestConnex = (
     walletConnectOptions?: WalletConnectOptions,
-): MultiWalletConnex => {
-    return new MultiWalletConnex({
-        nodeUrl: 'https://mainnet.vechain.org/',
-        walletConnectOptions,
-        customWcModal: {
+): DAppKit => {
+    if (walletConnectOptions) {
+        walletConnectOptions.modal = {
             openModal: vi.fn(),
             closeModal: vi.fn(),
             subscribeModal: () => {
                 return vi.fn();
             },
-        },
+        };
+    }
+
+    return new DAppKit({
+        nodeUrl: 'https://mainnet.vechain.org/',
+        walletConnectOptions,
     });
 };

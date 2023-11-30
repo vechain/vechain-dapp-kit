@@ -1,13 +1,15 @@
-import type { ConnexOptions, WalletManager } from '@vechainfoundation/dapp-kit';
-import { MultiWalletConnex } from '@vechainfoundation/dapp-kit';
+/// <reference types="@vechain/connex" />
+import type {
+    DAppKitOptions,
+    WalletManager,
+} from '@vechainfoundation/dapp-kit';
+import { DAppKit } from '@vechainfoundation/dapp-kit';
 import { CustomWalletConnectModal, DAppKitModal } from './modal';
 
-let connex: MultiWalletConnex | null = null;
+let dappKit: DAppKit | null = null;
 
-const DAppKit = {
-    configure(options: ConnexOptions): MultiWalletConnex {
-        const connexOptions: ConnexOptions = options;
-
+const DAppKitUI = {
+    configure(options: DAppKitOptions): DAppKit {
         if (
             options.walletConnectOptions &&
             !options.walletConnectOptions.modal
@@ -16,36 +18,36 @@ const DAppKit = {
                 CustomWalletConnectModal.getInstance();
         }
 
-        connex = new MultiWalletConnex(connexOptions);
+        dappKit = new DAppKit(options);
 
-        return connex;
+        return dappKit;
     },
 
     get thor(): Connex.Thor {
-        return this.connex.thor;
+        return this.get().thor;
     },
 
     get vendor(): Connex.Vendor {
-        return this.connex.vendor;
+        return this.get().vendor;
     },
 
     get wallet(): WalletManager {
-        return this.connex.wallet;
+        return this.get().wallet;
     },
 
     get modal(): DAppKitModal {
         return DAppKitModal.getInstance(this.wallet);
     },
 
-    get connex(): MultiWalletConnex {
-        if (!connex) {
+    get(): DAppKit {
+        if (!dappKit) {
             // eslint-disable-next-line no-console
-            console.error('🚨🚨🚨 DAppKit not configured 🚨🚨🚨');
-            throw new Error('DAppKit not configured');
+            console.error('🚨🚨🚨 DAppKitUI not configured 🚨🚨🚨');
+            throw new Error('DAppKitUI not configured');
         }
 
-        return connex;
+        return dappKit;
     },
 };
 
-export { DAppKit };
+export { DAppKitUI };

@@ -51,25 +51,25 @@ const walletConnectOptions: WalletConnectOptions = {
 -   Initialise the `ConnexVendor`
 
 ```typescript jsx
-import { ConnexProvider } from '@vechainfoundation/dapp-kit-react';
+import { DAppKitProvider } from '@vechainfoundation/dapp-kit-react';
 
 export const App = (): JSX.Element => {
     return (
         <>
-            <ConnexProvider
+            <DAppKitProvider
                 key="connex"
                 nodeOptions={nodeOptions}
                 persistState={false} // Optional - default: false - If true, account and source will be persisted in local storage
                 walletConnectOptions={walletConnectOptions}
             >
                 <YourApp />
-            </ConnexProvider>
+            </DAppKitProvider>
         </>
     );
 };
 ```
 
--   Use the hooks provided by the `ConnexProvider`
+-   Use the hooks provided by the `DAppKitProvider`
 
 ```typescript jsx
 import { useWallet, useConnex } from '@vechainfoundation/dapp-kit-react';

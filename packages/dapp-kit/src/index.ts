@@ -6,7 +6,7 @@ export * from './genesis';
 export * from './utils';
 
 export type {
-    ConnexOptions,
+    DAppKitOptions,
     ConnexWallet,
     WalletSource,
     ConnectResponse,

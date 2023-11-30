@@ -12,7 +12,7 @@ import {
     WalletStateSymbol,
 } from '@/connex/keys';
 import { WalletActions, WalletState } from '@/connex/types';
-import { DAppKit } from '@vechainfoundation/dapp-kit-ui';
+import { DAppKitUI } from '@vechainfoundation/dapp-kit-ui';
 
 const initWallets = (hasWcOptions: boolean) => {
     const wallets: WalletSource[] = ['sync2'];
@@ -50,10 +50,9 @@ export default defineComponent({
             account: null,
         });
 
-        const connex = DAppKit.configure({
+        const connex = DAppKitUI.configure({
             nodeUrl: 'https://mainnet.vechain.org/',
             walletConnectOptions,
-            useWalletKitModal: true,
             usePersistence: true,
         });
 

@@ -4,8 +4,8 @@ import { proxy } from 'valtio';
 import { subscribeKey } from 'valtio/utils';
 import type {
     ConnectResponse,
-    ConnexOptions,
     ConnexWallet,
+    DAppKitOptions,
     WalletManagerState,
     WalletSource,
 } from './types';
@@ -22,12 +22,12 @@ class WalletManager {
     private wallets: Record<string, ConnexWallet | undefined> = {};
     private eventEmitter = new EventEmitter();
 
-    constructor(private readonly connexOptions: ConnexOptions) {
-        this.state = this.initState(connexOptions.usePersistence ?? false);
-        this.initPersistence(connexOptions.usePersistence ?? false);
+    constructor(private readonly options: DAppKitOptions) {
+        this.state = this.initState(options.usePersistence ?? false);
+        this.initPersistence(options.usePersistence ?? false);
         DAppKitLogger.debug('WalletManager', 'constructor', this.state);
 
-        if (connexOptions.useFirstDetectedSource) {
+        if (options.useFirstDetectedSource) {
             this.setFirstDetectedSource();
         }
     }
@@ -61,7 +61,7 @@ class WalletManager {
             );
 
             const opts = {
-                ...this.connexOptions,
+                ...this.options,
                 source,
                 onDisconnected: () => this.disconnect(true),
             };
@@ -140,10 +140,7 @@ class WalletManager {
             });
 
     setSource = (src: WalletSource): void => {
-        if (
-            src === 'wallet-connect' &&
-            !this.connexOptions.walletConnectOptions
-        ) {
+        if (src === 'wallet-connect' && !this.options.walletConnectOptions) {
             throw new Error('WalletConnect options are not provided');
         }
 
@@ -219,7 +216,7 @@ class WalletManager {
             wallets.push('sync');
         }
 
-        if (this.connexOptions.walletConnectOptions) {
+        if (this.options.walletConnectOptions) {
             wallets.push('wallet-connect');
         }
 
@@ -229,7 +226,7 @@ class WalletManager {
     private setFirstDetectedSource = (): void => {
         if (window.vechain) {
             this.setSource('veworld');
-        } else if (this.connexOptions.walletConnectOptions) {
+        } else if (this.options.walletConnectOptions) {
             this.setSource('wallet-connect');
         } else if (window.connex) {
             this.setSource('sync');
