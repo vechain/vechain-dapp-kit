@@ -9,8 +9,8 @@ import React, {
 import type { WalletSource } from '@vechainfoundation/dapp-kit';
 import { DAppKitUI } from '@vechainfoundation/dapp-kit-ui';
 import { subscribeKey } from 'valtio/utils';
-import { DAppKitContext } from './types';
 import type { DAppKitProviderOptions } from './types';
+import { DAppKitContext } from './types';
 
 /**
  * Context
