@@ -1,45 +1,33 @@
-import type { JSX } from 'react';
 import React from 'react';
-import type { Options } from '@vechain/connex';
-import type { WalletConnectOptions } from '@vechainfoundation/dapp-kit';
-import { ConnexProvider } from '@vechainfoundation/dapp-kit-react';
-import { ChakraProvider } from '@chakra-ui/react';
-import { NavBar, StyledContainer } from './Components/layout';
-import { Homepage } from './Screens/Homepage';
-import { Fonts, theme } from './Styles';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import './App.css';
+import { ConnectWalletButtonWithModal } from '@vechainfoundation/dapp-kit-react';
 
-const nodeOptions: Omit<Options, 'signer'> = {
-    node: 'https://testnet.vechain.org/',
-    network: 'test',
-};
-
-const walletConnectOptions: WalletConnectOptions = {
-    projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
-    metadata: {
-        name: 'Sample VeChain dApp',
-        description: 'A sample VeChain dApp',
-        url: window.location.origin,
-        icons: [`${window.location.origin}/images/logo/my-dapp.png`],
-    },
-};
-
-export const App = (): JSX.Element => {
+function App() {
     return (
         <>
-            <Fonts />
-            <ChakraProvider theme={theme}>
-                <ConnexProvider
-                    key="connex"
-                    nodeOptions={nodeOptions}
-                    persistState
-                    walletConnectOptions={walletConnectOptions}
-                >
-                    <NavBar />
-                    <StyledContainer>
-                        <Homepage />
-                    </StyledContainer>
-                </ConnexProvider>
-            </ChakraProvider>
+            <div>
+                <a href="https://vitejs.dev" target="_blank">
+                    <img src={viteLogo} className="logo" alt="Vite logo" />
+                </a>
+                <a href="https://react.dev" target="_blank">
+                    <img
+                        src={reactLogo}
+                        className="logo react"
+                        alt="React logo"
+                    />
+                </a>
+            </div>
+            <h1>Vite + React</h1>
+            <div className="card">
+                <ConnectWalletButtonWithModal />
+            </div>
+            <p className="read-the-docs">
+                Click on the Vite and React logos to learn more
+            </p>
         </>
     );
-};
+}
+
+export default App;
