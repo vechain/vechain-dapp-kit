@@ -1,10 +1,12 @@
 import { Connex } from '@vechain/connex';
+import type { WCClient, WCModal } from './wallet-connect';
 import { createWcClient, createWcModal, newWcSigner } from './wallet-connect';
 import type { ConnexOptions, ConnexWallet, WalletSource } from './types';
 import { CertificateBasedWallet } from './wallets/certificate-wallet';
 import { WCWallet } from './wallets/wc-wallet';
 import { normalizeGenesisId } from './genesis';
 import { convertVendorToSigner } from './vendor-signer';
+import { DAppKitLogger } from './utils';
 
 type ICreateWallet = ConnexOptions & {
     source: WalletSource;
@@ -16,9 +18,10 @@ export const createWallet = ({
     genesis,
     walletConnectOptions,
     onDisconnected,
-    customWcModal,
 }: ICreateWallet): ConnexWallet => {
     const genesisId = normalizeGenesisId(genesis);
+
+    DAppKitLogger.debug('createWallet', source);
 
     switch (source) {
         case 'sync': {
@@ -49,14 +52,14 @@ export const createWallet = ({
                 throw new Error('WalletConnect options are not provided');
             }
 
-            const { projectId, metadata } = walletConnectOptions;
+            const { projectId, metadata, modal } = walletConnectOptions;
 
-            const wcClient = createWcClient({
+            const wcClient: WCClient = createWcClient({
                 projectId,
                 metadata,
             });
 
-            const web3Modal = customWcModal ?? createWcModal(projectId);
+            const web3Modal: WCModal = modal ?? createWcModal(projectId);
 
             const wallet = newWcSigner({
                 genesisId,

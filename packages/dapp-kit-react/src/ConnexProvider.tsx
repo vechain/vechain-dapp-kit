@@ -20,27 +20,22 @@ const ConnexProviderContext = createContext<ConnexContext | undefined>(
 
 export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     children,
-    nodeOptions,
+    nodeUrl,
+    genesis,
     walletConnectOptions,
-    persistState = false,
-    useWalletKitModal = false,
+    usePersistence = false,
+    logLevel,
 }): React.ReactElement => {
     const connex = useMemo(
         () =>
             DAppKit.configure({
-                nodeUrl: nodeOptions.node,
-                genesis: nodeOptions.network,
+                nodeUrl,
+                genesis,
                 walletConnectOptions,
-                useWalletKitModal,
-                usePersistence: persistState,
+                usePersistence,
+                logLevel,
             }),
-        [
-            persistState,
-            useWalletKitModal,
-            nodeOptions.network,
-            nodeOptions.node,
-            walletConnectOptions,
-        ],
+        [nodeUrl, genesis, walletConnectOptions, usePersistence, logLevel],
     );
 
     const [account, setAccount] = useState<string | null>(

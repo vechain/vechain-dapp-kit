@@ -1,3 +1,5 @@
+import { DAppKitLogger } from './utils';
+
 export const convertVendorToSigner = (vendor: Connex.Vendor): Connex.Signer => {
     return {
         signTx: (msg, options): Promise<Connex.Vendor.TxResponse> => {
@@ -34,6 +36,11 @@ export const convertVendorToSigner = (vendor: Connex.Vendor): Connex.Signer => {
                 service.accepted(options.onAccepted);
             }
 
+            DAppKitLogger.debug('vendor', 'signTx', {
+                messages: msg.length,
+                options,
+            });
+
             return service.request();
         },
 
@@ -51,6 +58,11 @@ export const convertVendorToSigner = (vendor: Connex.Vendor): Connex.Signer => {
             if (options.onAccepted) {
                 service.accepted(options.onAccepted);
             }
+
+            DAppKitLogger.debug('vendor', 'signCert', {
+                message: msg,
+                options,
+            });
 
             return service.request();
         },

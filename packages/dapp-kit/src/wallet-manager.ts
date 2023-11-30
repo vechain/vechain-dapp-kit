@@ -12,6 +12,7 @@ import type {
 import { createWallet } from './create-wallet';
 import { WalletSources } from './wallet';
 import { Storage } from './local-storage';
+import { DAppKitLogger } from './utils';
 
 const DISCONNECTED = 'disconnected';
 const SOURCE_CHANGED = 'source-changed';
@@ -22,14 +23,24 @@ class WalletManager {
     private eventEmitter = new EventEmitter();
 
     constructor(private readonly connexOptions: ConnexOptions) {
-        // eslint-disable-next-line no-console
-        console.log('WalletManager constructor', connexOptions);
         this.state = this.initState(connexOptions.usePersistence ?? false);
         this.initPersistence(connexOptions.usePersistence ?? false);
+        DAppKitLogger.debug('WalletManager', 'constructor', this.state);
+
+        if (connexOptions.useFirstDetectedSource) {
+            this.setFirstDetectedSource();
+        }
     }
 
     private get wallet(): ConnexWallet {
         const source = this.state.source;
+
+        DAppKitLogger.debug(
+            'WalletManager',
+            'get wallet',
+            'current source',
+            source,
+        );
 
         if (!source) {
             throw new Error('No wallet has been selected');
@@ -41,6 +52,13 @@ class WalletManager {
             // If it's not a built-in wallet, we can't create it
             if (!WalletSources.includes(source))
                 throw new Error(`No wallet found for: ${source}`);
+
+            DAppKitLogger.debug(
+                'WalletManager',
+                'get wallet',
+                'creating a new wallet',
+                source,
+            );
 
             const opts = {
                 ...this.connexOptions,
@@ -56,15 +74,28 @@ class WalletManager {
     }
 
     connect = (): Promise<ConnectResponse> =>
-        this.wallet.connect().then((res) => {
-            this.state.address = res.account;
-            return res;
-        });
+        this.wallet
+            .connect()
+            .then((res) => {
+                this.state.address = res.account;
+                return res;
+            })
+            .catch((e) => {
+                DAppKitLogger.error('WalletManager', 'connect', e);
+                throw e;
+            });
 
     disconnect = async (remote = false): Promise<void> => {
         if (!this.state.source) {
             return;
         }
+
+        DAppKitLogger.debug(
+            'WalletManager',
+            'disconnect',
+            'current source',
+            this.state.source,
+        );
 
         const wallet = this.wallets[this.state.source];
 
@@ -82,19 +113,31 @@ class WalletManager {
         msg: Connex.Vendor.TxMessage,
         options: Connex.Signer.TxOptions,
     ): Promise<Connex.Vendor.TxResponse> =>
-        this.wallet.signTx(msg, options).then((res) => {
-            this.state.address = res.signer;
-            return res;
-        });
+        this.wallet
+            .signTx(msg, options)
+            .then((res) => {
+                this.state.address = res.signer;
+                return res;
+            })
+            .catch((e) => {
+                DAppKitLogger.error('WalletManager', 'signTx', e);
+                throw e;
+            });
 
     signCert = (
         msg: Connex.Vendor.CertMessage,
         options: Connex.Signer.CertOptions,
     ): Promise<Connex.Vendor.CertResponse> =>
-        this.wallet.signCert(msg, options).then((res) => {
-            this.state.address = res.annex.signer;
-            return res;
-        });
+        this.wallet
+            .signCert(msg, options)
+            .then((res) => {
+                this.state.address = res.annex.signer;
+                return res;
+            })
+            .catch((e) => {
+                DAppKitLogger.error('WalletManager', 'signCert', e);
+                throw e;
+            });
 
     setSource = (src: WalletSource): void => {
         if (
@@ -111,6 +154,8 @@ class WalletManager {
         if (src === 'sync' && !window.connex) {
             throw new Error('User is not in a Sync wallet');
         }
+
+        DAppKitLogger.debug('WalletManager', 'setSource', src);
 
         this.state.source = src;
         this.eventEmitter.emit(SOURCE_CHANGED, src);
@@ -179,6 +224,18 @@ class WalletManager {
         }
 
         return wallets;
+    };
+
+    private setFirstDetectedSource = (): void => {
+        if (window.vechain) {
+            this.setSource('veworld');
+        } else if (this.connexOptions.walletConnectOptions) {
+            this.setSource('wallet-connect');
+        } else if (window.connex) {
+            this.setSource('sync');
+        } else {
+            this.setSource('sync2');
+        }
     };
 }
 

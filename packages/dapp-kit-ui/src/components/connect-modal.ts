@@ -1,7 +1,8 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { OpenOptions } from '@vechainfoundation/dapp-kit';
+import type { OpenOptions, WalletManager } from '@vechainfoundation/dapp-kit';
+import { consume } from '@lit/context';
 import type { SourceInfo } from '../constants';
 import { Colors, WalletSources } from '../constants';
 import {
@@ -13,6 +14,8 @@ import {
 import { subscribeToCustomEvent } from '../utils';
 import { DAppKit } from '../client';
 import type { Theme, ThemeMode } from '../constants/theme';
+import type { DappKitContext } from './provider';
+import { dappKitContext } from './provider';
 
 @customElement('vwk-connect-modal')
 export class ConnectModal extends LitElement {
@@ -81,18 +84,18 @@ export class ConnectModal extends LitElement {
         }
     `;
 
+    @consume({ context: dappKitContext })
+    @property({ attribute: false })
+    dappKitContext: DappKitContext = {
+        address: '',
+    };
+
     @property({ type: Boolean })
     open = false;
-
-    @property({ type: Function })
-    onSourceClick?: (source?: SourceInfo) => void = undefined;
-
     @property()
     mode: ThemeMode = 'LIGHT';
-
     @property()
     theme: Theme = 'DEFAULT';
-
     @property()
     walletConnectQRcode?: string = undefined;
 
@@ -123,6 +126,26 @@ export class ConnectModal extends LitElement {
             (source) => WalletSources[source],
         );
     }
+
+    private get wallet(): WalletManager {
+        return DAppKit.connex.wallet;
+    }
+
+    @property({ type: Function })
+    onSourceClick = (source?: SourceInfo): void => {
+        if (source) {
+            this.wallet.setSource(source.id);
+            this.wallet
+                .connect()
+                .then((res) => {
+                    this.dappKitContext.address = res.account;
+                    this.requestUpdate();
+                })
+                .finally(() => {
+                    this.open = false;
+                });
+        }
+    };
 
     @property({ type: Function })
     onClose: () => void = () => nothing;

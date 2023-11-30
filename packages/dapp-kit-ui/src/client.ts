@@ -1,25 +1,40 @@
-import type { ConnexOptions } from '@vechainfoundation/dapp-kit';
+import type { ConnexOptions, WalletManager } from '@vechainfoundation/dapp-kit';
 import { MultiWalletConnex } from '@vechainfoundation/dapp-kit';
 import { CustomWalletConnectModal, DAppKitModal } from './modal';
 
 let connex: MultiWalletConnex | null = null;
 
-export type DAppKitOptions = Omit<ConnexOptions, 'customWcModal'> & {
-    useWalletKitModal?: boolean;
-};
-
 const DAppKit = {
-    configure(options: DAppKitOptions): MultiWalletConnex {
+    configure(options: ConnexOptions): MultiWalletConnex {
         const connexOptions: ConnexOptions = options;
 
-        if (options.useWalletKitModal) {
-            connexOptions.customWcModal =
+        if (
+            options.walletConnectOptions &&
+            !options.walletConnectOptions.modal
+        ) {
+            options.walletConnectOptions.modal =
                 CustomWalletConnectModal.getInstance();
         }
 
         connex = new MultiWalletConnex(connexOptions);
 
         return connex;
+    },
+
+    get thor(): Connex.Thor {
+        return this.connex.thor;
+    },
+
+    get vendor(): Connex.Vendor {
+        return this.connex.vendor;
+    },
+
+    get wallet(): WalletManager {
+        return this.connex.wallet;
+    },
+
+    get modal(): DAppKitModal {
+        return DAppKitModal.getInstance(this.wallet);
     },
 
     get connex(): MultiWalletConnex {
@@ -30,10 +45,6 @@ const DAppKit = {
         }
 
         return connex;
-    },
-
-    get modal(): DAppKitModal {
-        return DAppKitModal.getInstance();
     },
 };
 

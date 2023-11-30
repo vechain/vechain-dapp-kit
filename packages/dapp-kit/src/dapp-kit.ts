@@ -7,6 +7,7 @@ import { blake2b256 } from 'thor-devkit';
 import type { ConnexOptions } from './types';
 import { normalizeGenesisBlock } from './genesis';
 import { WalletManager } from './wallet-manager';
+import { DAppKitLogger } from './utils/logger';
 
 const cache: Record<string, DriverNoVendor | undefined> = {};
 
@@ -35,6 +36,11 @@ class MultiWalletConnex {
     public readonly wallet: WalletManager;
 
     constructor(options: ConnexOptions) {
+        if (options.logLevel) {
+            DAppKitLogger.configure(options.logLevel);
+            DAppKitLogger.debug('MultiWalletConnex', 'constructor', options);
+        }
+
         const { nodeUrl, genesis } = options;
 
         const genesisBlock = normalizeGenesisBlock(genesis);

@@ -1,10 +1,13 @@
 import type { WalletSource } from './types';
+import { DAppKitLogger } from './utils';
 
 const STORAGE_PREFIX = 'dappkit@vechain';
 const WALLET_SOURCE_KEY = `${STORAGE_PREFIX}/source`;
 const ACCOUNT_KEY = `${STORAGE_PREFIX}/account`;
 
 const setSource = (source: WalletSource | null): void => {
+    DAppKitLogger.debug('LocalStorage', 'setSource', source);
+
     if (!source) {
         localStorage.removeItem(WALLET_SOURCE_KEY);
     } else {
@@ -13,6 +16,7 @@ const setSource = (source: WalletSource | null): void => {
 };
 
 const setAccount = (account: string | null): void => {
+    DAppKitLogger.debug('LocalStorage', 'setAccount', account);
     if (!account) {
         localStorage.removeItem(ACCOUNT_KEY);
     } else {

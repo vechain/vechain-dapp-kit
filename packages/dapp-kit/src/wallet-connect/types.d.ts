@@ -32,15 +32,31 @@ export interface WCClient {
 }
 
 /**
+ * WCModal is a modal that can be used to display a WalletConnect QR code/ URI
+ * @param openModal - A function to open the modal
+ * @param closeModal - A function to close the modal
+ * @param subscribeModal - A function to subscribe to modal state changes
+ */
+export interface WCModal {
+    openModal: (options: OpenOptions) => Promise<void>;
+    closeModal: () => void;
+    subscribeModal: (
+        callback: (newState: SubscribeModalState) => void,
+    ) => () => void;
+}
+
+/**
  * Options for the createWcClient function
  * @param projectId - Your WalletConnect project ID
  * @param relayUrl - The URL of your WalletConnect relay server
  * @param metadata - The metadata of your WalletConnect dApp
  * @param logger - The logger or log level to use
+ * @param modal - {@link WCModal} can be used to provide a custom modal
  */
 export interface WalletConnectOptions {
     projectId: string;
     metadata: SignClientTypes.Options['metadata'];
+    modal?: WCModal;
 }
 
 /**
@@ -57,20 +73,6 @@ export interface SubscribeModalState {
  */
 export interface OpenOptions {
     uri: string;
-}
-
-/**
- * WCModal is a modal that can be used to display a WalletConnect QR code/ URI
- * @param openModal - A function to open the modal
- * @param closeModal - A function to close the modal
- * @param subscribeModal - A function to subscribe to modal state changes
- */
-export interface WCModal {
-    openModal: (options: OpenOptions) => Promise<void>;
-    closeModal: () => void;
-    subscribeModal: (
-        callback: (newState: SubscribeModalState) => void,
-    ) => () => void;
 }
 
 /**

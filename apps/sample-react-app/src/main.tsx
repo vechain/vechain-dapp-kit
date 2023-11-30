@@ -5,6 +5,7 @@ import './index.css';
 import type { Options } from '@vechain/connex';
 import type { WalletConnectOptions } from '@vechainfoundation/dapp-kit';
 import { ConnexProvider } from '@vechainfoundation/dapp-kit-react';
+import '@vechainfoundation/dapp-kit-ui';
 
 const nodeOptions: Omit<Options, 'signer'> = {
     node: 'https://testnet.vechain.org/',
@@ -27,6 +28,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             nodeOptions={nodeOptions}
             persistState={true}
             walletConnectOptions={walletConnectOptions}
+            logLevel="DEBUG"
         >
             <App />
         </ConnexProvider>
