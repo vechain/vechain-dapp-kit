@@ -89,5 +89,7 @@ describe('connect-button-with-modal', () => {
         await element.updateComplete;
 
         expect(element.dappKitContext.address).toBe('');
+        expect(DAppKitUI.wallet.state.address).toBe(null);
+        expect(DAppKitUI.wallet.state.source).toBe(null);
     });
 });

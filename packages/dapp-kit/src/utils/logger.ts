@@ -3,10 +3,10 @@
 
 const LogLevel = {
     NONE: 0,
-    DEBUG: 1,
-    INFO: 2,
-    WARN: 3,
-    ERROR: 4,
+    ERROR: 1,
+    WARN: 2,
+    INFO: 3,
+    DEBUG: 4,
 };
 
 let currentLogLevel = LogLevel.NONE;
