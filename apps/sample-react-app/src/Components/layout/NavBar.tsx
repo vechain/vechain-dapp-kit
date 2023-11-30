@@ -8,7 +8,6 @@ import {
     HStack,
     Icon,
     IconButton,
-    Text,
     useColorModeValue,
     useDisclosure,
     useMediaQuery,
@@ -17,11 +16,7 @@ import {
 import type { JSX } from 'react';
 import React from 'react';
 import { Bars3Icon } from '@heroicons/react/24/solid';
-import {
-    ConnectWalletButtonWithModal,
-    useWallet,
-} from '@vechainfoundation/dapp-kit-react';
-import { AccountDetailBody } from '../AccountDetailBody';
+import { ConnectWalletButtonWithModal } from '@vechainfoundation/dapp-kit-react';
 
 export const NavBar = (): JSX.Element => {
     const bg = useColorModeValue('gray.50', 'gray.900');
@@ -81,8 +76,6 @@ const MobileNavBarDrawer = ({
     isOpen,
     onClose,
 }: MobileNavBarDrawerProps): JSX.Element => {
-    const { account, source, disconnect } = useWallet();
-
     return (
         <Drawer isOpen={isOpen} onClose={onClose} placement="right">
             <DrawerOverlay />
@@ -90,16 +83,7 @@ const MobileNavBarDrawer = ({
                 <DrawerBody w="full">
                     <VStack h="full" justifyContent="space-between" w="full">
                         <VStack alignItems="flex-start" spacing={4} w="full">
-                            <Text>Connected Wallet</Text>
-                            {account && source ? (
-                                <AccountDetailBody
-                                    accountAddress={account}
-                                    disconnectWallet={disconnect}
-                                    source={source}
-                                />
-                            ) : (
-                                <ConnectWalletButtonWithModal />
-                            )}
+                            <ConnectWalletButtonWithModal />
                         </VStack>
                     </VStack>
                 </DrawerBody>

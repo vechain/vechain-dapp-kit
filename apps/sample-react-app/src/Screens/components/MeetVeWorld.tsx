@@ -1,7 +1,7 @@
 import { Box, Button, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import type { JSX } from 'react';
 import { VeWorldLogo } from '../../Logos';
-import { StyledCard } from '../../Components/shared';
+import { StyledCard } from '../../Components';
 
 export const MeetVeWorld = (): JSX.Element => {
     return (

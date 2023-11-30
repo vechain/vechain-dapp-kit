@@ -1,6 +1,6 @@
 import { Button, Heading, HStack, Link, Text, VStack } from '@chakra-ui/react';
 import type { JSX } from 'react';
-import { StyledCard } from '../../Components/shared';
+import { StyledCard } from '../../Components';
 
 export const Welcome = (): JSX.Element => {
     return (

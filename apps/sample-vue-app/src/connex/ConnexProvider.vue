@@ -3,6 +3,7 @@ import { defineComponent, provide, reactive, readonly, toRefs } from 'vue';
 import {
     ConnectResponse,
     WalletConnectOptions,
+    WalletManagerState,
     WalletSource,
 } from '@vechainfoundation/dapp-kit';
 import type Connex from '@vechain/connex';
@@ -57,17 +58,13 @@ export default defineComponent({
             usePersistence: true,
         });
 
-        const onDisconnected = () => {
-            walletState.source = null;
-            walletState.account = null;
+        const onWalletStateUpdate = (state: WalletManagerState) => {
+            walletState.source = state.source;
+            walletState.account = state.address;
+            walletState.availableWallets = state.availableSources;
         };
 
-        const onSourceChanged = (source: WalletSource | null) => {
-            walletState.source = source;
-        };
-
-        connex.wallet.onDisconnected(onDisconnected);
-        connex.wallet.onSourceChanged(onSourceChanged);
+        connex.wallet.subscribe(onWalletStateUpdate);
 
         const setAccount = (addr: string) => {
             walletState.account = addr;

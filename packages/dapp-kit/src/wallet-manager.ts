@@ -1,6 +1,4 @@
-// eslint-disable-next-line unicorn/prefer-node-protocol
-import { EventEmitter } from 'events';
-import { proxy } from 'valtio';
+import { proxy, subscribe } from 'valtio';
 import { subscribeKey } from 'valtio/utils';
 import type {
     ConnectResponse,
@@ -13,13 +11,9 @@ import { createWallet } from './create-wallet';
 import { WalletSources } from './wallet';
 import { Storage } from './local-storage';
 
-const DISCONNECTED = 'disconnected';
-const SOURCE_CHANGED = 'source-changed';
-
 class WalletManager {
     public readonly state: WalletManagerState;
     private wallets: Record<string, ConnexWallet | undefined> = {};
-    private eventEmitter = new EventEmitter();
 
     constructor(private readonly connexOptions: ConnexOptions) {
         this.state = this.initState(connexOptions.usePersistence ?? false);
@@ -72,8 +66,6 @@ class WalletManager {
 
         this.state.source = null;
         this.state.address = null;
-        this.eventEmitter.emit(SOURCE_CHANGED, null);
-        this.eventEmitter.emit(DISCONNECTED);
     };
 
     signTx = (
@@ -111,25 +103,14 @@ class WalletManager {
         }
 
         this.state.source = src;
-        this.eventEmitter.emit(SOURCE_CHANGED, src);
     };
 
-    onDisconnected(listener: () => void): void {
-        this.eventEmitter.on(DISCONNECTED, listener);
-    }
-
-    removeOnDisconnected(listener: () => void): void {
-        this.eventEmitter.off(DISCONNECTED, listener);
-    }
-
-    onSourceChanged(listener: (source: WalletSource | null) => void): void {
-        this.eventEmitter.on(SOURCE_CHANGED, listener);
-    }
-
-    removeOnSourceChanged(
-        listener: (source: WalletSource | null) => void,
-    ): void {
-        this.eventEmitter.off(SOURCE_CHANGED, listener);
+    public subscribe(
+        listener: (state: WalletManagerState) => void,
+    ): () => void {
+        return subscribe(this.state, () => {
+            listener(this.state);
+        });
     }
 
     private initState = (usePersistent: boolean): WalletManagerState => {

@@ -13,9 +13,8 @@ import type { JSX } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import { ArrowUpIcon } from '@heroicons/react/24/solid';
 import { useWallet } from '@vechainfoundation/dapp-kit-react';
-import { StyledCard } from '../../Components/shared';
+import { AddressButton, StyledCard } from '../../Components';
 import { useCounter } from '../../Hooks/useCounter';
-import { AddressButton } from '../../Components';
 
 export const Counter = (): JSX.Element => {
     const { account } = useWallet();
