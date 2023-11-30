@@ -3,3 +3,4 @@ export * from './colors';
 export * from './sources';
 export * from './breakpoint';
 export * from './theme';
+export * from './stores';
