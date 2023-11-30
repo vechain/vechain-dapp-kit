@@ -4,6 +4,10 @@
         "target": "es2021",
         "experimentalDecorators": true
     },
-    "include": ["src/**/*.ts", "test/listeners.test.ts"],
+    "include": [
+        "src/**/*.ts",
+        "test/utils/listeners.test.ts",
+        "test/utils/mobile.test.ts"
+    ],
     "exclude": []
 }

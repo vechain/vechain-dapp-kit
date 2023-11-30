@@ -28,6 +28,7 @@
         "lint": "tsc --noEmit &&  eslint src --ext .js,.jsx,.ts,.tsx",
         "purge": "yarn clean && rm -rf node_modules",
         "test": "vitest run --coverage",
+        "test:dev": "vitest run ",
         "watch": "tsup --watch"
     },
     "dependencies": {
