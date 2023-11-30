@@ -3,115 +3,114 @@ import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { SourceInfo } from '../constants';
 import { Colors } from '../constants';
-import { DarkCloseSvg, LightCloseSvg } from '../assets';
+import {
+    DarkCloseSvg,
+    LightCloseSvg,
+    DarkCopySvg,
+    LightCopySvg,
+    CheckSvg,
+    DarkDisconnectSvg,
+    LightDisconnectSvg,
+    buttonStyle,
+} from '../assets';
 import { dispatchCustomEvent, subscribeToCustomEvent } from '../utils';
 import type { Theme, ThemeMode } from '../constants/theme';
 import { friendlyAddress, getPicassoImage } from '../utils/account';
-import {
-    DarkDisconnectSvg,
-    LightDisconnectSvg,
-} from '../assets/icons/disconnect';
 
 @customElement('vwk-connected-address-modal')
 export class AddressModal extends LitElement {
-    static override styles = css`
-        .modal-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            padding: 20px;
-            transition: width 5s, height 4s;
-            font-family: 'Inter', sans-serif;
-        }
+    static override styles = [
+        buttonStyle,
+        css`
+            .modal-container {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px;
+                transition: width 5s, height 4s;
+                font-family: 'Inter', sans-serif;
+            }
 
-        .modal-header {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            padding-bottom: 10px;
-            font-family: 'Inter', sans-serif;
-        }
+            .modal-header {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 20px;
+                font-family: 'Inter', sans-serif;
+            }
 
-        .modal-body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            transition: width 2s, height 4s;
-        }
+            .modal-body {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transition: width 2s, height 4s;
+            }
 
-        .modal-footer {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-top: 10px;
-            font-family: 'Inter', sans-serif;
-        }
+            .modal-footer {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding-top: 20px;
+                font-family: 'Inter', sans-serif;
+            }
 
-        .close-icon {
-            position: absolute;
-            right: 20px;
-        }
+            .close-icon {
+                position: absolute;
+                right: 20px;
+            }
 
-        .icon {
-            cursor: pointer;
-            width: 25px;
-            height: 25px;
-        }
+            .icon {
+                cursor: pointer;
+                width: 25px;
+                height: 25px;
+                padding: 5px;
+                border-radius: 50%;
+            }
 
-        .icon.LIGHT:hover {
-            background-color: ${Colors.LightGrey};
-        }
+            .icon.LIGHT:hover {
+                background-color: ${Colors.XXLightGrey};
+            }
 
-        .icon.DARK:hover {
-            background-color: ${Colors.DarkGrey};
-        }
+            .icon.DARK:hover {
+                background-color: ${Colors.XXDarkGrey};
+            }
 
-        button {
-            cursor: pointer;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            border: none;
-            border-radius: 12px;
-            padding: 8px 14px;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-        }
+            .address-icon {
+                width: 30%;
+                margin-right: 4px;
+                border-radius: 50%;
+            }
 
-        button:hover {
-            opacity: 0.9;
-        }
+            .disconnect-icon {
+                width: 18px;
+                height: 18px;
+            }
 
-        button.LIGHT {
-            background-color: ${Colors.LightGrey};
-            color: ${Colors.Dark};
-        }
+            .title {
+                font-family: 'Inter', sans-serif;
+                font-weight: 500;
+            }
 
-        button.DARK {
-            background-color: ${Colors.DarkGrey};
-            color: ${Colors.LightGrey};
-        }
+            .wallet-address {
+                font-size: 18px;
+                font-weight: 500;
+                font-family: 'Inter', sans-serif;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+            }
 
-        .address-icon {
-            width: 30%;
-            margin-right: 4px;
-            border-radius: 50%;
-        }
-
-        .title {
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .wallet-address {
-            font-size: 19px;
-        }
-    `;
+            .copy-icon {
+                cursor: pointer;
+                width: 20px;
+                height: 20px;
+                margin-left: 10px;
+            }
+        `,
+    ];
 
     @property({ type: Boolean })
     open = false;
@@ -134,6 +133,9 @@ export class AddressModal extends LitElement {
     @property()
     walletConnectQRcode?: string = undefined;
 
+    @property()
+    showCopiedIcon = false;
+
     constructor() {
         super();
 
@@ -150,6 +152,10 @@ export class AddressModal extends LitElement {
     onClose: () => void = () => nothing;
 
     override render(): TemplateResult {
+        let copyIcon = this.mode === 'LIGHT' ? LightCopySvg : DarkCopySvg;
+        if (this.showCopiedIcon) {
+            copyIcon = CheckSvg;
+        }
         return html`
         <vwk-fonts></vwk-fonts>
         <vwk-base-modal
@@ -175,6 +181,9 @@ export class AddressModal extends LitElement {
                     />
                     <span class="wallet-address">
                             ${friendlyAddress(this.address ?? '')}
+                            <div class="copy-icon" @click=${
+                                this.onCopy
+                            }>${copyIcon}</div>
                         </span>
 
                 </div>
@@ -183,7 +192,7 @@ export class AddressModal extends LitElement {
                             class="${this.mode} ${this.theme}"
                             @click=${this.onDisconnectClick}
                     >
-                        <div class="icon ${this.mode}">
+                        <div class="disconnect-icon ${this.mode}">
                             ${
                                 this.mode === 'LIGHT'
                                     ? LightDisconnectSvg
@@ -196,6 +205,14 @@ export class AddressModal extends LitElement {
         </vwk-base-modal>
     `;
     }
+
+    private onCopy = async (): Promise<void> => {
+        await navigator.clipboard.writeText(this.address || '');
+        this.showCopiedIcon = true;
+        setTimeout(() => {
+            this.showCopiedIcon = false;
+        }, 1000);
+    };
 
     private onBack = (): void => {
         dispatchCustomEvent('vwk-close-wc-modal', undefined);

@@ -16,5 +16,5 @@ export const friendlyAddress = (
 ): string => {
     const before = address.substring(0, lengthBefore);
     const after = address.substring(address.length - lengthAfter);
-    return `${before}…${after}`;
+    return `${before}••••${after}`;
 };

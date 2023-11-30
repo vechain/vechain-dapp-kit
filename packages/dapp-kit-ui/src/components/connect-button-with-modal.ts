@@ -60,12 +60,12 @@ export class ConnectButtonWithModal extends LitElement {
             <div>
                 <vwk-fonts></vwk-fonts>
                 ${this.dappKitContext.address
-                    ? html` <vwk-connected-address-badge-with-modal
+                    ? html` <vwk-connected-address-button-with-modal
                           .mode=${this.mode}
                           .theme=${this.theme}
                           .address=${this.dappKitContext.address}
                           .onDisconnectClick=${this.onDisconnectClick}
-                      ></vwk-connected-address-badge-with-modal>`
+                      ></vwk-connected-address-button-with-modal>`
                     : html` <vwk-connect-button
                               .title=${this.title}
                               .mode=${this.mode}

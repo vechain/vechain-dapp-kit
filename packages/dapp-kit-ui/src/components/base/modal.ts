@@ -1,4 +1,4 @@
-import type { TemplateResult } from 'lit';
+import type { PropertyValues, TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import type { Theme, ThemeMode } from '../../constants';
@@ -8,7 +8,7 @@ import { Breakpoint, Colors } from '../../constants';
 export class Modal extends LitElement {
     static override styles = css`
         .modal-container {
-            display: block;
+            display: flex;
             position: fixed;
             top: 0;
             left: 0;
@@ -16,9 +16,9 @@ export class Modal extends LitElement {
             bottom: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.3);
             opacity: 1;
-            transition: opacity 0.3s;
+            transition: opacity 0.1s ease-in-out;
         }
 
         .modal-container.hidden {
@@ -29,23 +29,22 @@ export class Modal extends LitElement {
         .modal {
             position: absolute;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            transition: height 0.2s, opacity 0.3s;
+            transition: height 0.1s ease-in-out, transform 0.2s ease-in-out;
             overflow: hidden;
-            opacity: 1;
         }
 
         .modal-container.hidden .modal {
-            opacity: 0;
+            transform: scale(0.97);
         }
 
         .modal.LIGHT {
             background-color: ${Colors.White};
-            color: ${Colors.Dark};
+            color: ${Colors.LightBlack};
         }
 
         .modal.DARK {
-            background-color: ${Colors.Dark};
-            color: ${Colors.LightGrey};
+            background-color: ${Colors.LightBlack};
+            color: ${Colors.XXLightGrey};
         }
 
         @media (max-width: ${Breakpoint.Mobile}px) {
@@ -60,11 +59,12 @@ export class Modal extends LitElement {
         }
 
         @media (min-width: ${Breakpoint.Mobile}px) {
+            .modal-container {
+                align-items: center;
+                justify-content: center;
+            }
             .modal {
                 width: 350px;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
                 border-radius: 16px;
             }
         }
@@ -80,24 +80,23 @@ export class Modal extends LitElement {
     @property()
     theme: Theme = 'DEFAULT';
 
-    changeHeightOnResize = (): void => {
-        if (!this.modalSubContainer) {
-            return;
+    observer = new ResizeObserver(() => {
+        this.modalHeight = this.modalSubContainer?.clientHeight ?? 0;
+    });
+
+    willUpdate(changedProperties: PropertyValues<this>): void {
+        if (changedProperties.has('open')) {
+            if (!this.modalSubContainer) {
+                return;
+            }
+            if (this.open) {
+                this.modalHeight = this.modalSubContainer.clientHeight;
+                this.observer.observe(this.modalSubContainer);
+            } else {
+                this.modalHeight = 0;
+                this.observer.unobserve(this.modalSubContainer);
+            }
         }
-        this.modalHeight = this.modalSubContainer.clientHeight;
-        new ResizeObserver(() => {
-            this.modalHeight = this.modalSubContainer?.clientHeight ?? 0;
-        }).observe(this.modalSubContainer);
-    };
-
-    override connectedCallback(): void {
-        super.connectedCallback();
-        addEventListener('load', this.changeHeightOnResize);
-    }
-
-    override disconnectedCallback(): void {
-        super.disconnectedCallback();
-        window.removeEventListener('load', this.changeHeightOnResize);
     }
 
     @property({ type: Function })

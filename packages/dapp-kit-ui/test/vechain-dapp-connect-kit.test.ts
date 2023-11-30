@@ -12,7 +12,7 @@ describe('connect-button-with-modal', () => {
         DAppKitUI.configure({ nodeUrl: 'https://mainnet.vechain.org/' });
     });
 
-    it('Should callback with source when user clicks a wallet and should render the connected address badge once connected', async () => {
+    it('Should callback with source when user clicks a wallet and should render the connected address button once connected', async () => {
         const element: VechainDappConnectKit = window.document.createElement(
             'vwk-vechain-dapp-connect-kit',
         );
