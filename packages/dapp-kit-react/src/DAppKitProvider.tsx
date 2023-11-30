@@ -7,40 +7,34 @@ import React, {
     useState,
 } from 'react';
 import type { WalletSource } from '@vechainfoundation/dapp-kit';
-import { DAppKit } from '@vechainfoundation/dapp-kit-ui';
+import { DAppKitUI } from '@vechainfoundation/dapp-kit-ui';
 import { subscribeKey } from 'valtio/utils';
-import type { ConnexContext, ConnexProviderOptions } from './types';
+import type { DAppKitProviderOptions } from './types';
+import { DAppKitContext } from './types';
 
 /**
  * Context
  */
-const ConnexProviderContext = createContext<ConnexContext | undefined>(
-    undefined,
-);
+const DAppKitContext = createContext<DAppKitContext | undefined>(undefined);
 
-export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
+export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     children,
-    nodeOptions,
+    nodeUrl,
+    genesis,
     walletConnectOptions,
-    persistState = false,
-    useWalletKitModal = false,
+    usePersistence = false,
+    logLevel,
 }): React.ReactElement => {
     const connex = useMemo(
         () =>
-            DAppKit.configure({
-                nodeUrl: nodeOptions.node,
-                genesis: nodeOptions.network,
+            DAppKitUI.configure({
+                nodeUrl,
+                genesis,
                 walletConnectOptions,
-                useWalletKitModal,
-                usePersistence: persistState,
+                usePersistence,
+                logLevel,
             }),
-        [
-            persistState,
-            useWalletKitModal,
-            nodeOptions.network,
-            nodeOptions.node,
-            walletConnectOptions,
-        ],
+        [nodeUrl, genesis, walletConnectOptions, usePersistence, logLevel],
     );
 
     const [account, setAccount] = useState<string | null>(
@@ -56,14 +50,14 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     }, [connex.wallet.state]);
 
     const openModal = useCallback(() => {
-        DAppKit.modal.open();
+        DAppKitUI.modal.open();
     }, []);
 
     const closeModal = useCallback(() => {
-        DAppKit.modal.close();
+        DAppKitUI.modal.close();
     }, []);
 
-    const context: ConnexContext = useMemo(() => {
+    const context: DAppKitContext = useMemo(() => {
         return {
             connex: {
                 thor: connex.thor,
@@ -85,14 +79,14 @@ export const ConnexProvider: React.FC<ConnexProviderOptions> = ({
     }, [connex, account, source, closeModal, openModal]);
 
     return (
-        <ConnexProviderContext.Provider value={context}>
+        <DAppKitContext.Provider value={context}>
             {children}
-        </ConnexProviderContext.Provider>
+        </DAppKitContext.Provider>
     );
 };
 
-export const useConnex = (): ConnexContext['connex'] => {
-    const context = useContext(ConnexProviderContext);
+export const useConnex = (): DAppKitContext['connex'] => {
+    const context = useContext(DAppKitContext);
 
     if (!context) {
         throw new Error('"useConnex" must be used within a ConnexProvider');
@@ -101,8 +95,8 @@ export const useConnex = (): ConnexContext['connex'] => {
     return context.connex;
 };
 
-export const useWallet = (): ConnexContext['wallet'] => {
-    const context = useContext(ConnexProviderContext);
+export const useWallet = (): DAppKitContext['wallet'] => {
+    const context = useContext(DAppKitContext);
 
     if (!context) {
         throw new Error('"useWallet" must be used within a ConnexProvider');
@@ -111,8 +105,8 @@ export const useWallet = (): ConnexContext['wallet'] => {
     return context.wallet;
 };
 
-export const useWalletModal = (): ConnexContext['modal'] => {
-    const context = useContext(ConnexProviderContext);
+export const useWalletModal = (): DAppKitContext['modal'] => {
+    const context = useContext(DAppKitContext);
 
     if (!context) {
         throw new Error(

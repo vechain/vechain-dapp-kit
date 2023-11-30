@@ -5,8 +5,10 @@
     "scripts": {
         "add-page": "ng g m pages/page-name --routing && ng g component pages/page-name --skip-tests",
         "build": "ng build --configuration development --base-href '/vechain-dapp-kit/angular/'",
+        "clean": "rm -rf dist .turbo .angular",
         "dev": "ng serve",
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+        "purge": "yarn clean; rm -rf node_modules",
         "watch": "ng build --watch --configuration development"
     },
     "dependencies": {
@@ -24,6 +26,7 @@
         "@ngx-translate/core": "^15.0.0",
         "@ngx-translate/http-loader": "^8.0.0",
         "@popperjs/core": "^2.11.8",
+        "@vechainfoundation/dapp-kit": "*",
         "@vechainfoundation/dapp-kit-ui": "*",
         "angular-svg-icon": "^16.0.0",
         "axios": "^1.4.0",

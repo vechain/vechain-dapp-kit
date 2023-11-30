@@ -7,15 +7,15 @@ import {
     ConnectButton,
     ConnectButtonWithModal,
     ConnectModal,
-    DAppKit,
+    DAppKitUI,
     SourceInfo,
 } from '../src';
 import { elementQueries } from './helpers/element-queries';
-import { WalletSource } from '@vechainfoundation/dapp-kit/src';
+import { WalletSource } from '@vechainfoundation/dapp-kit';
 
 describe('connect-button-with-modal', () => {
     beforeEach(() => {
-        DAppKit.configure({ nodeUrl: 'https://mainnet.vechain.org/' });
+        DAppKitUI.configure({ nodeUrl: 'https://mainnet.vechain.org/' });
     });
 
     it('Should callback with source when user clicks a wallet and should render the connected address badge once connected', async () => {
@@ -89,5 +89,7 @@ describe('connect-button-with-modal', () => {
         await element.updateComplete;
 
         expect(element.dappKitContext.address).toBe('');
+        expect(DAppKitUI.wallet.state.address).toBe(null);
+        expect(DAppKitUI.wallet.state.source).toBe(null);
     });
 });

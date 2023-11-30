@@ -2,7 +2,7 @@ import { consume } from '@lit/context';
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechainfoundation/dapp-kit';
-import { DAppKit } from '../client';
+import { DAppKitUI } from '../client';
 import type { SourceInfo, Theme, ThemeMode } from '../constants';
 import type { DappKitContext } from './provider';
 import { dappKitContext } from './provider';
@@ -28,7 +28,7 @@ export class ConnectButtonWithModal extends LitElement {
     open = false;
 
     private get wallet(): WalletManager {
-        return DAppKit.connex.wallet;
+        return DAppKitUI.wallet;
     }
 
     @property({ type: Function })
@@ -84,7 +84,7 @@ export class ConnectButtonWithModal extends LitElement {
     }
 
     private handleOpen = (): void => {
-        DAppKit.connex.wallet.disconnect().finally(() => {
+        DAppKitUI.wallet.disconnect().finally(() => {
             this.open = true;
         });
     };

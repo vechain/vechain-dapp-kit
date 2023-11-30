@@ -1,8 +1,8 @@
-import type { Options } from '@vechain/connex';
+/// <reference types="@vechain/connex" />
 import type React from 'react';
 import type {
     ConnectResponse,
-    WalletConnectOptions,
+    DAppKitOptions,
     WalletSource,
 } from '@vechainfoundation/dapp-kit';
 
@@ -18,13 +18,9 @@ export interface AccountState {
  * @param walletConnectOptions - WalletConnect options
  * @param persistState - An option to persist state. Defaults to false
  */
-export interface ConnexProviderOptions {
+export type DAppKitProviderOptions = DAppKitOptions & {
     children: React.ReactNode;
-    nodeOptions: Omit<Options, 'signer'>;
-    walletConnectOptions?: WalletConnectOptions;
-    persistState?: boolean;
-    useWalletKitModal?: boolean;
-}
+};
 
 /**
  * Connex Context
@@ -32,7 +28,7 @@ export interface ConnexProviderOptions {
  * to the application.
  */
 
-export interface ConnexContext {
+export interface DAppKitContext {
     connex: {
         thor: Connex.Thor;
         vendor: Connex.Vendor;

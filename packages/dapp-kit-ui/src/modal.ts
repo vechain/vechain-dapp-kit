@@ -3,8 +3,12 @@ import { EventEmitter } from 'events';
 import type {
     OpenOptions,
     SubscribeModalState,
+    WalletManager,
+    WalletSource,
     WCModal,
 } from '@vechainfoundation/dapp-kit';
+import { DAppKitLogger } from '@vechainfoundation/dapp-kit';
+import { subscribeKey } from 'valtio/utils';
 import {
     dispatchCustomEvent,
     isAndroid,
@@ -41,6 +45,8 @@ class CustomWalletConnectModal implements WCModal {
      * WalletConnect
      */
     openModal(options: OpenOptions): Promise<void> {
+        DAppKitLogger.debug('CustomWalletConnectModal', 'opening the modal');
+
         if (isMobile()) {
             window.open(
                 `veworld://app.veworld?uri=${encodeURIComponent(options.uri)}`,
@@ -65,12 +71,18 @@ class CustomWalletConnectModal implements WCModal {
     }
 
     closeModal(): void {
+        DAppKitLogger.debug('CustomWalletConnectModal', 'closing the modal');
         dispatchCustomEvent('vwk-close-wc-modal', undefined);
     }
 
     subscribeModal(
         callback: (newState: SubscribeModalState) => void,
     ): () => void {
+        DAppKitLogger.debug(
+            'CustomWalletConnectModal',
+            'subscribing to modal state',
+        );
+
         this.eventEmitter.on(MODAL_STATE_EVENT, callback);
 
         return () => {
@@ -86,23 +98,54 @@ class CustomWalletConnectModal implements WCModal {
 export class DAppKitModal {
     private static instance: DAppKitModal | null = null;
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() {}
+    private constructor(private walletManager: WalletManager) {}
 
-    public static getInstance(): DAppKitModal {
+    public static getInstance(walletManager: WalletManager): DAppKitModal {
         if (!DAppKitModal.instance) {
-            DAppKitModal.instance = new DAppKitModal();
+            DAppKitModal.instance = new DAppKitModal(walletManager);
         }
 
         return DAppKitModal.instance;
     }
 
     open(): void {
+        DAppKitLogger.debug('DAppKitModal', 'opening the modal');
+
+        const existingElement =
+            window.document.querySelector('vwk-connect-modal');
+
+        if (!existingElement) {
+            DAppKitLogger.debug(
+                'DAppKitModal',
+                'OPEN',
+                'creating a new element',
+            );
+
+            const element = window.document.createElement('vwk-connect-modal');
+
+            window.document.body.appendChild(element);
+        }
+
         dispatchCustomEvent('vwk-open-wallet-modal', undefined);
     }
 
     close(): void {
+        DAppKitLogger.debug('DAppKitModal', 'closing the modal');
         dispatchCustomEvent('vwk-close-wallet-modal', undefined);
+    }
+
+    onConnected(callback: (address: string | null) => void): () => void {
+        return subscribeKey(this.walletManager.state, 'address', (address) => {
+            callback(address);
+        });
+    }
+
+    onWalletSelected(
+        callback: (source: WalletSource | null) => void,
+    ): () => void {
+        return subscribeKey(this.walletManager.state, 'source', (source) => {
+            callback(source);
+        });
     }
 }
 

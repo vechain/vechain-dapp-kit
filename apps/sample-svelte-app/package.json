@@ -5,8 +5,10 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
+        "clean": "rm -rf .svelte-kit dist .turbo",
         "dev": "vite dev",
-        "lint": "eslint src --ext .js,.jsx,.ts,.tsx"
+        "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+        "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
         "@vechainfoundation/dapp-kit-ui": "*"

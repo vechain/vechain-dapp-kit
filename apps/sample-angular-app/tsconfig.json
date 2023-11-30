@@ -23,6 +23,7 @@
         "lib": ["es2020", "dom", "ES2021.String"],
         "paths": {
             "crypto": ["../../node_modules/crypto-browserify"],
+            "buffer": ["../../node_modules/buffer"],
             "stream": ["../../node_modules/stream-browserify"],
             "assert": ["../../node_modules/assert"],
             "http": ["../../node_modules/stream-http"],

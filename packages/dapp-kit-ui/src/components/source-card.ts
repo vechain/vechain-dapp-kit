@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechainfoundation/dapp-kit';
 import type { SourceInfo, Theme, ThemeMode } from '../constants';
 import { Colors } from '../constants';
-import { DAppKit } from '../client';
+import { DAppKitUI } from '../client';
 
 @customElement('vwk-source-card')
 export class SourceCard extends LitElement {
@@ -60,7 +60,7 @@ export class SourceCard extends LitElement {
     source?: SourceInfo = undefined;
 
     get wallet(): WalletManager {
-        return DAppKit.connex.wallet;
+        return DAppKitUI.wallet;
     }
 
     handleSourceClick(): void {

@@ -1,11 +1,15 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { DAppKit, DappKitContextProvider, VechainDappConnectKit } from '../src';
+import {
+    DappKitContextProvider,
+    DAppKitUI,
+    VechainDappConnectKit,
+} from '../src';
 import { elementQueries } from './helpers/element-queries';
 
 describe('connect-button-with-modal', () => {
     beforeEach(() => {
-        DAppKit.configure({ nodeUrl: 'https://mainnet.vechain.org/' });
+        DAppKitUI.configure({ nodeUrl: 'https://mainnet.vechain.org/' });
     });
 
     it('Should callback with source when user clicks a wallet and should render the connected address badge once connected', async () => {

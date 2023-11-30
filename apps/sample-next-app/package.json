@@ -3,7 +3,9 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
+        "clean": "rm -rf .next dist .turbo",
         "dev": "next dev",
+        "purge": "yarn clean; rm -rf node_modules",
         "start": "next start"
     },
     "dependencies": {

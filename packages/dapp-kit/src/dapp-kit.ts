@@ -4,9 +4,10 @@ import {
 } from '@vechain/connex-driver/dist/index.js';
 import { Framework } from '@vechain/connex-framework';
 import { blake2b256 } from 'thor-devkit';
-import type { ConnexOptions } from './types';
 import { normalizeGenesisBlock } from './genesis';
 import { WalletManager } from './wallet-manager';
+import { DAppKitLogger } from './utils/logger';
+import type { DAppKitOptions } from './types';
 
 const cache: Record<string, DriverNoVendor | undefined> = {};
 
@@ -29,12 +30,17 @@ const createThorDriver = (
     return driver;
 };
 
-class MultiWalletConnex {
+class DAppKit {
     public readonly thor: Connex.Thor;
     public readonly vendor: Connex.Vendor;
     public readonly wallet: WalletManager;
 
-    constructor(options: ConnexOptions) {
+    constructor(options: DAppKitOptions) {
+        if (options.logLevel) {
+            DAppKitLogger.configure(options.logLevel);
+            DAppKitLogger.debug('DAppKit', 'constructor', options);
+        }
+
         const { nodeUrl, genesis } = options;
 
         const genesisBlock = normalizeGenesisBlock(genesis);
@@ -54,4 +60,4 @@ class MultiWalletConnex {
     }
 }
 
-export { MultiWalletConnex };
+export { DAppKit };

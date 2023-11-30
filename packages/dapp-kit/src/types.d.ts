@@ -1,5 +1,5 @@
 import type { WalletConnectOptions } from '@vechainfoundation/dapp-kit';
-import type { WCModal } from './wallet-connect';
+import type { LogLevel } from './utils/logger';
 
 declare global {
     interface Window {
@@ -19,19 +19,22 @@ interface WalletConfig {
 type Genesis = 'main' | 'test' | Connex.Thor.Block;
 
 /**
- * Options for the MultiWalletConnex class
+ * Options for the DAppKit class
  * @param nodeUrl - The URL of the VeChain node to connect to
  * @param genesis - Optional. The genesis block of the VeChain network you want to connect to. Eg, 'main', 'test', or a Connex.Thor.Block object
  * @param onDisconnected - A callback that will be called when the session is disconnected
  * @param walletConnectOptions - Optional. Options for the WalletConnect integration
- * @param persistence - Optional. Whether to persist the wallet source/ account
+ * @param usePersistence - Optional. Whether to persist the wallet source/ account
+ * @param useFirstDetectedSource - Optional. Whether to use the first detected wallet source. Defaults to false
+ * @param logLevel - Optional. The log level to use for the DAppKitUI logger
  */
-interface ConnexOptions {
+interface DAppKitOptions {
     nodeUrl: string;
     genesis?: Genesis;
     walletConnectOptions?: WalletConnectOptions;
-    customWcModal?: WCModal;
     usePersistence?: boolean;
+    useFirstDetectedSource?: boolean;
+    logLevel?: LogLevel;
 }
 
 type BaseWallet = Connex.Signer & {
@@ -58,7 +61,7 @@ interface WalletManagerState {
 
 export type {
     BaseWallet,
-    ConnexOptions,
+    DAppKitOptions,
     ConnexWallet,
     WalletConfig,
     WalletSource,

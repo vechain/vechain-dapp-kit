@@ -5,9 +5,11 @@
     "type": "module",
     "scripts": {
         "build": "tsc && vite build",
+        "clean": "rm -rf dist .turbo",
         "dev": "vite",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
         "@vechainfoundation/dapp-kit": "*",

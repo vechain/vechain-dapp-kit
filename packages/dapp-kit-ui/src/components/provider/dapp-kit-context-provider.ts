@@ -2,7 +2,7 @@ import { createContext, provide } from '@lit/context';
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { subscribeKey } from 'valtio/utils';
-import { DAppKit } from '../../client';
+import { DAppKitUI } from '../../client';
 
 export interface DappKitContext {
     address: string;
@@ -29,7 +29,7 @@ export class DappKitContextProvider extends LitElement {
     connectedCallback(): void {
         super.connectedCallback();
         this.dappKitContext = {
-            address: DAppKit.connex.wallet.state.address ?? '',
+            address: DAppKitUI.wallet.state.address ?? '',
         };
     }
 
@@ -38,7 +38,7 @@ export class DappKitContextProvider extends LitElement {
     }
 
     private initListener(): void {
-        subscribeKey(DAppKit.connex.wallet.state, 'address', (v) => {
+        subscribeKey(DAppKitUI.wallet.state, 'address', (v) => {
             this.dappKitContext.address = v ?? '';
             this.requestUpdate();
         });
