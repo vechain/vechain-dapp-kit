@@ -1,17 +1,19 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Colors } from '../constants';
+import { ANDROID_STORE_URL, Colors, IOS_STORE_URL } from '../constants';
 import {
     buttonStyle,
     CheckSvg,
     DarkCopySvg,
     LightCopySvg,
+    VeWorldLogo,
     WalletConnectLogo,
 } from '../assets';
-import { QrCodeUtil } from '../utils';
+import { isAndroid, QrCodeUtil } from '../utils';
 import type { Theme, ThemeMode } from '../constants/theme';
 
+const qrCodeSize = 280;
 @customElement('vwk-wallet-connect-qrcode')
 export class WalletConnectQrCode extends LitElement {
     static override styles = [
@@ -25,7 +27,8 @@ export class WalletConnectQrCode extends LitElement {
             }
 
             .qrcode-container {
-                margin: 20px auto 20px auto;
+                position: relative;
+                margin: 20px auto 0 auto;
                 background-color: ${Colors.White};
                 width: 280px;
                 padding: 10px;
@@ -36,7 +39,7 @@ export class WalletConnectQrCode extends LitElement {
                 align-items: center;
             }
 
-            img {
+            img.wc-icon {
                 position: absolute;
                 width: 65px;
                 height: 65px;
@@ -46,7 +49,7 @@ export class WalletConnectQrCode extends LitElement {
             .separator {
                 display: flex;
                 align-items: center;
-                padding-bottom: 20px;
+                padding: 20px 0px;
             }
 
             .line {
@@ -81,6 +84,41 @@ export class WalletConnectQrCode extends LitElement {
                 width: 20px;
                 height: 20px;
             }
+
+            .veworld-icon {
+                width: 20px;
+                height: 20px;
+                border-radius: 5px;
+            }
+
+            @keyframes loading {
+                to {
+                    stroke-dashoffset: 0px;
+                }
+            }
+
+            use {
+                stroke: #3496ff;
+                animation: loading 1s linear infinite;
+            }
+
+            svg.loader {
+                position: absolute;
+                fill: none;
+                stroke: transparent;
+                stroke-linecap: round;
+                stroke-width: 1px;
+                top: 10;
+                left: 10;
+            }
+
+            .openingVeWorldText {
+                text-align: center;
+                font-family: 'Inter', sans-serif;
+                font-size: 14px;
+                padding: 20px 0;
+                color: #3496ff;
+            }
         `,
     ];
 
@@ -92,34 +130,50 @@ export class WalletConnectQrCode extends LitElement {
     walletConnectQRcode?: string = undefined;
     @property()
     showCopiedIcon = false;
+    @property()
+    openingVeWorld = false;
 
     override render(): TemplateResult | typeof nothing {
         let copyIcon = this.mode === 'LIGHT' ? LightCopySvg : DarkCopySvg;
         if (this.showCopiedIcon) {
             copyIcon = CheckSvg;
         }
-        return this.walletConnectQRcode
-            ? html`
-                  <div class="qrcode-body">
-                      <div class="qrcode-container">
-                          ${this.svgWCQrCode(this.walletConnectQRcode)}
-                          <img src=${WalletConnectLogo} />
-                      </div>
-                      <div class="separator">
-                          <div class="line ${this.mode} ${this.theme}"></div>
-                          <div class="or ${this.mode} ${this.theme}">or</div>
-                          <div class="line ${this.mode} ${this.theme}"></div>
-                      </div>
-                      <button
+
+        return html`
+            <div class="qrcode-body">
+                <div class="qrcode-container">
+                    ${this.openingVeWorld ? this.svgLoaderTemplate() : nothing}
+                    ${this.svgWCQrCode(this.walletConnectQRcode)}
+                    <img class="wc-icon" src=${WalletConnectLogo} />
+                </div>
+                ${this.openingVeWorld
+                    ? html`<div class="openingVeWorldText">
+                          Opening VeWorld...
+                      </div>`
+                    : nothing}
+                ${this.openingVeWorld
+                    ? html`<button
                           class="${this.mode} ${this.theme}"
-                          @click=${this.onCopy}
+                          @click=${this.getVeWorld}
                       >
-                          <div class="icon">${copyIcon}</div>
-                          Copy to Clipboard
-                      </button>
-                  </div>
-              `
-            : nothing;
+                          <img class="veworld-icon" src=${VeWorldLogo} />
+                          Get VeWorld
+                      </button>`
+                    : nothing}
+                <div class="separator">
+                    <div class="line ${this.mode} ${this.theme}"></div>
+                    <div class="or ${this.mode} ${this.theme}">or</div>
+                    <div class="line ${this.mode} ${this.theme}"></div>
+                </div>
+                <button
+                    class="${this.mode} ${this.theme}"
+                    @click=${this.onCopy}
+                >
+                    <div class="icon">${copyIcon}</div>
+                    Copy to Clipboard
+                </button>
+            </div>
+        `;
     }
 
     private onCopy = async (): Promise<void> => {
@@ -130,12 +184,62 @@ export class WalletConnectQrCode extends LitElement {
         }, 1000);
     };
 
-    private svgWCQrCode(uri: string): TemplateResult {
-        const size = 280;
+    private getVeWorld = (): void => {
+        if (isAndroid()) {
+            window.open(ANDROID_STORE_URL, '_self');
+        } else {
+            window.open(IOS_STORE_URL, '_self');
+        }
+    };
 
+    private svgLoaderTemplate(): TemplateResult {
+        const ICON_SIZE = 88;
+        const DH_ARRAY = 317;
+        const DH_OFFSET = 425;
+        const radius = '8';
+        let numRadius = 0;
+
+        if (radius.includes('%')) {
+            numRadius = (ICON_SIZE / 100) * parseInt(radius, 10);
+        } else {
+            numRadius = parseInt(radius, 10);
+        }
+
+        numRadius *= 1.17;
+        const dashArray = DH_ARRAY - numRadius * 1.57;
+        const dashOffset = DH_OFFSET - numRadius * 1.8;
+
+        return html`
+            <svg
+                class="loader"
+                viewBox="0 0 110 110"
+                width=${qrCodeSize + 50}
+                height=${qrCodeSize + 50}
+            >
+                <rect
+                    id="wcm-loader"
+                    x="2"
+                    y="2"
+                    width="106"
+                    height="106"
+                    rx=${numRadius}
+                ></rect>
+                <use
+                    xlink:href="#wcm-loader"
+                    stroke-dasharray="106 ${dashArray}"
+                    stroke-dashoffset=${dashOffset}
+                ></use>
+            </svg>
+        `;
+    }
+
+    private svgWCQrCode(uri?: string): TemplateResult | typeof nothing {
+        if (!uri) {
+            return nothing;
+        }
         return svg`
-            <svg height=${size} width=${size}>
-                ${QrCodeUtil.generate(uri, size, size / 4)}
+            <svg height=${qrCodeSize} width=${qrCodeSize}>
+                ${QrCodeUtil.generate(uri, qrCodeSize, qrCodeSize / 4)}
             </svg>
             `;
     }

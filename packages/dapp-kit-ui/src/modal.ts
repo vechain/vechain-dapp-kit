@@ -9,7 +9,7 @@ import type {
 } from '@vechainfoundation/dapp-kit';
 import { DAppKitLogger } from '@vechainfoundation/dapp-kit';
 import { subscribeKey } from 'valtio/utils';
-import { dispatchCustomEvent, isMobile, subscribeToCustomEvent } from './utils';
+import { dispatchCustomEvent, subscribeToCustomEvent } from './utils';
 
 const MODAL_STATE_EVENT = 'vwk-modal-state-change';
 
@@ -40,27 +40,6 @@ class CustomWalletConnectModal implements WCModal {
      */
     openModal(options: OpenOptions): Promise<void> {
         DAppKitLogger.debug('CustomWalletConnectModal', 'opening the modal');
-
-        if (isMobile()) {
-            window.open(
-                `veworld://app.veworld?uri=${encodeURIComponent(options.uri)}`,
-                '_self',
-            );
-            // TODO: commented out for now, as it's not working as expected, maybe a modal item is better
-            // const linkingTime = new Date().getTime();
-            // const TIMEOUT = 5000;
-            // setTimeout(() => {
-            //     const now = new Date().getTime();
-            //     // avoid redirecting to the store if coming back from the app
-            //     if (now - linkingTime < TIMEOUT + 250) {
-            //         if (isAndroid()) {
-            //             window.open(ANDROID_STORE_URL, '_self');
-            //         } else {
-            //             window.open(IOS_STORE_URL, '_self');
-            //         }
-            //     }
-            // }, TIMEOUT);
-        }
         dispatchCustomEvent('vwk-open-wc-modal', options);
         return Promise.resolve();
     }
