@@ -29,10 +29,10 @@ export class WalletConnectQrCode extends LitElement {
             .qrcode-container {
                 position: relative;
                 margin: 20px auto 0 auto;
-                background-color: ${Colors.White};
+                background-color: var(--vwk-color-white, ${Colors.White});
                 width: 280px;
                 padding: 10px;
-                border: 1px solid ${Colors.Grey};
+                border: 1px solid var(--vwk-color-grey, ${Colors.Grey});
                 border-radius: 20px;
                 display: flex;
                 justify-content: center;
@@ -59,11 +59,11 @@ export class WalletConnectQrCode extends LitElement {
             }
 
             .line.LIGHT {
-                background-color: ${Colors.Grey};
+                background-color: var(--vwk-color-grey, ${Colors.Grey});
             }
 
             .line.DARK {
-                background-color: ${Colors.Grey};
+                background-color: var(--vwk-color-grey, ${Colors.Grey});
             }
 
             .or {
@@ -73,11 +73,11 @@ export class WalletConnectQrCode extends LitElement {
             }
 
             .or.LIGHT {
-                color: ${Colors.Grey};
+                color: var(--vwk-color-grey, ${Colors.Grey});
             }
 
             .or.DARK {
-                color: ${Colors.Grey};
+                color: var(--vwk-color-grey, ${Colors.Grey});
             }
 
             .icon {
@@ -98,7 +98,10 @@ export class WalletConnectQrCode extends LitElement {
             }
 
             use {
-                stroke: #3496ff;
+                stroke: var(
+                    --vwk-color-walletconnectblue,
+                    ${Colors.WalletConnectBlue}
+                );
                 animation: loading 1s linear infinite;
             }
 
@@ -117,7 +120,10 @@ export class WalletConnectQrCode extends LitElement {
                 font-family: 'Inter', sans-serif;
                 font-size: 14px;
                 padding: 20px 0;
-                color: #3496ff;
+                color: var(
+                    --vwk-color-walletconnectblue,
+                    ${Colors.WalletConnectBlue}
+                );
             }
         `,
     ];

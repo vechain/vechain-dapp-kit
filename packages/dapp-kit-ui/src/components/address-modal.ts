@@ -71,11 +71,17 @@ export class AddressModal extends LitElement {
             }
 
             .icon.LIGHT:hover {
-                background-color: ${Colors.XXLightGrey};
+                background-color: var(
+                    --vwk-color-xxlightgrey,
+                    ${Colors.XXLightGrey}
+                );
             }
 
             .icon.DARK:hover {
-                background-color: ${Colors.XXDarkGrey};
+                background-color: var(
+                    --vwk-color-xxdarkgrey,
+                    ${Colors.XXDarkGrey}
+                );
             }
 
             .address-icon {

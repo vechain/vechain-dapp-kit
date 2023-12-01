@@ -19,25 +19,25 @@ export const buttonStyle = css`
     }
 
     button.LIGHT {
-        background-color: ${Colors.XXLightGrey};
-        color: ${Colors.LightBlack};
+        background-color: var(--vwk-color-xxlightgrey, ${Colors.XXLightGrey});
+        color: var(--vwk-color-lightblack, ${Colors.LightBlack});
     }
     button.LIGHT:hover {
-        background-color: ${Colors.XLightGrey};
+        background-color: var(--vwk-color-xlightgrey, ${Colors.XLightGrey});
     }
     button.LIGHT:active {
-        background-color: ${Colors.LightGrey};
+        background-color: var(--vwk-color-lightgrey, ${Colors.LightGrey});
     }
 
     button.DARK {
-        background-color: ${Colors.XXDarkGrey};
-        color: ${Colors.XXLightGrey};
+        background-color: var(--vwk-color-xxdarkgrey, ${Colors.XXDarkGrey});
+        color: var(--vwk-color-xxlightgrey, ${Colors.XXLightGrey});
     }
     button.DARK:hover {
-        background-color: ${Colors.XDarkGrey};
+        background-color: var(--vwk-color-xdarkgrey, ${Colors.XDarkGrey});
     }
     button.DARK:active {
-        background-color: ${Colors.DarkGrey};
+        background-color: var(--vwk-color-darkgrey, ${Colors.DarkGrey});
     }
 `;
 
@@ -55,24 +55,24 @@ export const triggerButtonStyle = css`
     }
 
     button.LIGHT {
-        background-color: ${Colors.XXLightGrey};
-        color: ${Colors.LightBlack};
+        background-color: var(--vwk-color-xxlightgrey, ${Colors.XXLightGrey});
+        color: var(--vwk-color-lightblack, ${Colors.LightBlack});
     }
     button.LIGHT:hover {
-        background-color: ${Colors.XLightGrey};
+        background-color: var(--vwk-color-xlightgrey, ${Colors.XLightGrey});
     }
     button.LIGHT:active {
-        background-color: ${Colors.LightGrey};
+        background-color: var(--vwk-color-lightgrey, ${Colors.LightGrey});
     }
 
     button.DARK {
-        background-color: ${Colors.LightBlack};
-        color: ${Colors.XXLightGrey};
+        background-color: var(--vwk-color-lightblack, ${Colors.LightBlack});
+        color: var(--vwk-color-xxlightgrey, ${Colors.XXLightGrey});
     }
     button.DARK:hover {
-        background-color: ${Colors.XLightBlack};
+        background-color: var(--vwk-color-xlightblack, ${Colors.XLightBlack});
     }
     button.DARK:active {
-        background-color: ${Colors.XXLightBlack};
+        background-color: var(--vwk-color-xxlightblack, ${Colors.XXLightBlack});
     }
 `;

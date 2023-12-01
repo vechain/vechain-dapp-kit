@@ -38,13 +38,13 @@ export class Modal extends LitElement {
         }
 
         .modal.LIGHT {
-            background-color: ${Colors.White};
-            color: ${Colors.LightBlack};
+            background-color: var(--vwk-color-white, ${Colors.White});
+            color: var(--vwk-color-lightblack, ${Colors.LightBlack});
         }
 
         .modal.DARK {
-            background-color: ${Colors.LightBlack};
-            color: ${Colors.XXLightGrey};
+            background-color: var(--vwk-color-lightblack, ${Colors.LightBlack});
+            color: var(--vwk-color-xxlightgrey, ${Colors.XXLightGrey});
         }
 
         @media (max-width: ${Breakpoint.Mobile}px) {
