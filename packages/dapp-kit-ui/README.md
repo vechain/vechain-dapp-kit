@@ -30,23 +30,26 @@ yarn add @vechainfoundation/dapp-kit-ui
 import type { WalletConnectOptions } from '@vechainfoundation/dapp-kit';
 import type { Options } from '@vechain/connex';
 import { configureThorModal } from '@vechainfoundation/dapp-kit-ui';
+import { DAppKitUI } from '@vechainfoundation/dapp-kit-ui';
 
 const walletConnectOptions: WalletConnectOptions = {
-    projectId: '<PROJECT_ID>', // Create your project here: https://cloud.walletconnect.com/sign-up
+    projectId: '<PROJECT_ID>',
     metadata: {
-        name: 'My dApp',
-        description: 'My dApp description',
-        url: window.location.origin, // Your app URL
-        icons: [`${window.location.origin}/images/my-dapp-icon.png`], // Your app Icon
+        name: 'Sample VeChain dApp',
+        description: 'A sample VeChain dApp',
+        url: window.location.origin,
+        icons: [`${window.location.origin}/images/logo/my-dapp.png`],
     },
 };
 
-const nodeOptions: Omit<Options, 'signer'> = {
-    node: 'https://testnet.vechain.org/',
-    network: 'test',
+const options: DAppKitOptions = {
+    nodeUrl: 'https://testnet.vechain.org/',
+    genesis: 'test',
+    walletConnectOptions,
+    usePersistence: true,
 };
 
-configureThorModal(vechainWalletKitOptions);
+DAppKitUI.configure(options);
 ```
 
 -   In your root `index.html`. This will add a button to your page, when clicked it will open a modal with the wallet

@@ -14,9 +14,6 @@ export interface AccountState {
 /**
  * Connex Provider Options
  * @param children - React children
- * @param nodeOptions - Connex node options
- * @param walletConnectOptions - WalletConnect options
- * @param persistState - An option to persist state. Defaults to false
  */
 export type DAppKitProviderOptions = DAppKitOptions & {
     children: React.ReactNode;

@@ -4,10 +4,10 @@ import {
     ConnexSymbol,
     WalletActionsSymbol,
     WalletStateSymbol,
-} from '@/connex/keys';
-import { WalletActions, WalletState } from '@/connex/types';
+} from '@/dapp-kit/keys';
+import { WalletActions, WalletState } from '@/dapp-kit/types';
 
-const NOT_SETUP = new Error('`ConnexProvider` not setup properly');
+const NOT_SETUP = new Error('`DAppKitProvider` not setup properly');
 
 const defaultState: WalletState = {
     account: null,

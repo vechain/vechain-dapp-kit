@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { WalletConnectOptions } from '../src';
 import { WalletManager } from '../src';
 import { mockedConnexSigner } from './helpers/mocked-signer';
@@ -8,7 +8,6 @@ const newWalletManager = (wcOptions?: WalletConnectOptions): WalletManager => {
         nodeUrl: 'https://testnet.veblocks.net/',
         walletConnectOptions: wcOptions,
         genesis: 'main',
-        customWcModal: undefined,
     });
 };
 
@@ -89,31 +88,32 @@ describe('WalletManager', () => {
     });
 
     describe('listeners', () => {
-        it('add disconnected listener', () => {
+        it('add state listener', async () => {
             const walletManager = newWalletManager();
 
-            walletManager.onDisconnected(listener);
-            expect(eventNames(walletManager)).toEqual(['disconnected']);
+            const subscription = vi.fn();
+
+            walletManager.subscribe(subscription);
+
+            walletManager.setSource('veworld');
+
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+
+            expect(subscription).toHaveBeenCalledTimes(1);
         });
 
-        it('can remove disconnected listener', () => {
+        it('add key listener', async () => {
             const walletManager = newWalletManager();
-            walletManager.onDisconnected(listener);
-            walletManager.removeOnDisconnected(listener);
-            expect(eventNames(walletManager)).toEqual([]);
-        });
 
-        it('can add onSourceChanged listener', () => {
-            const walletManager = newWalletManager();
-            walletManager.onSourceChanged(listener);
-            expect(eventNames(walletManager)).toEqual(['source-changed']);
-        });
+            const subscription = vi.fn();
 
-        it('can remove onSourceChanged listener', () => {
-            const walletManager = newWalletManager();
-            walletManager.onSourceChanged(listener);
-            walletManager.removeOnSourceChanged(listener);
-            expect(eventNames(walletManager)).toEqual([]);
+            walletManager.subscribeToKey('source', subscription);
+
+            walletManager.setSource('veworld');
+
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+
+            expect(subscription).toHaveBeenCalledTimes(1);
         });
     });
 });
