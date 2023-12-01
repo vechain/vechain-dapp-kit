@@ -11,7 +11,7 @@ import {
     LightChevronLeftSvg,
     LightCloseSvg,
 } from '../assets';
-import { subscribeToCustomEvent } from '../utils';
+import { isMobile, subscribeToCustomEvent } from '../utils';
 import { DAppKitUI } from '../client';
 import type { Theme, ThemeMode } from '../constants/theme';
 import type { DappKitContext } from './provider';
@@ -62,6 +62,8 @@ export class ConnectModal extends LitElement {
 
     @property({ type: Boolean })
     open = false;
+    @property({ type: Boolean })
+    openingVeWorld = false;
     @property()
     mode: ThemeMode = 'LIGHT';
     @property()
@@ -73,6 +75,15 @@ export class ConnectModal extends LitElement {
         super();
 
         subscribeToCustomEvent('vwk-open-wc-modal', (options: OpenOptions) => {
+            if (isMobile()) {
+                this.openingVeWorld = true;
+                window.open(
+                    `veworld://app.veworld?uri=${encodeURIComponent(
+                        options.uri,
+                    )}`,
+                    '_self',
+                );
+            }
             this.open = true;
             this.walletConnectQRcode = options.uri;
         });
@@ -80,6 +91,7 @@ export class ConnectModal extends LitElement {
         subscribeToCustomEvent('vwk-close-wc-modal', () => {
             this.open = false;
             this.walletConnectQRcode = undefined;
+            this.openingVeWorld = false;
         });
 
         subscribeToCustomEvent('vwk-open-wallet-modal', () => {
@@ -155,6 +167,7 @@ export class ConnectModal extends LitElement {
                     ${
                         this.walletConnectQRcode
                             ? html` <vwk-wallet-connect-qrcode
+                                  .openingVeWorld=${this.openingVeWorld}
                                   .mode=${this.mode}
                                   .theme=${this.theme}
                                   .walletConnectQRcode=${this
