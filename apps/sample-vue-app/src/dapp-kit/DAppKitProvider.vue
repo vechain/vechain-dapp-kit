@@ -10,8 +10,8 @@ import {
     ConnexSymbol,
     WalletActionsSymbol,
     WalletStateSymbol,
-} from '@/connex/keys';
-import { WalletActions, WalletState } from '@/connex/types';
+} from '@/dapp-kit/keys';
+import { WalletActions, WalletState } from '@/dapp-kit/types';
 import { DAppKitUI } from '@vechainfoundation/dapp-kit-ui';
 
 const initWallets = (hasWcOptions: boolean) => {
@@ -50,45 +50,39 @@ export default defineComponent({
             account: null,
         });
 
-        const connex = DAppKitUI.configure({
+        const dappKit = DAppKitUI.configure({
             nodeUrl: 'https://mainnet.vechain.org/',
             walletConnectOptions,
             usePersistence: true,
         });
 
-        const onDisconnected = () => {
-            walletState.source = null;
-            walletState.account = null;
-        };
-
-        const onSourceChanged = (source: WalletSource | null) => {
-            walletState.source = source;
-        };
-
-        connex.wallet.onDisconnected(onDisconnected);
-        connex.wallet.onSourceChanged(onSourceChanged);
+        dappKit.wallet.subscribe((_state) => {
+            walletState.account = _state.address;
+            walletState.source = _state.source;
+            walletState.availableWallets = _state.availableSources;
+        });
 
         const setAccount = (addr: string) => {
             walletState.account = addr;
         };
 
         const setSource = (source: WalletSource) => {
-            connex.wallet.setSource(source);
+            dappKit.wallet.setSource(source);
         };
 
         const connect = async (): Promise<ConnectResponse> => {
-            const res = await connex.wallet.connect();
+            const res = await dappKit.wallet.connect();
             walletState.account = res.account;
             return res;
         };
 
         const _connex: Connex = {
-            thor: connex.thor,
-            vendor: connex.vendor,
+            thor: dappKit.thor,
+            vendor: dappKit.vendor,
         };
 
         const disconnect = () => {
-            connex.wallet.disconnect();
+            dappKit.wallet.disconnect();
             walletState.source = null;
             walletState.account = null;
         };

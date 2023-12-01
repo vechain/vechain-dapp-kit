@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ConnexProvider from '@/connex/ConnexProvider.vue';
+import ConnexProvider from '@/dapp-kit/DAppKitProvider.vue';
 
 export default defineComponent({
     components: {
