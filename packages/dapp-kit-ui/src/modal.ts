@@ -6,8 +6,8 @@ import type {
     WalletManager,
     WalletSource,
     WCModal,
-} from '@vechainfoundation/dapp-kit';
-import { DAppKitLogger } from '@vechainfoundation/dapp-kit';
+} from '@vechain/dapp-kit';
+import { DAppKitLogger } from '@vechain/dapp-kit';
 import { subscribeKey } from 'valtio/utils';
 import { dispatchCustomEvent, subscribeToCustomEvent } from './utils';
 

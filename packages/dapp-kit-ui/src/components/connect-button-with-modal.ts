@@ -1,7 +1,7 @@
 import { consume } from '@lit/context';
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { WalletManager } from '@vechainfoundation/dapp-kit';
+import type { WalletManager } from '@vechain/dapp-kit';
 import { DAppKitUI } from '../client';
 import type { SourceInfo, Theme, ThemeMode } from '../constants';
 import type { DappKitContext } from './provider';
@@ -49,10 +49,9 @@ export class ConnectButtonWithModal extends LitElement {
 
     @property({ type: Function })
     onDisconnectClick = (): void => {
-        this.wallet.disconnect().finally(() => {
-            this.dappKitContext.address = '';
-            this.requestUpdate();
-        });
+        this.dappKitContext.address = '';
+        this.requestUpdate();
+        this.wallet.disconnect();
     };
 
     override render(): TemplateResult {
@@ -84,9 +83,9 @@ export class ConnectButtonWithModal extends LitElement {
     }
 
     private handleOpen = (): void => {
-        DAppKitUI.wallet.disconnect().finally(() => {
-            this.open = true;
-        });
+        this.open = true;
+        DAppKitUI.wallet.disconnect();
+        this.requestUpdate();
     };
 
     private handleClose = (): void => {

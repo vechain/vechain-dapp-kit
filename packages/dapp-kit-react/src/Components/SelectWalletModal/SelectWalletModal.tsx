@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo } from 'react';
 import { createComponent } from '@lit/react';
-import type { SourceInfo } from '@vechainfoundation/dapp-kit-ui';
-import { ConnectModal } from '@vechainfoundation/dapp-kit-ui';
-import type { WalletSource } from '@vechainfoundation/dapp-kit';
+import type { SourceInfo } from '@vechain/dapp-kit-ui';
+import { ConnectModal } from '@vechain/dapp-kit-ui';
+import type { WalletSource } from '@vechain/dapp-kit';
 import { useWallet } from '../../DAppKitProvider';
 
 const createButtonWithModal = () =>
@@ -14,6 +14,7 @@ const createButtonWithModal = () =>
 
 interface SelectWalletProps {
     onSelected?: (source: WalletSource) => void;
+    isOpen: boolean;
 }
 
 /**
@@ -23,6 +24,7 @@ interface SelectWalletProps {
  */
 export const SelectWalletModal: React.FC<SelectWalletProps> = ({
     onSelected,
+    isOpen,
 }) => {
     const Modal = useMemo(() => createButtonWithModal(), []);
 
@@ -38,5 +40,5 @@ export const SelectWalletModal: React.FC<SelectWalletProps> = ({
         [onSelected, setSource],
     );
 
-    return <Modal onSourceClick={onSourceClick} />;
+    return <Modal onSourceClick={onSourceClick} open={isOpen} />;
 };

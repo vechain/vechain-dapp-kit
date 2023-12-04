@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo } from 'react';
 import { createComponent } from '@lit/react';
-import type { SourceInfo } from '@vechainfoundation/dapp-kit-ui';
-import { ConnectModal } from '@vechainfoundation/dapp-kit-ui';
-import type { ConnectResponse } from '@vechainfoundation/dapp-kit';
+import type { SourceInfo } from '@vechain/dapp-kit-ui';
+import { ConnectModal } from '@vechain/dapp-kit-ui';
+import type { ConnectResponse } from '@vechain/dapp-kit';
 import { useWallet } from '../../DAppKitProvider';
 
 const createButtonWithModal = () =>
@@ -15,6 +15,7 @@ const createButtonWithModal = () =>
 interface ConnectWalletProps {
     onConnectError?: (err: unknown) => void;
     onConnected?: (res: ConnectResponse) => void;
+    isOpen: boolean;
 }
 
 /**
@@ -26,6 +27,7 @@ interface ConnectWalletProps {
 export const ConnectWalletModal: React.FC<ConnectWalletProps> = ({
     onConnectError,
     onConnected,
+    isOpen,
 }) => {
     const Modal = useMemo(() => createButtonWithModal(), []);
 
@@ -41,5 +43,5 @@ export const ConnectWalletModal: React.FC<ConnectWalletProps> = ({
         [onConnectError, onConnected, connect, setSource],
     );
 
-    return <Modal onSourceClick={onSourceClick} />;
+    return <Modal onSourceClick={onSourceClick} open={isOpen} />;
 };

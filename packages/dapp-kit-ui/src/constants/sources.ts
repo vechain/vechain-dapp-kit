@@ -1,4 +1,4 @@
-import type { WalletSource } from '@vechainfoundation/dapp-kit';
+import type { WalletSource } from '@vechain/dapp-kit';
 import {
     Sync2Logo,
     SyncLogo,

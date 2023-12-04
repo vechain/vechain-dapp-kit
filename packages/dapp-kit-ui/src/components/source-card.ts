@@ -1,7 +1,7 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { WalletManager } from '@vechainfoundation/dapp-kit';
+import type { WalletManager } from '@vechain/dapp-kit';
 import {
     Font,
     type SourceInfo,

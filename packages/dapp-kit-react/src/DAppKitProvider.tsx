@@ -6,8 +6,8 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-import type { WalletSource } from '@vechainfoundation/dapp-kit';
-import { DAppKitUI } from '@vechainfoundation/dapp-kit-ui';
+import type { WalletSource } from '@vechain/dapp-kit';
+import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import { subscribeKey } from 'valtio/utils';
 import type { DAppKitProviderOptions } from './types';
 import { DAppKitContext } from './types';
@@ -45,8 +45,17 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     );
 
     useEffect(() => {
-        subscribeKey(connex.wallet.state, 'address', (v) => setAccount(v));
-        subscribeKey(connex.wallet.state, 'source', (v) => setSource(v));
+        const addressSub = subscribeKey(connex.wallet.state, 'address', (v) =>
+            setAccount(v),
+        );
+        const sourceSub = subscribeKey(connex.wallet.state, 'source', (v) =>
+            setSource(v),
+        );
+
+        return () => {
+            addressSub();
+            sourceSub();
+        };
     }, [connex.wallet.state]);
 
     const openModal = useCallback(() => {
