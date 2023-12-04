@@ -79,7 +79,7 @@ class WalletManager {
                 throw e;
             });
 
-    disconnect = async (remote = false): Promise<void> => {
+    disconnect = (remote = false): void => {
         if (!this.state.source) {
             return;
         }
@@ -93,8 +93,14 @@ class WalletManager {
 
         const wallet = this.wallets[this.state.source];
 
-        if (wallet && !remote) {
-            await wallet.disconnect?.();
+        if (wallet && !remote && wallet.disconnect) {
+            const res = wallet.disconnect();
+
+            if (res instanceof Promise) {
+                res.catch((e) => {
+                    DAppKitLogger.error('WalletManager', 'disconnect', e);
+                });
+            }
         }
 
         this.state.source = null;
@@ -132,6 +138,14 @@ class WalletManager {
             });
 
     setSource = (src: WalletSource): void => {
+        if (this.state.source === src) {
+            return;
+        }
+
+        if (this.state.source && this.state.source !== src) {
+            this.disconnect();
+        }
+
         if (src === 'wallet-connect' && !this.options.walletConnectOptions) {
             throw new Error('WalletConnect options are not provided');
         }
@@ -146,6 +160,7 @@ class WalletManager {
 
         DAppKitLogger.debug('WalletManager', 'setSource', src);
 
+        this.disconnect();
         this.state.source = src;
     };
 
@@ -187,12 +202,12 @@ class WalletManager {
         });
     };
 
-    private initPersistence = (usePersistent: boolean): void => {
-        if (!usePersistent) {
+    private initPersistence = (usePersistence: boolean): void => {
+        if (!usePersistence) {
             return;
         }
-        subscribeKey(this.state, 'address', Storage.setAccount);
-        subscribeKey(this.state, 'source', Storage.setSource);
+        this.subscribeToKey('address', Storage.setAccount);
+        this.subscribeToKey('source', Storage.setSource);
     };
 
     private getAvailableSources = (): WalletSource[] => {

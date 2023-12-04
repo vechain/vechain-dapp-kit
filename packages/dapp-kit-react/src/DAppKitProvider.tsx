@@ -45,8 +45,17 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     );
 
     useEffect(() => {
-        subscribeKey(connex.wallet.state, 'address', (v) => setAccount(v));
-        subscribeKey(connex.wallet.state, 'source', (v) => setSource(v));
+        const addressSub = subscribeKey(connex.wallet.state, 'address', (v) =>
+            setAccount(v),
+        );
+        const sourceSub = subscribeKey(connex.wallet.state, 'source', (v) =>
+            setSource(v),
+        );
+
+        return () => {
+            addressSub();
+            sourceSub();
+        };
     }, [connex.wallet.state]);
 
     const openModal = useCallback(() => {
