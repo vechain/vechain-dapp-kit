@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 import type { OpenOptions, WalletManager } from '@vechainfoundation/dapp-kit';
 import { consume } from '@lit/context';
 import type { SourceInfo } from '../constants';
-import { Colors, WalletSources } from '../constants';
+import { Colors, Inter, WalletSources } from '../constants';
 import {
     DarkChevronLeftSvg,
     DarkCloseSvg,
@@ -29,7 +29,7 @@ export class ConnectModal extends LitElement {
             justify-content: space-between;
             align-items: center;
             padding-bottom: 10px;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--vwk-font-family-inter, ${Inter});
             font-weight: 500;
         }
 

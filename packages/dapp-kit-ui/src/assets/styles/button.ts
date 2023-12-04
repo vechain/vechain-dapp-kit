@@ -1,9 +1,10 @@
 import { css } from 'lit';
 import { Colors } from '../../constants/colors';
+import { Inter } from '../../constants/font-family';
 
 export const buttonStyle = css`
     button {
-        font-family: 'Inter', sans-serif;
+        font-family: var(--vwk-font-family-inter, ${Inter});
         cursor: pointer;
         display: flex;
         flex-direction: row;
@@ -43,7 +44,7 @@ export const buttonStyle = css`
 
 export const triggerButtonStyle = css`
     button {
-        font-family: 'Inter', sans-serif;
+        font-family: var(--vwk-font-family-inter, ${Inter});
         cursor: pointer;
         display: flex;
         flex-direction: row;

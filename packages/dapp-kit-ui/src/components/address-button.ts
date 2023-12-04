@@ -1,6 +1,6 @@
 import { css, html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { type ThemeMode } from '../constants';
+import { Inter, type ThemeMode } from '../constants';
 import { friendlyAddress, getPicassoImage } from '../utils/account';
 import { triggerButtonStyle } from '../assets';
 
@@ -18,7 +18,7 @@ export class AddressButton extends LitElement {
             .wallet-address {
                 font-size: 14px;
                 margin-left: 8px;
-                font-family: 'Inter', sans-serif;
+                font-family: var(--vwk-font-family-inter, ${Inter});
             }
 
             .address-icon {

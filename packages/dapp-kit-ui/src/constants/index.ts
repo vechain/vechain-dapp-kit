@@ -4,3 +4,4 @@ export * from './sources';
 export * from './breakpoint';
 export * from './theme';
 export * from './stores';
+export * from './font-family';

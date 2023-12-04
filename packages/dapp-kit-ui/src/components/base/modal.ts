@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import type { Theme, ThemeMode } from '../../constants';
 import { Breakpoint, Colors } from '../../constants';
+import { modalZIndex } from '../../constants/z-index';
 
 @customElement('vwk-base-modal')
 export class Modal extends LitElement {
@@ -19,6 +20,7 @@ export class Modal extends LitElement {
             background-color: rgba(0, 0, 0, 0.3);
             opacity: 1;
             transition: opacity 0.1s ease-in-out;
+            z-index: var(--vwk-modal-z-index, ${modalZIndex});
         }
 
         .modal-container.hidden {

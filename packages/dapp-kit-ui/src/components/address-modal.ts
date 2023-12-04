@@ -2,7 +2,7 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { SourceInfo } from '../constants';
-import { Colors } from '../constants';
+import { Colors, Inter } from '../constants';
 import {
     DarkCloseSvg,
     LightCloseSvg,
@@ -28,7 +28,7 @@ export class AddressModal extends LitElement {
                 gap: 15px;
                 padding: 20px;
                 transition: width 5s, height 4s;
-                font-family: 'Inter', sans-serif;
+                font-family: var(--vwk-font-family-inter, ${Inter});
             }
 
             .modal-header {
@@ -37,7 +37,7 @@ export class AddressModal extends LitElement {
                 justify-content: center;
                 align-items: center;
                 padding-bottom: 20px;
-                font-family: 'Inter', sans-serif;
+                font-family: var(--vwk-font-family-inter, ${Inter});
             }
 
             .modal-body {
@@ -54,7 +54,7 @@ export class AddressModal extends LitElement {
                 justify-content: center;
                 align-items: center;
                 padding-top: 20px;
-                font-family: 'Inter', sans-serif;
+                font-family: var(--vwk-font-family-inter, ${Inter});
             }
 
             .close-icon {
@@ -96,14 +96,14 @@ export class AddressModal extends LitElement {
             }
 
             .title {
-                font-family: 'Inter', sans-serif;
+                font-family: var(--vwk-font-family-inter, ${Inter});
                 font-weight: 500;
             }
 
             .wallet-address {
                 font-size: 18px;
                 font-weight: 500;
-                font-family: 'Inter', sans-serif;
+                font-family: var(--vwk-font-family-inter, ${Inter});
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
