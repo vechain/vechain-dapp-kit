@@ -6,8 +6,8 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-import type { WalletSource } from '@vechainfoundation/dapp-kit';
-import { DAppKitUI } from '@vechainfoundation/dapp-kit-ui';
+import type { WalletSource } from '@vechain/dapp-kit';
+import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import { subscribeKey } from 'valtio/utils';
 import type { DAppKitProviderOptions } from './types';
 import { DAppKitContext } from './types';

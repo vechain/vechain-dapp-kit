@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo } from 'react';
 import { createComponent } from '@lit/react';
-import type { SourceInfo } from '@vechainfoundation/dapp-kit-ui';
-import { ConnectModal } from '@vechainfoundation/dapp-kit-ui';
-import type { ConnectResponse } from '@vechainfoundation/dapp-kit';
+import type { SourceInfo } from '@vechain/dapp-kit-ui';
+import { ConnectModal } from '@vechain/dapp-kit-ui';
+import type { ConnectResponse } from '@vechain/dapp-kit';
 import { useWallet } from '../../DAppKitProvider';
 
 const createButtonWithModal = () =>

@@ -11,7 +11,7 @@ import {
     SourceInfo,
 } from '../src';
 import { elementQueries } from './helpers/element-queries';
-import { WalletSource } from '@vechainfoundation/dapp-kit';
+import { WalletSource } from '@vechain/dapp-kit';
 
 describe('connect-button-with-modal', () => {
     beforeEach(() => {

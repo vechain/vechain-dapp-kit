@@ -1,4 +1,4 @@
-# `@vechainfoundation/dapp-kit-ui`
+# `@vechain/dapp-kit-ui`
 
 ## Why ?
 
@@ -21,16 +21,16 @@ yarn build
 ## Usage
 
 ```bash
-yarn add @vechainfoundation/dapp-kit-ui
+yarn add @vechain/dapp-kit-ui
 ```
 
 -   In your root `main.ts`
 
 ```typescript
-import type { WalletConnectOptions } from '@vechainfoundation/dapp-kit';
+import type { WalletConnectOptions } from '@vechain/dapp-kit';
 import type { Options } from '@vechain/connex';
-import { configureThorModal } from '@vechainfoundation/dapp-kit-ui';
-import { DAppKitUI } from '@vechainfoundation/dapp-kit-ui';
+import { configureThorModal } from '@vechain/dapp-kit-ui';
+import { DAppKitUI } from '@vechain/dapp-kit-ui';
 
 const walletConnectOptions: WalletConnectOptions = {
     projectId: '<PROJECT_ID>',

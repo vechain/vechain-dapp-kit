@@ -1,5 +1,5 @@
-import type { OpenOptions } from '@vechainfoundation/dapp-kit';
-import { DAppKitLogger } from '@vechainfoundation/dapp-kit';
+import type { OpenOptions } from '@vechain/dapp-kit';
+import { DAppKitLogger } from '@vechain/dapp-kit';
 import type { ThemeMode } from '../constants';
 
 export type EventTypes =

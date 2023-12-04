@@ -4,7 +4,7 @@ import type {
     ConnectResponse,
     DAppKitOptions,
     WalletSource,
-} from '@vechainfoundation/dapp-kit';
+} from '@vechain/dapp-kit';
 
 export interface AccountState {
     address: string | null;

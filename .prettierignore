@@ -1,1 +1,4 @@
 **/build/**
+.angular
+.svelte-kit
+dist

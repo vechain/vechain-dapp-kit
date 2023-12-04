@@ -1,7 +1,8 @@
 {
-    "name": "@vechainfoundation/dapp-kit",
-    "version": "0.0.0",
+    "name": "@vechain/dapp-kit",
+    "version": "0.0.1",
     "private": false,
+    "repository": "https://github.com/vechainfoundation/vechain-dapp-kit",
     "type": "module",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
