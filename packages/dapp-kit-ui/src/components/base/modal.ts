@@ -17,7 +17,7 @@ export class Modal extends LitElement {
             bottom: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.3);
             opacity: 1;
             transition: opacity 0.1s ease-in-out;
             z-index: var(--vwk-modal-z-index, ${modalZIndex});
@@ -40,15 +40,15 @@ export class Modal extends LitElement {
         }
 
         .modal.LIGHT {
-            background-color: var(
-                --vwk-color-dark-secondary,
+            background: var(
+                --vwk-color-light-secondary,
                 ${Colors.Light.Secondary}
             );
             color: var(--vwk-color-light-tertiary, ${Colors.Light.Tertiary});
         }
 
         .modal.DARK {
-            background-color: var(
+            background: var(
                 --vwk-color-dark-secondary,
                 ${Colors.Dark.Secondary}
             );

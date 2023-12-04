@@ -18,6 +18,6 @@ export const Colors = {
         PrimaryActive: css`#eaeaea`, // --vwk-color-light-primary-active
         Secondary: css`#ffffff`, // --vwk-color-light-secondary
         Tertiary: css`#2a2a2a`, // --vwk-color-light-tertiary
-        Quaternary: css`#747474`, // --vwk-color-dark-quaternary
+        Quaternary: css`#747474`, // --vwk-color-light-quaternary
     },
 };

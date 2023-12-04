@@ -19,37 +19,34 @@ export const buttonStyle = css`
     }
 
     button.LIGHT {
-        background-color: var(
-            --vwk-color-light-primary,
-            ${Colors.Light.Primary}
-        );
+        background: var(--vwk-color-light-primary, ${Colors.Light.Primary});
         color: var(--vwk-color-light-tertiary, ${Colors.Light.Tertiary});
     }
     button.LIGHT:hover {
-        background-color: var(
+        background: var(
             --vwk-color-light-primary-hover,
             ${Colors.Light.PrimaryHover}
         );
     }
     button.LIGHT:active {
-        background-color: var(
+        background: var(
             --vwk-color-light-primary-active,
             ${Colors.Light.PrimaryActive}
         );
     }
 
     button.DARK {
-        background-color: var(--vwk-color-dark-primary, ${Colors.Dark.Primary});
+        background: var(--vwk-color-dark-primary, ${Colors.Dark.Primary});
         color: var(--vwk-color-dark-tertiary, ${Colors.Dark.Tertiary});
     }
     button.DARK:hover {
-        background-color: var(
+        background: var(
             --vwk-color-dark-primary-hover,
             ${Colors.Dark.PrimaryHover}
         );
     }
     button.DARK:active {
-        background-color: var(
+        background: var(
             --vwk-color-dark-primary-active,
             ${Colors.Dark.PrimaryActive}
         );
@@ -66,30 +63,24 @@ export const iconButtonStyle = css`
     }
 
     .icon-button.LIGHT:hover {
-        background-color: var(
+        background: var(
             --vwk-color-light-primary,
             ${Colors.Light.PrimaryHover}
         );
     }
 
     .icon-button.DARK:hover {
-        background-color: var(
-            --vwk-color-dark-primary,
-            ${Colors.Dark.PrimaryHover}
-        );
+        background: var(--vwk-color-dark-primary, ${Colors.Dark.PrimaryHover});
     }
 
     .icon-button.LIGHT:active {
-        background-color: var(
+        background: var(
             --vwk-color-light-primary,
             ${Colors.Light.PrimaryActive}
         );
     }
 
     .icon-button.DARK:active {
-        background-color: var(
-            --vwk-color-dark-primary,
-            ${Colors.Dark.PrimaryActive}
-        );
+        background: var(--vwk-color-dark-primary, ${Colors.Dark.PrimaryActive});
     }
 `;

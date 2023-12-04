@@ -70,14 +70,14 @@ export class WalletConnectQrCode extends LitElement {
             }
 
             .line.LIGHT {
-                background-color: var(
+                background: var(
                     --vwk-color-light-quaternary,
                     ${Colors.Light.Quaternary}
                 );
             }
 
             .line.DARK {
-                background-color: var(
+                background: var(
                     --vwk-color-dark-quaternary,
                     ${Colors.Dark.Quaternary}
                 );
