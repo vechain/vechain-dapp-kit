@@ -2,8 +2,8 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { SourceInfo } from '../constants';
-import { Colors, Font } from '../constants';
-import { buttonStyle } from '../assets/styles';
+import { Font } from '../constants';
+import { buttonStyle, iconButtonStyle } from '../assets/styles';
 import { dispatchCustomEvent, subscribeToCustomEvent } from '../utils';
 import type { Theme, ThemeMode } from '../constants/theme';
 import { friendlyAddress, getPicassoImage } from '../utils/account';
@@ -21,6 +21,7 @@ import {
 export class AddressModal extends LitElement {
     static override styles = [
         buttonStyle,
+        iconButtonStyle,
         css`
             .modal-container {
                 display: flex;
@@ -32,12 +33,15 @@ export class AddressModal extends LitElement {
             }
 
             .modal-header {
+                font-family: var(--vwk-font-family, ${Font.Family});
+                font-weight: var(
+                    --vwk-font-weight-medium,
+                    ${Font.Weight.Medium}
+                );
                 display: flex;
-                flex-direction: row;
-                justify-content: center;
+                justify-content: space-between;
                 align-items: center;
                 padding-bottom: 20px;
-                font-family: var(--vwk-font-family, ${Font.Family});
             }
 
             .modal-body {
@@ -55,33 +59,6 @@ export class AddressModal extends LitElement {
                 align-items: center;
                 padding-top: 20px;
                 font-family: var(--vwk-font-family, ${Font.Family});
-            }
-
-            .close-icon {
-                position: absolute;
-                right: 20px;
-            }
-
-            .icon {
-                cursor: pointer;
-                width: 25px;
-                height: 25px;
-                padding: 5px;
-                border-radius: 50%;
-            }
-
-            .icon.LIGHT:hover {
-                background-color: var(
-                    --vwk-color-light-primary,
-                    ${Colors.Light.Primary}
-                );
-            }
-
-            .icon.DARK:hover {
-                background-color: var(
-                    --vwk-color-dark-primary,
-                    ${Colors.Dark.Primary}
-                );
             }
 
             .address-icon {
@@ -178,9 +155,10 @@ export class AddressModal extends LitElement {
         >
             <div class="modal-container">
                 <div class="modal-header">
+                    <div class="icon-button"></div>
                     <div class="title">Connected</div>
                     <div
-                            class="icon close-icon ${this.mode}"
+                            class="icon-button ${this.mode}"
                             @click=${this.handleClose}
                     >
                         ${this.mode === 'LIGHT' ? LightCloseSvg : DarkCloseSvg}

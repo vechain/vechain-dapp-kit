@@ -55,3 +55,41 @@ export const buttonStyle = css`
         );
     }
 `;
+
+export const iconButtonStyle = css`
+    .icon-button {
+        cursor: pointer;
+        width: 25px;
+        height: 25px;
+        padding: 5px;
+        border-radius: 50%;
+    }
+
+    .icon-button.LIGHT:hover {
+        background-color: var(
+            --vwk-color-light-primary,
+            ${Colors.Light.PrimaryHover}
+        );
+    }
+
+    .icon-button.DARK:hover {
+        background-color: var(
+            --vwk-color-dark-primary,
+            ${Colors.Dark.PrimaryHover}
+        );
+    }
+
+    .icon-button.LIGHT:active {
+        background-color: var(
+            --vwk-color-light-primary,
+            ${Colors.Light.PrimaryActive}
+        );
+    }
+
+    .icon-button.DARK:active {
+        background-color: var(
+            --vwk-color-dark-primary,
+            ${Colors.Dark.PrimaryActive}
+        );
+    }
+`;
