@@ -9,7 +9,7 @@ export const Colors = {
         PrimaryActive: css`#4a4a4a`, // var(--vwk-color-dark-primary-active)
         Secondary: css`#2a2a2a`, // var(--vwk-color-dark-secondary)
         Tertiary: css`#ffffff`, // var(--vwk-color-dark-tertiary)
-        Quaternary: css`#aaaaaa`, // var(--vwk-color-dark-quaternary)
+        Quaternary: css`#888888`, // var(--vwk-color-dark-quaternary)
     },
 
     Light: {

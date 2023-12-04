@@ -6,7 +6,8 @@ import { CheckSvg, DarkCopySvg, LightCopySvg } from '../assets/icons';
 import { buttonStyle } from '../assets/styles';
 import { isAndroid, QrCodeUtil } from '../utils';
 import type { Theme, ThemeMode } from '../constants/theme';
-import { WalletConnectLogo, VeWorldLogo } from '../assets/images';
+import { VeWorldLogo } from '../assets/images';
+import { WalletConnectLogoSvg } from '../assets/icons/wallet-connect';
 
 const qrCodeSize = 280;
 @customElement('vwk-wallet-connect-qrcode')
@@ -47,10 +48,12 @@ export class WalletConnectQrCode extends LitElement {
                 );
             }
 
-            img.wc-icon {
+            div.wc-icon {
+                border-radius: 12px;
+                overflow: hidden;
                 position: absolute;
-                width: 65px;
-                height: 65px;
+                width: 68px;
+                height: 68px;
                 object-fit: contain;
             }
 
@@ -170,7 +173,7 @@ export class WalletConnectQrCode extends LitElement {
                 <div class="qrcode-container ${this.mode}">
                     ${this.openingVeWorld ? this.svgLoaderTemplate() : nothing}
                     ${this.svgWCQrCode(this.walletConnectQRcode)}
-                    <img class="wc-icon" src=${WalletConnectLogo} />
+                    <div class="wc-icon">${WalletConnectLogoSvg}</div>
                 </div>
                 ${this.openingVeWorld
                     ? html`<div class="openingVeWorldText">
