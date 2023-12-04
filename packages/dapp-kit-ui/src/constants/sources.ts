@@ -1,5 +1,10 @@
 import type { WalletSource } from '@vechainfoundation/dapp-kit';
-import { Sync2Logo, SyncLogo, VeWorldLogo, WalletConnectLogo } from '../assets';
+import {
+    Sync2Logo,
+    SyncLogo,
+    VeWorldLogo,
+    WalletConnectLogo,
+} from '../assets/images';
 
 export interface SourceInfo {
     id: WalletSource;

@@ -1,16 +1,23 @@
 import { css } from 'lit';
 
 export const Colors = {
-    White: css`#ffffff`, // var(--vwk-color-white)
-    XXLightGrey: css`#f2f2f2`, // var(--vwk-color-xxlightgrey)
-    XLightGrey: css`#eeeeee`, // var(--vwk-color-xlightgrey)
-    LightGrey: css`#eaeaea`, // var(--vwk-color-lightgrey)
-    Grey: css`#888888`, // var(--vwk-color-grey)
-    DarkGrey: css`#4a4a4a`, // var(--vwk-color-darkgrey)
-    XDarkGrey: css`#454545`, // var(--vwk-color-xdarkgrey)
-    XXDarkGrey: css`#404040`, // var(--vwk-color-xxdarkgrey)
-    XXLightBlack: css`#353535`, // var(--vwk-color-xxlightblack)
-    XLightBlack: css`#303030`, // var(--vwk-color-xlightblack)
-    LightBlack: css`#2a2a2a`, // var(--vwk-color-lightblack)
     WalletConnectBlue: css`#3496ff`, // var(--vwk-color-walletconnectblue)
+
+    Dark: {
+        Primary: css`#404040`, // var(--vwk-color-dark-primary)
+        PrimaryHover: css`#454545`, // var(--vwk-color-dark-primary-hover)
+        PrimaryActive: css`#4a4a4a`, // var(--vwk-color-dark-primary-active)
+        Secondary: css`#2a2a2a`, // var(--vwk-color-dark-secondary)
+        Tertiary: css`#ffffff`, // var(--vwk-color-dark-tertiary)
+        Quaternary: css`#aaaaaa`, // var(--vwk-color-dark-quaternary)
+    },
+
+    Light: {
+        Primary: css`#f2f2f2`, // var(--vwk-color-light-primary)
+        PrimaryHover: css`#eeeeee`, // var(--vwk-color-light-primary-hover)
+        PrimaryActive: css`#eaeaea`, // var(--vwk-color-light-primary-active)
+        Secondary: css`#ffffff`, // var(--vwk-color-light-secondary)
+        Tertiary: css`#2a2a2a`, // var(--vwk-color-light-tertiary)
+        Quaternary: css`#747474`, // var(--vwk-color-dark-quaternary)
+    },
 };

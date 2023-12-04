@@ -10,7 +10,7 @@ import {
     DarkCloseSvg,
     LightChevronLeftSvg,
     LightCloseSvg,
-} from '../assets';
+} from '../assets/icons';
 import { isMobile, subscribeToCustomEvent } from '../utils';
 import { DAppKitUI } from '../client';
 import type { Theme, ThemeMode } from '../constants/theme';
@@ -47,13 +47,16 @@ export class ConnectModal extends LitElement {
 
         .icon.LIGHT:hover {
             background-color: var(
-                --vwk-color-xxlightgrey,
-                ${Colors.XXLightGrey}
+                --vwk-color-light-primary,
+                ${Colors.Light.Primary}
             );
         }
 
         .icon.DARK:hover {
-            background-color: var(--vwk-color-xxdarkgrey, ${Colors.XXDarkGrey});
+            background-color: var(
+                --vwk-color-dark-primary,
+                ${Colors.Dark.Primary}
+            );
         }
     `;
 

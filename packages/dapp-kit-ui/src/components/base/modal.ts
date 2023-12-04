@@ -40,13 +40,19 @@ export class Modal extends LitElement {
         }
 
         .modal.LIGHT {
-            background-color: var(--vwk-color-white, ${Colors.White});
-            color: var(--vwk-color-lightblack, ${Colors.LightBlack});
+            background-color: var(
+                --vwk-color-dark-secondary,
+                ${Colors.Light.Secondary}
+            );
+            color: var(--vwk-color-light-tertiary, ${Colors.Light.Quaternary});
         }
 
         .modal.DARK {
-            background-color: var(--vwk-color-lightblack, ${Colors.LightBlack});
-            color: var(--vwk-color-xxlightgrey, ${Colors.XXLightGrey});
+            background-color: var(
+                --vwk-color-dark-secondary,
+                ${Colors.Dark.Secondary}
+            );
+            color: var(--vwk-color-dark-tertiary, ${Colors.Dark.Quaternary});
         }
 
         @media (max-width: ${Breakpoint.Mobile}px) {

@@ -2,15 +2,16 @@ import { css, html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Font, type ThemeMode } from '../constants';
 import { friendlyAddress, getPicassoImage } from '../utils/account';
-import { triggerButtonStyle } from '../assets';
+import { buttonStyle } from '../assets/styles';
 
 @customElement('vwk-connected-address-button')
 export class AddressButton extends LitElement {
     static override styles = [
-        triggerButtonStyle,
+        buttonStyle,
         css`
             button {
                 padding: 9px 12px;
+                width: auto;
             }
 
             /* Style for the wallet address */

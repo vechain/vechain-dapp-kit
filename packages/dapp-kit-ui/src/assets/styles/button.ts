@@ -1,6 +1,5 @@
 import { css } from 'lit';
-import { Colors } from '../../constants/colors';
-import { Font } from '../../constants/font';
+import { Colors, Font } from '../../constants';
 
 export const buttonStyle = css`
     button {
@@ -20,60 +19,24 @@ export const buttonStyle = css`
     }
 
     button.LIGHT {
-        background-color: var(--vwk-color-xxlightgrey, ${Colors.XXLightGrey});
-        color: var(--vwk-color-lightblack, ${Colors.LightBlack});
+        background-color: var(--vwk-color-light-primary, ${Colors.Light.Primary});
+        color: var(--vwk-color-light-tertiary, ${Colors.Light.Tertiary});
     }
     button.LIGHT:hover {
-        background-color: var(--vwk-color-xlightgrey, ${Colors.XLightGrey});
+        background-color: var(--vwk-color-light-primary-hover, ${Colors.Light.PrimaryHover});
     }
     button.LIGHT:active {
-        background-color: var(--vwk-color-lightgrey, ${Colors.LightGrey});
+        background-color: var(--vwk-color-light-primary-active, ${Colors.Light.PrimaryActive});
     }
 
     button.DARK {
-        background-color: var(--vwk-color-xxdarkgrey, ${Colors.XXDarkGrey});
-        color: var(--vwk-color-xxlightgrey, ${Colors.XXLightGrey});
+        background-color: var(--vwk-color-dark-primary, ${Colors.Dark.Primary});
+        color: var(--vwk-color-dark-tertiary, ${Colors.Dark.Tertiary});
     }
     button.DARK:hover {
-        background-color: var(--vwk-color-xdarkgrey, ${Colors.XDarkGrey});
+        background-color: var(--vwk-color-dark-primary-hover, ${Colors.Dark.PrimaryHover});
     }
     button.DARK:active {
-        background-color: var(--vwk-color-darkgrey, ${Colors.DarkGrey});
-    }
-`;
-
-export const triggerButtonStyle = css`
-    button {
-        font-family: var(--vwk-font-family, ${Font.Family});
-        cursor: pointer;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        border: none;
-        border-radius: 12px;
-        padding: 12px;
-    }
-
-    button.LIGHT {
-        background-color: var(--vwk-color-xxlightgrey, ${Colors.XXLightGrey});
-        color: var(--vwk-color-lightblack, ${Colors.LightBlack});
-    }
-    button.LIGHT:hover {
-        background-color: var(--vwk-color-xlightgrey, ${Colors.XLightGrey});
-    }
-    button.LIGHT:active {
-        background-color: var(--vwk-color-lightgrey, ${Colors.LightGrey});
-    }
-
-    button.DARK {
-        background-color: var(--vwk-color-lightblack, ${Colors.LightBlack});
-        color: var(--vwk-color-xxlightgrey, ${Colors.XXLightGrey});
-    }
-    button.DARK:hover {
-        background-color: var(--vwk-color-xlightblack, ${Colors.XLightBlack});
-    }
-    button.DARK:active {
-        background-color: var(--vwk-color-xxlightblack, ${Colors.XXLightBlack});
+        background-color: var(--vwk-color-dark-primary-active, ${Colors.Dark.PrimaryActive});
     }
 `;

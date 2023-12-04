@@ -1,4 +1,5 @@
 import { html, svg } from 'lit';
+import { Colors } from '../../constants';
 
 export const DisconnectSvg = svg`
     <path
@@ -7,12 +8,20 @@ export const DisconnectSvg = svg`
 `;
 
 export const LightDisconnectSvg = html`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="#777777">
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 15 15"
+        fill=${Colors.Light.Quaternary}
+    >
         ${DisconnectSvg}
     </svg>
 `;
 export const DarkDisconnectSvg = html`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="#999999">
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 15 15"
+        fill=${Colors.Dark.Quaternary}
+    >
         ${DisconnectSvg}
     </svg>
 `;

@@ -8,7 +8,7 @@ import {
     type Theme,
     type ThemeMode,
 } from '../constants';
-import { buttonStyle } from '../assets';
+import { buttonStyle } from '../assets/styles';
 import { DAppKitUI } from '../client';
 
 @customElement('vwk-source-card')

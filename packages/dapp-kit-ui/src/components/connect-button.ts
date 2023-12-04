@@ -1,12 +1,19 @@
 import type { TemplateResult } from 'lit';
-import { html, LitElement } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { Theme, ThemeMode } from '../constants/theme';
-import { triggerButtonStyle } from '../assets';
+import { buttonStyle } from '../assets/styles';
 
 @customElement('vwk-connect-button')
 export class ConnectButton extends LitElement {
-    static override styles = triggerButtonStyle;
+    static override styles = [
+        buttonStyle,
+        css`
+            button {
+                width: auto;
+            }
+        `,
+    ];
 
     @property()
     override title = 'Connect Wallet';

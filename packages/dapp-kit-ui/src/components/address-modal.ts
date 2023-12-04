@@ -3,19 +3,19 @@ import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { SourceInfo } from '../constants';
 import { Colors, Font } from '../constants';
-import {
-    DarkCloseSvg,
-    LightCloseSvg,
-    DarkCopySvg,
-    LightCopySvg,
-    CheckSvg,
-    DarkDisconnectSvg,
-    LightDisconnectSvg,
-    buttonStyle,
-} from '../assets';
+import { buttonStyle } from '../assets/styles';
 import { dispatchCustomEvent, subscribeToCustomEvent } from '../utils';
 import type { Theme, ThemeMode } from '../constants/theme';
 import { friendlyAddress, getPicassoImage } from '../utils/account';
+import {
+    CheckSvg,
+    DarkCloseSvg,
+    DarkCopySvg,
+    DarkDisconnectSvg,
+    LightCloseSvg,
+    LightCopySvg,
+    LightDisconnectSvg,
+} from '../assets/icons';
 
 @customElement('vwk-connected-address-modal')
 export class AddressModal extends LitElement {
@@ -72,15 +72,15 @@ export class AddressModal extends LitElement {
 
             .icon.LIGHT:hover {
                 background-color: var(
-                    --vwk-color-xxlightgrey,
-                    ${Colors.XXLightGrey}
+                    --vwk-color-light-primary,
+                    ${Colors.Light.Primary}
                 );
             }
 
             .icon.DARK:hover {
                 background-color: var(
-                    --vwk-color-xxdarkgrey,
-                    ${Colors.XXDarkGrey}
+                    --vwk-color-dark-primary,
+                    ${Colors.Dark.Primary}
                 );
             }
 
