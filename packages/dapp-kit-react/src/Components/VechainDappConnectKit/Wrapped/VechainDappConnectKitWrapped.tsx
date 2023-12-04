@@ -10,7 +10,7 @@ const VechainDappConnectKitWrapped = () =>
         react: React,
     });
 
-export const VechainDappConnectKitWithTheme = () => {
+export const VechainDappConnectKitWithTheme: React.FC = () => {
     const { theme } = useThemeSelector();
 
     const VechainDappConnectKit = useMemo(
