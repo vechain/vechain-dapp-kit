@@ -12,6 +12,7 @@ export class AddressButton extends LitElement {
             button {
                 padding: 9px 12px;
                 width: auto;
+                gap: 4px;
             }
 
             /* Style for the wallet address */
@@ -25,7 +26,6 @@ export class AddressButton extends LitElement {
             .address-icon {
                 width: 23px;
                 height: 23px;
-                margin-right: 4px;
                 border-radius: 50%;
             }
         `,

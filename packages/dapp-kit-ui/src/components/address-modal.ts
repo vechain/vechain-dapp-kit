@@ -97,13 +97,19 @@ export class AddressModal extends LitElement {
 
             .title {
                 font-family: var(--vwk-font-family, ${Font.Family});
-                font-weight: var(--vwk-font-weight-medium, ${Font.Weight.Medium})
+                font-weight: var(
+                    --vwk-font-weight-medium,
+                    ${Font.Weight.Medium}
+                );
             }
 
-            .wallet-address {
+            .address {
                 font-size: var(--vwk-font-size-large, ${Font.Size.Large});
                 font-family: var(--vwk-font-family, ${Font.Family});
-                font-weight: var(--vwk-font-weight-medium, ${Font.Weight.Medium})
+                font-weight: var(
+                    --vwk-font-weight-medium,
+                    ${Font.Weight.Medium}
+                );
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
@@ -185,7 +191,7 @@ export class AddressModal extends LitElement {
                             class="address-icon"
                             src=${getPicassoImage(this.address ?? '')}
                     />
-                    <span class="wallet-address">
+                    <span class="address">
                             ${friendlyAddress(this.address ?? '')}
                             <div class="copy-icon" @click=${
                                 this.onCopy

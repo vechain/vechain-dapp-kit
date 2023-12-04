@@ -44,7 +44,7 @@ export class Modal extends LitElement {
                 --vwk-color-dark-secondary,
                 ${Colors.Light.Secondary}
             );
-            color: var(--vwk-color-light-tertiary, ${Colors.Light.Quaternary});
+            color: var(--vwk-color-light-tertiary, ${Colors.Light.Tertiary});
         }
 
         .modal.DARK {
@@ -52,7 +52,7 @@ export class Modal extends LitElement {
                 --vwk-color-dark-secondary,
                 ${Colors.Dark.Secondary}
             );
-            color: var(--vwk-color-dark-tertiary, ${Colors.Dark.Quaternary});
+            color: var(--vwk-color-dark-tertiary, ${Colors.Dark.Tertiary});
         }
 
         @media (max-width: ${Breakpoint.Mobile}px) {
