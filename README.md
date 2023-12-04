@@ -134,3 +134,13 @@ yarn build
 
 -   Please refer to [Vechain Docs](https://docs.vechain.org/developer-resources/sdks-and-providers) for more information
     on how to use the library.
+
+---
+
+## Publishing
+
+```bash
+yarn install:all
+yarn build
+yarn changeset publish
+```

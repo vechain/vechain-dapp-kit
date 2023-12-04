@@ -1,6 +1,6 @@
 {
     "name": "@vechain/dapp-kit-ui",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "private": false,
     "description": "Vanilla js wallet kit",
     "keywords": [
@@ -9,6 +9,7 @@
         "typescript",
         "lit"
     ],
+    "repository": "https://github.com/vechainfoundation/vechain-dapp-kit",
     "license": "MIT",
     "author": "Davide Carpini",
     "type": "module",
