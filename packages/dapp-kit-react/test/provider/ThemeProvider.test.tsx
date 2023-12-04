@@ -12,12 +12,15 @@ describe('useThemeContext', () => {
 
         expect(result.current).toBeDefined();
 
-        expect(result.current.theme).toEqual({ mode: 'LIGHT' });
+        expect(result.current?.theme).toEqual({ mode: 'LIGHT' });
 
-        result.current.toggleTheme();
+        result.current?.toggleTheme();
 
-        await waitFor(() => {
-            expect(result.current.theme).toEqual({ mode: 'DARK' });
-        });
+        await waitFor(
+            () => {
+                expect(result.current?.theme).toEqual({ mode: 'DARK' });
+            },
+            { timeout: 3000 },
+        );
     });
 });

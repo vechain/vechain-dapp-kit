@@ -9,7 +9,7 @@ interface Theme {
     mode: ThemeMode;
 }
 
-interface ContextProperties {
+interface ThemeContextProperties {
     theme: Theme;
     toggleTheme: () => void;
 }
@@ -18,11 +18,9 @@ const defaultTheme: Theme = {
     mode: 'LIGHT',
 };
 
-const ThemeContext = createContext<ContextProperties>({
-    theme: defaultTheme,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    toggleTheme: () => {},
-});
+const ThemeContext = createContext<ThemeContextProperties | undefined>(
+    undefined,
+);
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const [currentTheme, setCurrentTheme] = useState(defaultTheme);
@@ -46,4 +44,14 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
     );
 };
 
-export { ThemeProvider, ThemeContext };
+export const useThemeSelector = (): ThemeContextProperties => {
+    const context = React.useContext(ThemeContext);
+
+    if (context === undefined) {
+        throw new Error('useThemeSelector must be used within a ThemeProvider');
+    }
+
+    return context;
+};
+
+export { ThemeProvider, ThemeContext, type ThemeContextProperties };

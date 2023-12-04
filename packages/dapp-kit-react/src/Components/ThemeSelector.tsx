@@ -1,14 +1,14 @@
 // ThemeSelector.js
 
-import React, { useContext } from 'react';
+import React from 'react';
 // eslint-disable-next-line import/no-named-as-default
 import styled from 'styled-components';
-import { ThemeContext } from '../provider/ThemeProvider';
+import { useThemeSelector } from '../provider/ThemeProvider';
 
 const Button = styled.button``;
 
 const ThemeSelector = () => {
-    const { toggleTheme } = useContext(ThemeContext);
+    const { toggleTheme } = useThemeSelector();
 
     return <Button onClick={toggleTheme}>Toggle Theme</Button>;
 };
