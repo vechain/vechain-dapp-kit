@@ -83,7 +83,7 @@ export class ConnectButtonWithModal extends LitElement {
     }
 
     private handleOpen = (): void => {
-        this.open = false;
+        this.open = true;
         DAppKitUI.wallet.disconnect();
         this.requestUpdate();
     };
