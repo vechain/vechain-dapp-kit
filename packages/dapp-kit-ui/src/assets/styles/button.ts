@@ -1,10 +1,12 @@
 import { css } from 'lit';
 import { Colors } from '../../constants/colors';
-import { Inter } from '../../constants/font-family';
+import { Font } from '../../constants/font';
 
 export const buttonStyle = css`
     button {
-        font-family: var(--vwk-font-family-inter, ${Inter});
+        font-family: var(--vwk-font-family, ${Font.Family});
+        font-size: var(--vwk-font-size-medium, ${Font.Size.Medium});
+        font-weight: var(--vwk-font-weight-medium, ${Font.Weight.Medium})
         cursor: pointer;
         display: flex;
         flex-direction: row;
@@ -13,8 +15,6 @@ export const buttonStyle = css`
         border: none;
         border-radius: 12px;
         padding: 12px;
-        font-size: 15px;
-        font-weight: 500;
         width: 100%;
         gap: 10px;
     }
@@ -44,7 +44,7 @@ export const buttonStyle = css`
 
 export const triggerButtonStyle = css`
     button {
-        font-family: var(--vwk-font-family-inter, ${Inter});
+        font-family: var(--vwk-font-family, ${Font.Family});
         cursor: pointer;
         display: flex;
         flex-direction: row;

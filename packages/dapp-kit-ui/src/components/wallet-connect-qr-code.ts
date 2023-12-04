@@ -1,7 +1,7 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { ANDROID_STORE_URL, Colors, Inter, IOS_STORE_URL } from '../constants';
+import { ANDROID_STORE_URL, Colors, Font, IOS_STORE_URL } from '../constants';
 import {
     buttonStyle,
     CheckSvg,
@@ -67,8 +67,8 @@ export class WalletConnectQrCode extends LitElement {
             }
 
             .or {
-                font-family: var(--vwk-font-family-inter, ${Inter});
-                font-size: 14px;
+                font-family: var(--vwk-font-family, ${Font.Family});
+                font-size: var(--vwk-font-size-medium, ${Font.Size.Medium});
                 padding: 0 12px;
             }
 
@@ -117,8 +117,8 @@ export class WalletConnectQrCode extends LitElement {
 
             .openingVeWorldText {
                 text-align: center;
-                font-family: var(--vwk-font-family-inter, ${Inter});
-                font-size: 14px;
+                font-family: var(--vwk-font-family, ${Font.Family});
+                font-size: var(--vwk-font-size-medium, ${Font.Size.Medium});
                 padding: 20px 0;
                 color: var(
                     --vwk-color-walletconnectblue,

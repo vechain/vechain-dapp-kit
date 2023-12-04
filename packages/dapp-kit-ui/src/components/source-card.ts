@@ -2,7 +2,12 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechainfoundation/dapp-kit';
-import type { SourceInfo, Theme, ThemeMode } from '../constants';
+import {
+    Font,
+    type SourceInfo,
+    type Theme,
+    type ThemeMode,
+} from '../constants';
 import { buttonStyle } from '../assets';
 import { DAppKitUI } from '../client';
 
@@ -16,7 +21,7 @@ export class SourceCard extends LitElement {
                 flex: 1;
                 margin: 8px 0;
                 justify-content: space-between;
-                font-size: 14px;
+                font-size: var(--vwk-font-size-medium, ${Font.Size.Medium});
             }
 
             img {
