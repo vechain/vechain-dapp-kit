@@ -1,9 +1,9 @@
-import { useContext, useMemo } from 'react';
-import { ThemeContext } from '../../../provider/ThemeProvider';
+import { useMemo } from 'react';
+import { useThemeSelector } from '../../../provider/ThemeProvider';
 import { createButtonWithModal } from './Wrapped/ConnectModalWithButtonWrapped';
 
 export const ConnectButtonWithModal = () => {
-    const { theme } = useContext(ThemeContext);
+    const { theme } = useThemeSelector();
 
     const ModalWithButton = useMemo(() => createButtonWithModal(), []);
 

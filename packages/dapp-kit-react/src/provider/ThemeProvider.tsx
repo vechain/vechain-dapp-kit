@@ -44,4 +44,14 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
     );
 };
 
+export const useThemeSelector = (): ThemeContextProperties => {
+    const context = React.useContext(ThemeContext);
+
+    if (context === undefined) {
+        throw new Error('useThemeSelector must be used within a ThemeProvider');
+    }
+
+    return context;
+};
+
 export { ThemeProvider, ThemeContext, type ThemeContextProperties };
