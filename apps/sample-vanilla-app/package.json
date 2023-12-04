@@ -13,7 +13,7 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "@vechainfoundation/dapp-kit-ui": "*"
+        "@vechain/dapp-kit-ui": "*"
     },
     "devDependencies": {
         "parcel": "^2.10.2"

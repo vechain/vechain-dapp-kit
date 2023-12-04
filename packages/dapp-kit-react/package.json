@@ -1,5 +1,5 @@
 {
-    "name": "@vechainfoundation/dapp-kit-react",
+    "name": "@vechain/dapp-kit-react",
     "version": "0.0.0",
     "private": false,
     "license": "MIT",
@@ -26,9 +26,9 @@
         "@lit/react": "^1.0.1",
         "@vechain/connex": "2.1.0",
         "@vechain/connex-framework": "2.1.0",
+        "@vechain/dapp-kit": "*",
+        "@vechain/dapp-kit-ui": "*",
         "@vechain/picasso": "^2.1.1",
-        "@vechainfoundation/dapp-kit": "*",
-        "@vechainfoundation/dapp-kit-ui": "*",
         "react-icons": "^4.11.0",
         "styled-components": "^6.1.0",
         "thor-devkit": "^2.0.9",

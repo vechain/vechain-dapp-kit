@@ -1,6 +1,6 @@
 import React from 'react';
 import { createComponent } from '@lit/react';
-import { ConnectButtonWithModal } from '@vechainfoundation/dapp-kit-ui';
+import { ConnectButtonWithModal } from '@vechain/dapp-kit-ui';
 
 export const createButtonWithModal = () =>
     createComponent({

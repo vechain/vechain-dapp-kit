@@ -1,7 +1,7 @@
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-import { ConnectWalletButtonWithModal } from '@vechainfoundation/dapp-kit-react';
+import { ConnectWalletButtonWithModal } from '@vechain/dapp-kit-react';
 
 function App() {
     return (

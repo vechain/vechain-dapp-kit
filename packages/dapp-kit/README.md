@@ -1,4 +1,4 @@
-# `@vechainfoundation/dapp-kit`
+# `@vechain/dapp-kit`
 
 ## Why ?
 
@@ -20,13 +20,13 @@ yarn build
 ## Usage
 
 ```bash
-yarn add @vechainfoundation/dapp-kit
+yarn add @vechain/dapp-kit
 ```
 
 -   Optional: Configure wallet connect options
 
 ```typescript
-import type { WalletConnectOptions } from '@vechainfoundation/dapp-kit';
+import type { WalletConnectOptions } from '@vechain/dapp-kit';
 
 const walletConnectOptions: WalletConnectOptions = {
     projectId: '<PROJECT_ID>', // Create your project here: https://cloud.walletconnect.com/sign-up
@@ -55,7 +55,7 @@ const { thor, vendor, wallet } = new DAppKit({
 -   Connex is ready to use as normal
 
 ```typescript
-import type { WalletSource } from '@vechainfoundation/dapp-kit';
+import type { WalletSource } from '@vechain/dapp-kit';
 
 // type WalletSource = 'wallet-connect' | 'veworld' | 'sync2' | 'sync';
 const mySource: WalletSource = 'veworld';

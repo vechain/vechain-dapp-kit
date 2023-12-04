@@ -2,63 +2,64 @@
 name: Deploy static content to Pages
 
 on:
-    # Runs on pushes targeting the default branch
-    push:
-        branches: ['main']
+  # Runs on pushes targeting the default branch
+  push:
+    branches: [ 'main' ]
 
-    # Allows you to run this workflow manually from the Actions tab
-    workflow_dispatch:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-    contents: read
-    pages: write
-    id-token: write
-    packages: write
+  contents: read
+  pages: write
+  id-token: write
+  packages: write
 
 # Allow one concurrent deployment
 concurrency:
-    group: 'pages'
-    cancel-in-progress: true
+  group: 'pages'
+  cancel-in-progress: true
 
 jobs:
-    # Single deploy job since we're just deploying
-    deploy:
-        environment:
-            name: github-pages
-            url: ${{ steps.deployment.outputs.page_url }}
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-            - name: Use Node v16 & GitHub registry
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 18
+      - name: Use Node v16 & GitHub registry
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-            - name: Build React App
-              run: |
-                  yarn install:all
-                  yarn build
+      - name: Build React App
+        run: |
+          yarn install:all
+          yarn build:packages
+          yarn build:apps
 
-            - name: Setup Pages
-              uses: actions/configure-pages@v2
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
 
-            - name: Copy Builds
-              run: |
-                  mkdir build
-                  cp -r apps/sample-vue-app/dist build/vue
-                  cp -r apps/sample-react-app/build build/react
-                  cp -r apps/sample-vanilla-app/dist build/vanilla
-                  cp -r apps/sample-angular-app/dist/easy-angular build/angular
+      - name: Copy Builds
+        run: |
+          mkdir build
+          cp -r apps/sample-vue-app/dist build/vue
+          cp -r apps/sample-react-app/dist build/react
+          cp -r apps/sample-vanilla-app/dist build/vanilla
+          cp -r apps/sample-angular-app/dist/easy-angular build/angular
 
-            - name: Upload artifact
-              uses: actions/upload-pages-artifact@v1
-              with:
-                  # Upload build
-                  path: './build'
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload build
+          path: './build'
 
-            - name: Deploy to GitHub Pages
-              id: deployment
-              uses: actions/deploy-pages@v1
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
