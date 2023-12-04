@@ -49,10 +49,9 @@ export class ConnectButtonWithModal extends LitElement {
 
     @property({ type: Function })
     onDisconnectClick = (): void => {
-        this.wallet.disconnect().finally(() => {
-            this.dappKitContext.address = '';
-            this.requestUpdate();
-        });
+        this.dappKitContext.address = '';
+        this.requestUpdate();
+        this.wallet.disconnect();
     };
 
     override render(): TemplateResult {
@@ -84,9 +83,9 @@ export class ConnectButtonWithModal extends LitElement {
     }
 
     private handleOpen = (): void => {
-        DAppKitUI.wallet.disconnect().finally(() => {
-            this.open = true;
-        });
+        this.open = true;
+        DAppKitUI.wallet.disconnect();
+        this.requestUpdate();
     };
 
     private handleClose = (): void => {

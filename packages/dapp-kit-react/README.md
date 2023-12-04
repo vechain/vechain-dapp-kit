@@ -23,50 +23,48 @@ yarn build
 yarn add @vechainfoundation/dapp-kit-react
 ```
 
-```typescript
-import type { Options } from '@vechain/connex';
-
-const nodeOptions: Omit<Options, 'signer'> = {
-    node: 'https://testnet.vechain.org/',
-    network: 'test',
-};
-```
-
 -   Optional: Configure wallet connect options
 
 ```typescript
-import type { WalletConnectOptions } from '@vechainfoundation/dapp-kit';
+import type { WalletConnectOptions } from '@vechain/dapp-kit';
 
 const walletConnectOptions: WalletConnectOptions = {
-    projectId: '<PROJECT_ID>', // Create your project here: https://cloud.walletconnect.com/sign-up
+    // Create your project here: https://cloud.walletconnect.com/sign-up
+    projectId: '<PROJECT_ID>',
     metadata: {
         name: 'My dApp',
         description: 'My dApp description',
-        url: window.location.origin, // Your app URL
-        icons: [`${window.location.origin}/images/my-dapp-icon.png`], // Your app Icon
+        // Your app URL
+        url: window.location.origin,
+        // Your app Icon
+        icons: [`${window.location.origin}/images/my-dapp-icon.png`],
     },
 };
 ```
 
--   Initialise the `ConnexVendor`
+-   Initialise the `DAppKitProvider`
 
 ```typescript jsx
-import { DAppKitProvider } from '@vechainfoundation/dapp-kit-react';
+import { DAppKitProvider } from '@vechain/dapp-kit-react';
 
-export const App = (): JSX.Element => {
-    return (
-        <>
-            <DAppKitProvider
-                key="connex"
-                nodeOptions={nodeOptions}
-                persistState={false} // Optional - default: false - If true, account and source will be persisted in local storage
-                walletConnectOptions={walletConnectOptions}
-            >
-                <YourApp />
-            </DAppKitProvider>
-        </>
-    );
-};
+ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+        <DAppKitProvider
+            // REQUIRED: The URL of the node you want to connect to
+            nodeUrl={'https://testnet.vechain.org/'}
+            // OPTIONAL: Required if you're not connecting to the main net
+            genesis={'test'}
+            // OPTIONAL: Whether or not to persist state in local storage (account, wallet source)
+            usePersistence={true}
+            // OPTIONAL: Options to enable wallet connect
+            walletConnectOptions={walletConnectOptions}
+            // OPTIONAL: A log level for console logs
+            logLevel="DEBUG"
+        >
+            <App />
+        </DAppKitProvider>
+    </React.StrictMode>,
+);
 ```
 
 -   Use the hooks provided by the `DAppKitProvider`

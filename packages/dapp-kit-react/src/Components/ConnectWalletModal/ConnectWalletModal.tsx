@@ -15,6 +15,7 @@ const createButtonWithModal = () =>
 interface ConnectWalletProps {
     onConnectError?: (err: unknown) => void;
     onConnected?: (res: ConnectResponse) => void;
+    isOpen: boolean;
 }
 
 /**
@@ -26,6 +27,7 @@ interface ConnectWalletProps {
 export const ConnectWalletModal: React.FC<ConnectWalletProps> = ({
     onConnectError,
     onConnected,
+    isOpen,
 }) => {
     const Modal = useMemo(() => createButtonWithModal(), []);
 
@@ -41,5 +43,5 @@ export const ConnectWalletModal: React.FC<ConnectWalletProps> = ({
         [onConnectError, onConnected, connect, setSource],
     );
 
-    return <Modal onSourceClick={onSourceClick} />;
+    return <Modal onSourceClick={onSourceClick} open={isOpen} />;
 };

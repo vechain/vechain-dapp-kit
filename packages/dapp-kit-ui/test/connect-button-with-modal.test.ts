@@ -32,7 +32,6 @@ describe('connect-button-with-modal', () => {
         window.document.body.appendChild(element);
 
         // testing the connect button
-
         const connectButton =
             (await elementQueries.getConnectButton()) as ConnectButton;
         const connectModal =
