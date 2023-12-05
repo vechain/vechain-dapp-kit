@@ -1,30 +1,31 @@
 import { css, html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { type ThemeMode } from '../constants';
+import { Font, type ThemeMode } from '../constants';
 import { friendlyAddress, getPicassoImage } from '../utils/account';
-import { triggerButtonStyle } from '../assets';
+import { buttonStyle } from '../assets/styles';
 
 @customElement('vwk-connected-address-button')
 export class AddressButton extends LitElement {
     static override styles = [
-        triggerButtonStyle,
+        buttonStyle,
         css`
             button {
                 padding: 9px 12px;
+                width: auto;
+                gap: 4px;
             }
 
             /* Style for the wallet address */
 
             .wallet-address {
-                font-size: 14px;
+                font-size: var(--vwk-font-size-medium, ${Font.Size.Medium});
                 margin-left: 8px;
-                font-family: 'Inter', sans-serif;
+                font-family: var(--vwk-font-family, ${Font.Family});
             }
 
             .address-icon {
                 width: 23px;
                 height: 23px;
-                margin-right: 4px;
                 border-radius: 50%;
             }
         `,

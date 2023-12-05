@@ -1,17 +1,13 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { ANDROID_STORE_URL, Colors, IOS_STORE_URL } from '../constants';
-import {
-    buttonStyle,
-    CheckSvg,
-    DarkCopySvg,
-    LightCopySvg,
-    VeWorldLogo,
-    WalletConnectLogo,
-} from '../assets';
+import { ANDROID_STORE_URL, Colors, Font, IOS_STORE_URL } from '../constants';
+import { CheckSvg, DarkCopySvg, LightCopySvg } from '../assets/icons';
+import { buttonStyle } from '../assets/styles';
 import { isAndroid, QrCodeUtil } from '../utils';
 import type { Theme, ThemeMode } from '../constants/theme';
+import { VeWorldLogo } from '../assets/images';
+import { WalletConnectLogoSvg } from '../assets/icons/wallet-connect';
 
 const qrCodeSize = 280;
 @customElement('vwk-wallet-connect-qrcode')
@@ -29,20 +25,35 @@ export class WalletConnectQrCode extends LitElement {
             .qrcode-container {
                 position: relative;
                 margin: 20px auto 0 auto;
-                background-color: ${Colors.White};
                 width: 280px;
                 padding: 10px;
-                border: 1px solid ${Colors.Grey};
                 border-radius: 20px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                border: 1px solid;
             }
 
-            img.wc-icon {
+            .qrcode-container.LIGHT {
+                border-color: var(
+                    --vwk-color-light-quaternary,
+                    ${Colors.Light.Quaternary}
+                );
+            }
+
+            .qrcode-container.DARK {
+                border-color: var(
+                    --vwk-color-dark-quaternary,
+                    ${Colors.Dark.Quaternary}
+                );
+            }
+
+            div.wc-icon {
+                border-radius: 12px;
+                overflow: hidden;
                 position: absolute;
-                width: 65px;
-                height: 65px;
+                width: 68px;
+                height: 68px;
                 object-fit: contain;
             }
 
@@ -59,25 +70,37 @@ export class WalletConnectQrCode extends LitElement {
             }
 
             .line.LIGHT {
-                background-color: ${Colors.Grey};
+                background: var(
+                    --vwk-color-light-quaternary,
+                    ${Colors.Light.Quaternary}
+                );
             }
 
             .line.DARK {
-                background-color: ${Colors.Grey};
+                background: var(
+                    --vwk-color-dark-quaternary,
+                    ${Colors.Dark.Quaternary}
+                );
             }
 
             .or {
-                font-family: 'Inter', sans-serif;
-                font-size: 14px;
+                font-family: var(--vwk-font-family, ${Font.Family});
+                font-size: var(--vwk-font-size-medium, ${Font.Size.Medium});
                 padding: 0 12px;
             }
 
             .or.LIGHT {
-                color: ${Colors.Grey};
+                color: var(
+                    --vwk-color-light-quaternary,
+                    ${Colors.Light.Quaternary}
+                );
             }
 
             .or.DARK {
-                color: ${Colors.Grey};
+                color: var(
+                    --vwk-color-dark-quaternary,
+                    ${Colors.Dark.Quaternary}
+                );
             }
 
             .icon {
@@ -98,7 +121,10 @@ export class WalletConnectQrCode extends LitElement {
             }
 
             use {
-                stroke: #3496ff;
+                stroke: var(
+                    --vwk-color-walletconnectblue,
+                    ${Colors.WalletConnectBlue}
+                );
                 animation: loading 1s linear infinite;
             }
 
@@ -114,10 +140,13 @@ export class WalletConnectQrCode extends LitElement {
 
             .openingVeWorldText {
                 text-align: center;
-                font-family: 'Inter', sans-serif;
-                font-size: 14px;
+                font-family: var(--vwk-font-family, ${Font.Family});
+                font-size: var(--vwk-font-size-medium, ${Font.Size.Medium});
                 padding: 20px 0;
-                color: #3496ff;
+                color: var(
+                    --vwk-color-walletconnectblue,
+                    ${Colors.WalletConnectBlue}
+                );
             }
         `,
     ];
@@ -141,10 +170,10 @@ export class WalletConnectQrCode extends LitElement {
 
         return html`
             <div class="qrcode-body">
-                <div class="qrcode-container">
+                <div class="qrcode-container ${this.mode}">
                     ${this.openingVeWorld ? this.svgLoaderTemplate() : nothing}
                     ${this.svgWCQrCode(this.walletConnectQRcode)}
-                    <img class="wc-icon" src=${WalletConnectLogo} />
+                    <div class="wc-icon">${WalletConnectLogoSvg}</div>
                 </div>
                 ${this.openingVeWorld
                     ? html`<div class="openingVeWorldText">
@@ -239,7 +268,19 @@ export class WalletConnectQrCode extends LitElement {
         }
         return svg`
             <svg height=${qrCodeSize} width=${qrCodeSize}>
-                ${QrCodeUtil.generate(uri, qrCodeSize, qrCodeSize / 4)}
+                ${QrCodeUtil.generate({
+                    uri,
+                    size: qrCodeSize,
+                    logoSize: qrCodeSize / 4,
+                    dotColor:
+                        this.mode === 'LIGHT'
+                            ? Colors.Light.Tertiary.toString()
+                            : Colors.Dark.Tertiary.toString(),
+                    edgeColor:
+                        this.mode === 'LIGHT'
+                            ? Colors.Light.Secondary.toString()
+                            : Colors.Dark.Secondary.toString(),
+                })}
             </svg>
             `;
     }

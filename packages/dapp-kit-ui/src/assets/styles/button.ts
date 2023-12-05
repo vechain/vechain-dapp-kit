@@ -1,9 +1,11 @@
 import { css } from 'lit';
-import { Colors } from '../../constants/colors';
+import { Colors, Font } from '../../constants';
 
 export const buttonStyle = css`
     button {
-        font-family: 'Inter', sans-serif;
+        font-family: var(--vwk-font-family, ${Font.Family});
+        font-size: var(--vwk-font-size-medium, ${Font.Size.Medium});
+        font-weight: var(--vwk-font-weight-medium, ${Font.Weight.Medium});
         cursor: pointer;
         display: flex;
         flex-direction: row;
@@ -12,67 +14,73 @@ export const buttonStyle = css`
         border: none;
         border-radius: 12px;
         padding: 12px;
-        font-size: 15px;
-        font-weight: 500;
         width: 100%;
         gap: 10px;
     }
 
     button.LIGHT {
-        background-color: ${Colors.XXLightGrey};
-        color: ${Colors.LightBlack};
+        background: var(--vwk-color-light-primary, ${Colors.Light.Primary});
+        color: var(--vwk-color-light-tertiary, ${Colors.Light.Tertiary});
     }
     button.LIGHT:hover {
-        background-color: ${Colors.XLightGrey};
+        background: var(
+            --vwk-color-light-primary-hover,
+            ${Colors.Light.PrimaryHover}
+        );
     }
     button.LIGHT:active {
-        background-color: ${Colors.LightGrey};
+        background: var(
+            --vwk-color-light-primary-active,
+            ${Colors.Light.PrimaryActive}
+        );
     }
 
     button.DARK {
-        background-color: ${Colors.XXDarkGrey};
-        color: ${Colors.XXLightGrey};
+        background: var(--vwk-color-dark-primary, ${Colors.Dark.Primary});
+        color: var(--vwk-color-dark-tertiary, ${Colors.Dark.Tertiary});
     }
     button.DARK:hover {
-        background-color: ${Colors.XDarkGrey};
+        background: var(
+            --vwk-color-dark-primary-hover,
+            ${Colors.Dark.PrimaryHover}
+        );
     }
     button.DARK:active {
-        background-color: ${Colors.DarkGrey};
+        background: var(
+            --vwk-color-dark-primary-active,
+            ${Colors.Dark.PrimaryActive}
+        );
     }
 `;
 
-export const triggerButtonStyle = css`
-    button {
-        font-family: 'Inter', sans-serif;
+export const iconButtonStyle = css`
+    .icon-button {
         cursor: pointer;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        border: none;
-        border-radius: 12px;
-        padding: 12px;
+        width: 25px;
+        height: 25px;
+        padding: 5px;
+        border-radius: 50%;
     }
 
-    button.LIGHT {
-        background-color: ${Colors.XXLightGrey};
-        color: ${Colors.LightBlack};
-    }
-    button.LIGHT:hover {
-        background-color: ${Colors.XLightGrey};
-    }
-    button.LIGHT:active {
-        background-color: ${Colors.LightGrey};
+    .icon-button.LIGHT:hover {
+        background: var(
+            --vwk-color-light-primary,
+            ${Colors.Light.PrimaryHover}
+        );
     }
 
-    button.DARK {
-        background-color: ${Colors.LightBlack};
-        color: ${Colors.XXLightGrey};
+    .icon-button.DARK:hover {
+        background: var(--vwk-color-dark-primary, ${Colors.Dark.PrimaryHover});
     }
-    button.DARK:hover {
-        background-color: ${Colors.XLightBlack};
+
+    .icon-button.LIGHT:active {
+        background: var(
+            --vwk-color-light-primary,
+            ${Colors.Light.PrimaryActive}
+        );
     }
-    button.DARK:active {
-        background-color: ${Colors.XXLightBlack};
+
+    .icon-button.DARK:active {
+        background: var(--vwk-color-dark-primary, ${Colors.Dark.PrimaryActive});
     }
 `;

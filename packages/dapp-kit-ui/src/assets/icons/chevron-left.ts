@@ -1,4 +1,5 @@
 import { html, svg } from 'lit';
+import { Colors } from '../../constants';
 
 export const ChevronLeftSvg = svg`
       <path
@@ -6,12 +7,20 @@ export const ChevronLeftSvg = svg`
     `;
 
 export const LightChevronLeftSvg = html`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#777777">
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill=${Colors.Light.Quaternary}
+    >
         ${ChevronLeftSvg}
     </svg>
 `;
 export const DarkChevronLeftSvg = html`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#999999">
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill=${Colors.Dark.Quaternary}
+    >
         ${ChevronLeftSvg}
     </svg>
 `;

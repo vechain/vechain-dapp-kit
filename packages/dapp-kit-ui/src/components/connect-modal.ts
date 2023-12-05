@@ -4,55 +4,46 @@ import { customElement, property } from 'lit/decorators.js';
 import type { OpenOptions, WalletManager } from '@vechain/dapp-kit';
 import { consume } from '@lit/context';
 import type { SourceInfo } from '../constants';
-import { Colors, WalletSources } from '../constants';
+import { Font, WalletSources } from '../constants';
 import {
     DarkChevronLeftSvg,
     DarkCloseSvg,
     LightChevronLeftSvg,
     LightCloseSvg,
-} from '../assets';
+} from '../assets/icons';
 import { isMobile, subscribeToCustomEvent } from '../utils';
 import { DAppKitUI } from '../client';
 import type { Theme, ThemeMode } from '../constants/theme';
+import { iconButtonStyle } from '../assets/styles';
 import type { DappKitContext } from './provider';
 import { dappKitContext } from './provider';
 
 @customElement('vwk-connect-modal')
 export class ConnectModal extends LitElement {
-    static override styles = css`
-        .modal-container {
-            padding: 20px;
-        }
+    static override styles = [
+        iconButtonStyle,
+        css`
+            .modal-container {
+                padding: 20px;
+            }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 10px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-        }
+            .modal-header {
+                font-family: var(--vwk-font-family, ${Font.Family});
+                font-weight: var(
+                    --vwk-font-weight-medium,
+                    ${Font.Weight.Medium}
+                );
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 10px;
+            }
 
-        .modal-body {
-            flex-direction: column;
-        }
-
-        .icon {
-            cursor: pointer;
-            width: 25px;
-            height: 25px;
-            padding: 5px;
-            border-radius: 50%;
-        }
-
-        .icon.LIGHT:hover {
-            background-color: ${Colors.XXLightGrey};
-        }
-
-        .icon.DARK:hover {
-            background-color: ${Colors.XXDarkGrey};
-        }
-    `;
+            .modal-body {
+                flex-direction: column;
+            }
+        `,
+    ];
 
     @consume({ context: dappKitContext })
     @property({ attribute: false })
@@ -146,18 +137,18 @@ export class ConnectModal extends LitElement {
                     ${
                         this.walletConnectQRcode
                             ? html` <div
-                                  class="icon back-icon ${this.mode}"
+                                  class="icon-button ${this.mode}"
                                   @click=${this.onBack}
                               >
                                   ${this.mode === 'LIGHT'
                                       ? LightChevronLeftSvg
                                       : DarkChevronLeftSvg}
                               </div>`
-                            : html` <div class="icon"></div>`
+                            : html` <div class="icon-button"></div>`
                     }
                     <div>Connect Wallet</div>
                     <div
-                            class="icon close-icon ${this.mode}"
+                            class="icon-button ${this.mode}"
                             @click=${this.handleClose}
                     >
                         ${this.mode === 'LIGHT' ? LightCloseSvg : DarkCloseSvg}
