@@ -85,8 +85,9 @@ export class DAppKitModal {
     open(): void {
         DAppKitLogger.debug('DAppKitModal', 'opening the modal');
 
-        const existingElement =
-            window.document.querySelector('vwk-connect-modal');
+        const existingElement = window.document.querySelector(
+            'vwk-vechain-dapp-connect-kit',
+        );
 
         if (!existingElement) {
             DAppKitLogger.debug(
@@ -95,7 +96,9 @@ export class DAppKitModal {
                 'creating a new element',
             );
 
-            const element = window.document.createElement('vwk-connect-modal');
+            const element = window.document.createElement(
+                'vwk-vechain-dapp-connect-kit',
+            );
 
             window.document.body.appendChild(element);
         }
