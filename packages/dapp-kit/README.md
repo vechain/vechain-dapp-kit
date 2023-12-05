@@ -9,6 +9,7 @@
 
 ## Installation
 
+-   See the full doc
 -   See the parent [README](../../README.md) for installation instructions.
 
 ### Build

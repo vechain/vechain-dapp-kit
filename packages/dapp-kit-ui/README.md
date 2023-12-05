@@ -27,9 +27,7 @@ yarn add @vechain/dapp-kit-ui
 -   In your root `main.ts`
 
 ```typescript
-import type { WalletConnectOptions } from '@vechain/dapp-kit';
-import type { Options } from '@vechain/connex';
-import { configureThorModal } from '@vechain/dapp-kit-ui';
+import type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 
 const walletConnectOptions: WalletConnectOptions = {
