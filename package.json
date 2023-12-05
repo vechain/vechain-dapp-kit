@@ -8,6 +8,7 @@
         "build": "turbo run build",
         "build-react-kit": "turbo run build  --filter='@vechain/dapp-kit-react'",
         "build:deps": "turbo build --no-daemon --filter='@vechain/*'",
+        "build:release": "ts-node scripts/prepare-packages.ts",
         "clean": "rm -rf .turbo .parcel-cache build && npx turbo@latest run clean",
         "cucumber": "yarn && cucumber-js",
         "dev": "turbo run dev --filter='@vechain/*'",

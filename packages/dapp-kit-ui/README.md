@@ -10,8 +10,6 @@
 
 ## Installation
 
--   See the parent [README](../../README.md) for installation instructions.
-
 ### Build
 
 ```bash

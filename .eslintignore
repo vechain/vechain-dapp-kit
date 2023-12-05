@@ -4,3 +4,4 @@ web-dev-server.config.js
 tsup.config.ts
 **/test/**
 vite.config.ts
+scripts/prepare-packages.ts
