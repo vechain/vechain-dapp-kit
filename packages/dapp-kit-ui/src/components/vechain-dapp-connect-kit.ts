@@ -1,19 +1,25 @@
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { Theme, ThemeMode } from '../constants';
+import type { ThemeMode, I18n } from '../constants';
+import { defaultI18n } from '../constants';
 
 @customElement('vwk-vechain-dapp-connect-kit')
 export class VechainDappConnectKit extends LitElement {
-    @property({ type: String })
+    @property()
     mode: ThemeMode = 'LIGHT';
 
-    @property({ type: String })
-    theme: Theme = 'DEFAULT';
+    @property()
+    i18n: I18n = defaultI18n;
+
+    @property()
+    language = 'en';
 
     render(): TemplateResult {
         return html` <dapp-kit-context-provider>
             <vwk-connect-button-with-modal
                 .mode=${this.mode}
+                .i18n=${this.i18n}
+                .language=${this.language}
             ></vwk-connect-button-with-modal>
         </dapp-kit-context-provider>`;
     }

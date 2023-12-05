@@ -12,13 +12,15 @@ export const dappKitContext = createContext<DappKitContext>(
     Symbol('dapp-kit-context'),
 );
 
+export const defaultDappKitContext: DappKitContext = {
+    address: '',
+};
+
 @customElement('dapp-kit-context-provider')
 export class DappKitContextProvider extends LitElement {
     @provide({ context: dappKitContext })
     @property({ attribute: false })
-    dappKitContext: DappKitContext = {
-        address: '',
-    };
+    dappKitContext: DappKitContext = defaultDappKitContext;
 
     constructor() {
         super();

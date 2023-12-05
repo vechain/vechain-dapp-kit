@@ -1,15 +1,17 @@
-import type { TemplateResult } from 'lit';
-import { html, LitElement } from 'lit';
+import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { Theme, ThemeMode } from '../constants';
+import { defaultI18n, type I18n, type ThemeMode } from '../constants';
 
 @customElement('vwk-connected-address-button-with-modal')
 export class AddressButtonWithModal extends LitElement {
-    @property({ type: String })
+    @property()
     mode: ThemeMode = 'LIGHT';
 
-    @property({ type: String })
-    theme: Theme = 'DEFAULT';
+    @property()
+    i18n: I18n = defaultI18n;
+
+    @property()
+    language = 'en';
 
     @property({ type: String })
     address?: string;
@@ -26,13 +28,13 @@ export class AddressButtonWithModal extends LitElement {
                 <vwk-fonts></vwk-fonts>
                 <vwk-connected-address-button
                     .mode=${this.mode}
-                    .theme=${this.theme}
                     .address=${this.address}
                     .onClick=${this.handleOpen}
                 ></vwk-connected-address-button>
                 <vwk-connected-address-modal
                     .mode=${this.mode}
-                    .theme=${this.theme}
+                    .i18n=${this.i18n}
+                    .language=${this.language}
                     .open=${this.open}
                     .onClose=${this.handleClose}
                     .address=${this.address}
