@@ -15,6 +15,16 @@ describe('useWalletModal', () => {
             const modal = window.document.querySelector('vwk-connect-modal');
 
             expect(modal).toBeDefined();
+
+            expect(modal?.open).toBe(true);
+        });
+
+        result.current.close();
+
+        await waitFor(() => {
+            const modal = window.document.querySelector('vwk-connect-modal');
+
+            expect(modal?.open).toBe(false);
         });
     });
 });

@@ -1,5 +1,5 @@
 import {
-    ConnectWalletButtonWithModal,
+    ConnectButtonWithModal,
     DAppKitProvider,
 } from '@vechain/dapp-kit-react';
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
@@ -27,7 +27,7 @@ function HomePage() {
             usePersistence
             walletConnectOptions={walletConnectOptions}
         >
-            <ConnectWalletButtonWithModal />;
+            <ConnectButtonWithModal />
         </DAppKitProvider>
     );
 }

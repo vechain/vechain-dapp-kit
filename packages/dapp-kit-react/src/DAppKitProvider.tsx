@@ -9,13 +9,12 @@ import React, {
 import type { WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import { subscribeKey } from 'valtio/utils';
-import type { DAppKitProviderOptions } from './types';
-import { DAppKitContext } from './types';
+import type { DAppKitProviderOptions, DAppKitContext } from './types';
 
 /**
  * Context
  */
-const DAppKitContext = createContext<DAppKitContext | undefined>(undefined);
+const Context = createContext<DAppKitContext | undefined>(undefined);
 
 export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     children,
@@ -87,15 +86,11 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
         };
     }, [connex, account, source, closeModal, openModal]);
 
-    return (
-        <DAppKitContext.Provider value={context}>
-            {children}
-        </DAppKitContext.Provider>
-    );
+    return <Context.Provider value={context}>{children}</Context.Provider>;
 };
 
 export const useConnex = (): DAppKitContext['connex'] => {
-    const context = useContext(DAppKitContext);
+    const context = useContext(Context);
 
     if (!context) {
         throw new Error('"useConnex" must be used within a ConnexProvider');
@@ -105,7 +100,7 @@ export const useConnex = (): DAppKitContext['connex'] => {
 };
 
 export const useWallet = (): DAppKitContext['wallet'] => {
-    const context = useContext(DAppKitContext);
+    const context = useContext(Context);
 
     if (!context) {
         throw new Error('"useWallet" must be used within a ConnexProvider');
@@ -115,7 +110,7 @@ export const useWallet = (): DAppKitContext['wallet'] => {
 };
 
 export const useWalletModal = (): DAppKitContext['modal'] => {
-    const context = useContext(DAppKitContext);
+    const context = useContext(Context);
 
     if (!context) {
         throw new Error(
