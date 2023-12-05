@@ -9,16 +9,19 @@ vi.mock('@vechain/connex');
 
 vi.mocked(Connex.Vendor).mockImplementation((): Connex.Vendor => {
     return {
+        // @ts-ignore
         sign: (type, msg) => {
             if (type === 'tx') {
                 return {
                     request: () => {
+                        // @ts-ignore
                         return mockedConnexSigner.signTx(msg, {});
                     },
                 };
             }
             return {
                 request: () => {
+                    // @ts-ignore
                     return mockedConnexSigner.signCert(msg, {});
                 },
             };
@@ -45,7 +48,9 @@ describe('useWallet', () => {
         expect(result.current).toBeDefined();
 
         result.current.setSource('sync2');
-        result.current.connect();
+        result.current.connect().catch(() => {
+            // ignore
+        });
 
         await waitFor(() => {
             expect(result.current.source).toBe('sync2');
