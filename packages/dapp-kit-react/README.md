@@ -91,7 +91,7 @@ const { vendor, thor } = useConnex();
 -   Use the `ConnectWalletButton` component to display a modal with the available wallets
 
 ```typescript jsx
-import { ConnectWalletButton } from '@vechain/dapp-kit-react';
+import { ConnectButtonWithModal } from '@vechain/dapp-kit-react';
 import { useWallet } from '@vechain/dapp-kit-react';
 
 const MyComponent = (): JSX.Element => {
@@ -105,7 +105,7 @@ const MyComponent = (): JSX.Element => {
 
     return (
         <>
-            <ConnectWalletButton />
+            <ConnectButtonWithModal />
         </>
     );
 };
@@ -116,11 +116,7 @@ const MyComponent = (): JSX.Element => {
 -   Use the `ConnectWalletModal` component to display a modal with the available wallets
 
 ```typescript jsx
-import {
-    ConnectWalletModal,
-    useWallet,
-    useWalletModal,
-} from '@vechain/dapp-kit-react';
+import { useWallet, useWalletModal } from '@vechain/dapp-kit-react';
 
 export const MyComponent = (): JSX.Element => {
     const { account } = useWallet();
@@ -135,7 +131,6 @@ export const MyComponent = (): JSX.Element => {
     return (
         <>
             <button onClick={open}>Connect Wallet</button>
-            <ConnectWalletModal />
         </>
     );
 };
