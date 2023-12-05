@@ -13,6 +13,22 @@ import { dispatchCustomEvent, subscribeToCustomEvent } from './utils';
 
 const MODAL_STATE_EVENT = 'vwk-modal-state-change';
 
+const isModalExisting = (): boolean => {
+    const connectModal = document.querySelector('vwk-connect-modal');
+    const connectModalWithButton = document.querySelector(
+        'vwk-connect-button-with-modal',
+    );
+    const vechainConnect = document.querySelector(
+        'vwk-vechain-dapp-connect-kit',
+    );
+
+    return (
+        Boolean(connectModal) ||
+        Boolean(connectModalWithButton) ||
+        Boolean(vechainConnect)
+    );
+};
+
 const getModal = () => {
     const existing = document.querySelector('vwk-connect-modal');
 
@@ -54,16 +70,22 @@ class CustomWalletConnectModal implements WCModal {
     openModal(options: OpenOptions): Promise<void> {
         DAppKitLogger.debug('CustomWalletConnectModal', 'opening the modal');
 
-        const modal = getModal();
-        modal.open = true;
-        modal.walletConnectQRcode = options.uri;
-        modal.onClose = () => {
-            modal.open = false;
-        };
-
-        setTimeout(() => {
+        if (isModalExisting()) {
             dispatchCustomEvent('vwk-open-wc-modal', options);
-        }, 100);
+        } else {
+            DAppKitLogger.debug('DAppKitModal', 'creating a new WC modal');
+
+            const modal = getModal();
+            modal.open = true;
+            modal.walletConnectQRcode = options.uri;
+            modal.onClose = () => {
+                modal.open = false;
+            };
+
+            setTimeout(() => {
+                dispatchCustomEvent('vwk-open-wc-modal', options);
+            }, 100);
+        }
 
         return Promise.resolve();
     }
@@ -109,15 +131,20 @@ export class DAppKitModal {
     open(): void {
         DAppKitLogger.debug('DAppKitModal', 'opening the modal');
 
-        const modal = getModal();
-        modal.open = true;
-        modal.onClose = () => {
-            modal.open = false;
-        };
-
-        setTimeout(() => {
+        if (isModalExisting()) {
             dispatchCustomEvent('vwk-open-wallet-modal', undefined);
-        }, 100);
+        } else {
+            DAppKitLogger.debug('DAppKitModal', 'creating a new modal');
+            const modal = getModal();
+            modal.open = true;
+            modal.onClose = () => {
+                modal.open = false;
+            };
+
+            setTimeout(() => {
+                dispatchCustomEvent('vwk-open-wallet-modal', undefined);
+            }, 100);
+        }
     }
 
     close(): void {
