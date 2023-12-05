@@ -22,7 +22,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     genesis,
     walletConnectOptions,
     usePersistence = false,
-    modalZIndex,
+    customStyles,
     logLevel,
 }): React.ReactElement => {
     const connex = useMemo(
@@ -33,7 +33,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
                 walletConnectOptions,
                 usePersistence,
                 logLevel,
-                modalZIndex,
+                customStyles,
             }),
         [
             nodeUrl,
@@ -41,7 +41,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
             walletConnectOptions,
             usePersistence,
             logLevel,
-            modalZIndex,
+            customStyles,
         ],
     );
 

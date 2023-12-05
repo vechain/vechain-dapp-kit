@@ -7,7 +7,7 @@ import { CustomizedStyle, initStyles } from './styles';
 let dappKit: DAppKit | null = null;
 
 export type DAppKitUIOptions = DAppKitOptions & {
-    styles?: CustomizedStyle;
+    customStyles?: CustomizedStyle;
 };
 
 const DAppKitUI = {
@@ -20,8 +20,8 @@ const DAppKitUI = {
                 CustomWalletConnectModal.getInstance();
         }
 
-        if (options.styles) {
-            initStyles(options.styles);
+        if (options.customStyles) {
+            initStyles(options.customStyles);
         }
 
         dappKit = new DAppKit(options);
