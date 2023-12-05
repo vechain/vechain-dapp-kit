@@ -1,7 +1,7 @@
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-import { VechainDappConnectKit } from '@vechain/dapp-kit-react';
+import { ConnectButtonWithModal } from '@vechain/dapp-kit-react';
 
 function App() {
     return (
@@ -20,7 +20,7 @@ function App() {
             </div>
             <h1>Vite + React</h1>
             <div className="card">
-                <VechainDappConnectKit />
+                <ConnectButtonWithModal />
             </div>
             <p className="read-the-docs">
                 Click on the Vite and React logos to learn more
