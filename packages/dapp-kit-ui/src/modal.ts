@@ -13,6 +13,19 @@ import { dispatchCustomEvent, subscribeToCustomEvent } from './utils';
 
 const MODAL_STATE_EVENT = 'vwk-modal-state-change';
 
+const getModal = () => {
+    const existing = document.querySelector('vwk-connect-modal');
+
+    if (existing) {
+        return existing;
+    }
+    const element = document.createElement('vwk-connect-modal');
+
+    document.body.appendChild(element);
+
+    return element;
+};
+
 class CustomWalletConnectModal implements WCModal {
     private static instance: CustomWalletConnectModal | null = null;
 
@@ -40,7 +53,18 @@ class CustomWalletConnectModal implements WCModal {
      */
     openModal(options: OpenOptions): Promise<void> {
         DAppKitLogger.debug('CustomWalletConnectModal', 'opening the modal');
-        dispatchCustomEvent('vwk-open-wc-modal', options);
+
+        const modal = getModal();
+        modal.open = true;
+        modal.walletConnectQRcode = options.uri;
+        modal.onClose = () => {
+            modal.open = false;
+        };
+
+        setTimeout(() => {
+            dispatchCustomEvent('vwk-open-wc-modal', options);
+        }, 100);
+
         return Promise.resolve();
     }
 
@@ -85,24 +109,15 @@ export class DAppKitModal {
     open(): void {
         DAppKitLogger.debug('DAppKitModal', 'opening the modal');
 
-        const existingElement =
-            window.document.querySelector('vwk-connect-modal');
+        const modal = getModal();
+        modal.open = true;
+        modal.onClose = () => {
+            modal.open = false;
+        };
 
-        if (!existingElement) {
-            DAppKitLogger.debug(
-                'DAppKitModal',
-                'OPEN',
-                'creating a new element',
-            );
-
-            const element = window.document.createElement('vwk-connect-modal');
-
-            element.open = true;
-
-            window.document.body.appendChild(element);
-        }
-
-        dispatchCustomEvent('vwk-open-wallet-modal', undefined);
+        setTimeout(() => {
+            dispatchCustomEvent('vwk-open-wallet-modal', undefined);
+        }, 100);
     }
 
     close(): void {

@@ -2,17 +2,26 @@
 import type { DAppKitOptions, WalletManager } from '@vechain/dapp-kit';
 import { DAppKit } from '@vechain/dapp-kit';
 import { CustomWalletConnectModal, DAppKitModal } from './modal';
+import { CustomizedStyle, initStyles } from './styles';
 
 let dappKit: DAppKit | null = null;
 
+export type DAppKitUIOptions = DAppKitOptions & {
+    customStyles?: CustomizedStyle;
+};
+
 const DAppKitUI = {
-    configure(options: DAppKitOptions): DAppKit {
+    configure(options: DAppKitUIOptions): DAppKit {
         if (
             options.walletConnectOptions &&
             !options.walletConnectOptions.modal
         ) {
             options.walletConnectOptions.modal =
                 CustomWalletConnectModal.getInstance();
+        }
+
+        if (options.customStyles) {
+            initStyles(options.customStyles);
         }
 
         dappKit = new DAppKit(options);
