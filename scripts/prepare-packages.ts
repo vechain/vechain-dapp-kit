@@ -72,7 +72,6 @@ const preparePackages = async () => {
     updatePackageVersions(version);
     await exec(`yarn format`);
     console.log('       - ✅ Updated!');
-    //log run `yarn changeset publish` to publish the packages
 
     console.log('\n______________________________________________________\n\n');
     console.log(' Publish:');
