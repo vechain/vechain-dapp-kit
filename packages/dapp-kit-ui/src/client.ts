@@ -2,11 +2,12 @@
 import type { DAppKitOptions, WalletManager } from '@vechain/dapp-kit';
 import { DAppKit } from '@vechain/dapp-kit';
 import { CustomWalletConnectModal, DAppKitModal } from './modal';
+import { CustomizedStyle, initStyles } from './styles';
 
 let dappKit: DAppKit | null = null;
 
 export type DAppKitUIOptions = DAppKitOptions & {
-    modalZIndex?: number;
+    styles?: CustomizedStyle;
 };
 
 const DAppKitUI = {
@@ -19,15 +20,8 @@ const DAppKitUI = {
                 CustomWalletConnectModal.getInstance();
         }
 
-        if (options.modalZIndex) {
-            const root: HTMLElement | null = document.querySelector(':root');
-
-            if (root) {
-                root.style.setProperty(
-                    '--vwk-modal-z-index',
-                    options.modalZIndex.toString(),
-                );
-            }
+        if (options.styles) {
+            initStyles(options.styles);
         }
 
         dappKit = new DAppKit(options);
