@@ -1,7 +1,7 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { OpenOptions, WalletManager } from '@vechain/dapp-kit';
+import type { WalletManager } from '@vechain/dapp-kit';
 import { consume } from '@lit/context';
 import type { SourceInfo } from '../constants';
 import { Font, WalletSources } from '../constants';
@@ -65,7 +65,7 @@ export class ConnectModal extends LitElement {
     constructor() {
         super();
 
-        subscribeToCustomEvent('vwk-open-wc-modal', (options: OpenOptions) => {
+        subscribeToCustomEvent('vwk-open-wc-modal', (options) => {
             if (isMobile()) {
                 this.openingVeWorld = true;
                 window.open(

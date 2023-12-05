@@ -5,14 +5,29 @@ import { CustomWalletConnectModal, DAppKitModal } from './modal';
 
 let dappKit: DAppKit | null = null;
 
+export type DAppKitUIOptions = DAppKitOptions & {
+    modalZIndex?: number;
+};
+
 const DAppKitUI = {
-    configure(options: DAppKitOptions): DAppKit {
+    configure(options: DAppKitUIOptions): DAppKit {
         if (
             options.walletConnectOptions &&
             !options.walletConnectOptions.modal
         ) {
             options.walletConnectOptions.modal =
                 CustomWalletConnectModal.getInstance();
+        }
+
+        if (options.modalZIndex) {
+            const root: HTMLElement | null = document.querySelector(':root');
+
+            if (root) {
+                root.style.setProperty(
+                    '--vwk-modal-z-index',
+                    options.modalZIndex.toString(),
+                );
+            }
         }
 
         dappKit = new DAppKit(options);

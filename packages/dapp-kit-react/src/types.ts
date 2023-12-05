@@ -1,10 +1,7 @@
 /// <reference types="@vechain/connex" />
 import type React from 'react';
-import type {
-    ConnectResponse,
-    DAppKitOptions,
-    WalletSource,
-} from '@vechain/dapp-kit';
+import type { ConnectResponse, WalletSource } from '@vechain/dapp-kit';
+import { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 
 export interface AccountState {
     address: string | null;
@@ -15,7 +12,7 @@ export interface AccountState {
  * Connex Provider Options
  * @param children - React children
  */
-export type DAppKitProviderOptions = DAppKitOptions & {
+export type DAppKitProviderOptions = DAppKitUIOptions & {
     children: React.ReactNode;
 };
 
