@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 import React, { createContext, useState } from 'react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import type { ThemeMode } from '@vechainfoundation/dapp-kit-ui';
+import type { ThemeMode } from '@vechain/dapp-kit-ui';
 
 interface Theme {
     mode: ThemeMode;

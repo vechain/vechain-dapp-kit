@@ -4,7 +4,7 @@ import {
     ConnectResponse,
     WalletConnectOptions,
     WalletSource,
-} from '@vechainfoundation/dapp-kit';
+} from '@vechain/dapp-kit';
 import type Connex from '@vechain/connex';
 import {
     ConnexSymbol,
@@ -12,7 +12,7 @@ import {
     WalletStateSymbol,
 } from '@/dapp-kit/keys';
 import { WalletActions, WalletState } from '@/dapp-kit/types';
-import { DAppKitUI } from '@vechainfoundation/dapp-kit-ui';
+import { DAppKitUI } from '@vechain/dapp-kit-ui';
 
 const initWallets = (hasWcOptions: boolean) => {
     const wallets: WalletSource[] = ['sync2'];

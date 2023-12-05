@@ -1,4 +1,4 @@
-import { ConnectResponse, WalletSource } from '@vechainfoundation/dapp-kit';
+import { ConnectResponse, WalletSource } from '@vechain/dapp-kit';
 
 type WalletState = {
     availableWallets: WalletSource[];

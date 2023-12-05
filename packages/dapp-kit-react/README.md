@@ -1,4 +1,4 @@
-# `@vechainfoundation/dapp-kit-react`
+# `@vechain/dapp-kit-react`
 
 ## Why ?
 
@@ -20,7 +20,7 @@ yarn build
 ## Usage
 
 ```bash
-yarn add @vechainfoundation/dapp-kit-react
+yarn add @vechain/dapp-kit-react
 ```
 
 -   Optional: Configure wallet connect options
@@ -70,8 +70,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 -   Use the hooks provided by the `DAppKitProvider`
 
 ```typescript jsx
-import { useWallet, useConnex } from '@vechainfoundation/dapp-kit-react';
-import type { WalletSource } from '@vechainfoundation/dapp-kit';
+import { useWallet, useConnex } from '@vechain/dapp-kit-react';
+import type { WalletSource } from '@vechain/dapp-kit';
 
 // type WalletSource = 'wallet-connect' | 'veworld' | 'sync2' | 'sync';
 const mySource: WalletSource = 'veworld';
@@ -91,8 +91,8 @@ const { vendor, thor } = useConnex();
 -   Use the `ConnectWalletButton` component to display a modal with the available wallets
 
 ```typescript jsx
-import { ConnectWalletButton } from '@vechainfoundation/dapp-kit-react';
-import { useWallet } from '@vechainfoundation/dapp-kit-react';
+import { ConnectWalletButton } from '@vechain/dapp-kit-react';
+import { useWallet } from '@vechain/dapp-kit-react';
 
 const MyComponent = (): JSX.Element => {
     const { account } = useWallet();
@@ -120,7 +120,7 @@ import {
     ConnectWalletModal,
     useWallet,
     useWalletModal,
-} from '@vechainfoundation/dapp-kit-react';
+} from '@vechain/dapp-kit-react';
 
 export const MyComponent = (): JSX.Element => {
     const { account } = useWallet();

@@ -6,18 +6,18 @@
     ],
     "scripts": {
         "build": "turbo run build",
-        "build-react-kit": "turbo run build  --filter='@vechainfoundation/dapp-kit-react'",
-        "build:deps": "turbo build --no-daemon --filter='@vechainfoundation/*'",
+        "build-react-kit": "turbo run build  --filter='@vechain/dapp-kit-react'",
+        "build:deps": "turbo build --no-daemon --filter='@vechain/*'",
         "clean": "rm -rf .turbo .parcel-cache build && npx turbo@latest run clean",
         "cucumber": "yarn && cucumber-js",
-        "dev": "turbo run dev --filter='@vechainfoundation/*'",
+        "dev": "turbo run dev --filter='@vechain/*'",
         "format": "prettier --write \"**/*.{ts,tsx,md,json,js,jsx}\"",
         "install:all": "yarn && yarn run build:deps",
         "lint": "turbo run lint",
         "prepare": "husky install",
         "purge": "npx turbo@latest run purge && rm -rf node_modules",
         "reinstall": "yarn clean && yarn purge && yarn && yarn run build:deps",
-        "test": "turbo run test --filter='@vechainfoundation/*'"
+        "test": "turbo run test --filter='@vechain/*'"
     },
     "husky": {
         "hooks": {
@@ -35,6 +35,7 @@
     },
     "devDependencies": {
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+        "@changesets/cli": "^2.27.1",
         "@commitlint/config-conventional": "^18.0.0",
         "@vechain/repo-config": "https://github.com/vechainfoundation/repo-config#v0.0.1",
         "commitlint": "^18.0.0",

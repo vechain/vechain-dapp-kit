@@ -1,4 +1,4 @@
-import type { WalletConnectOptions } from '@vechainfoundation/dapp-kit';
+import type { WalletConnectOptions } from '@vechain/dapp-kit';
 import type { LogLevel } from './utils/logger';
 
 declare global {

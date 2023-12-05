@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { createComponent } from '@lit/react';
-import { VechainDappConnectKit as VechainDappConnectKitVanilla } from '@vechainfoundation/dapp-kit-ui';
+import { VechainDappConnectKit as VechainDappConnectKitVanilla } from '@vechain/dapp-kit-ui';
 import { useThemeSelector } from '../../../provider/ThemeProvider';
 
 const VechainDappConnectKitWrapped = () =>

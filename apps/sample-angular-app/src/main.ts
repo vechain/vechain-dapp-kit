@@ -1,9 +1,6 @@
-import { DAppKitUI } from '@vechainfoundation/dapp-kit-ui';
+import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import { bootstrapApplication } from '@angular/platform-browser';
-import type {
-    DAppKitOptions,
-    WalletConnectOptions,
-} from '@vechainfoundation/dapp-kit';
+import type { DAppKitOptions, WalletConnectOptions } from '@vechain/dapp-kit';
 import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, {

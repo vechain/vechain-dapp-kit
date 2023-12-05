@@ -1,6 +1,7 @@
 {
     "name": "sample-vanilla-app",
     "version": "1.0.0",
+    "private": true,
     "description": "",
     "license": "ISC",
     "author": "",
@@ -13,7 +14,7 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "@vechainfoundation/dapp-kit-ui": "*"
+        "@vechain/dapp-kit-ui": "*"
     },
     "devDependencies": {
         "parcel": "^2.10.2"

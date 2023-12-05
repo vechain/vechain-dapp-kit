@@ -3,15 +3,16 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
+        "build": "next build",
         "clean": "rm -rf .next dist .turbo",
         "dev": "next dev",
         "purge": "yarn clean; rm -rf node_modules",
         "start": "next start"
     },
     "dependencies": {
-        "@vechainfoundation/dapp-kit": "*",
-        "@vechainfoundation/dapp-kit-react": "*",
-        "@vechainfoundation/dapp-kit-ui": "*",
+        "@vechain/dapp-kit": "*",
+        "@vechain/dapp-kit-react": "*",
+        "@vechain/dapp-kit-ui": "*",
         "next": "14.0.3",
         "react": "^18",
         "react-dom": "^18"

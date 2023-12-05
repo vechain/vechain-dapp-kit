@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
-import type { WalletConnectOptions } from '@vechainfoundation/dapp-kit';
-import '@vechainfoundation/dapp-kit-ui';
-import { DAppKitProvider } from '@vechainfoundation/dapp-kit-react';
+import type { WalletConnectOptions } from '@vechain/dapp-kit';
+import '@vechain/dapp-kit-ui';
+import { DAppKitProvider } from '@vechain/dapp-kit-react';
 
 const walletConnectOptions: WalletConnectOptions = {
     projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',

@@ -1,9 +1,6 @@
 /// <reference types="@vechain/connex" />
-import type {
-    DAppKitOptions,
-    WalletManager,
-} from '@vechainfoundation/dapp-kit';
-import { DAppKit } from '@vechainfoundation/dapp-kit';
+import type { DAppKitOptions, WalletManager } from '@vechain/dapp-kit';
+import { DAppKit } from '@vechain/dapp-kit';
 import { CustomWalletConnectModal, DAppKitModal } from './modal';
 
 let dappKit: DAppKit | null = null;
