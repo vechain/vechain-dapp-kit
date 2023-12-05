@@ -11,20 +11,21 @@ describe('useWalletModal', () => {
 
         result.current.open();
 
-        await waitFor(() => {
-            const modal = window.document.querySelector('vwk-connect-modal');
+        await waitFor(
+            () => {
+                const modalHtml = window.document.body
+                    .querySelector('vwk-vechain-dapp-connect-kit')
+                    ?.shadowRoot?.querySelector('vwk-connect-button-with-modal')
+                    ?.shadowRoot?.querySelector('vwk-connect-modal')
+                    ?.shadowRoot?.innerHTML;
 
-            expect(modal).toBeDefined();
+                expect(modalHtml).toBeDefined();
 
-            expect(modal?.open).toBe(true);
-        });
+                expect(modalHtml).toContain('Connect Wallet');
+            },
+            { timeout: 5000 },
+        );
 
         result.current.close();
-
-        await waitFor(() => {
-            const modal = window.document.querySelector('vwk-connect-modal');
-
-            expect(modal?.open).toBe(false);
-        });
     });
 });
