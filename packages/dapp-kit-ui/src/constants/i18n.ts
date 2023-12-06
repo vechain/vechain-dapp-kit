@@ -1,4 +1,13 @@
-export type I18n = Record<string, Record<string, string>>;
+export type TranslationKey =
+    | 'connect-wallet'
+    | 'copy-to-clipboard'
+    | 'connected'
+    | 'disconnect'
+    | 'opening-veworld'
+    | 'get-veworld';
+export type Language = 'en' | 'it' | 'fr' | 'es' | 'de' | 'zh' | 'ja' | 'ru';
+
+export type I18n = Record<Language, Record<TranslationKey, string>>;
 
 export const defaultI18n: I18n = {
     en: {

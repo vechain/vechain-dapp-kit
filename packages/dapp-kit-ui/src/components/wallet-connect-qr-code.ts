@@ -8,6 +8,7 @@ import {
     Font,
     type I18n,
     IOS_STORE_URL,
+    Language,
     type ThemeMode,
 } from '../constants';
 import {
@@ -167,7 +168,7 @@ export class WalletConnectQrCode extends LitElement {
     @property()
     i18n: I18n = defaultI18n;
     @property()
-    language = 'en';
+    language: Language = 'en';
     @property()
     walletConnectQRcode?: string = undefined;
     @property()

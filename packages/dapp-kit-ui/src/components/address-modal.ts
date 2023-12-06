@@ -1,7 +1,7 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { I18n, SourceInfo } from '../constants';
+import type { I18n, Language, SourceInfo } from '../constants';
 import { defaultI18n, Font } from '../constants';
 import { buttonStyle, iconButtonStyle } from '../assets/styles';
 import type { ThemeMode } from '../constants/theme';
@@ -125,7 +125,7 @@ export class AddressModal extends LitElement {
     i18n: I18n = defaultI18n;
 
     @property()
-    language = 'en';
+    language: Language = 'en';
 
     @property()
     walletConnectQRcode?: string = undefined;

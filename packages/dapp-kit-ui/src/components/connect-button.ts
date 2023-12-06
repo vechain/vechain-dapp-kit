@@ -3,7 +3,7 @@ import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { ThemeMode } from '../constants/theme';
 import { buttonStyle } from '../assets/styles';
-import { defaultI18n, type I18n } from '../constants';
+import { defaultI18n, type I18n, Language } from '../constants';
 import { useTranslate } from '../utils';
 
 @customElement('vwk-connect-button')
@@ -24,7 +24,7 @@ export class ConnectButton extends LitElement {
     i18n: I18n = defaultI18n;
 
     @property()
-    language = 'en';
+    language: Language = 'en';
 
     @property({ type: Function })
     onClick? = undefined;

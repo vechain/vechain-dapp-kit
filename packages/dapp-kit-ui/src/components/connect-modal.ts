@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechain/dapp-kit';
 import { consume } from '@lit/context';
 import type { I18n, SourceInfo } from '../constants';
-import { defaultI18n, Font, WalletSources } from '../constants';
+import { defaultI18n, Font, Language, WalletSources } from '../constants';
 import {
     DarkChevronLeftSvg,
     DarkCloseSvg,
@@ -62,7 +62,7 @@ export class ConnectModal extends LitElement {
     i18n: I18n = defaultI18n;
 
     @property()
-    language = 'en';
+    language: Language = 'en';
 
     @property()
     walletConnectQRcode?: string = undefined;
