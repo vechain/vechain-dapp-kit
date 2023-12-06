@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "vechain-dapp-kit",
-    "description": "A TypeScript library that facilitates seamless interaction between vechain wallets (veworld, sync2) and dApps",
+    "description": "A TypeScript library that facilitates seamless interaction between vechain wallets (veworld, sync2) and dApps.",
     "workspaces": [
         "apps/*",
         "packages/*"
