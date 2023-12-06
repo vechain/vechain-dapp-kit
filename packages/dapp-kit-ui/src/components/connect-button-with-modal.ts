@@ -3,28 +3,31 @@ import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechain/dapp-kit';
 import { DAppKitUI } from '../client';
-import type { SourceInfo, Theme, ThemeMode } from '../constants';
+import {
+    defaultI18n,
+    type I18n,
+    type SourceInfo,
+    type ThemeMode,
+} from '../constants';
 import type { DappKitContext } from './provider';
-import { dappKitContext } from './provider';
+import { dappKitContext, defaultDappKitContext } from './provider';
 
 @customElement('vwk-connect-button-with-modal')
 export class ConnectButtonWithModal extends LitElement {
     @consume({ context: dappKitContext })
     @property({ attribute: false })
-    dappKitContext: DappKitContext = {
-        address: '',
-    };
+    dappKitContext: DappKitContext = defaultDappKitContext;
 
     @property()
-    override title = 'Connect Wallet';
-
-    @property({ type: String })
     mode: ThemeMode = 'LIGHT';
 
-    @property({ type: String })
-    theme: Theme = 'DEFAULT';
+    @property()
+    i18n: I18n = defaultI18n;
 
-    @property({ type: Boolean })
+    @property()
+    language = 'en';
+
+    @property()
     open = false;
 
     private get wallet(): WalletManager {
@@ -61,19 +64,21 @@ export class ConnectButtonWithModal extends LitElement {
                 ${this.dappKitContext.address
                     ? html` <vwk-connected-address-button-with-modal
                           .mode=${this.mode}
-                          .theme=${this.theme}
+                          .i18n=${this.i18n}
+                          .language=${this.language}
                           .address=${this.dappKitContext.address}
                           .onDisconnectClick=${this.onDisconnectClick}
                       ></vwk-connected-address-button-with-modal>`
                     : html` <vwk-connect-button
-                              .title=${this.title}
                               .mode=${this.mode}
-                              .theme=${this.theme}
+                              .i18n=${this.i18n}
+                              .language=${this.language}
                               .onClick=${this.handleOpen}
                           ></vwk-connect-button>
                           <vwk-connect-modal
                               .mode=${this.mode}
-                              .theme=${this.theme}
+                              .i18n=${this.i18n}
+                              .language=${this.language}
                               .open=${this.open}
                               .onClose=${this.handleClose}
                               .onSourceClick=${this.onSourceClick}

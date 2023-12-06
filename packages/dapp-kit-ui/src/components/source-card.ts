@@ -2,12 +2,7 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechain/dapp-kit';
-import {
-    Font,
-    type SourceInfo,
-    type Theme,
-    type ThemeMode,
-} from '../constants';
+import { Font, type SourceInfo, type ThemeMode } from '../constants';
 import { buttonStyle } from '../assets/styles';
 import { DAppKitUI } from '../client';
 
@@ -39,9 +34,6 @@ export class SourceCard extends LitElement {
     mode: ThemeMode = 'LIGHT';
 
     @property()
-    theme: Theme = 'DEFAULT';
-
-    @property()
     source?: SourceInfo = undefined;
 
     get wallet(): WalletManager {
@@ -55,7 +47,7 @@ export class SourceCard extends LitElement {
     override render(): TemplateResult {
         return html`
             <button
-                class="card ${this.mode} ${this.theme}"
+                class="card ${this.mode}"
                 @click=${(): void => this.handleSourceClick()}
             >
                 <div>${this.source?.name}</div>

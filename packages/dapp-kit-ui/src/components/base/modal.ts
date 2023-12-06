@@ -1,7 +1,7 @@
 import type { PropertyValues, TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import type { Theme, ThemeMode } from '../../constants';
+import type { ThemeMode } from '../../constants';
 import { Breakpoint, Colors } from '../../constants';
 import { modalZIndex } from '../../constants/z-index';
 
@@ -85,8 +85,6 @@ export class Modal extends LitElement {
     open = false;
     @property()
     mode: ThemeMode = 'LIGHT';
-    @property()
-    theme: Theme = 'DEFAULT';
 
     observer = new ResizeObserver(() => {
         this.modalHeight = this.modalSubContainer?.clientHeight ?? 0;
@@ -121,7 +119,7 @@ export class Modal extends LitElement {
                 @click=${this.onClose}
             >
                 <div
-                    class="modal ${this.mode} ${this.theme}"
+                    class="modal ${this.mode}"
                     @click=${this.stopPropagation}
                     style="height: ${this.modalHeight
                         ? `${this.modalHeight}px`

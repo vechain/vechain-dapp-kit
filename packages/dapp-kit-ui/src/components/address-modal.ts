@@ -1,12 +1,17 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { SourceInfo } from '../constants';
-import { Font } from '../constants';
+import type { I18n, SourceInfo } from '../constants';
+import { defaultI18n, Font } from '../constants';
 import { buttonStyle, iconButtonStyle } from '../assets/styles';
-import { dispatchCustomEvent, subscribeToCustomEvent } from '../utils';
-import type { Theme, ThemeMode } from '../constants/theme';
-import { friendlyAddress, getPicassoImage } from '../utils/account';
+import type { ThemeMode } from '../constants/theme';
+import {
+    friendlyAddress,
+    getPicassoImage,
+    useTranslate,
+    dispatchCustomEvent,
+    subscribeToCustomEvent,
+} from '../utils';
 import {
     CheckSvg,
     DarkCloseSvg,
@@ -117,7 +122,10 @@ export class AddressModal extends LitElement {
     mode: ThemeMode = 'LIGHT';
 
     @property()
-    theme: Theme = 'DEFAULT';
+    i18n: I18n = defaultI18n;
+
+    @property()
+    language = 'en';
 
     @property()
     walletConnectQRcode?: string = undefined;
@@ -141,6 +149,7 @@ export class AddressModal extends LitElement {
     onClose: () => void = () => nothing;
 
     override render(): TemplateResult {
+        const translate = useTranslate(this.i18n, this.language);
         let copyIcon = this.mode === 'LIGHT' ? LightCopySvg : DarkCopySvg;
         if (this.showCopiedIcon) {
             copyIcon = CheckSvg;
@@ -151,12 +160,11 @@ export class AddressModal extends LitElement {
                 .open=${this.open}
                 .onClose=${this.handleClose}
                 .mode=${this.mode}
-                .theme=${this.theme}
         >
             <div class="modal-container">
                 <div class="modal-header">
                     <div class="icon-button"></div>
-                    <div class="title">Connected</div>
+                    <div class="title">${translate('connected')}</div>
                     <div
                             class="icon-button ${this.mode}"
                             @click=${this.handleClose}
@@ -179,7 +187,7 @@ export class AddressModal extends LitElement {
                 </div>
                 <div class="modal-footer">
                     <button
-                            class="${this.mode} ${this.theme}"
+                            class="${this.mode}"
                             @click=${this.onDisconnectClick}
                     >
                         <div class="disconnect-icon ${this.mode}">
@@ -189,7 +197,7 @@ export class AddressModal extends LitElement {
                                     : DarkDisconnectSvg
                             }
                         </div>
-                        Disconnect
+                        ${translate('disconnect')}
                     </button>
                 </div>
         </vwk-base-modal>

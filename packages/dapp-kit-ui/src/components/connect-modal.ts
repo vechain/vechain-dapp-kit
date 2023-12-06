@@ -3,20 +3,20 @@ import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechain/dapp-kit';
 import { consume } from '@lit/context';
-import type { SourceInfo } from '../constants';
-import { Font, WalletSources } from '../constants';
+import type { I18n, SourceInfo } from '../constants';
+import { defaultI18n, Font, WalletSources } from '../constants';
 import {
     DarkChevronLeftSvg,
     DarkCloseSvg,
     LightChevronLeftSvg,
     LightCloseSvg,
 } from '../assets/icons';
-import { isMobile, subscribeToCustomEvent } from '../utils';
+import { isMobile, subscribeToCustomEvent, useTranslate } from '../utils';
 import { DAppKitUI } from '../client';
-import type { Theme, ThemeMode } from '../constants/theme';
+import type { ThemeMode } from '../constants/theme';
 import { iconButtonStyle } from '../assets/styles';
 import type { DappKitContext } from './provider';
-import { dappKitContext } from './provider';
+import { dappKitContext, defaultDappKitContext } from './provider';
 
 @customElement('vwk-connect-modal')
 export class ConnectModal extends LitElement {
@@ -47,18 +47,23 @@ export class ConnectModal extends LitElement {
 
     @consume({ context: dappKitContext })
     @property({ attribute: false })
-    dappKitContext: DappKitContext = {
-        address: '',
-    };
+    dappKitContext: DappKitContext = defaultDappKitContext;
 
     @property({ type: Boolean })
     open = false;
+
     @property({ type: Boolean })
     openingVeWorld = false;
+
     @property()
     mode: ThemeMode = 'LIGHT';
+
     @property()
-    theme: Theme = 'DEFAULT';
+    i18n: I18n = defaultI18n;
+
+    @property()
+    language = 'en';
+
     @property()
     walletConnectQRcode?: string = undefined;
 
@@ -124,13 +129,13 @@ export class ConnectModal extends LitElement {
     onClose: () => void = () => nothing;
 
     override render(): TemplateResult {
+        const translate = useTranslate(this.i18n, this.language);
         return html`
         <vwk-fonts></vwk-fonts>
         <vwk-base-modal
                 .open=${this.open}
                 .onClose=${this.handleClose}
                 .mode=${this.mode}
-                .theme=${this.theme}
         >
             <div class="modal-container">
                 <div class="modal-header">
@@ -146,7 +151,7 @@ export class ConnectModal extends LitElement {
                               </div>`
                             : html` <div class="icon-button"></div>`
                     }
-                    <div>Connect Wallet</div>
+                    <div>${translate('connect-wallet')}</div>
                     <div
                             class="icon-button ${this.mode}"
                             @click=${this.handleClose}
@@ -160,7 +165,8 @@ export class ConnectModal extends LitElement {
                             ? html` <vwk-wallet-connect-qrcode
                                   .openingVeWorld=${this.openingVeWorld}
                                   .mode=${this.mode}
-                                  .theme=${this.theme}
+                                  .i18n=${this.i18n}
+                                  .language=${this.language}
                                   .walletConnectQRcode=${this
                                       .walletConnectQRcode}
                               ></vwk-wallet-connect-qrcode>`

@@ -1,13 +1,24 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { ANDROID_STORE_URL, Colors, Font, IOS_STORE_URL } from '../constants';
-import { CheckSvg, DarkCopySvg, LightCopySvg } from '../assets/icons';
+import {
+    ANDROID_STORE_URL,
+    Colors,
+    defaultI18n,
+    Font,
+    type I18n,
+    IOS_STORE_URL,
+    type ThemeMode,
+} from '../constants';
+import {
+    CheckSvg,
+    DarkCopySvg,
+    LightCopySvg,
+    WalletConnectLogoSvg,
+} from '../assets/icons';
 import { buttonStyle } from '../assets/styles';
-import { isAndroid, QrCodeUtil } from '../utils';
-import type { Theme, ThemeMode } from '../constants/theme';
+import { isAndroid, QrCodeUtil, useTranslate } from '../utils';
 import { VeWorldLogo } from '../assets/images';
-import { WalletConnectLogoSvg } from '../assets/icons/wallet-connect';
 
 const qrCodeSize = 280;
 @customElement('vwk-wallet-connect-qrcode')
@@ -154,7 +165,9 @@ export class WalletConnectQrCode extends LitElement {
     @property()
     mode: ThemeMode = 'LIGHT';
     @property()
-    theme: Theme = 'DEFAULT';
+    i18n: I18n = defaultI18n;
+    @property()
+    language = 'en';
     @property()
     walletConnectQRcode?: string = undefined;
     @property()
@@ -163,6 +176,7 @@ export class WalletConnectQrCode extends LitElement {
     openingVeWorld = false;
 
     override render(): TemplateResult | typeof nothing {
+        const translate = useTranslate(this.i18n, this.language);
         let copyIcon = this.mode === 'LIGHT' ? LightCopySvg : DarkCopySvg;
         if (this.showCopiedIcon) {
             copyIcon = CheckSvg;
@@ -177,29 +191,26 @@ export class WalletConnectQrCode extends LitElement {
                 </div>
                 ${this.openingVeWorld
                     ? html`<div class="openingVeWorldText">
-                          Opening VeWorld...
+                          ${translate('opening-veworld')}
                       </div>`
                     : nothing}
                 ${this.openingVeWorld
                     ? html`<button
-                          class="${this.mode} ${this.theme}"
+                          class="${this.mode}"
                           @click=${this.getVeWorld}
                       >
                           <img class="veworld-icon" src=${VeWorldLogo} />
-                          Get VeWorld
+                          ${translate('get-veworld')}
                       </button>`
                     : nothing}
                 <div class="separator">
-                    <div class="line ${this.mode} ${this.theme}"></div>
-                    <div class="or ${this.mode} ${this.theme}">or</div>
-                    <div class="line ${this.mode} ${this.theme}"></div>
+                    <div class="line ${this.mode}"></div>
+                    <div class="or ${this.mode}">or</div>
+                    <div class="line ${this.mode}"></div>
                 </div>
-                <button
-                    class="${this.mode} ${this.theme}"
-                    @click=${this.onCopy}
-                >
+                <button class="${this.mode}" @click=${this.onCopy}>
                     <div class="icon">${copyIcon}</div>
-                    Copy to Clipboard
+                    ${translate('copy-to-clipboard')}
                 </button>
             </div>
         `;

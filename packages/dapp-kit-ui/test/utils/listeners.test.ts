@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { addResizeListeners } from '../../src/utils/listeners'; // Replace 'yourModule' with the actual module path
+import { addResizeListeners } from '../../src/utils/listeners';
 
 describe('addResizeListeners', () => {
     it('should call the callback when the window loads', () => {
