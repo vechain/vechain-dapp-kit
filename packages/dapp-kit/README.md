@@ -1,11 +1,9 @@
 # `@vechain/dapp-kit`
 
-## Why ?
+-   An extension of `@vechain/connex` to simplify wallet management and interaction
+-   Please refer to the official documentation [here](https://docs.vechain.org/developer-resources/sdks-and-providers/dapp-kit)
 
--   Allow easy interaction with all wallets.
--   Connex is designed to play nice with one wallet at a time, this library provides a layer on top of Connex to easily
-    allow interaction with all wallets.
--   Easy setup for wallet connect.
+---
 
 ## Installation
 
@@ -15,13 +13,17 @@
 yarn build
 ```
 
+---
+
 ## Usage
 
 ```bash
 yarn add @vechain/dapp-kit
 ```
 
--   Optional: Configure wallet connect options
+---
+
+### Optional: Wallet Connection Options
 
 ```typescript
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
@@ -37,6 +39,10 @@ const walletConnectOptions: WalletConnectOptions = {
 };
 ```
 
+---
+
+### Initialise the DAppKit
+
 -   Create a new instance of `DAppKit` and pass in the options
 -   `thor` will be ready to use to interact with the chain, but calling any methods requiring a wallet will throw an
     error. See the next step to finalise the setup.
@@ -51,6 +57,10 @@ const { thor, vendor, wallet } = new DAppKit({
 });
 ```
 
+---
+
+### Set the wallet source
+
 -   You can set the wallet source when the user selects a wallet, or if you want to default to a specific wallet.
 -   Connex is ready to use as normal
 
@@ -64,8 +74,13 @@ wallet.setSource('veworld');
 ```
 
 -   Connect to the wallet. This will return the user's address
--   `verified` indicates whether a certificate is signed by the user. If a sign in is required and the account is not
-    verified, you should request a subsequent certificate sign in
+-   `verified` indicates whether a certificate is signed by the user. If a sign in is required and the account is not verified, you should request a subsequent certificate sign in
+
+---
+
+### Start using Connex
+
+-   Please refer to the [connex documentation](https://docs.vechain.org/developer-resources/sdks-and-providers/connex)
 
 ```typescript
 const {account, verified} = await wallet.connect();
