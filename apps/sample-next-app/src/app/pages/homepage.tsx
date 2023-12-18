@@ -1,6 +1,7 @@
 import {
     ConnectButtonWithModal,
     DAppKitProvider,
+    useWalletModal,
 } from '@vechain/dapp-kit-react';
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
 
@@ -18,6 +19,18 @@ const walletConnectOptions: WalletConnectOptions = {
     },
 };
 
+const Button = () => {
+    const { open } = useWalletModal();
+    return (
+        <div>
+            <h2>Next.js</h2>
+            <ConnectButtonWithModal />
+            <br />
+            <button onClick={open}>Connect Custom Button</button>
+        </div>
+    );
+};
+
 // eslint-disable-next-line func-style
 function HomePage() {
     return (
@@ -27,7 +40,7 @@ function HomePage() {
             usePersistence
             walletConnectOptions={walletConnectOptions}
         >
-            <ConnectButtonWithModal />
+            <Button />
         </DAppKitProvider>
     );
 }
