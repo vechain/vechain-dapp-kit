@@ -19,7 +19,10 @@ const vechainWalletKitOptions = {
     usePersistence: true,
 };
 
-const dappKit = DAppKitUI.configure(vechainWalletKitOptions);
+DAppKitUI.configure(vechainWalletKitOptions);
 
-// eslint-disable-next-line no-console
-console.log(`Connex configured`, dappKit.thor.genesis.id);
+const customButton = document.getElementById('custom-button');
+
+customButton.addEventListener('click', async () => {
+    DAppKitUI.modal.open();
+});
