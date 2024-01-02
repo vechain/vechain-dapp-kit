@@ -1,5 +1,5 @@
-import { proxy, subscribe } from 'valtio';
-import { subscribeKey } from 'valtio/utils';
+import { proxy, subscribe } from 'valtio/vanilla';
+import { subscribeKey } from 'valtio/vanilla/utils';
 import type {
     ConnectResponse,
     ConnexWallet,

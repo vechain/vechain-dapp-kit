@@ -1,7 +1,7 @@
 import { createContext, provide } from '@lit/context';
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { subscribeKey } from 'valtio/utils';
+import { subscribeKey } from 'valtio/vanilla/utils';
 import { DAppKitUI } from '../../client';
 
 export interface DappKitContext {
