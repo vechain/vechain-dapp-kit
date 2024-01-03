@@ -16,12 +16,7 @@ import {
     LightChevronLeftSvg,
     LightCloseSvg,
 } from '../../assets/icons';
-import {
-    dispatchCustomEvent,
-    isMobile,
-    subscribeToCustomEvent,
-    useTranslate,
-} from '../../utils';
+import { isMobile, subscribeToCustomEvent, useTranslate } from '../../utils';
 import { DAppKitUI } from '../../client';
 import { iconButtonStyle } from '../../assets/styles';
 
@@ -121,7 +116,7 @@ export class ConnectModal extends LitElement {
                     this.requestUpdate();
                 })
                 .finally(() => {
-                    dispatchCustomEvent('vwk-close-wallet-modal');
+                    DAppKitUI.modal.close();
                 });
         }
     };
@@ -187,7 +182,7 @@ export class ConnectModal extends LitElement {
     }
 
     private handleBack = (): void => {
-        dispatchCustomEvent('vwk-close-wc-modal');
+        DAppKitUI.modal.closeWalletConnect();
     };
 
     private handleClose = (): void => {
@@ -197,7 +192,7 @@ export class ConnectModal extends LitElement {
                 this.handleBack();
             }, 500);
         }
-        dispatchCustomEvent('vwk-close-wallet-modal');
+        DAppKitUI.modal.close();
         this.onClose();
     };
 }

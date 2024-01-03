@@ -9,7 +9,6 @@ import {
     friendlyAddress,
     getPicassoImage,
     useTranslate,
-    dispatchCustomEvent,
     subscribeToCustomEvent,
 } from '../../utils';
 import {
@@ -21,6 +20,7 @@ import {
     LightCopySvg,
     LightDisconnectSvg,
 } from '../../assets/icons';
+import { DAppKitUI } from '../../client';
 
 @customElement('vwk-address-modal')
 export class AddressModal extends LitElement {
@@ -213,7 +213,7 @@ export class AddressModal extends LitElement {
     };
 
     private handleClose = (): void => {
-        dispatchCustomEvent('vwk-close-wallet-modal');
+        DAppKitUI.modal.close();
         this.onClose();
     };
 }

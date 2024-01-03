@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { Font, type ThemeMode } from '../../constants';
 import { friendlyAddress, getPicassoImage } from '../../utils/account';
 import { buttonStyle } from '../../assets/styles';
-import { dispatchCustomEvent } from '../../utils';
+import { DAppKitUI } from '../../client';
 
 @customElement('vwk-address-button')
 export class AddressButton extends LitElement {
@@ -40,7 +40,7 @@ export class AddressButton extends LitElement {
 
     @property()
     handleOpen = (): void => {
-        dispatchCustomEvent('vwk-open-wallet-modal');
+        DAppKitUI.modal.open();
     };
 
     render(): TemplateResult {

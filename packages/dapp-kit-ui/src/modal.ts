@@ -60,10 +60,7 @@ class CustomWalletConnectModal implements WCModal {
      */
     openModal(options: OpenOptions): Promise<void> {
         DAppKitLogger.debug('CustomWalletConnectModal', 'opening the wc modal');
-
-        createModalIfNotPresent();
         dispatchCustomEvent('vwk-open-wc-modal', options);
-
         return Promise.resolve();
     }
 
@@ -115,6 +112,11 @@ export class DAppKitModal {
     close(): void {
         DAppKitLogger.debug('DAppKitModal', 'closing the modal');
         dispatchCustomEvent('vwk-close-wallet-modal');
+    }
+
+    closeWalletConnect(): void {
+        DAppKitLogger.debug('DAppKitModal', 'closing wallet connect');
+        dispatchCustomEvent('vwk-close-wc-modal');
     }
 
     onConnected(callback: (address: string | null) => void): () => void {
