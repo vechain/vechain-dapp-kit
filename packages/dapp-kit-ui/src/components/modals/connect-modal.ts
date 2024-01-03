@@ -2,26 +2,28 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechain/dapp-kit';
-import { consume } from '@lit/context';
-import type { I18n, SourceInfo } from '../constants';
-import { defaultI18n, Font, WalletSources } from '../constants';
+import {
+    type I18n,
+    type SourceInfo,
+    type ThemeMode,
+    defaultI18n,
+    Font,
+    WalletSources,
+} from '../../constants';
 import {
     DarkChevronLeftSvg,
     DarkCloseSvg,
     LightChevronLeftSvg,
     LightCloseSvg,
-} from '../assets/icons';
+} from '../../assets/icons';
 import {
     dispatchCustomEvent,
     isMobile,
     subscribeToCustomEvent,
     useTranslate,
-} from '../utils';
-import { DAppKitUI } from '../client';
-import type { ThemeMode } from '../constants/theme';
-import { iconButtonStyle } from '../assets/styles';
-import type { DappKitContext } from './provider';
-import { dappKitContext, defaultDappKitContext } from './provider';
+} from '../../utils';
+import { DAppKitUI } from '../../client';
+import { iconButtonStyle } from '../../assets/styles';
 
 @customElement('vwk-connect-modal')
 export class ConnectModal extends LitElement {
@@ -49,10 +51,6 @@ export class ConnectModal extends LitElement {
             }
         `,
     ];
-
-    @consume({ context: dappKitContext })
-    @property({ attribute: false })
-    dappKitContext: DappKitContext = defaultDappKitContext;
 
     @property({ type: Boolean })
     open = false;
@@ -119,12 +117,11 @@ export class ConnectModal extends LitElement {
             this.wallet.setSource(source.id);
             this.wallet
                 .connect()
-                .then((res) => {
-                    this.dappKitContext.address = res.account;
+                .then(() => {
                     this.requestUpdate();
                 })
                 .finally(() => {
-                    this.open = false;
+                    dispatchCustomEvent('vwk-close-wallet-modal');
                 });
         }
     };

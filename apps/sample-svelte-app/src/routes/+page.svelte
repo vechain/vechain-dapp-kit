@@ -23,7 +23,7 @@
 
 <div>
     <h2>Svelte</h2>
-    <vwk-vechain-dapp-connect-kit></vwk-vechain-dapp-connect-kit>
+    <vwk-button></vwk-button>
     <br />
     <button on:click={DAppKitUI.modal.open}>Connect Custom Button</button>
 </div>

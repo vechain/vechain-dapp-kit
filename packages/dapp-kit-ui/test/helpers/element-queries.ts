@@ -48,9 +48,7 @@ const getConnectedAddressButtonWithModal = (
     return performQueryWithTimeout(timeout, () =>
         window.document.body
             .querySelector('vwk-connect-button-with-modal')
-            ?.shadowRoot?.querySelector(
-                'vwk-connected-address-button-with-modal',
-            ),
+            ?.shadowRoot?.querySelector('vwk-address-button-with-modal'),
     );
 };
 
@@ -59,7 +57,7 @@ const getDappKitContextProvider = (): Promise<
 > => {
     return performQueryWithTimeout(2000, () =>
         window.document.body
-            .querySelector('vwk-vechain-dapp-connect-kit')
+            .querySelector('vwk-button')
             ?.shadowRoot?.querySelector('dapp-kit-context-provider'),
     );
 };
@@ -70,10 +68,8 @@ const getConnectedAddressButton = (
     return performQueryWithTimeout(timeout, () =>
         window.document.body
             .querySelector('vwk-connect-button-with-modal')
-            ?.shadowRoot?.querySelector(
-                'vwk-connected-address-button-with-modal',
-            )
-            ?.shadowRoot?.querySelector('vwk-connected-address-button'),
+            ?.shadowRoot?.querySelector('vwk-address-button-with-modal')
+            ?.shadowRoot?.querySelector('vwk-address-button'),
     );
 };
 
@@ -83,10 +79,8 @@ const getConnectedAddressModal = (
     return performQueryWithTimeout(timeout, () =>
         window.document.body
             .querySelector('vwk-connect-button-with-modal')
-            ?.shadowRoot?.querySelector(
-                'vwk-connected-address-button-with-modal',
-            )
-            ?.shadowRoot?.querySelector('vwk-connected-address-modal'),
+            ?.shadowRoot?.querySelector('vwk-address-button-with-modal')
+            ?.shadowRoot?.querySelector('vwk-address-modal'),
     );
 };
 

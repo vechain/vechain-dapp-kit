@@ -2,7 +2,7 @@
     <ConnexProvider>
         <div>
             <h2>Vue</h2>
-            <vwk-vechain-dapp-connect-kit></vwk-vechain-dapp-connect-kit>
+            <vwk-button></vwk-button>
             <br />
             <button id="custom-button" v-on:click="openModal">
                 Connect Custom Button

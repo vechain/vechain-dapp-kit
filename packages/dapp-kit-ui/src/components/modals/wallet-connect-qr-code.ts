@@ -9,16 +9,16 @@ import {
     type I18n,
     IOS_STORE_URL,
     type ThemeMode,
-} from '../constants';
+} from '../../constants';
+import { isAndroid, QrCodeUtil, useTranslate } from '../../utils';
 import {
     CheckSvg,
     DarkCopySvg,
     LightCopySvg,
     WalletConnectLogoSvg,
-} from '../assets/icons';
-import { buttonStyle } from '../assets/styles';
-import { isAndroid, QrCodeUtil, useTranslate } from '../utils';
-import { VeWorldLogo } from '../assets/images';
+} from '../../assets/icons';
+import { buttonStyle } from '../../assets/styles';
+import { VeWorldLogo } from '../../assets/images';
 
 const qrCodeSize = 280;
 @customElement('vwk-wallet-connect-qrcode')

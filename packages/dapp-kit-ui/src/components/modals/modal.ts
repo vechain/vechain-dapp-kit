@@ -1,25 +1,31 @@
-import { consume } from '@lit/context';
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { DAppKitLogger, type WalletManager } from '@vechain/dapp-kit';
-import { DAppKitUI } from '../client';
+import { subscribeKey } from 'valtio/vanilla/utils';
+import { DAppKitUI } from '../../client';
 import {
     defaultI18n,
     type I18n,
     type SourceInfo,
     type ThemeMode,
-} from '../constants';
-import {
-    dappKitContext,
-    defaultDappKitContext,
-    type DappKitContext,
-} from './provider';
+} from '../../constants';
 
-@customElement('vwk-connect-button-with-modal')
-export class ConnectButtonWithModal extends LitElement {
-    @consume({ context: dappKitContext })
-    @property({ attribute: false })
-    dappKitContext: DappKitContext = defaultDappKitContext;
+@customElement('vwk-modal')
+export class Modal extends LitElement {
+    constructor() {
+        super();
+        this.initListener();
+    }
+
+    private initListener(): void {
+        subscribeKey(DAppKitUI.wallet.state, 'address', (v) => {
+            this.address = v ?? '';
+            this.requestUpdate();
+        });
+    }
+
+    @property()
+    address = DAppKitUI.wallet.state.address ?? '';
 
     @property()
     mode: ThemeMode = 'LIGHT';
@@ -41,7 +47,7 @@ export class ConnectButtonWithModal extends LitElement {
             this.wallet
                 .connect()
                 .then((res) => {
-                    this.dappKitContext.address = res.account;
+                    this.address = res.account;
                     this.requestUpdate();
                 })
                 .catch((err): void => {
@@ -56,7 +62,7 @@ export class ConnectButtonWithModal extends LitElement {
 
     @property({ type: Function })
     onDisconnectClick = (): void => {
-        this.dappKitContext.address = '';
+        this.address = '';
         this.requestUpdate();
         this.wallet.disconnect();
     };
@@ -64,26 +70,20 @@ export class ConnectButtonWithModal extends LitElement {
     override render(): TemplateResult {
         return html`
             <div>
-                <vwk-fonts></vwk-fonts>
-                ${this.dappKitContext.address
-                    ? html` <vwk-connected-address-button-with-modal
+                ${this.address
+                    ? html` <vwk-address-modal
                           .mode=${this.mode}
                           .i18n=${this.i18n}
                           .language=${this.language}
-                          .address=${this.dappKitContext.address}
+                          .address=${this.address}
                           .onDisconnectClick=${this.onDisconnectClick}
-                      ></vwk-connected-address-button-with-modal>`
-                    : html` <vwk-connect-button
-                              .mode=${this.mode}
-                              .i18n=${this.i18n}
-                              .language=${this.language}
-                          ></vwk-connect-button>
-                          <vwk-connect-modal
-                              .mode=${this.mode}
-                              .i18n=${this.i18n}
-                              .language=${this.language}
-                              .onSourceClick=${this.onSourceClick}
-                          ></vwk-connect-modal>`}
+                      ></vwk-address-modal>`
+                    : html` <vwk-connect-modal
+                          .mode=${this.mode}
+                          .i18n=${this.i18n}
+                          .language=${this.language}
+                          .onSourceClick=${this.onSourceClick}
+                      ></vwk-connect-modal>`}
             </div>
         `;
     }
@@ -91,6 +91,6 @@ export class ConnectButtonWithModal extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-connect-button-with-modal': ConnectButtonWithModal;
+        'vwk-modal': Modal;
     }
 }

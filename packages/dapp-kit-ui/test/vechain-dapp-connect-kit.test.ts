@@ -13,9 +13,8 @@ describe('connect-button-with-modal', () => {
     });
 
     it('Should callback with source when user clicks a wallet and should render the connected address button once connected', async () => {
-        const element: VechainDappConnectKit = window.document.createElement(
-            'vwk-vechain-dapp-connect-kit',
-        );
+        const element: VechainDappConnectKit =
+            window.document.createElement('vwk-button');
 
         window.document.body.appendChild(element);
 

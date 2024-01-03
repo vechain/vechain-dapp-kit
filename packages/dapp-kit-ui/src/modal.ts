@@ -8,42 +8,29 @@ import type {
     WCModal,
 } from '@vechain/dapp-kit';
 import { DAppKitLogger } from '@vechain/dapp-kit';
-import { subscribeKey } from 'valtio/utils';
+import { subscribeKey } from 'valtio/vanilla/utils';
 import { dispatchCustomEvent, subscribeToCustomEvent } from './utils';
 
 const MODAL_STATE_EVENT = 'vwk-modal-state-change';
 
-const isModalExisting = (): boolean => {
-    const connectModal = document.querySelector('vwk-connect-modal');
-    const connectModalWithButton = document.querySelector(
-        'vwk-connect-button-with-modal',
-    );
-    const vechainConnect = document.querySelector(
-        'vwk-vechain-dapp-connect-kit',
-    );
+const getModal = (): HTMLElement | null => document.querySelector('vwk-modal');
 
-    return (
-        Boolean(connectModal) ||
-        Boolean(connectModalWithButton) ||
-        Boolean(vechainConnect)
-    );
-};
-
-const findOrCreateModal = (options?: {
+const createModalIfNotPresent = (options?: {
     modalParent?: HTMLElement;
 }): HTMLElement => {
-    const existing = document.querySelector('vwk-connect-modal');
+    const modal = getModal();
 
-    if (existing) {
-        return existing;
+    if (modal) {
+        return modal;
     }
+
     DAppKitLogger.debug('DAppKitModal', 'creating a new modal');
 
-    const element = document.createElement('vwk-connect-modal');
+    const newModal = document.createElement('vwk-modal');
 
-    (options?.modalParent || document.body).appendChild(element);
+    (options?.modalParent || document.body).appendChild(newModal);
 
-    return element;
+    return newModal;
 };
 
 class CustomWalletConnectModal implements WCModal {
@@ -72,19 +59,10 @@ class CustomWalletConnectModal implements WCModal {
      * WalletConnect
      */
     openModal(options: OpenOptions): Promise<void> {
-        DAppKitLogger.debug('CustomWalletConnectModal', 'opening the modal');
+        DAppKitLogger.debug('CustomWalletConnectModal', 'opening the wc modal');
 
-        if (isModalExisting()) {
-            dispatchCustomEvent('vwk-open-wc-modal', options);
-        } else {
-            DAppKitLogger.debug('DAppKitModal', 'creating a new WC modal');
-
-            findOrCreateModal();
-
-            setTimeout(() => {
-                dispatchCustomEvent('vwk-open-wc-modal', options);
-            }, 100);
-        }
+        createModalIfNotPresent();
+        dispatchCustomEvent('vwk-open-wc-modal', options);
 
         return Promise.resolve();
     }
@@ -117,7 +95,9 @@ class CustomWalletConnectModal implements WCModal {
 export class DAppKitModal {
     private static instance: DAppKitModal | null = null;
 
-    private constructor(private walletManager: WalletManager) {}
+    private constructor(private walletManager: WalletManager) {
+        createModalIfNotPresent();
+    }
 
     public static getInstance(walletManager: WalletManager): DAppKitModal {
         if (!DAppKitModal.instance) {
@@ -129,16 +109,7 @@ export class DAppKitModal {
 
     open(): void {
         DAppKitLogger.debug('DAppKitModal', 'opening the modal');
-
-        if (isModalExisting()) {
-            dispatchCustomEvent('vwk-open-wallet-modal');
-        } else {
-            findOrCreateModal();
-
-            setTimeout(() => {
-                dispatchCustomEvent('vwk-open-wallet-modal');
-            }, 100);
-        }
+        dispatchCustomEvent('vwk-open-wallet-modal');
     }
 
     close(): void {

@@ -9,7 +9,7 @@ import {
 } from '../../constants';
 
 @customElement('vwk-base-modal')
-export class Modal extends LitElement {
+export class BaseModal extends LitElement {
     static override styles = css`
         .modal-container {
             display: flex;
@@ -139,6 +139,6 @@ export class Modal extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-base-modal': Modal;
+        'vwk-base-modal': BaseModal;
     }
 }

@@ -28,7 +28,7 @@ export type CustomizedStyle = {
     [key in StyleVariables]?: string;
 };
 
-export const initStyles = (customizedStyle: CustomizedStyle) => {
+export const initStyles = (customizedStyle: CustomizedStyle): void => {
     const root: HTMLElement | null = document.querySelector(':root');
 
     if (root) {

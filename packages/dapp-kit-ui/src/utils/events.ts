@@ -3,6 +3,7 @@ import { DAppKitLogger } from '@vechain/dapp-kit';
 import type { ThemeMode } from '../constants';
 
 export type EventTypes =
+    | 'vwk-dapp-kit-configured'
     | 'vwk-open-wc-modal'
     | 'vwk-close-wc-modal'
     | 'vwk-open-wallet-modal'
@@ -15,6 +16,7 @@ type ThemeOptions =
       };
 
 export interface EventArgs {
+    'vwk-dapp-kit-configured': undefined;
     'vwk-close-wc-modal': undefined;
     'vwk-open-wc-modal': OpenOptions & ThemeOptions;
     'vwk-open-wallet-modal': ThemeOptions;

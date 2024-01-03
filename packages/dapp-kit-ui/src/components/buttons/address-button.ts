@@ -1,11 +1,11 @@
 import { css, html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Font, type ThemeMode } from '../constants';
-import { friendlyAddress, getPicassoImage } from '../utils/account';
-import { buttonStyle } from '../assets/styles';
-import { dispatchCustomEvent } from '../utils';
+import { Font, type ThemeMode } from '../../constants';
+import { friendlyAddress, getPicassoImage } from '../../utils/account';
+import { buttonStyle } from '../../assets/styles';
+import { dispatchCustomEvent } from '../../utils';
 
-@customElement('vwk-connected-address-button')
+@customElement('vwk-address-button')
 export class AddressButton extends LitElement {
     static override styles = [
         buttonStyle,
@@ -44,23 +44,24 @@ export class AddressButton extends LitElement {
     };
 
     render(): TemplateResult {
-        return html` <button
-            class="wallet-button ${this.mode}"
-            @click=${this.handleOpen}
-        >
-            <img
-                class="address-icon"
-                src=${getPicassoImage(this.address ?? '')}
-            />
-            <span class="wallet-address"
-                >${friendlyAddress(this.address ?? '')}</span
+        return html` <vwk-fonts></vwk-fonts>
+            <button
+                class="wallet-button ${this.mode}"
+                @click=${this.handleOpen}
             >
-        </button>`;
+                <img
+                    class="address-icon"
+                    src=${getPicassoImage(this.address ?? '')}
+                />
+                <span class="wallet-address"
+                    >${friendlyAddress(this.address ?? '')}</span
+                >
+            </button>`;
     }
 }
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-connected-address-button': AddressButton;
+        'vwk-address-button': AddressButton;
     }
 }

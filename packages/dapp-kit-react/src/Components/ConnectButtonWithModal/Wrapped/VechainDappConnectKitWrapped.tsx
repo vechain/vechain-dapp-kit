@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { createComponent } from '@lit/react';
-import { VechainDappConnectKit as VechainDappConnectKitVanilla } from '@vechain/dapp-kit-ui';
+import { Button as ButtonVanilla } from '@vechain/dapp-kit-ui';
 import { useThemeSelector } from '../../../provider/ThemeProvider';
 
 const VechainDappConnectKitWrapped = () =>
     createComponent({
-        tagName: 'vwk-vechain-dapp-connect-kit',
-        elementClass: VechainDappConnectKitVanilla,
+        tagName: 'vwk-button',
+        elementClass: ButtonVanilla,
         react: React,
     });
 

@@ -1,17 +1,17 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { I18n, SourceInfo } from '../constants';
-import { defaultI18n, Font } from '../constants';
-import { buttonStyle, iconButtonStyle } from '../assets/styles';
-import type { ThemeMode } from '../constants/theme';
+import type { I18n, SourceInfo } from '../../constants';
+import { defaultI18n, Font } from '../../constants';
+import { buttonStyle, iconButtonStyle } from '../../assets/styles';
+import type { ThemeMode } from '../../constants/theme';
 import {
     friendlyAddress,
     getPicassoImage,
     useTranslate,
     dispatchCustomEvent,
     subscribeToCustomEvent,
-} from '../utils';
+} from '../../utils';
 import {
     CheckSvg,
     DarkCloseSvg,
@@ -20,9 +20,9 @@ import {
     LightCloseSvg,
     LightCopySvg,
     LightDisconnectSvg,
-} from '../assets/icons';
+} from '../../assets/icons';
 
-@customElement('vwk-connected-address-modal')
+@customElement('vwk-address-modal')
 export class AddressModal extends LitElement {
     static override styles = [
         buttonStyle,
@@ -110,7 +110,7 @@ export class AddressModal extends LitElement {
     open = false;
 
     @property({ type: String })
-    address?: string;
+    address = '';
 
     @property({ type: Function })
     onSourceClick?: (source?: SourceInfo) => void = undefined;
@@ -175,10 +175,10 @@ export class AddressModal extends LitElement {
                 <div class="modal-body">
                     <img
                             class="address-icon"
-                            src=${getPicassoImage(this.address ?? '')}
+                            src=${getPicassoImage(this.address)}
                     />
                     <span class="address">
-                            ${friendlyAddress(this.address ?? '')}
+                            ${friendlyAddress(this.address)}
                             <div class="copy-icon" @click=${
                                 this.onCopy
                             }>${copyIcon}</div>
@@ -205,7 +205,7 @@ export class AddressModal extends LitElement {
     }
 
     private onCopy = async (): Promise<void> => {
-        await navigator.clipboard.writeText(this.address || '');
+        await navigator.clipboard.writeText(this.address);
         this.showCopiedIcon = true;
         setTimeout(() => {
             this.showCopiedIcon = false;
@@ -220,6 +220,6 @@ export class AddressModal extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-connected-address-modal': AddressModal;
+        'vwk-address-modal': AddressModal;
     }
 }
