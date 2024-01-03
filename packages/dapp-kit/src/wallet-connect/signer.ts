@@ -164,7 +164,7 @@ export const newWcSigner = ({
             return await new Promise((resolve, reject) => {
                 const endSubscription = web3Modal.subscribeModal((ev) => {
                     if (!ev.open) {
-                        reject(new Error('User closed modal'));
+                        reject(new Error('User closed modal while connecting'));
                         endSubscription();
                     }
                 });

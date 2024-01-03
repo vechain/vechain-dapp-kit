@@ -21,3 +21,9 @@ const vechainWalletKitOptions = {
 };
 
 DAppKitUI.configure(vechainWalletKitOptions);
+
+const customButton = document.getElementById('custom-button');
+
+customButton.addEventListener('click', async () => {
+    DAppKitUI.modal.open();
+});

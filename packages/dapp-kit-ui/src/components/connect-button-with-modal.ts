@@ -1,7 +1,7 @@
 import { consume } from '@lit/context';
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { WalletManager } from '@vechain/dapp-kit';
+import { DAppKitLogger, type WalletManager } from '@vechain/dapp-kit';
 import { DAppKitUI } from '../client';
 import {
     defaultI18n,
@@ -9,8 +9,11 @@ import {
     type SourceInfo,
     type ThemeMode,
 } from '../constants';
-import type { DappKitContext } from './provider';
-import { dappKitContext, defaultDappKitContext } from './provider';
+import {
+    dappKitContext,
+    defaultDappKitContext,
+    type DappKitContext,
+} from './provider';
 
 @customElement('vwk-connect-button-with-modal')
 export class ConnectButtonWithModal extends LitElement {
@@ -27,9 +30,6 @@ export class ConnectButtonWithModal extends LitElement {
     @property()
     language = 'en';
 
-    @property()
-    open = false;
-
     private get wallet(): WalletManager {
         return DAppKitUI.wallet;
     }
@@ -44,8 +44,12 @@ export class ConnectButtonWithModal extends LitElement {
                     this.dappKitContext.address = res.account;
                     this.requestUpdate();
                 })
-                .finally(() => {
-                    this.open = false;
+                .catch((err): void => {
+                    DAppKitLogger.error(
+                        'Source Clicked',
+                        'error trying to connect',
+                        err,
+                    );
                 });
         }
     };
@@ -73,29 +77,16 @@ export class ConnectButtonWithModal extends LitElement {
                               .mode=${this.mode}
                               .i18n=${this.i18n}
                               .language=${this.language}
-                              .onClick=${this.handleOpen}
                           ></vwk-connect-button>
                           <vwk-connect-modal
                               .mode=${this.mode}
                               .i18n=${this.i18n}
                               .language=${this.language}
-                              .open=${this.open}
-                              .onClose=${this.handleClose}
                               .onSourceClick=${this.onSourceClick}
                           ></vwk-connect-modal>`}
             </div>
         `;
     }
-
-    private handleOpen = (): void => {
-        this.open = true;
-        DAppKitUI.wallet.disconnect();
-        this.requestUpdate();
-    };
-
-    private handleClose = (): void => {
-        this.open = false;
-    };
 }
 
 declare global {

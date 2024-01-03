@@ -1,9 +1,12 @@
 import type { PropertyValues, TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import type { ThemeMode } from '../../constants';
-import { Breakpoint, Colors } from '../../constants';
-import { modalZIndex } from '../../constants/z-index';
+import {
+    type ThemeMode,
+    Breakpoint,
+    Colors,
+    modalZIndex,
+} from '../../constants';
 
 @customElement('vwk-base-modal')
 export class Modal extends LitElement {

@@ -5,9 +5,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Sample Vanilla App</title>
         <meta charset="utf-8" />
-        <script crossorigin type="module" src="./index.js"></script>
+        <script crossorigin type="module" src="index.js"></script>
+        <style>
+            body {
+                margin: 0;
+                display: flex;
+                height: 100vh;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
     </head>
     <body>
-        <vwk-vechain-dapp-connect-kit></vwk-vechain-dapp-connect-kit>
+        <div>
+            <h2>Vanilla JS</h2>
+            <vwk-vechain-dapp-connect-kit></vwk-vechain-dapp-connect-kit>
+            <br />
+            <button id="custom-button">Connect Custom Button</button>
+        </div>
     </body>
 </html>

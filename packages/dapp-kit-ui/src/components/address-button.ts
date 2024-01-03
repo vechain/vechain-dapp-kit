@@ -3,6 +3,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { Font, type ThemeMode } from '../constants';
 import { friendlyAddress, getPicassoImage } from '../utils/account';
 import { buttonStyle } from '../assets/styles';
+import { dispatchCustomEvent } from '../utils';
 
 @customElement('vwk-connected-address-button')
 export class AddressButton extends LitElement {
@@ -37,13 +38,15 @@ export class AddressButton extends LitElement {
     @property()
     mode: ThemeMode = 'DARK';
 
-    @property({ type: Function })
-    onClick? = undefined;
+    @property()
+    handleOpen = (): void => {
+        dispatchCustomEvent('vwk-open-wallet-modal');
+    };
 
     render(): TemplateResult {
         return html` <button
             class="wallet-button ${this.mode}"
-            @click=${this.onClick}
+            @click=${this.handleOpen}
         >
             <img
                 class="address-icon"

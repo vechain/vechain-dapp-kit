@@ -16,9 +16,6 @@ export class AddressButtonWithModal extends LitElement {
     @property({ type: String })
     address?: string;
 
-    @property({ type: Boolean })
-    open = false;
-
     @property({ type: Function })
     onDisconnectClick?: () => void = undefined;
 
@@ -29,28 +26,17 @@ export class AddressButtonWithModal extends LitElement {
                 <vwk-connected-address-button
                     .mode=${this.mode}
                     .address=${this.address}
-                    .onClick=${this.handleOpen}
                 ></vwk-connected-address-button>
                 <vwk-connected-address-modal
                     .mode=${this.mode}
                     .i18n=${this.i18n}
                     .language=${this.language}
-                    .open=${this.open}
-                    .onClose=${this.handleClose}
                     .address=${this.address}
                     .onDisconnectClick=${this.onDisconnectClick}
                 ></vwk-connected-address-modal>
             </div>
         `;
     }
-
-    private handleOpen = (): void => {
-        this.open = true;
-    };
-
-    private handleClose = (): void => {
-        this.open = false;
-    };
 }
 
 declare global {

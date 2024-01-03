@@ -212,12 +212,8 @@ export class AddressModal extends LitElement {
         }, 1000);
     };
 
-    private onBack = (): void => {
-        dispatchCustomEvent('vwk-close-wc-modal', undefined);
-    };
-
     private handleClose = (): void => {
-        this.onBack();
+        dispatchCustomEvent('vwk-close-wallet-modal');
         this.onClose();
     };
 }

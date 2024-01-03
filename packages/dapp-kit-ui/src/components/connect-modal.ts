@@ -11,7 +11,12 @@ import {
     LightChevronLeftSvg,
     LightCloseSvg,
 } from '../assets/icons';
-import { isMobile, subscribeToCustomEvent, useTranslate } from '../utils';
+import {
+    dispatchCustomEvent,
+    isMobile,
+    subscribeToCustomEvent,
+    useTranslate,
+} from '../utils';
 import { DAppKitUI } from '../client';
 import type { ThemeMode } from '../constants/theme';
 import { iconButtonStyle } from '../assets/styles';
@@ -85,7 +90,6 @@ export class ConnectModal extends LitElement {
         });
 
         subscribeToCustomEvent('vwk-close-wc-modal', () => {
-            this.open = false;
             this.walletConnectQRcode = undefined;
             this.openingVeWorld = false;
         });
@@ -143,7 +147,7 @@ export class ConnectModal extends LitElement {
                         this.walletConnectQRcode
                             ? html` <div
                                   class="icon-button ${this.mode}"
-                                  @click=${this.onBack}
+                                  @click=${this.handleBack}
                               >
                                   ${this.mode === 'LIGHT'
                                       ? LightChevronLeftSvg
@@ -185,15 +189,18 @@ export class ConnectModal extends LitElement {
     `;
     }
 
-    private onBack = (): void => {
-        this.walletConnectQRcode = undefined;
+    private handleBack = (): void => {
+        dispatchCustomEvent('vwk-close-wc-modal');
     };
 
     private handleClose = (): void => {
-        // this timeout is to avoid flickering on close modal animation when the user is in the wallet connect modal
-        setTimeout(() => {
-            this.onBack();
-        }, 500);
+        if (this.walletConnectQRcode) {
+            // this timeout is to avoid flickering on close modal animation when the user is in the wallet connect modal
+            setTimeout(() => {
+                this.handleBack();
+            }, 500);
+        }
+        dispatchCustomEvent('vwk-close-wallet-modal');
         this.onClose();
     };
 }

@@ -23,7 +23,7 @@ export interface EventArgs {
 
 export const dispatchCustomEvent = <T extends EventTypes>(
     type: T,
-    detail: EventArgs[T],
+    detail?: EventArgs[T],
 ): void => {
     DAppKitLogger.debug('dispatchCustomEvent', type, detail);
     const customEvent = new CustomEvent(type, {
@@ -35,13 +35,13 @@ export const dispatchCustomEvent = <T extends EventTypes>(
 
 export const subscribeToCustomEvent = <T extends EventTypes>(
     type: T,
-    callback: (detail: EventArgs[T]) => void,
+    callback?: (detail: EventArgs[T]) => void,
 ): (() => void) => {
     DAppKitLogger.debug('subscribeToCustomEvent', type);
     const handler = (ev: Event): void => {
         const _ev = ev as CustomEvent<EventArgs[T]>;
 
-        callback(_ev.detail);
+        callback?.(_ev.detail);
     };
 
     addEventListener(type, handler);
