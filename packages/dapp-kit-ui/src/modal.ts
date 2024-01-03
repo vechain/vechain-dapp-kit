@@ -8,7 +8,7 @@ import type {
     WCModal,
 } from '@vechain/dapp-kit';
 import { DAppKitLogger } from '@vechain/dapp-kit';
-import { subscribeKey } from 'valtio/utils';
+import { subscribeKey } from 'valtio/vanilla/utils';
 import { dispatchCustomEvent, subscribeToCustomEvent } from './utils';
 
 const MODAL_STATE_EVENT = 'vwk-modal-state-change';
