@@ -13,7 +13,7 @@ import {
 import { elementQueries } from './helpers/element-queries';
 import { WalletSource } from '@vechain/dapp-kit';
 
-const customStyles = {
+const themeVariables = {
     '--vwk-color-dark-primary': '#000000',
 };
 
@@ -21,7 +21,7 @@ describe('connect-button-with-modal', () => {
     beforeEach(() => {
         DAppKitUI.configure({
             nodeUrl: 'https://mainnet.vechain.org/',
-            customStyles,
+            themeVariables,
         });
     });
 

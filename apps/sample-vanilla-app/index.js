@@ -16,13 +16,29 @@ const vechainWalletKitOptions = {
     nodeUrl: 'https://testnet.vechain.org/',
     genesis: 'test',
     walletConnectOptions,
+    useWalletKitModal: true,
     usePersistence: true,
+    themeMode: 'DARK',
 };
 
 DAppKitUI.configure(vechainWalletKitOptions);
+
+// custom button configuration
 
 const customButton = document.getElementById('custom-button');
 
 customButton.addEventListener('click', async () => {
     DAppKitUI.modal.open();
 });
+
+const handleConnected = (address) => {
+    if (address) {
+        customButton.innerText = `Disconnect from ${address}`;
+    } else {
+        customButton.innerText = 'Connect Custom Button';
+    }
+};
+
+handleConnected(DAppKitUI.wallet.state.address);
+
+DAppKitUI.modal.onConnected(handleConnected);

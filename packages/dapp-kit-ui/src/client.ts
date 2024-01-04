@@ -2,13 +2,15 @@
 import type { DAppKitOptions, WalletManager } from '@vechain/dapp-kit';
 import { DAppKit } from '@vechain/dapp-kit';
 import { CustomWalletConnectModal, DAppKitModal } from './modal';
-import { type CustomizedStyle, initStyles } from './styles';
+import { type CustomizedStyle, initStyles, initMode } from './styles';
 import { dispatchCustomEvent } from './utils';
+import { type ThemeMode } from './constants';
 
 let dappKit: DAppKit | null = null;
 
 export type DAppKitUIOptions = DAppKitOptions & {
-    customStyles?: CustomizedStyle;
+    themeMode?: ThemeMode;
+    themeVariables?: CustomizedStyle;
 };
 
 export const DAppKitUI = {
@@ -21,14 +23,20 @@ export const DAppKitUI = {
                 CustomWalletConnectModal.getInstance();
         }
 
-        if (options.customStyles) {
-            initStyles(options.customStyles);
-        }
-
         dappKit = new DAppKit(options);
 
-        // init modal to avoid waiting for the first opening
+        // init modal so on the first opening it doesn't have to create it
         DAppKitModal.getInstance(this.wallet);
+
+        // init button and modal them mode
+        if (options.themeMode) {
+            initMode(options.themeMode);
+        }
+
+        // configure theme variables
+        if (options.themeVariables) {
+            initStyles(options.themeVariables);
+        }
 
         dispatchCustomEvent('vwk-dapp-kit-configured');
 
