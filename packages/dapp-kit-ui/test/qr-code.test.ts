@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+    Button,
     ConnectButton,
     ConnectButtonWithModal,
     DAppKitUI,
@@ -28,11 +29,9 @@ describe('qr-code-modal', () => {
     });
 
     it('should display QR code', async () => {
-        const element: ConnectButtonWithModal = window.document.createElement(
-            'vwk-connect-button-with-modal',
-        );
+        const button: Button = window.document.createElement('vwk-button');
 
-        window.document.body.appendChild(element);
+        window.document.body.appendChild(button);
 
         const connectButton =
             (await elementQueries.getConnectButton()) as ConnectButton;

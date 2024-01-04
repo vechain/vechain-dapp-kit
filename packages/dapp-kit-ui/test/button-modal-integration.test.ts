@@ -2,12 +2,12 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import {
     AddressButton,
-    AddressButtonWithModal,
     AddressModal,
+    Button,
     ConnectButton,
-    ConnectButtonWithModal,
     ConnectModal,
     DAppKitUI,
+    Modal,
     SourceInfo,
 } from '../src';
 import { elementQueries } from './helpers/element-queries';
@@ -17,7 +17,7 @@ const themeVariables = {
     '--vwk-color-dark-primary': '#000000',
 };
 
-describe('connect-button-with-modal', () => {
+describe('button', () => {
     beforeEach(() => {
         DAppKitUI.configure({
             nodeUrl: 'https://mainnet.vechain.org/',
@@ -26,17 +26,17 @@ describe('connect-button-with-modal', () => {
     });
 
     it('Should callback with source when user clicks a wallet and should render the connected address button once connected', async () => {
-        const element: ConnectButtonWithModal = window.document.createElement(
-            'vwk-connect-button-with-modal',
-        );
+        const button: Button = window.document.createElement('vwk-button');
+
+        window.document.body.appendChild(button);
+
+        const modal: Modal = window.document.body.querySelector('vwk-modal')!;
 
         let selectedSource: WalletSource | undefined;
 
-        element.onSourceClick = (source?: SourceInfo) => {
+        modal.onSourceClick = (source?: SourceInfo) => {
             selectedSource = source?.id;
         };
-
-        window.document.body.appendChild(element);
 
         // testing the connect button
         const connectButton =
@@ -68,33 +68,31 @@ describe('connect-button-with-modal', () => {
         // testing the connected address button
 
         // mock a connection to the wallet by setting the address
-        element.dappKitContext.address = '0x00000';
-        element.requestUpdate();
+        button.address = '0x00000';
+        button.requestUpdate();
 
-        const connectedAddressButtonWithModal =
-            (await elementQueries.getConnectedAddressButtonWithModal()) as AddressButtonWithModal;
+        modal.address = '0x00000';
+        modal.requestUpdate();
 
-        expect(connectedAddressButtonWithModal).toBeDefined();
+        const addressButton =
+            (await elementQueries.getAddressButton()) as AddressButton;
 
-        const connectedAddressButton =
-            (await elementQueries.getConnectedAddressButton()) as AddressButton;
-
-        expect(connectedAddressButton).toBeDefined();
+        expect(addressButton).toBeDefined();
 
         // open the connected address modal
-        connectedAddressButton.shadowRoot?.querySelector('div')?.click();
+        addressButton.shadowRoot?.querySelector('div')?.click();
 
-        const connectedAddressModal =
-            (await elementQueries.getConnectedAddressModal()) as AddressModal;
+        const addressModal =
+            (await elementQueries.getAddressModal()) as AddressModal;
 
-        expect(connectedAddressModal).toBeDefined();
+        expect(addressModal).toBeDefined();
 
         // disconnect from the wallet by clicking the disconnect button
-        connectedAddressModal.shadowRoot?.querySelector('button')?.click();
+        addressModal.shadowRoot?.querySelector('button')?.click();
 
-        await element.updateComplete;
+        await modal.updateComplete;
 
-        expect(element.dappKitContext.address).toBe('');
+        expect(modal.address).toBe('');
         expect(DAppKitUI.wallet.state.address).toBe(null);
         expect(DAppKitUI.wallet.state.source).toBe(null);
     });

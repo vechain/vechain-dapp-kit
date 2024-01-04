@@ -1,10 +1,8 @@
 import {
     AddressButton,
-    AddressButtonWithModal,
     AddressModal,
     ConnectButton,
     ConnectModal,
-    DappKitContextProvider,
     SourceCard,
 } from '../../src';
 
@@ -29,57 +27,35 @@ const getConnectButton = (
 ): Promise<ConnectButton | undefined | null> => {
     return performQueryWithTimeout(timeout, () =>
         window.document.body
-            .querySelector('vwk-connect-button-with-modal')
+            .querySelector('vwk-button')
             ?.shadowRoot?.querySelector('vwk-connect-button'),
+    );
+};
+
+const getAddressButton = (
+    timeout = 2000,
+): Promise<AddressButton | undefined | null> => {
+    return performQueryWithTimeout(timeout, () =>
+        window.document.body
+            .querySelector('vwk-button')
+            ?.shadowRoot?.querySelector('vwk-address-button'),
     );
 };
 
 const getConnectModal = (): Promise<ConnectModal | undefined | null> => {
     return performQueryWithTimeout(2000, () =>
         window.document.body
-            .querySelector('vwk-connect-button-with-modal')
+            .querySelector('vwk-modal')
             ?.shadowRoot?.querySelector('vwk-connect-modal'),
     );
 };
 
-const getConnectedAddressButtonWithModal = (
-    timeout = 2000,
-): Promise<AddressButtonWithModal | undefined | null> => {
-    return performQueryWithTimeout(timeout, () =>
-        window.document.body
-            .querySelector('vwk-connect-button-with-modal')
-            ?.shadowRoot?.querySelector('vwk-address-button-with-modal'),
-    );
-};
-
-const getDappKitContextProvider = (): Promise<
-    DappKitContextProvider | undefined | null
-> => {
-    return performQueryWithTimeout(2000, () =>
-        window.document.body
-            .querySelector('vwk-button')
-            ?.shadowRoot?.querySelector('dapp-kit-context-provider'),
-    );
-};
-
-const getConnectedAddressButton = (
-    timeout = 2000,
-): Promise<AddressButton | undefined | null> => {
-    return performQueryWithTimeout(timeout, () =>
-        window.document.body
-            .querySelector('vwk-connect-button-with-modal')
-            ?.shadowRoot?.querySelector('vwk-address-button-with-modal')
-            ?.shadowRoot?.querySelector('vwk-address-button'),
-    );
-};
-
-const getConnectedAddressModal = (
+const getAddressModal = (
     timeout = 2000,
 ): Promise<AddressModal | undefined | null> => {
     return performQueryWithTimeout(timeout, () =>
         window.document.body
-            .querySelector('vwk-connect-button-with-modal')
-            ?.shadowRoot?.querySelector('vwk-address-button-with-modal')
+            .querySelector('vwk-modal')
             ?.shadowRoot?.querySelector('vwk-address-modal'),
     );
 };
@@ -87,7 +63,7 @@ const getConnectedAddressModal = (
 const getAllSourceCards = async (): Promise<SourceCard[]> => {
     const res = await performQueryWithTimeout(2000, () =>
         window.document.body
-            .querySelector('vwk-connect-button-with-modal')
+            .querySelector('vwk-modal')
             ?.shadowRoot?.querySelector('vwk-connect-modal')
             ?.shadowRoot?.querySelector('vwk-base-modal')
             ?.querySelectorAll('vwk-source-card'),
@@ -105,7 +81,7 @@ const getAllSourceCards = async (): Promise<SourceCard[]> => {
 const getWalletConnectQrCode = () => {
     return performQueryWithTimeout(2000, () =>
         window.document.body
-            .querySelector('vwk-connect-button-with-modal')
+            .querySelector('vwk-modal')
             ?.shadowRoot?.querySelector('vwk-connect-modal')
             ?.shadowRoot?.querySelector('vwk-base-modal')
             ?.querySelector('vwk-wallet-connect-qrcode'),
@@ -117,8 +93,6 @@ export const elementQueries = {
     getConnectModal,
     getAllSourceCards,
     getWalletConnectQrCode,
-    getConnectedAddressButtonWithModal,
-    getConnectedAddressButton,
-    getConnectedAddressModal,
-    getDappKitContextProvider,
+    getAddressButton,
+    getAddressModal,
 };
