@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import type { WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
-import { subscribeKey } from 'valtio/utils';
+import { subscribeKey } from 'valtio/vanilla/utils';
 import type { DAppKitProviderOptions, DAppKitContext } from './types';
 
 /**
@@ -22,8 +22,12 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     genesis,
     walletConnectOptions,
     usePersistence = false,
-    themeVariables,
     logLevel,
+    themeMode,
+    themeVariables,
+    i18n,
+    language,
+    modalParent,
 }): React.ReactElement => {
     const connex = useMemo(
         () =>
@@ -34,6 +38,10 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
                 usePersistence,
                 logLevel,
                 themeVariables,
+                themeMode,
+                i18n,
+                language,
+                modalParent,
             }),
         [
             nodeUrl,
@@ -42,6 +50,10 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
             usePersistence,
             logLevel,
             themeVariables,
+            themeMode,
+            i18n,
+            language,
+            modalParent,
         ],
     );
 
@@ -53,12 +65,12 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     );
 
     useEffect(() => {
-        const addressSub = subscribeKey(connex.wallet.state, 'address', (v) =>
-            setAccount(v),
-        );
-        const sourceSub = subscribeKey(connex.wallet.state, 'source', (v) =>
-            setSource(v),
-        );
+        const addressSub = subscribeKey(connex.wallet.state, 'address', (v) => {
+            setAccount(v);
+        });
+        const sourceSub = subscribeKey(connex.wallet.state, 'source', (v) => {
+            setSource(v);
+        });
 
         return () => {
             addressSub();

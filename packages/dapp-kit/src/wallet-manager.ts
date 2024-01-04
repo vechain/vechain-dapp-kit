@@ -81,6 +81,8 @@ class WalletManager {
 
     disconnect = (remote = false): void => {
         if (!this.state.source) {
+            this.state.source = null;
+            this.state.address = null;
             return;
         }
 

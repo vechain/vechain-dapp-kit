@@ -1,7 +1,4 @@
-import {
-    ConnectButtonWithModal,
-    useWalletModal,
-} from '@vechain/dapp-kit-react';
+import { VwkButton, useWalletModal } from '@vechain/dapp-kit-react';
 
 function App() {
     const { open } = useWalletModal();
@@ -9,7 +6,7 @@ function App() {
     return (
         <div>
             <h2>React</h2>
-            <ConnectButtonWithModal />
+            <VwkButton />
             <br />
             <button onClick={open}>Connect Custom Button</button>
         </div>

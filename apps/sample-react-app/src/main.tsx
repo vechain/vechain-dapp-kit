@@ -23,7 +23,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             genesis={'test'}
             usePersistence
             walletConnectOptions={walletConnectOptions}
-            logLevel="DEBUG"
         >
             <App />
         </DAppKitProvider>

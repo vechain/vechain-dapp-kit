@@ -3,4 +3,4 @@ import * as React from 'react';
 
 export * from './DAppKitProvider';
 export * from './types';
-export * from './Components';
+export * from './VwkButton';

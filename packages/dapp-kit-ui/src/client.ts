@@ -11,6 +11,7 @@ import { type I18n, type ThemeMode } from './constants';
 
 let dappKit: DAppKit | null = null;
 let dappKitOptions: DAppKitUIOptions | null = null;
+let initialized = false;
 
 export type DAppKitUIOptions = DAppKitOptions & {
     themeMode?: ThemeMode;
@@ -30,7 +31,7 @@ export const DAppKitUI = {
                 CustomWalletConnectModal.getInstance();
         }
         dappKitOptions = options;
-        dappKit = new DAppKit(options);
+        if (!dappKit) dappKit = new DAppKit(options);
 
         // init modal so on the first opening it doesn't have to create it
         DAppKitModal.getInstance(this.wallet, {
@@ -39,10 +40,15 @@ export const DAppKitUI = {
 
         // configure bottons and modals options
         configureUI(options);
-
         dispatchCustomEvent('vwk-dapp-kit-configured');
 
+        initialized = true;
+
         return dappKit;
+    },
+
+    get initialized(): boolean {
+        return initialized;
     },
 
     get thor(): Connex.Thor {

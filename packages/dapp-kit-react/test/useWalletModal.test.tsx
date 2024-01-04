@@ -14,8 +14,7 @@ describe('useWalletModal', () => {
         await waitFor(
             () => {
                 const modalHtml = window.document.body
-                    .querySelector('vwk-button')
-                    ?.shadowRoot?.querySelector('vwk-connect-button-with-modal')
+                    .querySelector('vwk-modal')
                     ?.shadowRoot?.querySelector('vwk-connect-modal')
                     ?.shadowRoot?.innerHTML;
 

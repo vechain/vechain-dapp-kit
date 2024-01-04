@@ -44,26 +44,18 @@ export class Modal extends LitElement {
     onSourceClick = (source?: SourceInfo): void => {
         if (source) {
             this.wallet.setSource(source.id);
-            this.wallet
-                .connect()
-                .then((res) => {
-                    this.address = res.account;
-                    this.requestUpdate();
-                })
-                .catch((err): void => {
-                    DAppKitLogger.error(
-                        'Source Clicked',
-                        'error trying to connect',
-                        err,
-                    );
-                });
+            this.wallet.connect().catch((err): void => {
+                DAppKitLogger.error(
+                    'Source Clicked',
+                    'error trying to connect',
+                    err,
+                );
+            });
         }
     };
 
     @property({ type: Function })
     onDisconnectClick = (): void => {
-        this.address = '';
-        this.requestUpdate();
         this.wallet.disconnect();
     };
 

@@ -1,24 +1,35 @@
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { DAppKitLogger, type WalletManager } from '@vechain/dapp-kit';
+import { type WalletManager } from '@vechain/dapp-kit';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import { DAppKitUI } from '../../client';
-import {
-    defaultI18n,
-    type I18n,
-    type SourceInfo,
-    type ThemeMode,
-} from '../../constants';
+import { defaultI18n, type I18n, type ThemeMode } from '../../constants';
 import { subscribeToCustomEvent } from '../../utils';
 
 @customElement('vwk-button')
 export class Button extends LitElement {
     constructor() {
         super();
-        subscribeToCustomEvent('vwk-dapp-kit-configured', () => {
+        if (DAppKitUI.initialized) {
             this.address = DAppKitUI.wallet.state.address ?? '';
             this.initAddressListener();
+        } else {
+            subscribeToCustomEvent('vwk-dapp-kit-configured', () => {
+                this.address = DAppKitUI.wallet.state.address ?? '';
+                this.initAddressListener();
+            });
+        }
+    }
+
+    private initAddressListener(): void {
+        subscribeKey(DAppKitUI.wallet.state, 'address', (v) => {
+            this.address = v ?? '';
+            this.requestUpdate();
         });
+    }
+
+    private get wallet(): WalletManager {
+        return DAppKitUI.wallet;
     }
 
     @property()
@@ -33,33 +44,6 @@ export class Button extends LitElement {
     @property()
     address = '';
 
-    @property({ type: Function })
-    onSourceClick = (source?: SourceInfo): void => {
-        if (source) {
-            this.wallet.setSource(source.id);
-            this.wallet
-                .connect()
-                .then((res) => {
-                    this.address = res.account;
-                    this.requestUpdate();
-                })
-                .catch((err): void => {
-                    DAppKitLogger.error(
-                        'Source Clicked',
-                        'error trying to connect',
-                        err,
-                    );
-                });
-        }
-    };
-
-    @property({ type: Function })
-    onDisconnectClick = (): void => {
-        this.address = '';
-        this.requestUpdate();
-        this.wallet.disconnect();
-    };
-
     override render(): TemplateResult {
         return html`
             ${this.address
@@ -73,17 +57,6 @@ export class Button extends LitElement {
                       .language=${this.language}
                   ></vwk-connect-button>`}
         `;
-    }
-
-    private initAddressListener(): void {
-        subscribeKey(DAppKitUI.wallet.state, 'address', (v) => {
-            this.address = v ?? '';
-            this.requestUpdate();
-        });
-    }
-
-    private get wallet(): WalletManager {
-        return DAppKitUI.wallet;
     }
 }
 

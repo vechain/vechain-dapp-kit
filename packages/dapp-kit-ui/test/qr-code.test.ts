@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import {
     Button,
     ConnectButton,
-    ConnectButtonWithModal,
     DAppKitUI,
     dispatchCustomEvent,
     WalletConnectQrCode,
