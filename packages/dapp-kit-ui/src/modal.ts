@@ -89,16 +89,26 @@ class CustomWalletConnectModal implements WCModal {
     }
 }
 
+export interface DAppKitModalOptions {
+    modalParent?: HTMLElement;
+}
+
 export class DAppKitModal {
     private static instance: DAppKitModal | null = null;
 
-    private constructor(private walletManager: WalletManager) {
-        createModalIfNotPresent();
+    private constructor(
+        private walletManager: WalletManager,
+        options?: DAppKitModalOptions,
+    ) {
+        createModalIfNotPresent(options);
     }
 
-    public static getInstance(walletManager: WalletManager): DAppKitModal {
+    public static getInstance(
+        walletManager: WalletManager,
+        options?: DAppKitModalOptions,
+    ): DAppKitModal {
         if (!DAppKitModal.instance) {
-            DAppKitModal.instance = new DAppKitModal(walletManager);
+            DAppKitModal.instance = new DAppKitModal(walletManager, options);
         }
 
         return DAppKitModal.instance;

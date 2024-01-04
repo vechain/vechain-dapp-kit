@@ -4,3 +4,4 @@ export * from './events';
 export * from './mobile';
 export * from './use-translate';
 export * from './account';
+export * from './ui-config';

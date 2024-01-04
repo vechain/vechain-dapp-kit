@@ -1,4 +1,8 @@
-import { Colors, Font, type ThemeMode, modalZIndex } from './constants';
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+import { type DAppKitUIOptions } from '../client';
+import { Colors, Font, modalZIndex, defaultI18n } from '../constants';
 
 const StyleVariables = {
     '--vwk-color-dark-primary': Colors.Dark.Primary.toString(),
@@ -40,14 +44,32 @@ export const initStyles = (customizedStyle: CustomizedStyle): void => {
     }
 };
 
-export const initMode = (mode: ThemeMode): void => {
+export const initModalsAndButtons = (options: DAppKitUIOptions): void => {
     const button = document.querySelector('vwk-button');
     const modal = document.querySelector('vwk-modal');
 
-    if (button) {
-        button.mode = mode;
+    const initOptions = {
+        mode: options.themeMode ?? 'LIGHT',
+        i18n: options.i18n ?? defaultI18n,
+        language: options.language ?? 'en',
+    };
+
+    for (const [key, value] of Object.entries(initOptions)) {
+        if (button) {
+            (button as any)[key] = value;
+        }
+        if (modal) {
+            (modal as any)[key] = value;
+        }
     }
-    if (modal) {
-        modal.mode = mode;
+};
+
+export const configureUI = (options: DAppKitUIOptions): void => {
+    // init buttons and modals
+    initModalsAndButtons(options);
+
+    // configure theme variables
+    if (options.themeVariables) {
+        initStyles(options.themeVariables);
     }
 };

@@ -2,4 +2,4 @@ export * from './client';
 export * from './components';
 export * from './constants';
 export * from './utils';
-export * from './styles';
+export * from './utils/ui-config';
