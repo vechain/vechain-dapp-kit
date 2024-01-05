@@ -31,7 +31,10 @@ customButton.addEventListener('click', async () => {
 
 const handleConnected = (address) => {
     if (address) {
-        customButton.innerText = `Disconnect from ${address}`;
+        const formattedAddress = `${address.slice(0, 6)}...${address.slice(
+            -4,
+        )}`;
+        customButton.innerText = `Disconnect from ${formattedAddress}`;
     } else {
         customButton.innerText = 'Connect Custom Button';
     }

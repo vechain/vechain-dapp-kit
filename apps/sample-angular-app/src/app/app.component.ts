@@ -1,6 +1,5 @@
 // Angular modules
-import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, type OnInit } from '@angular/core';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 
 @Component({
@@ -14,8 +13,28 @@ export class AppComponent implements OnInit {
     // NOTE Init ---------------------------------------------------------------------
     // -------------------------------------------------------------------------------
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    public ngOnInit(): void {}
+    public ngOnInit(): void {
+        // custom button configuration
+
+        const customButton = document.getElementById('custom-button');
+        if (customButton) {
+            const handleConnected = (address: string | null): void => {
+                if (address) {
+                    const formattedAddress = `${address.slice(
+                        0,
+                        6,
+                    )}...${address.slice(-4)}`;
+                    customButton.innerText = `Disconnect from ${formattedAddress}`;
+                } else {
+                    customButton.innerText = 'Connect Custom Button';
+                }
+            };
+
+            handleConnected(DAppKitUI.wallet.state.address);
+
+            DAppKitUI.modal.onConnected(handleConnected);
+        }
+    }
 
     public openModal(): void {
         DAppKitUI.modal.open();

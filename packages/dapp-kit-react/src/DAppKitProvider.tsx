@@ -85,6 +85,11 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     const closeModal = useCallback(() => {
         DAppKitUI.modal.close();
     }, []);
+    const onModalConnected = useCallback(
+        (callback: (address: string | null) => void) =>
+            DAppKitUI.modal.onConnected(callback),
+        [],
+    );
 
     const context: DAppKitContext = useMemo(() => {
         return {
@@ -103,9 +108,10 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
             modal: {
                 open: openModal,
                 close: closeModal,
+                onConnected: onModalConnected,
             },
         };
-    }, [connex, account, source, closeModal, openModal]);
+    }, [connex, account, source, closeModal, openModal, onModalConnected]);
 
     return <Context.Provider value={context}>{children}</Context.Provider>;
 };

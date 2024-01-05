@@ -13,4 +13,5 @@ export type {
     WalletConfig,
     BaseWallet,
     WalletManagerState,
+    Genesis,
 } from './types';

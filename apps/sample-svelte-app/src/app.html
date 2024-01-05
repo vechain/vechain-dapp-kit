@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>svelte kit</title>
+        <title>Svelte</title>
         <style>
             body {
                 margin: 0;
@@ -10,6 +10,22 @@
                 align-items: center;
                 justify-content: center;
             }
+            h2 {
+                margin: 0;
+            }
+            .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid #000;
+                border-radius: 20px;
+                padding: 20px;
+            }
+            .label {
+                margin-top: 20px;
+                margin-bottom: 10px;
+            }
         </style>
         <script>
             if (global === undefined) {
@@ -17,7 +33,6 @@
             }
         </script>
         <meta charset="utf-8" />
-        <link rel="icon" href="%sveltekit.assets%/favicon.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         %sveltekit.head%
     </head>

@@ -1,7 +1,6 @@
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
-import type { DAppKitOptions, WalletConnectOptions } from '@vechain/dapp-kit';
 
-const walletConnectOptions: WalletConnectOptions = {
+const walletConnectOptions = {
     projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
     metadata: {
         name: 'Sample VeChain dApp',
@@ -11,7 +10,7 @@ const walletConnectOptions: WalletConnectOptions = {
     },
 };
 
-const vechainWalletKitOptions: DAppKitOptions = {
+const vechainWalletKitOptions = {
     nodeUrl: 'https://testnet.vechain.org/',
     genesis: 'test',
     walletConnectOptions,
@@ -19,3 +18,29 @@ const vechainWalletKitOptions: DAppKitOptions = {
 };
 
 DAppKitUI.configure(vechainWalletKitOptions);
+
+// custom button configuration
+setTimeout(() => {
+    const customButton = document.getElementById('custom-button');
+    if (customButton) {
+        customButton.addEventListener('click', () => {
+            DAppKitUI.modal.open();
+        });
+
+        const handleConnected = (address: string | null): void => {
+            if (address) {
+                const formattedAddress = `${address.slice(
+                    0,
+                    6,
+                )}...${address.slice(-4)}`;
+                customButton.innerText = `Disconnect from ${formattedAddress}`;
+            } else {
+                customButton.innerText = 'Connect Custom Button';
+            }
+        };
+
+        handleConnected(DAppKitUI.wallet.state.address);
+
+        DAppKitUI.modal.onConnected(handleConnected);
+    }
+}, 100);
