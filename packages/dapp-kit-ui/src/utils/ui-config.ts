@@ -55,12 +55,17 @@ export const initModalsAndButtons = (options: DAppKitUIOptions): void => {
     };
 
     for (const [key, value] of Object.entries(initOptions)) {
-        if (button) {
+        if (button && value) {
             (button as any)[key] = value;
         }
-        if (modal) {
+        if (modal && value) {
             (modal as any)[key] = value;
         }
+    }
+
+    // just for modal
+    if (modal && options.onSourceClick) {
+        modal.onSourceClick = options.onSourceClick;
     }
 };
 

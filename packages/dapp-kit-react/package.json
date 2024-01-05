@@ -19,7 +19,8 @@
         "dev": "tsup src/index.ts --format esm --watch --dts --external react",
         "lint": "tsc --noEmit && eslint src --ext .js,.jsx,.ts,.tsx",
         "purge": "yarn clean && rm -rf node_modules",
-        "test": "vitest run --coverage"
+        "test": "vitest run --coverage",
+        "watch": "yarn build --watch"
     },
     "dependencies": {
         "@lit/react": "^1.0.1",

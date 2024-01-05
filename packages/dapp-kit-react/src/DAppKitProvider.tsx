@@ -28,6 +28,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     i18n,
     language,
     modalParent,
+    onSourceClick,
 }): React.ReactElement => {
     const connex = useMemo(
         () =>
@@ -42,6 +43,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
                 i18n,
                 language,
                 modalParent,
+                onSourceClick,
             }),
         [
             nodeUrl,
@@ -54,6 +56,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
             i18n,
             language,
             modalParent,
+            onSourceClick,
         ],
     );
 

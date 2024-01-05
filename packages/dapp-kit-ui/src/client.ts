@@ -7,7 +7,7 @@ import {
     dispatchCustomEvent,
     configureUI,
 } from './utils';
-import { type I18n, type ThemeMode } from './constants';
+import type { SourceInfo, I18n, ThemeMode } from './constants';
 
 let dappKit: DAppKit | null = null;
 let dappKitOptions: DAppKitUIOptions | null = null;
@@ -19,6 +19,7 @@ export type DAppKitUIOptions = DAppKitOptions & {
     i18n?: I18n;
     language?: string;
     modalParent?: HTMLElement;
+    onSourceClick?: (source?: SourceInfo) => void;
 };
 
 export const DAppKitUI = {
