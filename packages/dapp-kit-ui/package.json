@@ -1,6 +1,6 @@
 {
     "name": "@vechain/dapp-kit-ui",
-    "version": "0.0.4",
+    "version": "1.0.0",
     "private": false,
     "description": "Vanilla js wallet kit",
     "keywords": [
