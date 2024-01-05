@@ -17,7 +17,6 @@ const vechainWalletKitOptions = {
     genesis: 'test',
     walletConnectOptions,
     usePersistence: true,
-    themeMode: 'DARK',
 };
 
 DAppKitUI.configure(vechainWalletKitOptions);
