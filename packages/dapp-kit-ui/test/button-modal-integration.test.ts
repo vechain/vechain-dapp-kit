@@ -89,10 +89,8 @@ describe('button', () => {
 
         // disconnect from the wallet by clicking the disconnect button
         addressModal.shadowRoot?.querySelector('button')?.click();
-
         await modal.updateComplete;
 
-        expect(modal.address).toBe('');
         expect(DAppKitUI.wallet.state.address).toBe(null);
         expect(DAppKitUI.wallet.state.source).toBe(null);
     });

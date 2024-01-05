@@ -16,7 +16,6 @@ const vechainWalletKitOptions = {
     nodeUrl: 'https://testnet.vechain.org/',
     genesis: 'test',
     walletConnectOptions,
-    useWalletKitModal: true,
     usePersistence: true,
     themeMode: 'DARK',
 };

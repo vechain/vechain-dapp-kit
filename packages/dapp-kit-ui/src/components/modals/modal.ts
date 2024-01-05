@@ -14,10 +14,6 @@ import {
 export class Modal extends LitElement {
     constructor() {
         super();
-        this.initListener();
-    }
-
-    private initListener(): void {
         subscribeKey(DAppKitUI.wallet.state, 'address', (v) => {
             this.address = v ?? '';
             this.requestUpdate();
