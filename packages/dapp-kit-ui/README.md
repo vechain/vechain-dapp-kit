@@ -53,6 +53,6 @@ DAppKitUI.configure(options);
 
 ```html
 <body>
-    <vdk-connect-button-with-modal mode="DARK"></vdk-connect-button-with-modal>
+    <vdk-button mode="DARK"></vdk-button>
 </body>
 ```
