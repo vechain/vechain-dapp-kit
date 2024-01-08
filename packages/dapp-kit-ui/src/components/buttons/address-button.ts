@@ -36,7 +36,7 @@ export class AddressButton extends LitElement {
     address?: string;
 
     @property()
-    mode: ThemeMode = 'DARK';
+    mode: ThemeMode = 'LIGHT';
 
     @property()
     handleOpen = (): void => {
