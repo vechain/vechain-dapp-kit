@@ -50,7 +50,7 @@ export const initModalsAndButtons = (options: DAppKitUIOptions): void => {
 
     const initOptions = {
         mode: options.themeMode ?? 'LIGHT',
-        i18n: options.i18n ?? defaultI18n,
+        i18n: options.i18n ? { ...defaultI18n, ...options.i18n } : defaultI18n,
         language: options.language ?? 'en',
     };
 
