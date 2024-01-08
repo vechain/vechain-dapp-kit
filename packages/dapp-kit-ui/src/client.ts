@@ -41,7 +41,7 @@ export const DAppKitUI = {
 
         // configure bottons and modals options
         configureUI(options);
-        dispatchCustomEvent('vwk-dapp-kit-configured');
+        dispatchCustomEvent('vdk-dapp-kit-configured');
 
         initialized = true;
 

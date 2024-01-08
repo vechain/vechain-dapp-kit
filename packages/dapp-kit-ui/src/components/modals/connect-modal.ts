@@ -20,7 +20,7 @@ import { isMobile, subscribeToCustomEvent, useTranslate } from '../../utils';
 import { DAppKitUI } from '../../client';
 import { iconButtonStyle } from '../../assets/styles';
 
-@customElement('vwk-connect-modal')
+@customElement('vdk-connect-modal')
 export class ConnectModal extends LitElement {
     static override styles = [
         iconButtonStyle,
@@ -30,9 +30,9 @@ export class ConnectModal extends LitElement {
             }
 
             .modal-header {
-                font-family: var(--vwk-font-family, ${Font.Family});
+                font-family: var(--vdk-font-family, ${Font.Family});
                 font-weight: var(
-                    --vwk-font-weight-medium,
+                    --vdk-font-weight-medium,
                     ${Font.Weight.Medium}
                 );
                 display: flex;
@@ -68,7 +68,7 @@ export class ConnectModal extends LitElement {
     constructor() {
         super();
 
-        subscribeToCustomEvent('vwk-open-wc-modal', (options) => {
+        subscribeToCustomEvent('vdk-open-wc-modal', (options) => {
             if (isMobile()) {
                 this.openingVeWorld = true;
                 window.open(
@@ -82,16 +82,16 @@ export class ConnectModal extends LitElement {
             this.walletConnectQRcode = options.uri;
         });
 
-        subscribeToCustomEvent('vwk-close-wc-modal', () => {
+        subscribeToCustomEvent('vdk-close-wc-modal', () => {
             this.walletConnectQRcode = undefined;
             this.openingVeWorld = false;
         });
 
-        subscribeToCustomEvent('vwk-open-wallet-modal', () => {
+        subscribeToCustomEvent('vdk-open-wallet-modal', () => {
             this.open = true;
         });
 
-        subscribeToCustomEvent('vwk-close-wallet-modal', () => {
+        subscribeToCustomEvent('vdk-close-wallet-modal', () => {
             this.open = false;
         });
     }
@@ -127,8 +127,8 @@ export class ConnectModal extends LitElement {
     override render(): TemplateResult {
         const translate = useTranslate(this.i18n, this.language);
         return html`
-        <vwk-fonts></vwk-fonts>
-        <vwk-base-modal
+        <vdk-fonts></vdk-fonts>
+        <vdk-base-modal
                 .open=${this.open}
                 .onClose=${this.handleClose}
                 .mode=${this.mode}
@@ -158,26 +158,26 @@ export class ConnectModal extends LitElement {
                 <div class="modal-body">
                     ${
                         this.walletConnectQRcode
-                            ? html` <vwk-wallet-connect-qrcode
+                            ? html` <vdk-wallet-connect-qrcode
                                   .openingVeWorld=${this.openingVeWorld}
                                   .mode=${this.mode}
                                   .i18n=${this.i18n}
                                   .language=${this.language}
                                   .walletConnectQRcode=${this
                                       .walletConnectQRcode}
-                              ></vwk-wallet-connect-qrcode>`
+                              ></vdk-wallet-connect-qrcode>`
                             : this.availableSources.map(
                                   (source) =>
-                                      html` <vwk-source-card
+                                      html` <vdk-source-card
                                           .source=${source}
                                           .mode=${this.mode}
                                           .onClick=${this.onSourceClick}
-                                      ></vwk-source-card>`,
+                                      ></vdk-source-card>`,
                               )
                     }
                 </div>
 
-        </vwk-base-modal>
+        </vdk-base-modal>
     `;
     }
 
@@ -199,6 +199,6 @@ export class ConnectModal extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-connect-modal': ConnectModal;
+        'vdk-connect-modal': ConnectModal;
     }
 }

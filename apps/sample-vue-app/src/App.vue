@@ -2,7 +2,7 @@
     <div class="container">
         <h2>Vue</h2>
         <div class="label">kit button:</div>
-        <vwk-button></vwk-button>
+        <vdk-button></vdk-button>
         <div class="label">custom button:</div>
         <button id="custom-button" v-on:click="openModal">Connect Custom Button</button>
     </div>
@@ -23,14 +23,14 @@ const walletConnectOptions = {
     },
 };
 
-const vechainWalletKitOptions = {
+const vechainDAppKitOptions = {
     nodeUrl: 'https://testnet.vechain.org/',
     genesis: 'test' as Genesis,
     walletConnectOptions,
     usePersistence: true,
 };
 
-DAppKitUI.configure(vechainWalletKitOptions);
+DAppKitUI.configure(vechainDAppKitOptions);
 
 // custom button configuration
 

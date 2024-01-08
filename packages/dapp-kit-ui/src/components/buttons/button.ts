@@ -6,7 +6,7 @@ import { DAppKitUI } from '../../client';
 import { defaultI18n, type I18n, type ThemeMode } from '../../constants';
 import { subscribeToCustomEvent } from '../../utils';
 
-@customElement('vwk-button')
+@customElement('vdk-button')
 export class Button extends LitElement {
     constructor() {
         super();
@@ -14,7 +14,7 @@ export class Button extends LitElement {
             this.address = DAppKitUI.wallet.state.address ?? '';
             this.initAddressListener();
         } else {
-            subscribeToCustomEvent('vwk-dapp-kit-configured', () => {
+            subscribeToCustomEvent('vdk-dapp-kit-configured', () => {
                 this.address = DAppKitUI.wallet.state.address ?? '';
                 this.initAddressListener();
             });
@@ -47,21 +47,21 @@ export class Button extends LitElement {
     override render(): TemplateResult {
         return html`
             ${this.address
-                ? html`<vwk-address-button
+                ? html`<vdk-address-button
                       .mode=${this.mode}
                       .address=${this.address}
-                  ></vwk-address-button>`
-                : html`<vwk-connect-button
+                  ></vdk-address-button>`
+                : html`<vdk-connect-button
                       .mode=${this.mode}
                       .i18n=${this.i18n}
                       .language=${this.language}
-                  ></vwk-connect-button>`}
+                  ></vdk-connect-button>`}
         `;
     }
 }
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-button': Button;
+        'vdk-button': Button;
     }
 }

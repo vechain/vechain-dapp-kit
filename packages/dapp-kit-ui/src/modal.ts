@@ -11,9 +11,9 @@ import { DAppKitLogger } from '@vechain/dapp-kit';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import { dispatchCustomEvent, subscribeToCustomEvent } from './utils';
 
-const MODAL_STATE_EVENT = 'vwk-modal-state-change';
+const MODAL_STATE_EVENT = 'vdk-modal-state-change';
 
-const getModal = (): HTMLElement | null => document.querySelector('vwk-modal');
+const getModal = (): HTMLElement | null => document.querySelector('vdk-modal');
 
 const createModalIfNotPresent = (options?: {
     modalParent?: HTMLElement;
@@ -26,7 +26,7 @@ const createModalIfNotPresent = (options?: {
 
     DAppKitLogger.debug('DAppKitModal', 'creating a new modal');
 
-    const newModal = document.createElement('vwk-modal');
+    const newModal = document.createElement('vdk-modal');
 
     (options?.modalParent || document.body).appendChild(newModal);
 
@@ -39,10 +39,10 @@ class CustomWalletConnectModal implements WCModal {
     private eventEmitter = new EventEmitter();
 
     private constructor() {
-        subscribeToCustomEvent('vwk-close-wc-modal', () => {
+        subscribeToCustomEvent('vdk-close-wc-modal', () => {
             this.updateModalState({ open: false });
         });
-        subscribeToCustomEvent('vwk-open-wc-modal', () => {
+        subscribeToCustomEvent('vdk-open-wc-modal', () => {
             this.updateModalState({ open: true });
         });
     }
@@ -60,13 +60,13 @@ class CustomWalletConnectModal implements WCModal {
      */
     openModal(options: OpenOptions): Promise<void> {
         DAppKitLogger.debug('CustomWalletConnectModal', 'opening the wc modal');
-        dispatchCustomEvent('vwk-open-wc-modal', options);
+        dispatchCustomEvent('vdk-open-wc-modal', options);
         return Promise.resolve();
     }
 
     closeModal(): void {
         DAppKitLogger.debug('CustomWalletConnectModal', 'closing the modal');
-        dispatchCustomEvent('vwk-close-wc-modal');
+        dispatchCustomEvent('vdk-close-wc-modal');
     }
 
     subscribeModal(
@@ -116,17 +116,17 @@ export class DAppKitModal {
 
     open(): void {
         DAppKitLogger.debug('DAppKitModal', 'opening the modal');
-        dispatchCustomEvent('vwk-open-wallet-modal');
+        dispatchCustomEvent('vdk-open-wallet-modal');
     }
 
     close(): void {
         DAppKitLogger.debug('DAppKitModal', 'closing the modal');
-        dispatchCustomEvent('vwk-close-wallet-modal');
+        dispatchCustomEvent('vdk-close-wallet-modal');
     }
 
     closeWalletConnect(): void {
         DAppKitLogger.debug('DAppKitModal', 'closing wallet connect');
-        dispatchCustomEvent('vwk-close-wc-modal');
+        dispatchCustomEvent('vdk-close-wc-modal');
     }
 
     onConnected(callback: (address: string | null) => void): () => void {

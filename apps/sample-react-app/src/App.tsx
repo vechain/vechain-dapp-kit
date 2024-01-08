@@ -1,4 +1,8 @@
-import { VwkButton, useWallet, useWalletModal } from '@vechain/dapp-kit-react';
+import {
+    WalletButton,
+    useWallet,
+    useWalletModal,
+} from '@vechain/dapp-kit-react';
 import { useEffect, useState } from 'react';
 
 function App() {
@@ -28,7 +32,7 @@ function App() {
         <div className="container">
             <h2>React JS</h2>
             <div className="label">kit button:</div>
-            <VwkButton />
+            <WalletButton />
             <div className="label">custom button:</div>
             <button onClick={open}>{buttonText}</button>
         </div>

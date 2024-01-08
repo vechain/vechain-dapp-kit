@@ -2,7 +2,7 @@
 /* eslint-disable react/function-component-definition */
 import { type ReactElement, useEffect, useState } from 'react';
 import {
-    VwkButton,
+    WalletButton,
     DAppKitProvider,
     useWalletModal,
     useWallet,
@@ -36,7 +36,7 @@ const Button = (): ReactElement => {
         <div className="container">
             <h2>Next JS</h2>
             <div className="label">kit button:</div>
-            <VwkButton />
+            <WalletButton />
             <div className="label">custom button:</div>
             <button onClick={open} type="button">
                 {buttonText}

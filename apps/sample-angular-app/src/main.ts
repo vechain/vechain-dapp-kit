@@ -17,11 +17,11 @@ const walletConnectOptions = {
     },
 };
 
-const vechainWalletKitOptions = {
+const vechainDAppKitOptions = {
     nodeUrl: 'https://testnet.vechain.org/',
     genesis: 'test',
     walletConnectOptions,
     usePersistence: true,
 };
 
-DAppKitUI.configure(vechainWalletKitOptions);
+DAppKitUI.configure(vechainDAppKitOptions);

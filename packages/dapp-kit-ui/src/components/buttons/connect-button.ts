@@ -7,7 +7,7 @@ import { defaultI18n, type I18n } from '../../constants';
 import { useTranslate } from '../../utils';
 import { DAppKitUI } from '../../client';
 
-@customElement('vwk-connect-button')
+@customElement('vdk-connect-button')
 export class ConnectButton extends LitElement {
     static override styles = [
         buttonStyle,
@@ -36,7 +36,7 @@ export class ConnectButton extends LitElement {
     override render(): TemplateResult {
         const translate = useTranslate(this.i18n, this.language);
         return html`
-            <vwk-fonts></vwk-fonts>
+            <vdk-fonts></vdk-fonts>
             <button class="${this.mode}" @click=${this.handleOpen}>
                 ${translate('connect-wallet')}
             </button>
@@ -46,6 +46,6 @@ export class ConnectButton extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-connect-button': ConnectButton;
+        'vdk-connect-button': ConnectButton;
     }
 }

@@ -1,3 +1,3 @@
 export * from './DAppKitProvider';
 export * from './types';
-export * from './VwkButton';
+export * from './WalletButton';

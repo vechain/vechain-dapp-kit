@@ -21,7 +21,7 @@ import { buttonStyle } from '../../assets/styles';
 import { VeWorldLogo } from '../../assets/images';
 
 const qrCodeSize = 280;
-@customElement('vwk-wallet-connect-qrcode')
+@customElement('vdk-wallet-connect-qrcode')
 export class WalletConnectQrCode extends LitElement {
     static override styles = [
         buttonStyle,
@@ -47,14 +47,14 @@ export class WalletConnectQrCode extends LitElement {
 
             .qrcode-container.LIGHT {
                 border-color: var(
-                    --vwk-color-light-quaternary,
+                    --vdk-color-light-quaternary,
                     ${Colors.Light.Quaternary}
                 );
             }
 
             .qrcode-container.DARK {
                 border-color: var(
-                    --vwk-color-dark-quaternary,
+                    --vdk-color-dark-quaternary,
                     ${Colors.Dark.Quaternary}
                 );
             }
@@ -82,34 +82,34 @@ export class WalletConnectQrCode extends LitElement {
 
             .line.LIGHT {
                 background: var(
-                    --vwk-color-light-quaternary,
+                    --vdk-color-light-quaternary,
                     ${Colors.Light.Quaternary}
                 );
             }
 
             .line.DARK {
                 background: var(
-                    --vwk-color-dark-quaternary,
+                    --vdk-color-dark-quaternary,
                     ${Colors.Dark.Quaternary}
                 );
             }
 
             .or {
-                font-family: var(--vwk-font-family, ${Font.Family});
-                font-size: var(--vwk-font-size-medium, ${Font.Size.Medium});
+                font-family: var(--vdk-font-family, ${Font.Family});
+                font-size: var(--vdk-font-size-medium, ${Font.Size.Medium});
                 padding: 0 12px;
             }
 
             .or.LIGHT {
                 color: var(
-                    --vwk-color-light-quaternary,
+                    --vdk-color-light-quaternary,
                     ${Colors.Light.Quaternary}
                 );
             }
 
             .or.DARK {
                 color: var(
-                    --vwk-color-dark-quaternary,
+                    --vdk-color-dark-quaternary,
                     ${Colors.Dark.Quaternary}
                 );
             }
@@ -133,7 +133,7 @@ export class WalletConnectQrCode extends LitElement {
 
             use {
                 stroke: var(
-                    --vwk-color-walletconnectblue,
+                    --vdk-color-walletconnectblue,
                     ${Colors.WalletConnectBlue}
                 );
                 animation: loading 1s linear infinite;
@@ -151,11 +151,11 @@ export class WalletConnectQrCode extends LitElement {
 
             .openingVeWorldText {
                 text-align: center;
-                font-family: var(--vwk-font-family, ${Font.Family});
-                font-size: var(--vwk-font-size-medium, ${Font.Size.Medium});
+                font-family: var(--vdk-font-family, ${Font.Family});
+                font-size: var(--vdk-font-size-medium, ${Font.Size.Medium});
                 padding: 20px 0;
                 color: var(
-                    --vwk-color-walletconnectblue,
+                    --vdk-color-walletconnectblue,
                     ${Colors.WalletConnectBlue}
                 );
             }
@@ -299,6 +299,6 @@ export class WalletConnectQrCode extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-wallet-connect-qrcode': WalletConnectQrCode;
+        'vdk-wallet-connect-qrcode': WalletConnectQrCode;
     }
 }

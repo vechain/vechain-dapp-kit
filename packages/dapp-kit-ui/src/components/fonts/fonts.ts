@@ -2,7 +2,7 @@ import type { TemplateResult } from 'lit';
 import { html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
-@customElement('vwk-fonts')
+@customElement('vdk-fonts')
 export class Fonts extends LitElement {
     override render(): TemplateResult {
         return html`
@@ -17,6 +17,6 @@ export class Fonts extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-fonts': Fonts;
+        'vdk-fonts': Fonts;
     }
 }

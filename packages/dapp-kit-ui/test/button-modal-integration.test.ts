@@ -14,7 +14,7 @@ import { elementQueries } from './helpers/element-queries';
 import { WalletSource } from '@vechain/dapp-kit';
 
 const themeVariables = {
-    '--vwk-color-dark-primary': '#000000',
+    '--vdk-color-dark-primary': '#000000',
 };
 
 describe('button', () => {
@@ -26,11 +26,11 @@ describe('button', () => {
     });
 
     it('Should callback with source when user clicks a wallet and should render the connected address button once connected', async () => {
-        const button: Button = window.document.createElement('vwk-button');
+        const button: Button = window.document.createElement('vdk-button');
 
         window.document.body.appendChild(button);
 
-        const modal: Modal = window.document.body.querySelector('vwk-modal')!;
+        const modal: Modal = window.document.body.querySelector('vdk-modal')!;
 
         let selectedSource: WalletSource | undefined;
 

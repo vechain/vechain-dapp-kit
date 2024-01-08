@@ -5,24 +5,24 @@ import { type DAppKitUIOptions } from '../client';
 import { Colors, Font, modalZIndex, defaultI18n } from '../constants';
 
 const StyleVariables = {
-    '--vwk-color-dark-primary': Colors.Dark.Primary.toString(),
-    '--vwk-color-dark-primary-hover': Colors.Dark.PrimaryHover.toString(),
-    '--vwk-color-dark-primary-active': Colors.Dark.PrimaryActive.toString(),
-    '--vwk-color-dark-secondary': Colors.Dark.Secondary.toString(),
-    '--vwk-color-dark-tertiary': Colors.Dark.Tertiary.toString(),
-    '--vwk-color-dark-quaternary': Colors.Dark.Quaternary.toString(),
-    '--vwk-color-light-primary': Colors.Light.Primary.toString(),
-    '--vwk-color-light-primary-hover': Colors.Light.PrimaryHover.toString(),
-    '--vwk-color-light-primary-active': Colors.Light.PrimaryActive.toString(),
-    '--vwk-color-light-secondary': Colors.Light.Secondary.toString(),
-    '--vwk-color-light-tertiary': Colors.Light.Tertiary.toString(),
-    '--vwk-color-light-quaternary': Colors.Light.Quaternary.toString(),
-    '--vwk-color-walletconnectblue': Colors.WalletConnectBlue.toString(),
-    '--vwk-font-family': Font.Family.toString(),
-    '--vwk-font-size-medium': Font.Size.Medium.toString(),
-    '--vwk-font-size-large': Font.Size.Large.toString(),
-    '--vwk-font-weight-medium': Font.Weight.Medium.toString(),
-    '--vwk-modal-z-index': modalZIndex.toString(),
+    '--vdk-color-dark-primary': Colors.Dark.Primary.toString(),
+    '--vdk-color-dark-primary-hover': Colors.Dark.PrimaryHover.toString(),
+    '--vdk-color-dark-primary-active': Colors.Dark.PrimaryActive.toString(),
+    '--vdk-color-dark-secondary': Colors.Dark.Secondary.toString(),
+    '--vdk-color-dark-tertiary': Colors.Dark.Tertiary.toString(),
+    '--vdk-color-dark-quaternary': Colors.Dark.Quaternary.toString(),
+    '--vdk-color-light-primary': Colors.Light.Primary.toString(),
+    '--vdk-color-light-primary-hover': Colors.Light.PrimaryHover.toString(),
+    '--vdk-color-light-primary-active': Colors.Light.PrimaryActive.toString(),
+    '--vdk-color-light-secondary': Colors.Light.Secondary.toString(),
+    '--vdk-color-light-tertiary': Colors.Light.Tertiary.toString(),
+    '--vdk-color-light-quaternary': Colors.Light.Quaternary.toString(),
+    '--vdk-color-walletconnectblue': Colors.WalletConnectBlue.toString(),
+    '--vdk-font-family': Font.Family.toString(),
+    '--vdk-font-size-medium': Font.Size.Medium.toString(),
+    '--vdk-font-size-large': Font.Size.Large.toString(),
+    '--vdk-font-weight-medium': Font.Weight.Medium.toString(),
+    '--vdk-modal-z-index': modalZIndex.toString(),
 };
 
 export type StyleVariables = keyof typeof StyleVariables;
@@ -45,8 +45,8 @@ export const initStyles = (customizedStyle: CustomizedStyle): void => {
 };
 
 export const initModalsAndButtons = (options: DAppKitUIOptions): void => {
-    const button = document.querySelector('vwk-button');
-    const modal = document.querySelector('vwk-modal');
+    const button = document.querySelector('vdk-button');
+    const modal = document.querySelector('vdk-modal');
 
     const initOptions = {
         mode: options.themeMode ?? 'LIGHT',

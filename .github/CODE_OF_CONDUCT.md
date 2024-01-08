@@ -1,35 +1,35 @@
-VeWorld WalletKit Code of Conduct
+VeWorld DAppKit Code of Conduct
 
 ## 1. Introduction
 
-The VeWorld WalletKit community is dedicated to providing a welcoming, inclusive, and harassment-free environment for everyone, regardless of age, gender, gender identity and expression, sexual orientation, disability, physical appearance, body size, race, ethnicity, nationality, religion, or technical experience. This Code of Conduct outlines our expectations for all members of the VeWorld WalletKit community, as well as the consequences for unacceptable behavior.
+The VeWorld DAppKit community is dedicated to providing a welcoming, inclusive, and harassment-free environment for everyone, regardless of age, gender, gender identity and expression, sexual orientation, disability, physical appearance, body size, race, ethnicity, nationality, religion, or technical experience. This Code of Conduct outlines our expectations for all members of the VeWorld DAppKit community, as well as the consequences for unacceptable behavior.
 
-We invite all those who participate in VeWorld WalletKit to help us create a safe and positive environment for everyone.
+We invite all those who participate in VeWorld DAppKit to help us create a safe and positive environment for everyone.
 
 ## 2. Expected Behavior
 
 The following behaviors are expected and requested of all community members:
 
-- Be respectful, considerate, and collaborative.
-- Refrain from demeaning, discriminatory, or harassing behavior and speech.
-- Be mindful of your surroundings and fellow participants.
-- Alert community leaders if you notice a dangerous situation, someone in distress, or violations of this Code of Conduct, even if they seem inconsequential.
-- Remember that community event venues may be shared with members of the public; please be respectful to all patrons of these locations.
+-   Be respectful, considerate, and collaborative.
+-   Refrain from demeaning, discriminatory, or harassing behavior and speech.
+-   Be mindful of your surroundings and fellow participants.
+-   Alert community leaders if you notice a dangerous situation, someone in distress, or violations of this Code of Conduct, even if they seem inconsequential.
+-   Remember that community event venues may be shared with members of the public; please be respectful to all patrons of these locations.
 
 ## 3. Unacceptable Behavior
 
 The following behaviors are considered harassment and are unacceptable within our community:
 
-- Violence, threats of violence, or violent language directed against another person.
-- Sexist, racist, homophobic, transphobic, ableist, or otherwise discriminatory jokes and language.
-- Posting or displaying sexually explicit or violent material.
-- Posting or threatening to post other people's personally identifying information ("doxing").
-- Personal insults, particularly those related to gender, sexual orientation, race, religion, or disability.
-- Inappropriate photography or recording.
-- Inappropriate physical contact. You should have someone's consent before touching them.
-- Unwelcome sexual attention. This includes sexualized comments or jokes, inappropriate touching, groping, and unwelcome sexual advances.
-- Deliberate intimidation, stalking, or following (online or in-person).
-- Advocating for, or encouraging, any of the above behavior.
+-   Violence, threats of violence, or violent language directed against another person.
+-   Sexist, racist, homophobic, transphobic, ableist, or otherwise discriminatory jokes and language.
+-   Posting or displaying sexually explicit or violent material.
+-   Posting or threatening to post other people's personally identifying information ("doxing").
+-   Personal insults, particularly those related to gender, sexual orientation, race, religion, or disability.
+-   Inappropriate photography or recording.
+-   Inappropriate physical contact. You should have someone's consent before touching them.
+-   Unwelcome sexual attention. This includes sexualized comments or jokes, inappropriate touching, groping, and unwelcome sexual advances.
+-   Deliberate intimidation, stalking, or following (online or in-person).
+-   Advocating for, or encouraging, any of the above behavior.
 
 ## 4. Consequences of Unacceptable Behavior
 

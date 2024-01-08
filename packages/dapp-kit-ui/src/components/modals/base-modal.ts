@@ -8,7 +8,7 @@ import {
     modalZIndex,
 } from '../../constants';
 
-@customElement('vwk-base-modal')
+@customElement('vdk-base-modal')
 export class BaseModal extends LitElement {
     static override styles = css`
         .modal-container {
@@ -23,7 +23,7 @@ export class BaseModal extends LitElement {
             background: rgba(0, 0, 0, 0.3);
             opacity: 1;
             transition: opacity 0.1s ease-in-out;
-            z-index: var(--vwk-modal-z-index, ${modalZIndex});
+            z-index: var(--vdk-modal-z-index, ${modalZIndex});
         }
 
         .modal-container.hidden {
@@ -44,18 +44,18 @@ export class BaseModal extends LitElement {
 
         .modal.LIGHT {
             background: var(
-                --vwk-color-light-secondary,
+                --vdk-color-light-secondary,
                 ${Colors.Light.Secondary}
             );
-            color: var(--vwk-color-light-tertiary, ${Colors.Light.Tertiary});
+            color: var(--vdk-color-light-tertiary, ${Colors.Light.Tertiary});
         }
 
         .modal.DARK {
             background: var(
-                --vwk-color-dark-secondary,
+                --vdk-color-dark-secondary,
                 ${Colors.Dark.Secondary}
             );
-            color: var(--vwk-color-dark-tertiary, ${Colors.Dark.Tertiary});
+            color: var(--vdk-color-dark-tertiary, ${Colors.Dark.Tertiary});
         }
 
         @media (max-width: ${Breakpoint.Mobile}px) {
@@ -139,6 +139,6 @@ export class BaseModal extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-base-modal': BaseModal;
+        'vdk-base-modal': BaseModal;
     }
 }

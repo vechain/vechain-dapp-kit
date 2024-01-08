@@ -27,8 +27,8 @@ const getConnectButton = (
 ): Promise<ConnectButton | undefined | null> => {
     return performQueryWithTimeout(timeout, () =>
         window.document.body
-            .querySelector('vwk-button')
-            ?.shadowRoot?.querySelector('vwk-connect-button'),
+            .querySelector('vdk-button')
+            ?.shadowRoot?.querySelector('vdk-connect-button'),
     );
 };
 
@@ -37,16 +37,16 @@ const getAddressButton = (
 ): Promise<AddressButton | undefined | null> => {
     return performQueryWithTimeout(timeout, () =>
         window.document.body
-            .querySelector('vwk-button')
-            ?.shadowRoot?.querySelector('vwk-address-button'),
+            .querySelector('vdk-button')
+            ?.shadowRoot?.querySelector('vdk-address-button'),
     );
 };
 
 const getConnectModal = (): Promise<ConnectModal | undefined | null> => {
     return performQueryWithTimeout(2000, () =>
         window.document.body
-            .querySelector('vwk-modal')
-            ?.shadowRoot?.querySelector('vwk-connect-modal'),
+            .querySelector('vdk-modal')
+            ?.shadowRoot?.querySelector('vdk-connect-modal'),
     );
 };
 
@@ -55,18 +55,18 @@ const getAddressModal = (
 ): Promise<AddressModal | undefined | null> => {
     return performQueryWithTimeout(timeout, () =>
         window.document.body
-            .querySelector('vwk-modal')
-            ?.shadowRoot?.querySelector('vwk-address-modal'),
+            .querySelector('vdk-modal')
+            ?.shadowRoot?.querySelector('vdk-address-modal'),
     );
 };
 
 const getAllSourceCards = async (): Promise<SourceCard[]> => {
     const res = await performQueryWithTimeout(2000, () =>
         window.document.body
-            .querySelector('vwk-modal')
-            ?.shadowRoot?.querySelector('vwk-connect-modal')
-            ?.shadowRoot?.querySelector('vwk-base-modal')
-            ?.querySelectorAll('vwk-source-card'),
+            .querySelector('vdk-modal')
+            ?.shadowRoot?.querySelector('vdk-connect-modal')
+            ?.shadowRoot?.querySelector('vdk-base-modal')
+            ?.querySelectorAll('vdk-source-card'),
     );
 
     const sourceCards: SourceCard[] = [];
@@ -81,10 +81,10 @@ const getAllSourceCards = async (): Promise<SourceCard[]> => {
 const getWalletConnectQrCode = () => {
     return performQueryWithTimeout(2000, () =>
         window.document.body
-            .querySelector('vwk-modal')
-            ?.shadowRoot?.querySelector('vwk-connect-modal')
-            ?.shadowRoot?.querySelector('vwk-base-modal')
-            ?.querySelector('vwk-wallet-connect-qrcode'),
+            .querySelector('vdk-modal')
+            ?.shadowRoot?.querySelector('vdk-connect-modal')
+            ?.shadowRoot?.querySelector('vdk-base-modal')
+            ?.querySelector('vdk-wallet-connect-qrcode'),
     );
 };
 

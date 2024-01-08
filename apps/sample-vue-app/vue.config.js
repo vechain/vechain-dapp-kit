@@ -19,7 +19,7 @@ module.exports = defineConfig({
             .tap((options) => {
                 options.compilerOptions = {
                     ...options.compilerOptions,
-                    isCustomElement: (tag) => tag.startsWith('vwk-'),
+                    isCustomElement: (tag) => tag.startsWith('vdk-'),
                 };
                 return options;
             });

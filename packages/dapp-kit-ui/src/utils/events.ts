@@ -3,11 +3,11 @@ import { DAppKitLogger } from '@vechain/dapp-kit';
 import type { ThemeMode } from '../constants';
 
 export type EventTypes =
-    | 'vwk-dapp-kit-configured'
-    | 'vwk-open-wc-modal'
-    | 'vwk-close-wc-modal'
-    | 'vwk-open-wallet-modal'
-    | 'vwk-close-wallet-modal';
+    | 'vdk-dapp-kit-configured'
+    | 'vdk-open-wc-modal'
+    | 'vdk-close-wc-modal'
+    | 'vdk-open-wallet-modal'
+    | 'vdk-close-wallet-modal';
 
 type ThemeOptions =
     | undefined
@@ -16,11 +16,11 @@ type ThemeOptions =
       };
 
 export interface EventArgs {
-    'vwk-dapp-kit-configured': undefined;
-    'vwk-close-wc-modal': undefined;
-    'vwk-open-wc-modal': OpenOptions & ThemeOptions;
-    'vwk-open-wallet-modal': ThemeOptions;
-    'vwk-close-wallet-modal': undefined;
+    'vdk-dapp-kit-configured': undefined;
+    'vdk-close-wc-modal': undefined;
+    'vdk-open-wc-modal': OpenOptions & ThemeOptions;
+    'vdk-open-wallet-modal': ThemeOptions;
+    'vdk-close-wallet-modal': undefined;
 }
 
 export const dispatchCustomEvent = <T extends EventTypes>(

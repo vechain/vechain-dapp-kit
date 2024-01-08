@@ -10,7 +10,7 @@ import {
     type ThemeMode,
 } from '../../constants';
 
-@customElement('vwk-modal')
+@customElement('vdk-modal')
 export class Modal extends LitElement {
     constructor() {
         super();
@@ -59,19 +59,19 @@ export class Modal extends LitElement {
         return html`
             <div>
                 ${this.address
-                    ? html` <vwk-address-modal
+                    ? html` <vdk-address-modal
                           .mode=${this.mode}
                           .i18n=${this.i18n}
                           .language=${this.language}
                           .address=${this.address}
                           .onDisconnectClick=${this.onDisconnectClick}
-                      ></vwk-address-modal>`
-                    : html` <vwk-connect-modal
+                      ></vdk-address-modal>`
+                    : html` <vdk-connect-modal
                           .mode=${this.mode}
                           .i18n=${this.i18n}
                           .language=${this.language}
                           .onSourceClick=${this.onSourceClick}
-                      ></vwk-connect-modal>`}
+                      ></vdk-connect-modal>`}
             </div>
         `;
     }
@@ -79,6 +79,6 @@ export class Modal extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-modal': Modal;
+        'vdk-modal': Modal;
     }
 }

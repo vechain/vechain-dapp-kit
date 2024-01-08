@@ -5,7 +5,7 @@ import { friendlyAddress, getPicassoImage } from '../../utils/account';
 import { buttonStyle } from '../../assets/styles';
 import { DAppKitUI } from '../../client';
 
-@customElement('vwk-address-button')
+@customElement('vdk-address-button')
 export class AddressButton extends LitElement {
     static override styles = [
         buttonStyle,
@@ -19,9 +19,9 @@ export class AddressButton extends LitElement {
             /* Style for the wallet address */
 
             .wallet-address {
-                font-size: var(--vwk-font-size-medium, ${Font.Size.Medium});
+                font-size: var(--vdk-font-size-medium, ${Font.Size.Medium});
                 margin-left: 8px;
-                font-family: var(--vwk-font-family, ${Font.Family});
+                font-family: var(--vdk-font-family, ${Font.Family});
             }
 
             .address-icon {
@@ -44,7 +44,7 @@ export class AddressButton extends LitElement {
     };
 
     render(): TemplateResult {
-        return html` <vwk-fonts></vwk-fonts>
+        return html` <vdk-fonts></vdk-fonts>
             <button
                 class="wallet-button ${this.mode}"
                 @click=${this.handleOpen}
@@ -62,6 +62,6 @@ export class AddressButton extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-address-button': AddressButton;
+        'vdk-address-button': AddressButton;
     }
 }

@@ -28,7 +28,7 @@ describe('qr-code-modal', () => {
     });
 
     it('should display QR code', async () => {
-        const button: Button = window.document.createElement('vwk-button');
+        const button: Button = window.document.createElement('vdk-button');
 
         window.document.body.appendChild(button);
 
@@ -37,7 +37,7 @@ describe('qr-code-modal', () => {
 
         connectButton.shadowRoot?.querySelector('button')?.click();
 
-        dispatchCustomEvent('vwk-open-wc-modal', { uri: sampleUri });
+        dispatchCustomEvent('vdk-open-wc-modal', { uri: sampleUri });
 
         const qrCode =
             (await elementQueries.getWalletConnectQrCode()) as WalletConnectQrCode;
