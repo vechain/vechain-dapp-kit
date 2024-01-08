@@ -4,7 +4,7 @@
 import { type DAppKitUIOptions } from '../client';
 import { Colors, Font, modalZIndex, defaultI18n } from '../constants';
 
-const StyleVariables = {
+const ThemeVariables = {
     '--vdk-color-dark-primary': Colors.Dark.Primary.toString(),
     '--vdk-color-dark-primary-hover': Colors.Dark.PrimaryHover.toString(),
     '--vdk-color-dark-primary-active': Colors.Dark.PrimaryActive.toString(),
@@ -25,10 +25,10 @@ const StyleVariables = {
     '--vdk-modal-z-index': modalZIndex.toString(),
 };
 
-export type StyleVariables = keyof typeof StyleVariables;
+export type ThemeVariables = keyof typeof ThemeVariables;
 
 export type CustomizedStyle = {
-    [key in StyleVariables]?: string;
+    [key in ThemeVariables]?: string;
 };
 
 export const initStyles = (customizedStyle: CustomizedStyle): void => {
@@ -36,7 +36,7 @@ export const initStyles = (customizedStyle: CustomizedStyle): void => {
 
     if (root) {
         for (const [key, value] of Object.entries({
-            ...StyleVariables,
+            ...ThemeVariables,
             ...customizedStyle,
         })) {
             root.style.setProperty(key, value);

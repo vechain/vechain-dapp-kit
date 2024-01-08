@@ -28,7 +28,7 @@ const createModalIfNotPresent = (options?: {
 
     const newModal = document.createElement('vdk-modal');
 
-    (options?.modalParent || document.body).appendChild(newModal);
+    (options?.modalParent ?? document.body).appendChild(newModal);
 
     return newModal;
 };
