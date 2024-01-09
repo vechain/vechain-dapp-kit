@@ -67,6 +67,10 @@ class WalletManager {
         return wallet;
     }
 
+    get connectionCertificate(): Connex.Vendor.CertMessage | undefined {
+        return this.wallet.connectionCertificate;
+    }
+
     connect = (): Promise<ConnectResponse> =>
         this.wallet
             .connect()
@@ -81,6 +85,8 @@ class WalletManager {
 
     disconnect = (remote = false): void => {
         if (!this.state.source) {
+            this.state.source = null;
+            this.state.address = null;
             return;
         }
 

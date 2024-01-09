@@ -14,9 +14,8 @@ describe('useWalletModal', () => {
         await waitFor(
             () => {
                 const modalHtml = window.document.body
-                    .querySelector('vwk-vechain-dapp-connect-kit')
-                    ?.shadowRoot?.querySelector('vwk-connect-button-with-modal')
-                    ?.shadowRoot?.querySelector('vwk-connect-modal')
+                    .querySelector('vdk-modal')
+                    ?.shadowRoot?.querySelector('vdk-connect-modal')
                     ?.shadowRoot?.innerHTML;
 
                 expect(modalHtml).toBeDefined();

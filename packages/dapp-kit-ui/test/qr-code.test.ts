@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
+    Button,
     ConnectButton,
-    ConnectButtonWithModal,
     DAppKitUI,
     dispatchCustomEvent,
     WalletConnectQrCode,
@@ -28,18 +28,16 @@ describe('qr-code-modal', () => {
     });
 
     it('should display QR code', async () => {
-        const element: ConnectButtonWithModal = window.document.createElement(
-            'vwk-connect-button-with-modal',
-        );
+        const button: Button = window.document.createElement('vdk-button');
 
-        window.document.body.appendChild(element);
+        window.document.body.appendChild(button);
 
         const connectButton =
             (await elementQueries.getConnectButton()) as ConnectButton;
 
         connectButton.shadowRoot?.querySelector('button')?.click();
 
-        dispatchCustomEvent('vwk-open-wc-modal', { uri: sampleUri });
+        dispatchCustomEvent('vdk-open-wc-modal', { uri: sampleUri });
 
         const qrCode =
             (await elementQueries.getWalletConnectQrCode()) as WalletConnectQrCode;

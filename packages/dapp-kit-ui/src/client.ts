@@ -2,15 +2,27 @@
 import type { DAppKitOptions, WalletManager } from '@vechain/dapp-kit';
 import { DAppKit } from '@vechain/dapp-kit';
 import { CustomWalletConnectModal, DAppKitModal } from './modal';
-import { CustomizedStyle, initStyles } from './styles';
+import {
+    type CustomizedStyle,
+    dispatchCustomEvent,
+    configureUI,
+} from './utils';
+import type { SourceInfo, I18n, ThemeMode } from './constants';
 
 let dappKit: DAppKit | null = null;
+let dappKitOptions: DAppKitUIOptions | null = null;
+let initialized = false;
 
 export type DAppKitUIOptions = DAppKitOptions & {
-    customStyles?: CustomizedStyle;
+    themeMode?: ThemeMode;
+    themeVariables?: CustomizedStyle;
+    i18n?: I18n;
+    language?: string;
+    modalParent?: HTMLElement;
+    onSourceClick?: (source?: SourceInfo) => void;
 };
 
-const DAppKitUI = {
+export const DAppKitUI = {
     configure(options: DAppKitUIOptions): DAppKit {
         if (
             options.walletConnectOptions &&
@@ -19,14 +31,25 @@ const DAppKitUI = {
             options.walletConnectOptions.modal =
                 CustomWalletConnectModal.getInstance();
         }
+        dappKitOptions = options;
+        if (!dappKit) dappKit = new DAppKit(options);
 
-        if (options.customStyles) {
-            initStyles(options.customStyles);
-        }
+        // init modal so on the first opening it doesn't have to create it
+        DAppKitModal.getInstance(this.wallet, {
+            modalParent: options.modalParent,
+        });
 
-        dappKit = new DAppKit(options);
+        // configure bottons and modals options
+        configureUI(options);
+        dispatchCustomEvent('vdk-dapp-kit-configured');
+
+        initialized = true;
 
         return dappKit;
+    },
+
+    get initialized(): boolean {
+        return initialized;
     },
 
     get thor(): Connex.Thor {
@@ -42,7 +65,9 @@ const DAppKitUI = {
     },
 
     get modal(): DAppKitModal {
-        return DAppKitModal.getInstance(this.wallet);
+        return DAppKitModal.getInstance(this.wallet, {
+            modalParent: dappKitOptions?.modalParent,
+        });
     },
 
     get(): DAppKit {
@@ -55,5 +80,3 @@ const DAppKitUI = {
         return dappKit;
     },
 };
-
-export { DAppKitUI };

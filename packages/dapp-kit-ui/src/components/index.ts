@@ -1,25 +1,3 @@
-import './base';
-import './provider';
-import './fonts';
-import './address-button';
-import './address-button-with-modal';
-import './address-modal';
-import './connect-button';
-import './connect-button-with-modal';
-import './connect-modal';
-import './source-card';
-import './vechain-dapp-connect-kit';
-import './wallet-connect-qr-code';
-
-export * from './base';
-export * from './provider';
+export * from './buttons';
+export * from './modals';
 export * from './fonts';
-export * from './connect-button';
-export * from './connect-button-with-modal';
-export * from './address-button';
-export * from './address-button-with-modal';
-export * from './address-modal';
-export * from './connect-modal';
-export * from './source-card';
-export * from './vechain-dapp-connect-kit';
-export * from './wallet-connect-qr-code';

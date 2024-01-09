@@ -1,17 +1,16 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { I18n, SourceInfo } from '../constants';
-import { defaultI18n, Font } from '../constants';
-import { buttonStyle, iconButtonStyle } from '../assets/styles';
-import type { ThemeMode } from '../constants/theme';
+import type { I18n, SourceInfo } from '../../constants';
+import { defaultI18n, Font } from '../../constants';
+import { buttonStyle, iconButtonStyle } from '../../assets/styles';
+import type { ThemeMode } from '../../constants/theme';
 import {
     friendlyAddress,
     getPicassoImage,
     useTranslate,
-    dispatchCustomEvent,
     subscribeToCustomEvent,
-} from '../utils';
+} from '../../utils';
 import {
     CheckSvg,
     DarkCloseSvg,
@@ -20,9 +19,10 @@ import {
     LightCloseSvg,
     LightCopySvg,
     LightDisconnectSvg,
-} from '../assets/icons';
+} from '../../assets/icons';
+import { DAppKitUI } from '../../client';
 
-@customElement('vwk-connected-address-modal')
+@customElement('vdk-address-modal')
 export class AddressModal extends LitElement {
     static override styles = [
         buttonStyle,
@@ -34,13 +34,13 @@ export class AddressModal extends LitElement {
                 gap: 15px;
                 padding: 20px;
                 transition: width 5s, height 4s;
-                font-family: var(--vwk-font-family, ${Font.Family});
+                font-family: var(--vdk-font-family, ${Font.Family});
             }
 
             .modal-header {
-                font-family: var(--vwk-font-family, ${Font.Family});
+                font-family: var(--vdk-font-family, ${Font.Family});
                 font-weight: var(
-                    --vwk-font-weight-medium,
+                    --vdk-font-weight-medium,
                     ${Font.Weight.Medium}
                 );
                 display: flex;
@@ -63,7 +63,7 @@ export class AddressModal extends LitElement {
                 justify-content: center;
                 align-items: center;
                 padding-top: 20px;
-                font-family: var(--vwk-font-family, ${Font.Family});
+                font-family: var(--vdk-font-family, ${Font.Family});
             }
 
             .address-icon {
@@ -78,18 +78,18 @@ export class AddressModal extends LitElement {
             }
 
             .title {
-                font-family: var(--vwk-font-family, ${Font.Family});
+                font-family: var(--vdk-font-family, ${Font.Family});
                 font-weight: var(
-                    --vwk-font-weight-medium,
+                    --vdk-font-weight-medium,
                     ${Font.Weight.Medium}
                 );
             }
 
             .address {
-                font-size: var(--vwk-font-size-large, ${Font.Size.Large});
-                font-family: var(--vwk-font-family, ${Font.Family});
+                font-size: var(--vdk-font-size-large, ${Font.Size.Large});
+                font-family: var(--vdk-font-family, ${Font.Family});
                 font-weight: var(
-                    --vwk-font-weight-medium,
+                    --vdk-font-weight-medium,
                     ${Font.Weight.Medium}
                 );
                 display: flex;
@@ -110,7 +110,7 @@ export class AddressModal extends LitElement {
     open = false;
 
     @property({ type: String })
-    address?: string;
+    address = '';
 
     @property({ type: Function })
     onSourceClick?: (source?: SourceInfo) => void = undefined;
@@ -136,11 +136,11 @@ export class AddressModal extends LitElement {
     constructor() {
         super();
 
-        subscribeToCustomEvent('vwk-open-wallet-modal', () => {
+        subscribeToCustomEvent('vdk-open-wallet-modal', () => {
             this.open = true;
         });
 
-        subscribeToCustomEvent('vwk-close-wallet-modal', () => {
+        subscribeToCustomEvent('vdk-close-wallet-modal', () => {
             this.open = false;
         });
     }
@@ -155,8 +155,8 @@ export class AddressModal extends LitElement {
             copyIcon = CheckSvg;
         }
         return html`
-        <vwk-fonts></vwk-fonts>
-        <vwk-base-modal
+        <vdk-fonts></vdk-fonts>
+        <vdk-base-modal
                 .open=${this.open}
                 .onClose=${this.handleClose}
                 .mode=${this.mode}
@@ -175,10 +175,10 @@ export class AddressModal extends LitElement {
                 <div class="modal-body">
                     <img
                             class="address-icon"
-                            src=${getPicassoImage(this.address ?? '')}
+                            src=${getPicassoImage(this.address)}
                     />
                     <span class="address">
-                            ${friendlyAddress(this.address ?? '')}
+                            ${friendlyAddress(this.address)}
                             <div class="copy-icon" @click=${
                                 this.onCopy
                             }>${copyIcon}</div>
@@ -200,30 +200,26 @@ export class AddressModal extends LitElement {
                         ${translate('disconnect')}
                     </button>
                 </div>
-        </vwk-base-modal>
+        </vdk-base-modal>
     `;
     }
 
     private onCopy = async (): Promise<void> => {
-        await navigator.clipboard.writeText(this.address || '');
+        await navigator.clipboard.writeText(this.address);
         this.showCopiedIcon = true;
         setTimeout(() => {
             this.showCopiedIcon = false;
         }, 1000);
     };
 
-    private onBack = (): void => {
-        dispatchCustomEvent('vwk-close-wc-modal', undefined);
-    };
-
     private handleClose = (): void => {
-        this.onBack();
+        DAppKitUI.modal.close();
         this.onClose();
     };
 }
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-connected-address-modal': AddressModal;
+        'vdk-address-modal': AddressModal;
     }
 }

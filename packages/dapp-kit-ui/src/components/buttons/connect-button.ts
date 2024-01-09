@@ -1,12 +1,13 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { ThemeMode } from '../constants/theme';
-import { buttonStyle } from '../assets/styles';
-import { defaultI18n, type I18n } from '../constants';
-import { useTranslate } from '../utils';
+import type { ThemeMode } from '../../constants/theme';
+import { buttonStyle } from '../../assets/styles';
+import { defaultI18n, type I18n } from '../../constants';
+import { useTranslate } from '../../utils';
+import { DAppKitUI } from '../../client';
 
-@customElement('vwk-connect-button')
+@customElement('vdk-connect-button')
 export class ConnectButton extends LitElement {
     static override styles = [
         buttonStyle,
@@ -26,13 +27,17 @@ export class ConnectButton extends LitElement {
     @property()
     language = 'en';
 
-    @property({ type: Function })
-    onClick? = undefined;
+    @property()
+    handleOpen = (): void => {
+        DAppKitUI.wallet.disconnect();
+        DAppKitUI.modal.open();
+    };
 
     override render(): TemplateResult {
         const translate = useTranslate(this.i18n, this.language);
         return html`
-            <button class="${this.mode}" @click=${this.onClick}>
+            <vdk-fonts></vdk-fonts>
+            <button class="${this.mode}" @click=${this.handleOpen}>
                 ${translate('connect-wallet')}
             </button>
         `;
@@ -41,6 +46,6 @@ export class ConnectButton extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-connect-button': ConnectButton;
+        'vdk-connect-button': ConnectButton;
     }
 }

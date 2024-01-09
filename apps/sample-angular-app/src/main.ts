@@ -1,6 +1,5 @@
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import { bootstrapApplication } from '@angular/platform-browser';
-import type { DAppKitOptions, WalletConnectOptions } from '@vechain/dapp-kit';
 import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, {
@@ -8,7 +7,7 @@ bootstrapApplication(AppComponent, {
     // eslint-disable-next-line no-console
 }).catch((err) => console.error(err));
 
-const walletConnectOptions: WalletConnectOptions = {
+const walletConnectOptions = {
     projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
     metadata: {
         name: 'Sample VeChain dApp',
@@ -18,11 +17,11 @@ const walletConnectOptions: WalletConnectOptions = {
     },
 };
 
-const vechainWalletKitOptions: DAppKitOptions = {
+const vechainDAppKitOptions = {
     nodeUrl: 'https://testnet.vechain.org/',
     genesis: 'test',
     walletConnectOptions,
     usePersistence: true,
 };
 
-DAppKitUI.configure(vechainWalletKitOptions);
+DAppKitUI.configure(vechainDAppKitOptions);

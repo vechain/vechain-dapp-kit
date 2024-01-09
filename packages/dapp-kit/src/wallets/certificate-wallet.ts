@@ -6,19 +6,20 @@ import { DEFAULT_CONNECT_CERT_MESSAGE } from '../certificates';
  * A `ConnexWallet` for wallet's that use a certificate connection
  */
 class CertificateBasedWallet implements ConnexWallet {
-    constructor(private readonly wallet: BaseWallet) {}
+    connectionCertificate: Connex.Vendor.CertMessage;
+    constructor(private readonly wallet: BaseWallet) {
+        this.connectionCertificate = DEFAULT_CONNECT_CERT_MESSAGE;
+    }
 
     connect = async (): Promise<ConnectResponse> => {
-        const cert = DEFAULT_CONNECT_CERT_MESSAGE;
-
         const {
             annex: { domain, signer, timestamp },
             signature,
-        } = await this.signCert(cert, {});
+        } = await this.signCert(this.connectionCertificate, {});
 
         try {
             Certificate.verify({
-                ...cert,
+                ...this.connectionCertificate,
                 signature,
                 signer,
                 domain,

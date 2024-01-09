@@ -14,6 +14,9 @@ export default function RootLayout({
 }): React.ReactElement {
     return (
         <html lang="en">
+            <head>
+                <title>Next JS</title>
+            </head>
             <body className={inter.className}>{children}</body>
         </html>
     );

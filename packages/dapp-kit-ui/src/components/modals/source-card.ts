@@ -2,11 +2,11 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechain/dapp-kit';
-import { Font, type SourceInfo, type ThemeMode } from '../constants';
-import { buttonStyle } from '../assets/styles';
-import { DAppKitUI } from '../client';
+import { Font, type SourceInfo, type ThemeMode } from '../../constants';
+import { buttonStyle } from '../../assets/styles';
+import { DAppKitUI } from '../../client';
 
-@customElement('vwk-source-card')
+@customElement('vdk-source-card')
 export class SourceCard extends LitElement {
     static override styles = [
         buttonStyle,
@@ -16,7 +16,7 @@ export class SourceCard extends LitElement {
                 flex: 1;
                 margin: 8px 0;
                 justify-content: space-between;
-                font-size: var(--vwk-font-size-medium, ${Font.Size.Medium});
+                font-size: var(--vdk-font-size-medium, ${Font.Size.Medium});
             }
 
             img {
@@ -59,6 +59,6 @@ export class SourceCard extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-source-card': SourceCard;
+        'vdk-source-card': SourceCard;
     }
 }

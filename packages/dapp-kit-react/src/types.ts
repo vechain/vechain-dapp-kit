@@ -1,7 +1,7 @@
 /// <reference types="@vechain/connex" />
 import type React from 'react';
 import type { ConnectResponse, WalletSource } from '@vechain/dapp-kit';
-import { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
+import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 
 export interface AccountState {
     address: string | null;
@@ -38,5 +38,6 @@ export interface DAppKitContext {
     modal: {
         open: () => void;
         close: () => void;
+        onConnected: (callback: (address: string | null) => void) => void;
     };
 }

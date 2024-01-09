@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import type { WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
-import { subscribeKey } from 'valtio/utils';
+import { subscribeKey } from 'valtio/vanilla/utils';
 import type { DAppKitProviderOptions, DAppKitContext } from './types';
 
 /**
@@ -22,8 +22,13 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     genesis,
     walletConnectOptions,
     usePersistence = false,
-    customStyles,
     logLevel,
+    themeMode,
+    themeVariables,
+    i18n,
+    language,
+    modalParent,
+    onSourceClick,
 }): React.ReactElement => {
     const connex = useMemo(
         () =>
@@ -33,7 +38,12 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
                 walletConnectOptions,
                 usePersistence,
                 logLevel,
-                customStyles,
+                themeVariables,
+                themeMode,
+                i18n,
+                language,
+                modalParent,
+                onSourceClick,
             }),
         [
             nodeUrl,
@@ -41,7 +51,12 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
             walletConnectOptions,
             usePersistence,
             logLevel,
-            customStyles,
+            themeVariables,
+            themeMode,
+            i18n,
+            language,
+            modalParent,
+            onSourceClick,
         ],
     );
 
@@ -53,12 +68,12 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     );
 
     useEffect(() => {
-        const addressSub = subscribeKey(connex.wallet.state, 'address', (v) =>
-            setAccount(v),
-        );
-        const sourceSub = subscribeKey(connex.wallet.state, 'source', (v) =>
-            setSource(v),
-        );
+        const addressSub = subscribeKey(connex.wallet.state, 'address', (v) => {
+            setAccount(v);
+        });
+        const sourceSub = subscribeKey(connex.wallet.state, 'source', (v) => {
+            setSource(v);
+        });
 
         return () => {
             addressSub();
@@ -73,6 +88,11 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     const closeModal = useCallback(() => {
         DAppKitUI.modal.close();
     }, []);
+    const onModalConnected = useCallback(
+        (callback: (address: string | null) => void) =>
+            DAppKitUI.modal.onConnected(callback),
+        [],
+    );
 
     const context: DAppKitContext = useMemo(() => {
         return {
@@ -91,9 +111,10 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
             modal: {
                 open: openModal,
                 close: closeModal,
+                onConnected: onModalConnected,
             },
         };
-    }, [connex, account, source, closeModal, openModal]);
+    }, [connex, account, source, closeModal, openModal, onModalConnected]);
 
     return <Context.Provider value={context}>{children}</Context.Provider>;
 };

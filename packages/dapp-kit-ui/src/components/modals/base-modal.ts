@@ -1,12 +1,15 @@
 import type { PropertyValues, TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import type { ThemeMode } from '../../constants';
-import { Breakpoint, Colors } from '../../constants';
-import { modalZIndex } from '../../constants/z-index';
+import {
+    type ThemeMode,
+    Breakpoint,
+    Colors,
+    modalZIndex,
+} from '../../constants';
 
-@customElement('vwk-base-modal')
-export class Modal extends LitElement {
+@customElement('vdk-base-modal')
+export class BaseModal extends LitElement {
     static override styles = css`
         .modal-container {
             display: flex;
@@ -20,7 +23,7 @@ export class Modal extends LitElement {
             background: rgba(0, 0, 0, 0.3);
             opacity: 1;
             transition: opacity 0.1s ease-in-out;
-            z-index: var(--vwk-modal-z-index, ${modalZIndex});
+            z-index: var(--vdk-modal-z-index, ${modalZIndex});
         }
 
         .modal-container.hidden {
@@ -41,18 +44,18 @@ export class Modal extends LitElement {
 
         .modal.LIGHT {
             background: var(
-                --vwk-color-light-secondary,
+                --vdk-color-light-secondary,
                 ${Colors.Light.Secondary}
             );
-            color: var(--vwk-color-light-tertiary, ${Colors.Light.Tertiary});
+            color: var(--vdk-color-light-tertiary, ${Colors.Light.Tertiary});
         }
 
         .modal.DARK {
             background: var(
-                --vwk-color-dark-secondary,
+                --vdk-color-dark-secondary,
                 ${Colors.Dark.Secondary}
             );
-            color: var(--vwk-color-dark-tertiary, ${Colors.Dark.Tertiary});
+            color: var(--vdk-color-dark-tertiary, ${Colors.Dark.Tertiary});
         }
 
         @media (max-width: ${Breakpoint.Mobile}px) {
@@ -136,6 +139,6 @@ export class Modal extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'vwk-base-modal': Modal;
+        'vdk-base-modal': BaseModal;
     }
 }

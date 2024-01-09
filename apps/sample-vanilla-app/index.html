@@ -3,9 +3,9 @@
 <html lang="en">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Sample Vanilla App</title>
+        <title>Vanilla JS</title>
         <meta charset="utf-8" />
-        <script crossorigin type="module" src="index.js"></script>
+        <script crossorigin type="module" src="./index.js"></script>
         <style>
             body {
                 margin: 0;
@@ -14,13 +14,30 @@
                 align-items: center;
                 justify-content: center;
             }
+            h2 {
+                margin: 0;
+            }
+            .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid #000;
+                border-radius: 20px;
+                padding: 20px;
+            }
+            .label {
+                margin-top: 20px;
+                margin-bottom: 10px;
+            }
         </style>
     </head>
     <body>
-        <div>
+        <div class="container">
             <h2>Vanilla JS</h2>
-            <vwk-vechain-dapp-connect-kit></vwk-vechain-dapp-connect-kit>
-            <br />
+            <div class="label">kit button:</div>
+            <vdk-button></vdk-button>
+            <div class="label">custom button:</div>
             <button id="custom-button">Connect Custom Button</button>
         </div>
     </body>

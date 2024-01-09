@@ -5,6 +5,7 @@ import type {
 } from '@walletconnect/types';
 import { getSdkError } from '@walletconnect/utils';
 import type { SignClient } from '@walletconnect/sign-client/dist/types/client';
+import { DAppKitLogger } from '../utils';
 import type { WCSigner, WCSignerOptions } from './types';
 import { DefaultMethods } from './constants';
 
@@ -35,10 +36,139 @@ export const newWcSigner = ({
             restoreSession(clientInstance);
         })
         .catch(() => {
-            throw new Error(
-                `Failed to initialise the wallet connect sign client`,
-            );
+            throw new Error(`Failed to get the wallet connect sign client`);
         });
+
+    // listen for session updates
+    const listenToEvents = (_client: SignClient): void => {
+        _client.on('session_update', ({ topic, params }): void => {
+            DAppKitLogger.debug('wallet connect signer', 'session_update', {
+                topic,
+                params,
+            });
+            const { namespaces } = params;
+            const _session = _client.session.get(topic);
+            session = { ..._session, namespaces };
+        });
+
+        _client.on('session_delete', () => {
+            onDisconnected();
+            disconnect().catch(() => {
+                throw new Error('Failed to disconnect');
+            });
+        });
+    };
+
+    // restore a session if undefined
+    const restoreSession = (_client: SignClient): void => {
+        if (typeof session !== 'undefined') return;
+
+        DAppKitLogger.debug('wallet connect signer', 'restore session');
+        const sessionKeys = _client.session.keys;
+
+        for (const key of sessionKeys) {
+            const _session = _client.session.get(key);
+            const accounts = _session.namespaces.vechain.accounts;
+
+            for (const acc of accounts) {
+                if (acc.split(':')[1] === genesisId.slice(-32)) {
+                    session = _session;
+                    return;
+                }
+            }
+        }
+    };
+
+    /**
+     * Validates the requested account and network against a request
+     * @param requestedAddress - The optional requested account address
+     */
+    const validateSession = (
+        requestedAddress?: string,
+    ): SessionAccount | undefined => {
+        if (!session) return;
+        DAppKitLogger.debug('wallet connect signer', 'validate session');
+
+        const firstAccount = session.namespaces.vechain.accounts[0];
+
+        const address = firstAccount.split(':')[2];
+        const networkIdentifier = firstAccount.split(':')[1];
+
+        // Return undefined if the network identifier doesn't match
+        if (networkIdentifier !== genesisId.slice(-32)) return;
+
+        // Return undefined if the address doesn't match
+        if (
+            requestedAddress &&
+            requestedAddress.toLowerCase() !== address.toLowerCase()
+        )
+            return;
+
+        return {
+            address,
+            networkIdentifier,
+            topic: session.topic,
+        };
+    };
+
+    const connect = async (): Promise<SessionTypes.Struct> => {
+        DAppKitLogger.debug('wallet connect signer', 'connect');
+        const signClient = await wcClient.get();
+
+        const namespace: ProposalTypes.RequiredNamespace = {
+            methods: Object.values(DefaultMethods),
+            chains: [chainId],
+            events: [],
+        };
+
+        try {
+            const requiredNamespaces: Record<
+                string,
+                ProposalTypes.RequiredNamespace
+            > = {
+                vechain: namespace,
+            };
+
+            const res = await signClient.connect({
+                requiredNamespaces,
+            });
+
+            if (res.uri) {
+                await web3Modal.openModal({ uri: res.uri });
+            }
+
+            return await new Promise((resolve, reject) => {
+                const endSubscription = web3Modal.subscribeModal((ev) => {
+                    if (!ev.open) {
+                        reject(new Error('User closed modal while connecting'));
+                        endSubscription();
+                    }
+                });
+
+                res.approval()
+                    .then((newSession) => {
+                        session = newSession;
+                        endSubscription();
+                        resolve(newSession);
+                    })
+                    .catch(reject);
+            });
+        } finally {
+            web3Modal.closeModal();
+        }
+    };
+
+    const getSessionTopic = async (
+        requestedAccount?: string,
+    ): Promise<string> => {
+        const validation = validateSession(requestedAccount);
+
+        if (validation) return validation.topic;
+
+        const newSession = await connect();
+
+        return newSession.topic;
+    };
 
     const makeRequest = async <T>(
         params: EngineTypes.RequestParams['request'],
@@ -90,128 +220,6 @@ export const newWcSigner = ({
             });
         } catch (e) {
             throw new Error(`SignClient.disconnect failed`);
-        }
-    };
-
-    /**
-     * Validates the requested account and network against a request
-     * @param requestedAddress - The optional requested account address
-     */
-    const validateSession = (
-        requestedAddress?: string,
-    ): SessionAccount | undefined => {
-        if (!session) return;
-
-        const firstAccount = session.namespaces.vechain.accounts[0];
-
-        const address = firstAccount.split(':')[2];
-        const networkIdentifier = firstAccount.split(':')[1];
-
-        // Return undefined if the network identifier doesn't match
-        if (networkIdentifier !== genesisId.slice(-32)) return;
-
-        // Return undefined if the address doesn't match
-        if (
-            requestedAddress &&
-            requestedAddress.toLowerCase() !== address.toLowerCase()
-        )
-            return;
-
-        return {
-            address,
-            networkIdentifier,
-            topic: session.topic,
-        };
-    };
-
-    const getSessionTopic = async (
-        requestedAccount?: string,
-    ): Promise<string> => {
-        const validation = validateSession(requestedAccount);
-
-        if (validation) return validation.topic;
-
-        const newSession = await connect();
-
-        return newSession.topic;
-    };
-
-    const connect = async (): Promise<SessionTypes.Struct> => {
-        const signClient = await wcClient.get();
-
-        const namespace: ProposalTypes.RequiredNamespace = {
-            methods: Object.values(DefaultMethods),
-            chains: [chainId],
-            events: [],
-        };
-
-        try {
-            const requiredNamespaces: Record<
-                string,
-                ProposalTypes.RequiredNamespace
-            > = {
-                vechain: namespace,
-            };
-
-            const res = await signClient.connect({
-                requiredNamespaces,
-            });
-
-            if (res.uri) {
-                await web3Modal.openModal({ uri: res.uri });
-            }
-
-            return await new Promise((resolve, reject) => {
-                const endSubscription = web3Modal.subscribeModal((ev) => {
-                    if (!ev.open) {
-                        reject(new Error('User closed modal'));
-                        endSubscription();
-                    }
-                });
-
-                res.approval()
-                    .then((newSession) => {
-                        session = newSession;
-                        endSubscription();
-                        resolve(newSession);
-                    })
-                    .catch(reject);
-            });
-        } finally {
-            web3Modal.closeModal();
-        }
-    };
-
-    const listenToEvents = (_client: SignClient): void => {
-        _client.on('session_update', ({ topic, params }) => {
-            const { namespaces } = params;
-            const _session = _client.session.get(topic);
-            session = { ..._session, namespaces };
-        });
-
-        _client.on('session_delete', () => {
-            onDisconnected();
-            disconnect().catch(() => {
-                throw new Error('Failed to disconnect');
-            });
-        });
-    };
-
-    const restoreSession = (_client: SignClient): void => {
-        if (typeof session !== 'undefined') return;
-
-        const sessionKeys = _client.session.keys;
-
-        for (const key of sessionKeys) {
-            const _session = _client.session.get(key);
-            const accounts = _session.namespaces.vechain.accounts;
-
-            for (const acc of accounts) {
-                if (acc.split(':')[1] === genesisId.slice(-32)) {
-                    session = _session;
-                    return;
-                }
-            }
         }
     };
 
