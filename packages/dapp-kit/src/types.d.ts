@@ -46,6 +46,7 @@ type BaseWallet = Connex.Signer & {
  */
 type ConnexWallet = BaseWallet & {
     connect: () => Promise<ConnectResponse>;
+    connectionCertificate?: Connex.Vendor.CertMessage;
 };
 
 interface ConnectResponse {
