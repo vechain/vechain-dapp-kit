@@ -4,6 +4,7 @@ import type { ThemeMode } from '../constants';
 
 export type EventTypes =
     | 'vdk-dapp-kit-configured'
+    | 'vdk-request-connection-certificate'
     | 'vdk-open-wc-modal'
     | 'vdk-close-wc-modal'
     | 'vdk-open-wallet-modal'
@@ -17,6 +18,7 @@ type ThemeOptions =
 
 export interface EventArgs {
     'vdk-dapp-kit-configured': undefined;
+    'vdk-request-connection-certificate': undefined;
     'vdk-close-wc-modal': undefined;
     'vdk-open-wc-modal': OpenOptions & ThemeOptions;
     'vdk-open-wallet-modal': ThemeOptions;

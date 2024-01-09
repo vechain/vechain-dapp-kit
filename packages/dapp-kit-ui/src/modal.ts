@@ -69,6 +69,14 @@ class CustomWalletConnectModal implements WCModal {
         dispatchCustomEvent('vdk-close-wc-modal');
     }
 
+    askForConnectionCertificate(): void {
+        DAppKitLogger.debug(
+            'CustomWalletConnectModal',
+            'ask for connection certificate',
+        );
+        dispatchCustomEvent('vdk-request-connection-certificate');
+    }
+
     subscribeModal(
         callback: (newState: SubscribeModalState) => void,
     ): () => void {

@@ -9,16 +9,16 @@ import {
     defaultI18n,
     Font,
     WalletSources,
-} from '../../constants';
+} from '../../../constants';
 import {
     DarkChevronLeftSvg,
     DarkCloseSvg,
     LightChevronLeftSvg,
     LightCloseSvg,
-} from '../../assets/icons';
-import { isMobile, subscribeToCustomEvent, useTranslate } from '../../utils';
-import { DAppKitUI } from '../../client';
-import { iconButtonStyle } from '../../assets/styles';
+} from '../../../assets/icons';
+import { isMobile, subscribeToCustomEvent, useTranslate } from '../../../utils';
+import { DAppKitUI } from '../../../client';
+import { iconButtonStyle } from '../../../assets/styles';
 
 @customElement('vdk-connect-modal')
 export class ConnectModal extends LitElement {
@@ -47,24 +47,6 @@ export class ConnectModal extends LitElement {
         `,
     ];
 
-    @property({ type: Boolean })
-    open = false;
-
-    @property({ type: Boolean })
-    openingVeWorld = false;
-
-    @property()
-    mode: ThemeMode = 'LIGHT';
-
-    @property()
-    i18n: I18n = defaultI18n;
-
-    @property()
-    language = 'en';
-
-    @property()
-    walletConnectQRcode?: string = undefined;
-
     constructor() {
         super();
 
@@ -81,18 +63,18 @@ export class ConnectModal extends LitElement {
             this.open = true;
             this.walletConnectQRcode = options.uri;
         });
-
         subscribeToCustomEvent('vdk-close-wc-modal', () => {
             this.walletConnectQRcode = undefined;
             this.openingVeWorld = false;
         });
-
         subscribeToCustomEvent('vdk-open-wallet-modal', () => {
             this.open = true;
         });
-
         subscribeToCustomEvent('vdk-close-wallet-modal', () => {
             this.open = false;
+        });
+        subscribeToCustomEvent('vdk-request-connection-certificate', () => {
+            this.requestForConnectionCertificate = true;
         });
     }
 
@@ -124,19 +106,66 @@ export class ConnectModal extends LitElement {
     @property({ type: Function })
     onClose: () => void = () => nothing;
 
+    @property({ type: Boolean })
+    open = false;
+
+    @property({ type: Boolean })
+    openingVeWorld = false;
+
+    @property()
+    mode: ThemeMode = 'LIGHT';
+
+    @property()
+    i18n: I18n = defaultI18n;
+
+    @property()
+    language = 'en';
+
+    @property()
+    walletConnectQRcode?: string = undefined;
+
+    @property()
+    requestForConnectionCertificate = false;
+
+    private renderContent(): TemplateResult | TemplateResult[] {
+        if (this.requestForConnectionCertificate) {
+            return html`<vdk-sign-connection-certificate
+                .mode=${this.mode}
+                .i18n=${this.i18n}
+                .language=${this.language}
+            ></vdk-sign-connection-certificate>`;
+        }
+        if (this.walletConnectQRcode) {
+            return html` <vdk-wallet-connect-qrcode
+                .openingVeWorld=${this.openingVeWorld}
+                .mode=${this.mode}
+                .i18n=${this.i18n}
+                .language=${this.language}
+                .walletConnectQRcode=${this.walletConnectQRcode}
+            ></vdk-wallet-connect-qrcode>`;
+        }
+        return this.availableSources.map(
+            (source) =>
+                html` <vdk-source-card
+                    .source=${source}
+                    .mode=${this.mode}
+                    .onClick=${this.onSourceClick}
+                ></vdk-source-card>`,
+        );
+    }
+
     override render(): TemplateResult {
         const translate = useTranslate(this.i18n, this.language);
         return html`
-        <vdk-fonts></vdk-fonts>
-        <vdk-base-modal
+            <vdk-fonts></vdk-fonts>
+            <vdk-base-modal
                 .open=${this.open}
                 .onClose=${this.handleClose}
                 .mode=${this.mode}
-        >
-            <div class="modal-container">
-                <div class="modal-header">
-                    ${
-                        this.walletConnectQRcode
+            >
+                <div class="modal-container">
+                    <div class="modal-header">
+                        ${this.walletConnectQRcode
                             ? html` <div
                                   class="icon-button ${this.mode}"
                                   @click=${this.handleBack}
@@ -145,40 +174,21 @@ export class ConnectModal extends LitElement {
                                       ? LightChevronLeftSvg
                                       : DarkChevronLeftSvg}
                               </div>`
-                            : html` <div class="icon-button"></div>`
-                    }
-                    <div>${translate('connect-wallet')}</div>
-                    <div
+                            : html` <div class="icon-button"></div>`}
+                        <div>${translate('connect-wallet')}</div>
+                        <div
                             class="icon-button ${this.mode}"
                             @click=${this.handleClose}
-                    >
-                        ${this.mode === 'LIGHT' ? LightCloseSvg : DarkCloseSvg}
+                        >
+                            ${this.mode === 'LIGHT'
+                                ? LightCloseSvg
+                                : DarkCloseSvg}
+                        </div>
                     </div>
+                    <div class="modal-body">${this.renderContent()}</div>
                 </div>
-                <div class="modal-body">
-                    ${
-                        this.walletConnectQRcode
-                            ? html` <vdk-wallet-connect-qrcode
-                                  .openingVeWorld=${this.openingVeWorld}
-                                  .mode=${this.mode}
-                                  .i18n=${this.i18n}
-                                  .language=${this.language}
-                                  .walletConnectQRcode=${this
-                                      .walletConnectQRcode}
-                              ></vdk-wallet-connect-qrcode>`
-                            : this.availableSources.map(
-                                  (source) =>
-                                      html` <vdk-source-card
-                                          .source=${source}
-                                          .mode=${this.mode}
-                                          .onClick=${this.onSourceClick}
-                                      ></vdk-source-card>`,
-                              )
-                    }
-                </div>
-
-        </vdk-base-modal>
-    `;
+            </vdk-base-modal>
+        `;
     }
 
     private handleBack = (): void => {

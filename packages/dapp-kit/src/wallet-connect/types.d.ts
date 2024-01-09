@@ -43,6 +43,7 @@ export interface WCModal {
     subscribeModal: (
         callback: (newState: SubscribeModalState) => void,
     ) => () => void;
+    askForCertificate?: () => void;
 }
 
 /**
@@ -87,4 +88,5 @@ export interface WCSignerOptions {
     web3Modal: WCModal;
     onDisconnected: () => void;
     genesisId: string;
+    requireCertificate?: boolean;
 }
