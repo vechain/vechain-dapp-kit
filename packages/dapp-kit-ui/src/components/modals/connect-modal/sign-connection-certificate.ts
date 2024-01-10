@@ -3,6 +3,11 @@ import { customElement, property } from 'lit/decorators.js';
 import { defaultI18n, type I18n, type ThemeMode } from '../../../constants';
 import { useTranslate } from '../../../utils';
 import { buttonStyle } from '../../../assets/styles';
+import { DAppKitUI } from '../../../client';
+
+const handleSignCertificate = async (): Promise<void> => {
+    await DAppKitUI.wallet.signConnectionCertificate();
+};
 
 @customElement('vdk-sign-connection-certificate')
 export class SignConnectionCertificate extends LitElement {
@@ -31,7 +36,7 @@ export class SignConnectionCertificate extends LitElement {
                 <div class="signCertificateText">
                     ${translate('sign-connection-certificate-description')}
                 </div>
-                <button class="${this.mode}">
+                <button class="${this.mode}" @click=${handleSignCertificate}>
                     ${translate('sign-connection-certificate-button')}
                 </button>
             </div>

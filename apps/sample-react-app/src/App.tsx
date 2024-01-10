@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 function App() {
     const { account } = useWallet();
-    const { open, onConnected } = useWalletModal();
+    const { open, onConnectionStatusChange } = useWalletModal();
     const [buttonText, setButtonText] = useState('Connect Custom Button');
 
     useEffect(() => {
@@ -25,8 +25,8 @@ function App() {
 
         handleConnected(account);
 
-        onConnected(handleConnected);
-    }, [account, onConnected]);
+        onConnectionStatusChange(handleConnected);
+    }, [account, onConnectionStatusChange]);
 
     return (
         <div className="container">

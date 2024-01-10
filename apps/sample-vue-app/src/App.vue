@@ -54,7 +54,7 @@ setTimeout(() => {
 
         handleConnected(DAppKitUI.wallet.state.address);
 
-        DAppKitUI.modal.onConnected(handleConnected);
+        DAppKitUI.modal.onConnectionStatusChange(handleConnected);
     }
 }, 100);
 

@@ -18,7 +18,6 @@ export const createWallet = ({
     genesis,
     walletConnectOptions,
     onDisconnected,
-    requireCertificate,
 }: ICreateWallet): ConnexWallet => {
     const genesisId = normalizeGenesisId(genesis);
 
@@ -67,7 +66,6 @@ export const createWallet = ({
                 wcClient,
                 web3Modal,
                 onDisconnected,
-                requireCertificate,
             });
 
             return new WCWallet(wallet);

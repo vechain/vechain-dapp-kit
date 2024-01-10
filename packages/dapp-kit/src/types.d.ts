@@ -1,3 +1,4 @@
+import type { Certificate } from 'thor-devkit';
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
 import type { LogLevel } from './utils/logger';
 
@@ -47,12 +48,13 @@ type BaseWallet = Connex.Signer & {
  */
 type ConnexWallet = BaseWallet & {
     connect: () => Promise<ConnectResponse>;
-    connectionCertificate?: Connex.Vendor.CertMessage;
+    connectionCertificate?: Certificate;
 };
 
 interface ConnectResponse {
     account: string;
     verified: boolean;
+    connectionCertificate?: Certificate;
 }
 
 interface WalletManagerState {

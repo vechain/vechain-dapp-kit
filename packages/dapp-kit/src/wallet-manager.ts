@@ -1,3 +1,4 @@
+import { Certificate } from 'thor-devkit';
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import type {
@@ -11,6 +12,7 @@ import { createWallet } from './create-wallet';
 import { WalletSources } from './wallet';
 import { Storage } from './local-storage';
 import { DAppKitLogger } from './utils';
+import { DEFAULT_CONNECT_CERT_MESSAGE } from './certificates';
 
 class WalletManager {
     public readonly state: WalletManagerState;
@@ -67,15 +69,58 @@ class WalletManager {
         return wallet;
     }
 
-    get connectionCertificate(): Connex.Vendor.CertMessage | undefined {
+    get connectionCertificate(): Certificate | undefined {
         return this.wallet.connectionCertificate;
     }
+
+    // this is needed for wallet connect connections when a connection certificate is required
+    signConnectionCertificate = async (): Promise<ConnectResponse> => {
+        const cert = DEFAULT_CONNECT_CERT_MESSAGE;
+        const {
+            annex: { domain, signer, timestamp },
+            signature,
+        } = await this.wallet.signCert(cert, {});
+
+        this.wallet.connectionCertificate = {
+            ...cert,
+            signature,
+            signer,
+            domain,
+            timestamp,
+        };
+
+        try {
+            Certificate.verify(this.wallet.connectionCertificate);
+            this.state.address = signer;
+            return {
+                account: signer,
+                verified: true,
+                connectionCertificate: this.connectionCertificate,
+            };
+        } catch (e) {
+            return {
+                account: signer,
+                verified: false,
+            };
+        } finally {
+            this.options.walletConnectOptions?.modal?.onConnectionCertificateSigned?.();
+        }
+    };
 
     connect = (): Promise<ConnectResponse> =>
         this.wallet
             .connect()
             .then((res) => {
-                this.state.address = res.account;
+                if (
+                    this.state.source === 'wallet-connect' &&
+                    this.options.requireCertificate &&
+                    this.options.walletConnectOptions?.modal
+                        ?.askForConnectionCertificate
+                ) {
+                    this.options.walletConnectOptions.modal.askForConnectionCertificate();
+                } else {
+                    this.state.address = res.account;
+                }
                 return res;
             })
             .catch((e) => {

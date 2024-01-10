@@ -8,9 +8,9 @@ export const defaultI18n: I18n = {
         disconnect: 'Disconnect',
         'opening-veworld': 'Opening VeWorld...',
         'get-veworld': 'Get VeWorld',
-        'sign-connection-certificate-description':
-            'A certificate signature is required to connect to the wallet.',
         'sign-connection-certificate-button': 'Sign Certificate',
+        'sign-connection-certificate-description':
+            'Proof address is required, please sign a certificate to continue',
     },
     it: {
         'connect-wallet': 'Connetti il Wallet',
@@ -19,9 +19,9 @@ export const defaultI18n: I18n = {
         disconnect: 'Disconnetti',
         'opening-veworld': 'Apertura di VeWorld...',
         'get-veworld': 'Ottieni VeWorld',
-        'sign-connection-certificate-description':
-            'È richiesta una firma del certificato per connettersi al wallet.',
         'sign-connection-certificate-button': 'Firma Certificato',
+        'sign-connection-certificate-description':
+            'È richiesta una firma di certificato per connettersi al wallet.',
     },
     fr: {
         'connect-wallet': 'Connecter le portefeuille',
@@ -53,8 +53,8 @@ export const defaultI18n: I18n = {
         'opening-veworld': 'VeWorld wird geöffnet...',
         'get-veworld': 'VeWorld erhalten',
         'sign-connection-certificate-description':
-            'Zur Verbindung mit der Wallet ist eine Zertifikatssignatur erforderlich.',
-        'sign-connection-certificate-button': 'Zertifikat unterschreiben',
+            'Eine Zertifikatssignatur ist erforderlich, um eine Verbindung zur Brieftasche herzustellen.',
+        'sign-connection-certificate-button': 'Zertifikat signieren',
     },
     zh: {
         'connect-wallet': '连接钱包',

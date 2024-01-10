@@ -11,7 +11,7 @@ import type { WalletConnectOptions } from '@vechain/dapp-kit';
 
 const Button = (): ReactElement => {
     const { account } = useWallet();
-    const { open, onConnected } = useWalletModal();
+    const { open, onConnectionStatusChange } = useWalletModal();
     const [buttonText, setButtonText] = useState('Connect Custom Button');
 
     useEffect(() => {
@@ -29,8 +29,8 @@ const Button = (): ReactElement => {
 
         handleConnected(account);
 
-        onConnected(handleConnected);
-    }, [account, onConnected]);
+        onConnectionStatusChange(handleConnected);
+    }, [account, onConnectionStatusChange]);
 
     return (
         <div className="container">

@@ -25,7 +25,6 @@ export const newWcSigner = ({
     wcClient,
     web3Modal,
     onDisconnected,
-    requireCertificate,
 }: WCSignerOptions): WCSigner => {
     const chainId = `vechain:${genesisId.slice(-32)}`;
     let session: SessionTypes.Struct | undefined;
@@ -151,12 +150,6 @@ export const newWcSigner = ({
                         session = newSession;
                         endSubscription();
                         resolve(newSession);
-
-                        if (requireCertificate && web3Modal.askForCertificate) {
-                            web3Modal.askForCertificate();
-                        } else {
-                            web3Modal.closeModal();
-                        }
                     })
                     .catch((e) => {
                         web3Modal.closeModal();

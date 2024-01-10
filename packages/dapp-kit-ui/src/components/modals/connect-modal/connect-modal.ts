@@ -50,7 +50,7 @@ export class ConnectModal extends LitElement {
     constructor() {
         super();
 
-        subscribeToCustomEvent('vdk-open-wc-modal', (options) => {
+        subscribeToCustomEvent('vdk-open-wc-qrcode', (options) => {
             if (isMobile()) {
                 this.openingVeWorld = true;
                 window.open(
@@ -63,7 +63,7 @@ export class ConnectModal extends LitElement {
             this.open = true;
             this.walletConnectQRcode = options.uri;
         });
-        subscribeToCustomEvent('vdk-close-wc-modal', () => {
+        subscribeToCustomEvent('vdk-close-wc-qrcode', () => {
             this.walletConnectQRcode = undefined;
             this.openingVeWorld = false;
         });
@@ -76,6 +76,12 @@ export class ConnectModal extends LitElement {
         subscribeToCustomEvent('vdk-request-connection-certificate', () => {
             this.requestForConnectionCertificate = true;
         });
+        subscribeToCustomEvent(
+            'vdk-close-connection-certificate-request',
+            () => {
+                this.requestForConnectionCertificate = false;
+            },
+        );
     }
 
     private get availableSources(): SourceInfo[] {
@@ -196,10 +202,15 @@ export class ConnectModal extends LitElement {
     };
 
     private handleClose = (): void => {
+        if (this.requestForConnectionCertificate) {
+            DAppKitUI.modal.closeConnectionCertificateRequest();
+            this.wallet.disconnect();
+        }
         if (this.walletConnectQRcode) {
             // this timeout is to avoid flickering on close modal animation when the user is in the wallet connect modal
             setTimeout(() => {
                 this.handleBack();
+                this.wallet.disconnect();
             }, 500);
         }
         DAppKitUI.modal.close();

@@ -39,10 +39,10 @@ class CustomWalletConnectModal implements WCModal {
     private eventEmitter = new EventEmitter();
 
     private constructor() {
-        subscribeToCustomEvent('vdk-close-wc-modal', () => {
+        subscribeToCustomEvent('vdk-close-wc-qrcode', () => {
             this.updateModalState({ open: false });
         });
-        subscribeToCustomEvent('vdk-open-wc-modal', () => {
+        subscribeToCustomEvent('vdk-open-wc-qrcode', () => {
             this.updateModalState({ open: true });
         });
     }
@@ -60,13 +60,13 @@ class CustomWalletConnectModal implements WCModal {
      */
     openModal(options: OpenOptions): Promise<void> {
         DAppKitLogger.debug('CustomWalletConnectModal', 'opening the wc modal');
-        dispatchCustomEvent('vdk-open-wc-modal', options);
+        dispatchCustomEvent('vdk-open-wc-qrcode', options);
         return Promise.resolve();
     }
 
     closeModal(): void {
         DAppKitLogger.debug('CustomWalletConnectModal', 'closing the modal');
-        dispatchCustomEvent('vdk-close-wc-modal');
+        dispatchCustomEvent('vdk-close-wc-qrcode');
     }
 
     askForConnectionCertificate(): void {
@@ -74,7 +74,18 @@ class CustomWalletConnectModal implements WCModal {
             'CustomWalletConnectModal',
             'ask for connection certificate',
         );
+        dispatchCustomEvent('vdk-close-wc-qrcode');
         dispatchCustomEvent('vdk-request-connection-certificate');
+    }
+
+    onConnectionCertificateSigned(): void {
+        DAppKitLogger.debug(
+            'CustomWalletConnectModal',
+            'connection certificate signed',
+        );
+        dispatchCustomEvent('vdk-close-wallet-modal');
+        dispatchCustomEvent('vdk-close-wc-qrcode');
+        dispatchCustomEvent('vdk-close-connection-certificate-request');
     }
 
     subscribeModal(
@@ -134,10 +145,20 @@ export class DAppKitModal {
 
     closeWalletConnect(): void {
         DAppKitLogger.debug('DAppKitModal', 'closing wallet connect');
-        dispatchCustomEvent('vdk-close-wc-modal');
+        dispatchCustomEvent('vdk-close-wc-qrcode');
     }
 
-    onConnected(callback: (address: string | null) => void): () => void {
+    closeConnectionCertificateRequest(): void {
+        DAppKitLogger.debug(
+            'DAppKitModal',
+            'closing connection certificate request',
+        );
+        dispatchCustomEvent('vdk-close-connection-certificate-request');
+    }
+
+    onConnectionStatusChange(
+        callback: (address: string | null) => void,
+    ): () => void {
         return subscribeKey(this.walletManager.state, 'address', (address) => {
             callback(address);
         });

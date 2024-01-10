@@ -93,7 +93,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     }, []);
     const onModalConnected = useCallback(
         (callback: (address: string | null) => void) =>
-            DAppKitUI.modal.onConnected(callback),
+            DAppKitUI.modal.onConnectionStatusChange(callback),
         [],
     );
 
@@ -114,7 +114,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
             modal: {
                 open: openModal,
                 close: closeModal,
-                onConnected: onModalConnected,
+                onConnectionStatusChange: onModalConnected,
             },
         };
     }, [connex, account, source, closeModal, openModal, onModalConnected]);
