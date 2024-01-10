@@ -1,7 +1,7 @@
 /// <reference types="@vechain/connex" />
 import type { DAppKitOptions, WalletManager } from '@vechain/dapp-kit';
 import { DAppKit } from '@vechain/dapp-kit';
-import { CustomWalletConnectModal, DAppKitModal } from './modal';
+import { CustomWalletConnectModal, DAppKitModal } from './class';
 import {
     type CustomizedStyle,
     dispatchCustomEvent,
