@@ -4,6 +4,24 @@
 import { type DAppKitUIOptions } from '../client';
 import { Colors, Font, modalZIndex, defaultI18n } from '../constants';
 
+const getModal = (): HTMLElement | null => document.querySelector('vdk-modal');
+
+export const createModalIfNotPresent = (options?: {
+    modalParent?: HTMLElement;
+}): HTMLElement => {
+    const modal = getModal();
+
+    if (modal) {
+        return modal;
+    }
+
+    const newModal = document.createElement('vdk-modal');
+
+    (options?.modalParent ?? document.body).appendChild(newModal);
+
+    return newModal;
+};
+
 const ThemeVariables = {
     '--vdk-color-dark-primary': Colors.Dark.Primary.toString(),
     '--vdk-color-dark-primary-hover': Colors.Dark.PrimaryHover.toString(),
