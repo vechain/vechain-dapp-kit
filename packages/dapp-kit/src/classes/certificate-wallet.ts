@@ -1,6 +1,6 @@
 import { Certificate } from 'thor-devkit';
 import type { BaseWallet, ConnectResponse, ConnexWallet } from '../types';
-import { DEFAULT_CONNECT_CERT_MESSAGE } from '../certificates';
+import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
 
 /**
  * A `ConnexWallet` for wallet's that use a certificate connection

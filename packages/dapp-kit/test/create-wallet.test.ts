@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { Connex1 } from '@vechain/connex/esm/signer';
-import { createWallet } from '../src/create-wallet';
+import { createWallet } from '../src/utils';
 import type {
     DAppKitOptions,
     WalletConnectOptions,

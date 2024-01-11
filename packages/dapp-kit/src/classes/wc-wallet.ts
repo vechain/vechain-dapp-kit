@@ -1,5 +1,4 @@
-import type { WCSigner } from '../wallet-connect';
-import type { ConnectResponse, ConnexWallet } from '../types';
+import type { ConnectResponse, ConnexWallet, WCSigner } from '../types';
 
 class WCWallet implements ConnexWallet {
     constructor(private readonly signer: WCSigner) {}

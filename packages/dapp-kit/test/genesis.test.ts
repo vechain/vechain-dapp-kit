@@ -1,9 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import {
-    genesisBlocks,
-    normalizeGenesisBlock,
-    normalizeGenesisId,
-} from '../src/genesis';
+import { normalizeGenesisBlock, normalizeGenesisId } from '../src/utils';
+import { genesisBlocks } from '../src/constants';
 
 const customBlock = {
     number: 0,

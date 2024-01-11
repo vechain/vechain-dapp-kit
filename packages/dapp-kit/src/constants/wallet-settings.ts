@@ -2,7 +2,7 @@
  * Wallet types
  */
 
-import type { WalletConfig, WalletSource } from './types';
+import type { WalletConfig, WalletSource } from '../types';
 
 const DEFAULT_CONFIG: WalletConfig = {
     requiresCertificate: true,

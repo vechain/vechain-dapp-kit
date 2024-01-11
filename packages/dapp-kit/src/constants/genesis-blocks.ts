@@ -1,5 +1,3 @@
-import type { Genesis } from './types';
-
 type NetworkType = 'main' | 'test';
 
 export const genesisBlocks: Record<NetworkType, Connex.Thor.Block> = {
@@ -48,22 +46,3 @@ export const genesisBlocks: Record<NetworkType, Connex.Thor.Block> = {
         transactions: [],
     },
 };
-
-const normalizeGenesisId = (genesis?: Genesis): string => {
-    if (!genesis) return genesisBlocks.main.id;
-
-    if (genesis === 'main' || genesis === 'test')
-        return genesisBlocks[genesis].id;
-
-    return genesis.id;
-};
-
-const normalizeGenesisBlock = (genesis?: Genesis): Connex.Thor.Block => {
-    if (!genesis) return genesisBlocks.main;
-
-    if (genesis === 'main' || genesis === 'test') return genesisBlocks[genesis];
-
-    return genesis;
-};
-
-export { normalizeGenesisId, normalizeGenesisBlock };

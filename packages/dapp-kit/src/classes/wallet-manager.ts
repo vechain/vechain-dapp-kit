@@ -7,12 +7,9 @@ import type {
     DAppKitOptions,
     WalletManagerState,
     WalletSource,
-} from './types';
-import { createWallet } from './create-wallet';
-import { WalletSources } from './wallet';
-import { Storage } from './local-storage';
-import { DAppKitLogger } from './utils';
-import { DEFAULT_CONNECT_CERT_MESSAGE } from './certificates';
+} from '../types';
+import { DAppKitLogger, Storage, createWallet } from '../utils';
+import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
 
 class WalletManager {
     public readonly state: WalletManagerState;
