@@ -143,7 +143,6 @@ yarn build
 git clone git@github.com:vechainfoundation/vechain-dapp-kit.git
 cd vechain-dapp-kit
 git checkout X.Y.Z
-yarn install:all
-yarn build
+yarn build:release X.Y.Z
 yarn changeset publish
 ```
