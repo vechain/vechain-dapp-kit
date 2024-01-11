@@ -22,34 +22,41 @@ export const buttonStyle = css`
         background: var(--vdk-color-light-primary, ${Colors.Light.Primary});
         color: var(--vdk-color-light-tertiary, ${Colors.Light.Tertiary});
     }
-    button.LIGHT:hover {
+    button.LIGHT:hover:not(:disabled) {
         background: var(
             --vdk-color-light-primary-hover,
             ${Colors.Light.PrimaryHover}
         );
     }
-    button.LIGHT:active {
+    button.LIGHT:active:not(:disabled) {
         background: var(
             --vdk-color-light-primary-active,
             ${Colors.Light.PrimaryActive}
         );
+    }
+    button.LIGHT:disabled {
+        opacity: 0.8;
     }
 
     button.DARK {
         background: var(--vdk-color-dark-primary, ${Colors.Dark.Primary});
         color: var(--vdk-color-dark-tertiary, ${Colors.Dark.Tertiary});
     }
-    button.DARK:hover {
+    button.DARK:hover:not(:disabled) {
         background: var(
             --vdk-color-dark-primary-hover,
             ${Colors.Dark.PrimaryHover}
         );
     }
-    button.DARK:active {
+    button.DARK:active:not(:disabled) {
         background: var(
             --vdk-color-dark-primary-active,
             ${Colors.Dark.PrimaryActive}
         );
+    }
+
+    button.DARK:disabled {
+        opacity: 0.8;
     }
 `;
 
@@ -82,5 +89,9 @@ export const iconButtonStyle = css`
 
     .icon-button.DARK:active {
         background: var(--vdk-color-dark-primary, ${Colors.Dark.PrimaryActive});
+    }
+
+    button:disabled {
+        opacity: 0.8;
     }
 `;

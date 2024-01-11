@@ -1,13 +1,14 @@
-import { css, html, LitElement, type nothing, type TemplateResult } from 'lit';
+import { css, html, LitElement, nothing, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { defaultI18n, type I18n, type ThemeMode } from '../../../constants';
+import {
+    Colors,
+    defaultI18n,
+    type I18n,
+    type ThemeMode,
+} from '../../../constants';
 import { useTranslate } from '../../../utils';
 import { buttonStyle } from '../../../assets/styles';
 import { DAppKitUI } from '../../../client';
-
-const handleSignCertificate = async (): Promise<void> => {
-    await DAppKitUI.wallet.signConnectionCertificate();
-};
 
 @customElement('vdk-sign-connection-certificate')
 export class SignConnectionCertificate extends LitElement {
@@ -18,8 +19,38 @@ export class SignConnectionCertificate extends LitElement {
                 margin: 20px;
                 text-align: center;
             }
+
+            @keyframes loading {
+                to {
+                    stroke-dashoffset: 0px;
+                }
+            }
+
+            use {
+                stroke: var(
+                    --vdk-color-walletconnectblue,
+                    ${Colors.WalletConnectBlue}
+                );
+                animation: loading 1s linear infinite;
+            }
+
+            svg.loader {
+                position: absolute;
+                fill: none;
+                stroke: transparent;
+                stroke-linecap: round;
+                stroke-width: 1px;
+                top: 10;
+                left: 10;
+                z-index: 1;
+            }
         `,
     ];
+
+    constructor() {
+        super();
+        addEventListener('resize', this.setSubmitButtonWidth);
+    }
 
     @property()
     mode: ThemeMode = 'LIGHT';
@@ -27,6 +58,41 @@ export class SignConnectionCertificate extends LitElement {
     i18n: I18n = defaultI18n;
     @property()
     language = 'en';
+    @property()
+    waitingForTheSignature = false;
+    @property()
+    submitButtonWidth = 0;
+
+    private svgLoaderTemplate(): TemplateResult {
+        const offset = 2;
+        const submitButtonWidthMinusOffset = this.submitButtonWidth - offset;
+        const buttonHeight = 41;
+        const perimeter = (submitButtonWidthMinusOffset + buttonHeight) * 2;
+        const dashLength = submitButtonWidthMinusOffset / 2;
+        const spaceLength = perimeter - dashLength;
+        return html`
+            <svg
+                class="loader"
+                viewBox="0 0 ${this.submitButtonWidth} ${buttonHeight}"
+                width=${this.submitButtonWidth}
+                height=${buttonHeight}
+            >
+                <rect
+                    id="sign-connection-loader"
+                    x="1"
+                    y="1"
+                    width=${submitButtonWidthMinusOffset}
+                    height=${buttonHeight - offset}
+                    rx="12px"
+                ></rect>
+                <use
+                    xlink:href="#sign-connection-loader"
+                    stroke-dasharray="${dashLength} ${spaceLength}"
+                    stroke-dashoffset=${perimeter}
+                ></use>
+            </svg>
+        `;
+    }
 
     override render(): TemplateResult | typeof nothing {
         const translate = useTranslate(this.i18n, this.language);
@@ -36,12 +102,36 @@ export class SignConnectionCertificate extends LitElement {
                 <div class="signCertificateText">
                     ${translate('sign-connection-certificate-description')}
                 </div>
-                <button class="${this.mode}" @click=${handleSignCertificate}>
-                    ${translate('sign-connection-certificate-button')}
+                ${this.waitingForTheSignature
+                    ? this.svgLoaderTemplate()
+                    : nothing}
+                <button
+                    class="${this.mode}"
+                    @click=${this.handleSignCertificate}
+                    .disabled=${this.waitingForTheSignature}
+                >
+                    ${this.waitingForTheSignature
+                        ? translate('waiting-signature')
+                        : translate('sign-connection-certificate-button')}
                 </button>
             </div>
         `;
     }
+
+    private setSubmitButtonWidth = (): void => {
+        this.submitButtonWidth =
+            document
+                .querySelector('vdk-modal')
+                ?.shadowRoot?.querySelector('vdk-connect-modal')
+                ?.shadowRoot?.querySelector('vdk-sign-connection-certificate')
+                ?.shadowRoot?.querySelector('button')?.clientWidth ?? 0;
+    };
+
+    private handleSignCertificate = async (): Promise<void> => {
+        this.setSubmitButtonWidth();
+        this.waitingForTheSignature = true;
+        await DAppKitUI.wallet.signConnectionCertificate();
+    };
 }
 
 declare global {

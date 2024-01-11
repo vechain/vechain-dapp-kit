@@ -11,6 +11,7 @@ export const defaultI18n: I18n = {
         'sign-connection-certificate-button': 'Sign Certificate',
         'sign-connection-certificate-description':
             'Proof address is required, please sign a certificate to continue',
+        'waiting-signature': 'Waiting signature...',
     },
     it: {
         'connect-wallet': 'Connetti il Wallet',
@@ -22,6 +23,7 @@ export const defaultI18n: I18n = {
         'sign-connection-certificate-button': 'Firma Certificato',
         'sign-connection-certificate-description':
             'È richiesta una firma di certificato per connettersi al wallet.',
+        'waiting-signature': 'Attendo firma...',
     },
     fr: {
         'connect-wallet': 'Connecter le portefeuille',
@@ -33,6 +35,7 @@ export const defaultI18n: I18n = {
         'sign-connection-certificate-description':
             'Une signature de certificat est requise pour se connecter au portefeuille.',
         'sign-connection-certificate-button': 'Signer le certificat',
+        'waiting-signature': 'En attente de la signature...',
     },
     es: {
         'connect-wallet': 'Conectar billetera',
@@ -44,6 +47,7 @@ export const defaultI18n: I18n = {
         'sign-connection-certificate-description':
             'Se requiere una firma de certificado para conectarse a la billetera.',
         'sign-connection-certificate-button': 'Firmar certificado',
+        'waiting-signature': 'Esperando firma...',
     },
     de: {
         'connect-wallet': 'Wallet verbinden',
@@ -55,6 +59,7 @@ export const defaultI18n: I18n = {
         'sign-connection-certificate-description':
             'Eine Zertifikatssignatur ist erforderlich, um eine Verbindung zur Brieftasche herzustellen.',
         'sign-connection-certificate-button': 'Zertifikat signieren',
+        'waiting-signature': 'Warte auf Signatur...',
     },
     zh: {
         'connect-wallet': '连接钱包',
@@ -65,6 +70,7 @@ export const defaultI18n: I18n = {
         'get-veworld': '获取 VeWorld',
         'sign-connection-certificate-description': '连接钱包需要签名证书。',
         'sign-connection-certificate-button': '签名证书',
+        'waiting-signature': '等待签名...',
     },
     ja: {
         'connect-wallet': 'ウォレットに接続',
@@ -76,6 +82,7 @@ export const defaultI18n: I18n = {
         'sign-connection-certificate-description':
             'ウォレットに接続するには証明書の署名が必要です。',
         'sign-connection-certificate-button': '証明書に署名',
+        'waiting-signature': '署名を待っています...',
     },
     ru: {
         'connect-wallet': 'Подключить кошелек',
@@ -87,5 +94,6 @@ export const defaultI18n: I18n = {
         'sign-connection-certificate-description':
             'Для подключения к кошельку требуется подпись сертификата.',
         'sign-connection-certificate-button': 'Подписать сертификат',
+        'waiting-signature': 'Ожидание подписи...',
     },
 };
