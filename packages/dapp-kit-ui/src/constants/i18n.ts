@@ -11,7 +11,7 @@ export const defaultI18n: I18n = {
         'sign-connection-certificate-button': 'Sign Certificate',
         'sign-connection-certificate-description':
             'Proof address is required, please sign a certificate to continue',
-        'waiting-signature': 'Waiting signature...',
+        'waiting-signature': 'Waiting for signature...',
     },
     it: {
         'connect-wallet': 'Connetti il Wallet',

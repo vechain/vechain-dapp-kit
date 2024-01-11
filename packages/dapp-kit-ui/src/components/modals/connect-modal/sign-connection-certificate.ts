@@ -49,6 +49,7 @@ export class SignConnectionCertificate extends LitElement {
 
     constructor() {
         super();
+        this.setSubmitButtonWidth();
         addEventListener('resize', this.setSubmitButtonWidth);
     }
 
@@ -60,6 +61,9 @@ export class SignConnectionCertificate extends LitElement {
     language = 'en';
     @property()
     waitingForTheSignature = false;
+    @property()
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    setWaitingForTheSignature: (v: boolean) => void = () => {};
     @property()
     submitButtonWidth = 0;
 
@@ -119,17 +123,16 @@ export class SignConnectionCertificate extends LitElement {
     }
 
     private setSubmitButtonWidth = (): void => {
-        this.submitButtonWidth =
+        const modalWidth =
             document
                 .querySelector('vdk-modal')
                 ?.shadowRoot?.querySelector('vdk-connect-modal')
-                ?.shadowRoot?.querySelector('vdk-sign-connection-certificate')
-                ?.shadowRoot?.querySelector('button')?.clientWidth ?? 0;
+                ?.shadowRoot?.querySelector('div')?.clientWidth ?? 0;
+        this.submitButtonWidth = modalWidth ? modalWidth - 40 : 0;
     };
 
     private handleSignCertificate = async (): Promise<void> => {
-        this.setSubmitButtonWidth();
-        this.waitingForTheSignature = true;
+        this.setWaitingForTheSignature(true);
         await DAppKitUI.wallet.signConnectionCertificate();
     };
 }

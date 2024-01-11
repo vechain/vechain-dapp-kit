@@ -1,7 +1,7 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { WalletManager } from '@vechain/dapp-kit';
+import { DAppKitLogger, type WalletManager } from '@vechain/dapp-kit';
 import {
     type I18n,
     type SourceInfo,
@@ -97,14 +97,22 @@ export class ConnectModal extends LitElement {
     @property({ type: Function })
     onSourceClick = (source?: SourceInfo): void => {
         if (source) {
+            if (source.id !== 'wallet-connect') {
+                this.setWaitingForTheSignature(true);
+                this.requestForConnectionCertificate = true;
+            }
             this.wallet.setSource(source.id);
             this.wallet
                 .connect()
                 .then(() => {
                     this.requestUpdate();
                 })
-                .finally(() => {
-                    DAppKitUI.modal.close();
+                .catch((err): void => {
+                    DAppKitLogger.error(
+                        'Connection Attempt',
+                        'error trying to connect',
+                        err,
+                    );
                 });
         }
     };
@@ -133,12 +141,21 @@ export class ConnectModal extends LitElement {
     @property()
     requestForConnectionCertificate = false;
 
+    @property()
+    waitingForTheSignature = false;
+
+    private setWaitingForTheSignature = (value: boolean): void => {
+        this.waitingForTheSignature = value;
+    };
+
     private renderContent(): TemplateResult | TemplateResult[] {
         if (this.requestForConnectionCertificate) {
             return html`<vdk-sign-connection-certificate
                 .mode=${this.mode}
                 .i18n=${this.i18n}
                 .language=${this.language}
+                .waitingForTheSignature=${this.waitingForTheSignature}
+                .setWaitingForTheSignature=${this.setWaitingForTheSignature}
             ></vdk-sign-connection-certificate>`;
         }
         if (this.walletConnectQRcode) {
@@ -202,10 +219,7 @@ export class ConnectModal extends LitElement {
     };
 
     private handleClose = (): void => {
-        if (this.requestForConnectionCertificate) {
-            DAppKitUI.modal.closeConnectionCertificateRequest();
-            this.wallet.disconnect();
-        }
+        DAppKitUI.modal.close();
         if (this.walletConnectQRcode) {
             // this timeout is to avoid flickering on close modal animation when the user is in the wallet connect modal
             setTimeout(() => {
@@ -213,7 +227,13 @@ export class ConnectModal extends LitElement {
                 this.wallet.disconnect();
             }, 500);
         }
-        DAppKitUI.modal.close();
+        if (this.requestForConnectionCertificate) {
+            // this timeout is to avoid flickering on close modal animation when the user is in the wallet connect modal
+            setTimeout(() => {
+                DAppKitUI.modal.closeConnectionCertificateRequest();
+                this.wallet.disconnect();
+            }, 500);
+        }
         this.onClose();
     };
 }

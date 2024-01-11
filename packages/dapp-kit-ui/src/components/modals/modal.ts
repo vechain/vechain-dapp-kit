@@ -1,6 +1,6 @@
-import { html, LitElement, type TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { DAppKitLogger, type WalletManager } from '@vechain/dapp-kit';
+import { type WalletManager } from '@vechain/dapp-kit';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import { DAppKitUI } from '../../client';
 import {
@@ -37,18 +37,7 @@ export class Modal extends LitElement {
     }
 
     @property({ type: Function })
-    onSourceClick = (source?: SourceInfo): void => {
-        if (source) {
-            this.wallet.setSource(source.id);
-            this.wallet.connect().catch((err): void => {
-                DAppKitLogger.error(
-                    'Source Clicked',
-                    'error trying to connect',
-                    err,
-                );
-            });
-        }
-    };
+    onSourceClick?: (source?: SourceInfo) => void;
 
     @property({ type: Function })
     onDisconnectClick = (): void => {
@@ -70,7 +59,7 @@ export class Modal extends LitElement {
                           .mode=${this.mode}
                           .i18n=${this.i18n}
                           .language=${this.language}
-                          .onSourceClick=${this.onSourceClick}
+                          .onSourceClick=${this.onSourceClick || nothing}
                       ></vdk-connect-modal>`}
             </div>
         `;

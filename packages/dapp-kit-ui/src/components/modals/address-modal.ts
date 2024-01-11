@@ -1,7 +1,7 @@
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { I18n, SourceInfo } from '../../constants';
+import type { I18n } from '../../constants';
 import { defaultI18n, Font } from '../../constants';
 import { buttonStyle, iconButtonStyle } from '../../assets/styles';
 import type { ThemeMode } from '../../constants/theme';
@@ -111,9 +111,6 @@ export class AddressModal extends LitElement {
 
     @property({ type: String })
     address = '';
-
-    @property({ type: Function })
-    onSourceClick?: (source?: SourceInfo) => void = undefined;
 
     @property({ type: Function })
     onDisconnectClick?: () => void = undefined;
