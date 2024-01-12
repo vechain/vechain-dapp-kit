@@ -48,7 +48,6 @@ type BaseWallet = Connex.Signer & {
  */
 type ConnexWallet = BaseWallet & {
     connect: () => Promise<ConnectResponse>;
-    connectionCertificate?: Certificate;
 };
 
 interface ConnectResponse {
@@ -61,6 +60,7 @@ interface WalletManagerState {
     source: WalletSource | null;
     address: string | null;
     availableSources: WalletSource[];
+    connectionCertificate: Certificate | null;
 }
 
 export type {

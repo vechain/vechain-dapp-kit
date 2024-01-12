@@ -6,7 +6,6 @@ import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
  * A `ConnexWallet` for wallet's that use a certificate connection
  */
 class CertificateBasedWallet implements ConnexWallet {
-    connectionCertificate?: Certificate;
     constructor(private readonly wallet: BaseWallet) {}
 
     connect = async (): Promise<ConnectResponse> => {
@@ -16,7 +15,7 @@ class CertificateBasedWallet implements ConnexWallet {
             signature,
         } = await this.signCert(cert, {});
 
-        this.connectionCertificate = {
+        const connectionCertificate = {
             ...cert,
             signature,
             signer,
@@ -25,12 +24,12 @@ class CertificateBasedWallet implements ConnexWallet {
         };
 
         try {
-            Certificate.verify(this.connectionCertificate);
+            Certificate.verify(connectionCertificate);
 
             return {
                 account: signer,
                 verified: true,
-                connectionCertificate: this.connectionCertificate,
+                connectionCertificate,
             };
         } catch (e) {
             return {

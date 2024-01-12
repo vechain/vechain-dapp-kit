@@ -1,9 +1,11 @@
+import type { Certificate } from 'thor-devkit';
 import type { WalletSource } from '../types';
 import { DAppKitLogger } from './logger';
 
 const STORAGE_PREFIX = 'dappkit@vechain';
 const WALLET_SOURCE_KEY = `${STORAGE_PREFIX}/source`;
 const ACCOUNT_KEY = `${STORAGE_PREFIX}/account`;
+const CERTIFICATE_KEY = `${STORAGE_PREFIX}/connectionCertificate`;
 
 const setSource = (source: WalletSource | null): void => {
     DAppKitLogger.debug('LocalStorage', 'setSource', source);
@@ -21,6 +23,19 @@ const setAccount = (account: string | null): void => {
         localStorage.removeItem(ACCOUNT_KEY);
     } else {
         localStorage.setItem(ACCOUNT_KEY, account);
+    }
+};
+
+const setConnectionCertificate = (certificate: Certificate | null): void => {
+    DAppKitLogger.debug(
+        'LocalStorage',
+        'setConnectionCertificate',
+        certificate,
+    );
+    if (!certificate) {
+        localStorage.removeItem(CERTIFICATE_KEY);
+    } else {
+        localStorage.setItem(CERTIFICATE_KEY, JSON.stringify(certificate));
     }
 };
 
@@ -44,9 +59,21 @@ const getAccount = (): string | null => {
     return account;
 };
 
+const getConnectionCertificate = (): Certificate | null => {
+    const connectionCertificate = localStorage.getItem(CERTIFICATE_KEY);
+
+    if (!connectionCertificate) {
+        return null;
+    }
+
+    return JSON.parse(connectionCertificate) as Certificate;
+};
+
 export const Storage = {
-    getAccount,
-    getSource,
     setAccount,
     setSource,
+    setConnectionCertificate,
+    getAccount,
+    getSource,
+    getConnectionCertificate,
 };
