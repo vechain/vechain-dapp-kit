@@ -36,6 +36,33 @@ const updatePackageVersions = (version: string) => {
 
         fs.writeFileSync(pkgJsonPath, JSON.stringify(pkgJson, null, 2));
     }
+
+    // Update versions in the examples directory
+    const examplesPath = path.resolve(__dirname, '../examples');
+
+    const examplePackages = fs.readdirSync(examplesPath);
+
+    for (const example of examplePackages) {
+        const examplePath = path.resolve(examplesPath, example);
+        const examplePackageJsonPath = path.resolve(
+            examplePath,
+            './package.json',
+        );
+        const examplePackageJson = JSON.parse(
+            fs.readFileSync(examplePackageJsonPath, 'utf8'),
+        );
+
+        for (const dep of Object.keys(examplePackageJson.dependencies)) {
+            if (packageNames.includes(dep)) {
+                examplePackageJson.dependencies[dep] = version;
+            }
+        }
+
+        fs.writeFileSync(
+            examplePackageJsonPath,
+            JSON.stringify(examplePackageJson, null, 2),
+        );
+    }
 };
 
 const preparePackages = async () => {
@@ -55,23 +82,23 @@ const preparePackages = async () => {
     console.log(' Clean:');
     console.log('       - 🚮 Removing existing packages & builds...');
     await exec('yarn purge');
-    console.log('       - ✅ Removed!');
+    console.log('       - ✅  Removed!');
 
     console.log(' Build:');
     console.log('       - 📦 Building packages...');
     await exec('yarn install:all');
-    console.log('       - ✅ Built!');
+    console.log('       - ✅  Built!');
 
     console.log(' Test:');
     console.log('       - 🧪 Testing packages...');
     await exec('yarn test');
-    console.log('       - ✅ Success!');
+    console.log('       - ✅  Success!');
 
     console.log(' Version:');
-    console.log(`       - 🏷  Updating package versions to ${version}...`);
+    console.log(`       - 🏷 Updating package versions to ${version}...`);
     updatePackageVersions(version);
     await exec(`yarn format`);
-    console.log('       - ✅ Updated!');
+    console.log('       - ✅  Updated!');
 
     console.log('\n______________________________________________________\n\n');
     console.log(' Publish:');
