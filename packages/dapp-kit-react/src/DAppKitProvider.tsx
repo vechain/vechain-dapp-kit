@@ -10,6 +10,7 @@ import type { WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import type { DAppKitProviderOptions, DAppKitContext } from './types';
+import { Certificate } from 'thor-devkit';
 
 /**
  * Context
@@ -69,6 +70,8 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     const [source, setSource] = useState<WalletSource | null>(
         connex.wallet.state.source,
     );
+    const [connectionCertificate, setConnectionCertificate] =
+        useState<Certificate | null>(connex.wallet.state.connectionCertificate);
 
     useEffect(() => {
         const addressSub = subscribeKey(connex.wallet.state, 'address', (v) => {
@@ -77,10 +80,18 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
         const sourceSub = subscribeKey(connex.wallet.state, 'source', (v) => {
             setSource(v);
         });
+        const certificateSub = subscribeKey(
+            connex.wallet.state,
+            'connectionCertificate',
+            (v) => {
+                setConnectionCertificate(v);
+            },
+        );
 
         return () => {
             addressSub();
             sourceSub();
+            certificateSub();
         };
     }, [connex.wallet.state]);
 
@@ -110,6 +121,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
                 availableWallets: connex.wallet.state.availableSources,
                 account,
                 source,
+                connectionCertificate,
             },
             modal: {
                 open: openModal,
@@ -117,7 +129,15 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
                 onConnectionStatusChange: onModalConnected,
             },
         };
-    }, [connex, account, source, closeModal, openModal, onModalConnected]);
+    }, [
+        connex,
+        account,
+        source,
+        closeModal,
+        openModal,
+        onModalConnected,
+        connectionCertificate,
+    ]);
 
     return <Context.Provider value={context}>{children}</Context.Provider>;
 };

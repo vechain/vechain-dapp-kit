@@ -66,10 +66,6 @@ class WalletManager {
         return wallet;
     }
 
-    get connectionCertificate(): Certificate | undefined {
-        return this.wallet.connectionCertificate;
-    }
-
     // this is needed for wallet connect connections when a connection certificate is required
     signConnectionCertificate = async (): Promise<ConnectResponse> => {
         const cert = DEFAULT_CONNECT_CERT_MESSAGE;
@@ -78,7 +74,7 @@ class WalletManager {
             signature,
         } = await this.wallet.signCert(cert, {});
 
-        this.wallet.connectionCertificate = {
+        const connectionCertificate = {
             ...cert,
             signature,
             signer,
@@ -87,12 +83,13 @@ class WalletManager {
         };
 
         try {
-            Certificate.verify(this.wallet.connectionCertificate);
+            Certificate.verify(connectionCertificate);
             this.state.address = signer;
+            this.state.connectionCertificate = connectionCertificate;
             return {
                 account: signer,
                 verified: true,
-                connectionCertificate: this.connectionCertificate,
+                connectionCertificate,
             };
         } catch (e) {
             return {
@@ -117,6 +114,8 @@ class WalletManager {
                     this.options.walletConnectOptions.modal.askForConnectionCertificate();
                 } else {
                     this.state.address = res.account;
+                    this.state.connectionCertificate =
+                        res.connectionCertificate ?? null;
                 }
                 return res;
             })
@@ -129,6 +128,7 @@ class WalletManager {
         if (!this.state.source) {
             this.state.source = null;
             this.state.address = null;
+            this.state.connectionCertificate = null;
             return;
         }
 
@@ -153,6 +153,7 @@ class WalletManager {
 
         this.state.source = null;
         this.state.address = null;
+        this.state.connectionCertificate = null;
     };
 
     signTx = (
@@ -162,6 +163,7 @@ class WalletManager {
         this.wallet
             .signTx(msg, options)
             .then((res) => {
+                // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
                 this.state.address = res.signer;
                 return res;
             })
@@ -177,6 +179,7 @@ class WalletManager {
         this.wallet
             .signCert(msg, options)
             .then((res) => {
+                // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
                 this.state.address = res.annex.signer;
                 return res;
             })
@@ -237,16 +240,19 @@ class WalletManager {
                 source: null,
                 address: null,
                 availableSources,
+                connectionCertificate: null,
             });
         }
 
         const address = Storage.getAccount();
         const source = Storage.getSource();
+        const connectionCertificate = Storage.getConnectionCertificate();
 
         return proxy({
             source,
             address,
             availableSources,
+            connectionCertificate,
         });
     };
 
@@ -256,6 +262,10 @@ class WalletManager {
         }
         this.subscribeToKey('address', Storage.setAccount);
         this.subscribeToKey('source', Storage.setSource);
+        this.subscribeToKey(
+            'connectionCertificate',
+            Storage.setConnectionCertificate,
+        );
     };
 
     private getAvailableSources = (): WalletSource[] => {
