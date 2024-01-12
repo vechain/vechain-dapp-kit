@@ -1,7 +1,7 @@
 import type { ChromiumBrowser } from 'playwright';
 import { chromium } from 'playwright';
 import { After, AfterAll, Before, BeforeAll } from '@cucumber/cucumber';
-import { ICustomWorld } from 'types';
+import { ICustomWorld } from 'tests/e2e/src/types';
 
 let browser: ChromiumBrowser;
 

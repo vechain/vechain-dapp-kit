@@ -1,5 +1,5 @@
 import { World, setWorldConstructor } from '@cucumber/cucumber';
-import { ICustomWorld } from 'types';
+import { ICustomWorld } from 'tests/e2e/src/types';
 import { openUrl, click, clickByText, isVisible, isVisibleByText } from 'utils';
 
 export class CustomWorld extends World implements ICustomWorld {

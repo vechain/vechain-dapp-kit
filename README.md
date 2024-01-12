@@ -52,7 +52,7 @@ Key Features a.k.a scope
 
 ## Sample Projects
 
--   Please refer to the [apps](./apps) folder for sample projects.
+-   Please refer to the [apps](./examples) folder for sample projects.
 
 ---
 
