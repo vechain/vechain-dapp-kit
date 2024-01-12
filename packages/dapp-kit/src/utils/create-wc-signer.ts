@@ -5,9 +5,9 @@ import type {
 } from '@walletconnect/types';
 import { getSdkError } from '@walletconnect/utils';
 import type { SignClient } from '@walletconnect/sign-client/dist/types/client';
-import { DAppKitLogger } from '../utils';
-import type { WCSigner, WCSignerOptions } from './types';
-import { DefaultMethods } from './constants';
+import type { WCSigner, WCSignerOptions } from '../types/wc-types';
+import { DefaultMethods } from '../constants/wallet-connect';
+import { DAppKitLogger } from './logger';
 
 interface SessionAccount {
     networkIdentifier: string;
@@ -20,7 +20,7 @@ interface SessionAccount {
  * @param options - The signer options. See {@link WCSignerOptions}
  * @returns A new {@link WCSigner}
  */
-export const newWcSigner = ({
+export const createWcSigner = ({
     genesisId,
     wcClient,
     web3Modal,
@@ -151,10 +151,13 @@ export const newWcSigner = ({
                         endSubscription();
                         resolve(newSession);
                     })
-                    .catch(reject);
+                    .catch((e) => {
+                        web3Modal.closeModal();
+                        reject(e);
+                    });
             });
-        } finally {
-            web3Modal.closeModal();
+        } catch (e) {
+            throw new Error(`wc connect failed`);
         }
     };
 

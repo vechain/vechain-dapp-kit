@@ -43,6 +43,8 @@ export interface WCModal {
     subscribeModal: (
         callback: (newState: SubscribeModalState) => void,
     ) => () => void;
+    askForConnectionCertificate?: () => void;
+    onConnectionCertificateSigned?: () => void;
 }
 
 /**

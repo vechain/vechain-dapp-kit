@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
 
             handleConnected(DAppKitUI.wallet.state.address);
 
-            DAppKitUI.modal.onConnected(handleConnected);
+            DAppKitUI.modal.onConnectionStatusChange(handleConnected);
         }
     }
 

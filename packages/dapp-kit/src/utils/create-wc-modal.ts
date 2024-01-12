@@ -1,5 +1,5 @@
 import { WalletConnectModal } from '@walletconnect/modal';
-import type { WCModal } from './types';
+import type { WCModal } from '../types/wc-types';
 
 const _cachedModals: Record<string, WalletConnectModal | undefined> = {};
 

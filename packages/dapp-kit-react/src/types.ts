@@ -38,6 +38,8 @@ export interface DAppKitContext {
     modal: {
         open: () => void;
         close: () => void;
-        onConnected: (callback: (address: string | null) => void) => void;
+        onConnectionStatusChange: (
+            callback: (address: string | null) => void,
+        ) => void;
     };
 }

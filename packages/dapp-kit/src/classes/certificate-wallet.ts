@@ -1,34 +1,36 @@
 import { Certificate } from 'thor-devkit';
 import type { BaseWallet, ConnectResponse, ConnexWallet } from '../types';
-import { DEFAULT_CONNECT_CERT_MESSAGE } from '../certificates';
+import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
 
 /**
  * A `ConnexWallet` for wallet's that use a certificate connection
  */
 class CertificateBasedWallet implements ConnexWallet {
-    connectionCertificate: Connex.Vendor.CertMessage;
-    constructor(private readonly wallet: BaseWallet) {
-        this.connectionCertificate = DEFAULT_CONNECT_CERT_MESSAGE;
-    }
+    connectionCertificate?: Certificate;
+    constructor(private readonly wallet: BaseWallet) {}
 
     connect = async (): Promise<ConnectResponse> => {
+        const cert = DEFAULT_CONNECT_CERT_MESSAGE;
         const {
             annex: { domain, signer, timestamp },
             signature,
-        } = await this.signCert(this.connectionCertificate, {});
+        } = await this.signCert(cert, {});
+
+        this.connectionCertificate = {
+            ...cert,
+            signature,
+            signer,
+            domain,
+            timestamp,
+        };
 
         try {
-            Certificate.verify({
-                ...this.connectionCertificate,
-                signature,
-                signer,
-                domain,
-                timestamp,
-            });
+            Certificate.verify(this.connectionCertificate);
 
             return {
                 account: signer,
                 verified: true,
+                connectionCertificate: this.connectionCertificate,
             };
         } catch (e) {
             return {

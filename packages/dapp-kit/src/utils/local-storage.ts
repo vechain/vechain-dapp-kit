@@ -1,5 +1,5 @@
-import type { WalletSource } from './types';
-import { DAppKitLogger } from './utils';
+import type { WalletSource } from '../types';
+import { DAppKitLogger } from './logger';
 
 const STORAGE_PREFIX = 'dappkit@vechain';
 const WALLET_SOURCE_KEY = `${STORAGE_PREFIX}/source`;

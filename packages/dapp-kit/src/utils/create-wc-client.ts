@@ -3,7 +3,7 @@ import type {
     ResolvedSignClient,
     WalletConnectOptions,
     WCClient,
-} from './types';
+} from '../types/wc-types';
 
 const _cachedClients: Record<string, WCClient | undefined> = {};
 

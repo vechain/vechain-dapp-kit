@@ -1,12 +1,19 @@
 import { Connex } from '@vechain/connex';
-import type { WCClient, WCModal } from './wallet-connect';
-import { createWcClient, createWcModal, newWcSigner } from './wallet-connect';
-import type { ConnexWallet, DAppKitOptions, WalletSource } from './types';
-import { CertificateBasedWallet } from './wallets/certificate-wallet';
-import { WCWallet } from './wallets/wc-wallet';
+import type {
+    ConnexWallet,
+    DAppKitOptions,
+    WalletSource,
+    WCClient,
+    WCModal,
+} from '../types';
+import { CertificateBasedWallet } from '../classes/certificate-wallet';
+import { WCWallet } from '../classes/wc-wallet';
+import { createWcClient } from './create-wc-client';
+import { createWcModal } from './create-wc-modal';
+import { createWcSigner } from './create-wc-signer';
+import { convertVendorToSigner } from './convert-vendor-to-signer';
 import { normalizeGenesisId } from './genesis';
-import { convertVendorToSigner } from './vendor-signer';
-import { DAppKitLogger } from './utils';
+import { DAppKitLogger } from './logger';
 
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
@@ -61,7 +68,7 @@ export const createWallet = ({
 
             const web3Modal: WCModal = modal ?? createWcModal(projectId);
 
-            const wallet = newWcSigner({
+            const wallet = createWcSigner({
                 genesisId,
                 wcClient,
                 web3Modal,

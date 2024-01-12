@@ -5,7 +5,7 @@ import type {
 } from '@walletconnect/types/dist/types/sign-client/engine';
 import type { SessionTypes } from '@walletconnect/types';
 import type { ResolvedSignClient } from '../../src';
-import { DefaultMethods } from '../../src/wallet-connect/constants';
+import { DefaultMethods } from '../../src';
 import { wcSessionStruct } from './wc-fixtures';
 import { address, mockedConnexSigner } from './mocked-signer';
 import { randomUUID } from 'node:crypto';

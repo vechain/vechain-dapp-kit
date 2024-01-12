@@ -1,4 +1,4 @@
-import { DAppKitLogger } from './utils';
+import { DAppKitLogger } from './logger';
 
 export const convertVendorToSigner = (vendor: Connex.Vendor): Connex.Signer => {
     return {

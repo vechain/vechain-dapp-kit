@@ -2,9 +2,9 @@ import { describe, expect, it, vi } from 'vitest';
 import { SignClient } from '@walletconnect/sign-client';
 import type { SignClientTypes } from '@walletconnect/types';
 import type { WCModal, WCSigner } from '../../src';
-import { createWcClient, newWcSigner } from '../../src';
+import { createWcClient, createWcSigner } from '../../src';
 import { mockedSignClient } from '../helpers/mocked-sign-client';
-import { normalizeGenesisId } from '../../src/genesis';
+import { normalizeGenesisId } from '../../src';
 import { address } from '../helpers/mocked-signer';
 
 vi.spyOn(SignClient, 'init').mockResolvedValue(mockedSignClient);
@@ -26,7 +26,7 @@ const customModal: WCModal = {
 };
 
 const createNewSignClient = (): WCSigner =>
-    newWcSigner({
+    createWcSigner({
         genesisId: normalizeGenesisId('main'),
         wcClient: createWcClient({ projectId, metadata }),
         onDisconnected: () => {
@@ -35,7 +35,7 @@ const createNewSignClient = (): WCSigner =>
         web3Modal: customModal,
     });
 
-describe('newWcSigner', () => {
+describe('createWcSigner', () => {
     it('can connect', async () => {
         const signer = createNewSignClient();
 
