@@ -1,20 +1,6 @@
 # `@vechain/dapp-kit-ui`
 
-## Why ?
-
--   Creating some reusable UI components for connecting wallets
--   Allow easy interaction with all wallets.
--   Connex is designed to play nice with one wallet at a time, this library provides a layer on top of Connex to easily
-    allow interaction with all wallets.
--   Easy setup for wallet connect.
-
-## Installation
-
-### Build
-
-```bash
-yarn build
-```
+The Vechain DApp Kit serves as a sophisticated layer built upon @vechain/connex, providing a simplified and efficient avenue for engaging with a multitude of Vechain wallets. This innovative toolkit enhances the ease of interaction, offering developers a seamless bridge to connect with diverse Vechain wallet functionalities. For more information, please refer to the official [Vechain Docs](https://docs.vechain.org/developer-resources/sdks-and-providers/dapp-kit)
 
 ## Usage
 
