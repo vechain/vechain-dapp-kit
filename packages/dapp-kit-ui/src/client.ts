@@ -32,7 +32,7 @@ export const DAppKitUI = {
                 CustomWalletConnectModal.getInstance();
         }
         dappKitOptions = options;
-        if (!dappKit) dappKit = new DAppKit(options);
+        dappKit = new DAppKit(options);
 
         // init modal so that on the first opening it doesn't have to create it
         ConnectModalManager.getInstance(this.wallet, {
