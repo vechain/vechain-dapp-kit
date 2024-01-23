@@ -5,12 +5,12 @@ import { CustomWalletConnectModal, ConnectModalManager } from './classes';
 import {
     type CustomizedStyle,
     dispatchCustomEvent,
-    configureUI,
+    initModalsAndButtons,
 } from './utils';
 import type { SourceInfo, I18n, ThemeMode } from './constants';
-import { proxy } from 'valtio';
 
 let dappKit: DAppKit | null = null;
+let dappKitOptions: DAppKitUIOptions | null = null;
 let initialized = false;
 
 export type DAppKitUIOptions = DAppKitOptions & {
@@ -22,10 +22,7 @@ export type DAppKitUIOptions = DAppKitOptions & {
     onSourceClick?: (source?: SourceInfo) => void;
 };
 
-const dappKitOptions = proxy<Partial<DAppKitUIOptions>>({});
-
 export const DAppKitUI = {
-    options: dappKitOptions,
     configure(options: DAppKitUIOptions): DAppKit {
         if (
             options.walletConnectOptions &&
@@ -34,12 +31,7 @@ export const DAppKitUI = {
             options.walletConnectOptions.modal =
                 CustomWalletConnectModal.getInstance();
         }
-
-        for (const key in options) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-            (dappKitOptions as any)[key] = (options as any)[key];
-        }
-
+        dappKitOptions = options;
         dappKit = new DAppKit(options);
 
         // init modal so that on the first opening it doesn't have to create it
@@ -48,13 +40,18 @@ export const DAppKitUI = {
         });
 
         // configure bottons and modals options
-        configureUI(options);
-
+        initModalsAndButtons(options);
         dispatchCustomEvent('vdk-dapp-kit-configured');
 
         initialized = true;
 
         return dappKit;
+    },
+
+    configureButtonsAndModals(): void {
+        if (dappKitOptions) {
+            initModalsAndButtons(dappKitOptions);
+        }
     },
 
     get initialized(): boolean {
@@ -75,7 +72,7 @@ export const DAppKitUI = {
 
     get modal(): ConnectModalManager {
         return ConnectModalManager.getInstance(this.wallet, {
-            modalParent: dappKitOptions.modalParent,
+            modalParent: dappKitOptions?.modalParent,
         });
     },
 
