@@ -60,25 +60,13 @@ const walletConnectOptions: WalletConnectOptions = {
 };
 
 const HomePage = (): ReactElement => {
-    const [theme, setTheme] = useState<'DARK' | 'LIGHT'>('DARK');
-
-    const toggleTheme = () => {
-        if (theme === 'DARK') {
-            setTheme('LIGHT');
-        } else {
-            setTheme('DARK');
-        }
-    };
-
     return (
         <DAppKitProvider
             genesis="test"
             nodeUrl="https://testnet.vechain.org/"
-            themeMode={theme}
             usePersistence
             walletConnectOptions={walletConnectOptions}
         >
-            <button onClick={toggleTheme}>Toggle Theme</button>
             <Button />
         </DAppKitProvider>
     );
