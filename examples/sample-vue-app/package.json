@@ -31,8 +31,8 @@
         "root": true
     },
     "dependencies": {
-        "@vechain/dapp-kit": "*",
-        "@vechain/dapp-kit-ui": "*",
+        "@vechain/dapp-kit": "1.0.2",
+        "@vechain/dapp-kit-ui": "1.0.2",
         "core-js": "^3.8.3",
         "node-polyfill-webpack-plugin": "^2.0.1",
         "vue": "^3.2.13",
