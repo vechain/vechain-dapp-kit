@@ -5,7 +5,7 @@ import { CustomWalletConnectModal, ConnectModalManager } from './classes';
 import {
     type CustomizedStyle,
     dispatchCustomEvent,
-    initModalsAndButtons,
+    initModalAndButton,
 } from './utils';
 import type { SourceInfo, I18n, ThemeMode } from './constants';
 
@@ -40,18 +40,12 @@ export const DAppKitUI = {
         });
 
         // configure bottons and modals options
-        initModalsAndButtons(options);
+        initModalAndButton(options);
         dispatchCustomEvent('vdk-dapp-kit-configured');
 
         initialized = true;
 
         return dappKit;
-    },
-
-    configureButtonsAndModals(): void {
-        if (dappKitOptions) {
-            initModalsAndButtons(dappKitOptions);
-        }
     },
 
     get initialized(): boolean {
@@ -68,6 +62,10 @@ export const DAppKitUI = {
 
     get wallet(): WalletManager {
         return this.get().wallet;
+    },
+
+    get configuration(): DAppKitUIOptions | null {
+        return dappKitOptions;
     },
 
     get modal(): ConnectModalManager {

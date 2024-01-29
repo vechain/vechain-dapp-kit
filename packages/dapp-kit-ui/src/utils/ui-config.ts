@@ -2,7 +2,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { type DAppKitUIOptions } from '../client';
-import { Colors, Font, modalZIndex, defaultI18n } from '../constants';
+import {
+    Colors,
+    Font,
+    modalZIndex,
+    defaultI18n,
+    type I18n,
+} from '../constants';
 
 const getModal = (): HTMLElement | null => document.querySelector('vdk-modal');
 
@@ -62,32 +68,57 @@ export const initStyles = (customizedStyle: CustomizedStyle): void => {
     }
 };
 
-export const initModalsAndButtons = (options: DAppKitUIOptions): void => {
+const getInitOptions = (
+    options: DAppKitUIOptions,
+): {
+    mode?: string;
+    i18n?: I18n;
+    language?: string;
+} => {
+    return {
+        mode: options.themeMode ?? 'LIGHT',
+        i18n: options.i18n ? { ...defaultI18n, ...options.i18n } : defaultI18n,
+        language: options.language ?? 'en',
+    };
+};
+
+export const initButton = (options: DAppKitUIOptions): void => {
+    const button = document.querySelector('vdk-button');
+    const initOptions = getInitOptions(options);
+    if (!button) {
+        return;
+    }
+    for (const [key, value] of Object.entries(initOptions)) {
+        if (value) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (button as any)[key] = value;
+        }
+    }
+};
+
+export const initModal = (options: DAppKitUIOptions): void => {
+    const modal = document.querySelector('vdk-modal');
+    const initOptions = getInitOptions(options);
+    if (!modal) {
+        return;
+    }
+    for (const [key, value] of Object.entries(initOptions)) {
+        if (value) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (modal as any)[key] = value;
+        }
+    }
+    if (options.onSourceClick) {
+        modal.onSourceClick = options.onSourceClick;
+    }
+};
+
+export const initModalAndButton = (options: DAppKitUIOptions): void => {
     // configure theme variables
     if (options.themeVariables) {
         initStyles(options.themeVariables);
     }
 
-    const button = document.querySelector('vdk-button');
-    const modal = document.querySelector('vdk-modal');
-
-    const initOptions = {
-        mode: options.themeMode ?? 'LIGHT',
-        i18n: options.i18n ? { ...defaultI18n, ...options.i18n } : defaultI18n,
-        language: options.language ?? 'en',
-    };
-
-    for (const [key, value] of Object.entries(initOptions)) {
-        if (button && value) {
-            (button as any)[key] = value;
-        }
-        if (modal && value) {
-            (modal as any)[key] = value;
-        }
-    }
-
-    // just for modal
-    if (modal && options.onSourceClick) {
-        modal.onSourceClick = options.onSourceClick;
-    }
+    initButton(options);
+    initModal(options);
 };
