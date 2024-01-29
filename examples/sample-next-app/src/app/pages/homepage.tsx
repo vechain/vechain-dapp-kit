@@ -1,13 +1,12 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable react/function-component-definition */
+'use client'; // This is a client component
 import { type ReactElement, useEffect, useState } from 'react';
 import {
     WalletButton,
-    DAppKitProvider,
     useWalletModal,
     useWallet,
 } from '@vechain/dapp-kit-react';
-import type { WalletConnectOptions } from '@vechain/dapp-kit';
 
 const Button = (): ReactElement => {
     const { account } = useWallet();
@@ -45,31 +44,8 @@ const Button = (): ReactElement => {
     );
 };
 
-const walletConnectOptions: WalletConnectOptions = {
-    projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
-    metadata: {
-        name: 'Sample VeChain dApp',
-        description: 'A sample VeChain dApp',
-        url: typeof window !== 'undefined' ? window.location.origin : '',
-        icons: [
-            typeof window !== 'undefined'
-                ? `${window.location.origin}/images/logo/my-dapp.png`
-                : '',
-        ],
-    },
-};
-
 const HomePage = (): ReactElement => {
-    return (
-        <DAppKitProvider
-            genesis="test"
-            nodeUrl="https://testnet.vechain.org/"
-            usePersistence
-            walletConnectOptions={walletConnectOptions}
-        >
-            <Button />
-        </DAppKitProvider>
-    );
+    return <Button />;
 };
 
 // eslint-disable-next-line import/no-default-export

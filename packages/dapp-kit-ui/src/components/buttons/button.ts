@@ -10,18 +10,25 @@ export class Button extends LitElement {
     constructor() {
         super();
         if (DAppKitUI.initialized) {
-            this.address = DAppKitUI.wallet.state.address ?? '';
             this.initAddressListener();
-            setTimeout(() => {
-                DAppKitUI.configureButtonsAndModals();
-                this.requestUpdate();
-            }, 0);
+            this.setAddressFromState();
+            this.configureButtonUI();
         } else {
             subscribeToCustomEvent('vdk-dapp-kit-configured', () => {
-                this.address = DAppKitUI.wallet.state.address ?? '';
+                this.setAddressFromState();
                 this.initAddressListener();
             });
         }
+    }
+
+    private setAddressFromState(): void {
+        this.address = DAppKitUI.wallet.state.address ?? '';
+    }
+
+    private configureButtonUI(): void {
+        this.mode = DAppKitUI.configuration?.themeMode ?? 'LIGHT';
+        this.i18n = DAppKitUI.configuration?.i18n ?? defaultI18n;
+        this.language = DAppKitUI.configuration?.language ?? 'en';
     }
 
     private initAddressListener(): void {
