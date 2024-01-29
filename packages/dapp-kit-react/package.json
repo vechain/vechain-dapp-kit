@@ -2,6 +2,8 @@
     "name": "@vechain/dapp-kit-react",
     "version": "1.0.0",
     "private": false,
+    "homepage": "https://github.com/vechainfoundation/vechain-dapp-kit",
+    "repository": "github:vechain/vechain-dapp-kit",
     "license": "MIT",
     "sideEffects": false,
     "type": "module",

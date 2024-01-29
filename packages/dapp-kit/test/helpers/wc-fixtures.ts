@@ -1,6 +1,5 @@
 import type { SessionTypes, SignClientTypes } from '@walletconnect/types';
-import { normalizeGenesisBlock } from '../../src/genesis';
-import { DefaultMethods } from '../../src/wallet-connect/constants';
+import { normalizeGenesisBlock, DefaultMethods } from '../../src';
 import { address } from './mocked-signer';
 
 const wcMetadata: SignClientTypes.Options['metadata'] = {

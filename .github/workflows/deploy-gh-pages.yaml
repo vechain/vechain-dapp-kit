@@ -40,8 +40,7 @@ jobs:
       - name: Build React App
         run: |
           yarn install:all
-          yarn build:packages
-          yarn build:apps
+          yarn build
 
       - name: Setup Pages
         uses: actions/configure-pages@v2
@@ -49,10 +48,10 @@ jobs:
       - name: Copy Builds
         run: |
           mkdir build
-          cp -r apps/sample-vue-app/dist build/vue
-          cp -r apps/sample-react-app/dist build/react
-          cp -r apps/sample-vanilla-app/dist build/vanilla
-          cp -r apps/sample-angular-app/dist/easy-angular build/angular
+          cp -r examples/sample-vue-app/dist build/vue
+          cp -r examples/sample-react-app/dist build/react
+          cp -r examples/sample-vanilla-app/dist build/vanilla
+          cp -r examples/sample-angular-app/dist/easy-angular build/angular
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
