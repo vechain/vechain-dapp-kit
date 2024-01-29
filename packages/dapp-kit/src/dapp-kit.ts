@@ -4,9 +4,8 @@ import {
 } from '@vechain/connex-driver/dist/index.js';
 import { Framework } from '@vechain/connex-framework';
 import { blake2b256 } from 'thor-devkit';
-import { normalizeGenesisBlock } from './genesis';
-import { WalletManager } from './wallet-manager';
-import { DAppKitLogger } from './utils/logger';
+import { WalletManager } from './classes';
+import { DAppKitLogger, normalizeGenesisBlock } from './utils';
 import type { DAppKitOptions } from './types';
 
 const cache: Record<string, DriverNoVendor | undefined> = {};

@@ -1,6 +1,5 @@
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { type WalletManager } from '@vechain/dapp-kit';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import { DAppKitUI } from '../../client';
 import { defaultI18n, type I18n, type ThemeMode } from '../../constants';
@@ -13,6 +12,10 @@ export class Button extends LitElement {
         if (DAppKitUI.initialized) {
             this.address = DAppKitUI.wallet.state.address ?? '';
             this.initAddressListener();
+            setTimeout(() => {
+                DAppKitUI.configureButtonsAndModals();
+                this.requestUpdate();
+            }, 0);
         } else {
             subscribeToCustomEvent('vdk-dapp-kit-configured', () => {
                 this.address = DAppKitUI.wallet.state.address ?? '';
@@ -26,10 +29,6 @@ export class Button extends LitElement {
             this.address = v ?? '';
             this.requestUpdate();
         });
-    }
-
-    private get wallet(): WalletManager {
-        return DAppKitUI.wallet;
     }
 
     @property()

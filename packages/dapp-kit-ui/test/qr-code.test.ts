@@ -37,7 +37,7 @@ describe('qr-code-modal', () => {
 
         connectButton.shadowRoot?.querySelector('button')?.click();
 
-        dispatchCustomEvent('vdk-open-wc-modal', { uri: sampleUri });
+        dispatchCustomEvent('vdk-open-wc-qrcode', { uri: sampleUri });
 
         const qrCode =
             (await elementQueries.getWalletConnectQrCode()) as WalletConnectQrCode;

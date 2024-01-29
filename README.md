@@ -1,7 +1,7 @@
 # vechain-dapp-kit
 
-VeWorld DAppKit is a TypeScript library that facilitates seamless interaction between vechain wallets (veworld, sync2)
-and dApps, enhancing user experience and developer convenience.
+The Vechain DAppKit is a TypeScript library that facilitates seamless interaction between vechain wallets (veworld, sync2)
+and dApps, enhancing user experience and developer convenience. Please refer to [Vechain Docs](https://docs.vechain.org/developer-resources/sdks-and-providers/dapp-kit) for full documentation and usage.
 
 ## Table of Contents
 
@@ -52,7 +52,7 @@ Key Features a.k.a scope
 
 ## Sample Projects
 
--   Please refer to the [apps](./apps) folder for sample projects.
+-   Please refer to the [apps](./examples) folder for sample projects.
 
 ---
 
@@ -144,6 +144,6 @@ git clone git@github.com:vechainfoundation/vechain-dapp-kit.git
 cd vechain-dapp-kit
 git checkout X.Y.Z
 yarn install:all
-yarn build
+yarn build:release X.Y.Z
 yarn changeset publish
 ```

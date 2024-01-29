@@ -1,11 +1,11 @@
 /// <reference types="@vechain/connex" />
 import type { DAppKitOptions, WalletManager } from '@vechain/dapp-kit';
 import { DAppKit } from '@vechain/dapp-kit';
-import { CustomWalletConnectModal, DAppKitModal } from './modal';
+import { CustomWalletConnectModal, ConnectModalManager } from './classes';
 import {
     type CustomizedStyle,
     dispatchCustomEvent,
-    configureUI,
+    initModalsAndButtons,
 } from './utils';
 import type { SourceInfo, I18n, ThemeMode } from './constants';
 
@@ -32,20 +32,26 @@ export const DAppKitUI = {
                 CustomWalletConnectModal.getInstance();
         }
         dappKitOptions = options;
-        if (!dappKit) dappKit = new DAppKit(options);
+        dappKit = new DAppKit(options);
 
-        // init modal so on the first opening it doesn't have to create it
-        DAppKitModal.getInstance(this.wallet, {
+        // init modal so that on the first opening it doesn't have to create it
+        ConnectModalManager.getInstance(this.wallet, {
             modalParent: options.modalParent,
         });
 
         // configure bottons and modals options
-        configureUI(options);
+        initModalsAndButtons(options);
         dispatchCustomEvent('vdk-dapp-kit-configured');
 
         initialized = true;
 
         return dappKit;
+    },
+
+    configureButtonsAndModals(): void {
+        if (dappKitOptions) {
+            initModalsAndButtons(dappKitOptions);
+        }
     },
 
     get initialized(): boolean {
@@ -64,8 +70,8 @@ export const DAppKitUI = {
         return this.get().wallet;
     },
 
-    get modal(): DAppKitModal {
-        return DAppKitModal.getInstance(this.wallet, {
+    get modal(): ConnectModalManager {
+        return ConnectModalManager.getInstance(this.wallet, {
             modalParent: dappKitOptions?.modalParent,
         });
     },
