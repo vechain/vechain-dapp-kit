@@ -63,6 +63,11 @@ export const initStyles = (customizedStyle: CustomizedStyle): void => {
 };
 
 export const initModalsAndButtons = (options: DAppKitUIOptions): void => {
+    // configure theme variables
+    if (options.themeVariables) {
+        initStyles(options.themeVariables);
+    }
+
     const button = document.querySelector('vdk-button');
     const modal = document.querySelector('vdk-modal');
 
@@ -84,15 +89,5 @@ export const initModalsAndButtons = (options: DAppKitUIOptions): void => {
     // just for modal
     if (modal && options.onSourceClick) {
         modal.onSourceClick = options.onSourceClick;
-    }
-};
-
-export const configureUI = (options: DAppKitUIOptions): void => {
-    // init buttons and modals
-    initModalsAndButtons(options);
-
-    // configure theme variables
-    if (options.themeVariables) {
-        initStyles(options.themeVariables);
     }
 };

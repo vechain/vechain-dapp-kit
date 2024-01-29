@@ -5,7 +5,7 @@ import { CustomWalletConnectModal, ConnectModalManager } from './classes';
 import {
     type CustomizedStyle,
     dispatchCustomEvent,
-    configureUI,
+    initModalsAndButtons,
 } from './utils';
 import type { SourceInfo, I18n, ThemeMode } from './constants';
 
@@ -40,12 +40,18 @@ export const DAppKitUI = {
         });
 
         // configure bottons and modals options
-        configureUI(options);
+        initModalsAndButtons(options);
         dispatchCustomEvent('vdk-dapp-kit-configured');
 
         initialized = true;
 
         return dappKit;
+    },
+
+    configureButtonsAndModals(): void {
+        if (dappKitOptions) {
+            initModalsAndButtons(dappKitOptions);
+        }
     },
 
     get initialized(): boolean {
