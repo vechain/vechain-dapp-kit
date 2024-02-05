@@ -3,7 +3,7 @@ import {
     SimpleNet,
 } from '@vechain/connex-driver/dist/index.js';
 import { Framework } from '@vechain/connex-framework';
-import { blake2b256 } from 'thor-devkit';
+import * as ThorDevkit from 'thor-devkit';
 import { WalletManager } from './classes';
 import { DAppKitLogger, normalizeGenesisBlock } from './utils';
 import type { DAppKitOptions } from './types';
@@ -14,7 +14,7 @@ const createThorDriver = (
     node: string,
     genesis: Connex.Thor.Block,
 ): DriverNoVendor => {
-    const key = blake2b256(
+    const key = ThorDevkit.blake2b256(
         JSON.stringify({
             node,
             genesis,
