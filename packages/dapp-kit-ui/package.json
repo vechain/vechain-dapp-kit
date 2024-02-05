@@ -23,7 +23,7 @@
         "LICENSE"
     ],
     "scripts": {
-        "build": "tsup",
+        "build": "tsup --format cjs,esm --dts",
         "clean": "rm -rf dist .turbo",
         "dev": "rm -rf ../../.parcel-cache; parcel --no-cache index.html",
         "format": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
@@ -31,7 +31,7 @@
         "purge": "yarn clean && rm -rf node_modules",
         "test": "vitest run --coverage",
         "test:dev": "vitest run ",
-        "watch": "tsup --watch"
+        "watch": "tsup --format cjs,esm --dts --watch"
     },
     "dependencies": {
         "@vechain/dapp-kit": "*",
