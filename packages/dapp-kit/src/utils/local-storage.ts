@@ -1,4 +1,4 @@
-import type { Certificate } from 'thor-devkit';
+import * as ThorDevkit from 'thor-devkit';
 import type { WalletSource } from '../types';
 import { DAppKitLogger } from './logger';
 
@@ -26,7 +26,9 @@ const setAccount = (account: string | null): void => {
     }
 };
 
-const setConnectionCertificate = (certificate: Certificate | null): void => {
+const setConnectionCertificate = (
+    certificate: ThorDevkit.Certificate | null,
+): void => {
     DAppKitLogger.debug(
         'LocalStorage',
         'setConnectionCertificate',
@@ -59,14 +61,14 @@ const getAccount = (): string | null => {
     return account;
 };
 
-const getConnectionCertificate = (): Certificate | null => {
+const getConnectionCertificate = (): ThorDevkit.Certificate | null => {
     const connectionCertificate = localStorage.getItem(CERTIFICATE_KEY);
 
     if (!connectionCertificate) {
         return null;
     }
 
-    return JSON.parse(connectionCertificate) as Certificate;
+    return JSON.parse(connectionCertificate) as ThorDevkit.Certificate;
 };
 
 export const Storage = {

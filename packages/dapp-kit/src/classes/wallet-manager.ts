@@ -1,4 +1,4 @@
-import { Certificate } from 'thor-devkit';
+import * as ThorDevkit from 'thor-devkit';
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import type {
@@ -83,7 +83,7 @@ class WalletManager {
         };
 
         try {
-            Certificate.verify(connectionCertificate);
+            ThorDevkit.Certificate.verify(connectionCertificate);
             this.state.address = signer;
             this.state.connectionCertificate = connectionCertificate;
             return {
