@@ -1,4 +1,4 @@
-import { Connex } from '@vechain/connex';
+import * as ConnexLib from '@vechain/connex';
 import type {
     ConnexWallet,
     DAppKitOptions,
@@ -36,12 +36,12 @@ export const createWallet = ({
                 throw new Error('User is not in a Sync wallet');
             }
 
-            const vendor = new Connex.Vendor(genesisId, 'sync');
+            const vendor = new ConnexLib.Connex.Vendor(genesisId, 'sync');
 
             return new CertificateBasedWallet(convertVendorToSigner(vendor));
         }
         case 'sync2': {
-            const vendor = new Connex.Vendor(genesisId, 'sync2');
+            const vendor = new ConnexLib.Connex.Vendor(genesisId, 'sync2');
 
             return new CertificateBasedWallet(convertVendorToSigner(vendor));
         }
