@@ -7,11 +7,6 @@ import { resolve } from 'path';
 
 export default defineConfig({
     plugins: [nodePolyfills(), react()],
-    build: {
-        commonjsOptions: {
-            transformMixedEsModules: true,
-        },
-    },
     //vitest
     test: {
         globals: true,
