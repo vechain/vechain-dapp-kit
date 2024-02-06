@@ -1,6 +1,6 @@
 {
     "name": "@vechain/dapp-kit-ui",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "private": false,
     "description": "Vanilla JS DAppKit",
     "keywords": [
@@ -31,9 +31,10 @@
         "purge": "yarn clean && rm -rf node_modules",
         "test": "vitest run --coverage",
         "test:dev": "vitest run ",
-        "watch": "tsup --watch"
+        "watch": "yarn build --watch"
     },
     "dependencies": {
+        "@vechain/connex": "2.1.0",
         "@vechain/dapp-kit": "*",
         "@vechain/picasso": "2.1.1",
         "@wagmi/core": "^1.4.5",
@@ -41,7 +42,7 @@
         "@web3modal/html": "^2.7.1",
         "lit": "^3.0.0",
         "qrcode": "1.5.3",
-        "valtio": "^1.12.1",
+        "valtio": "1.11.2",
         "viem": "^1.18.4"
     },
     "devDependencies": {
@@ -53,6 +54,7 @@
         "eslint": "^8.15.0",
         "parcel": "^2.10.2",
         "prettier": "^2.6.2",
+        "punycode": "^1.4.1",
         "tsup": "^7.2.0",
         "typechain": "^8.3.2",
         "typescript": "~5.2.0",

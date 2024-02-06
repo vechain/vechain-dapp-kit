@@ -1,6 +1,6 @@
 {
     "name": "@vechain/dapp-kit-react",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "private": false,
     "homepage": "https://github.com/vechainfoundation/vechain-dapp-kit",
     "repository": "github:vechain/vechain-dapp-kit",
@@ -16,9 +16,8 @@
         "LICENSE"
     ],
     "scripts": {
-        "build": "tsup src/index.ts --format esm --dts --external react",
+        "build": "tsup",
         "clean": "rm -rf dist .turbo",
-        "dev": "tsup src/index.ts --format esm --watch --dts --external react",
         "lint": "tsc --noEmit && eslint src --ext .js,.jsx,.ts,.tsx",
         "purge": "yarn clean && rm -rf node_modules",
         "test": "vitest run --coverage",
@@ -31,7 +30,7 @@
         "@vechain/dapp-kit": "*",
         "@vechain/dapp-kit-ui": "*",
         "thor-devkit": "^2.0.9",
-        "valtio": "^1.12.1"
+        "valtio": "1.11.2"
     },
     "devDependencies": {
         "@testing-library/react": "^14.1.2",

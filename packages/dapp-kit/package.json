@@ -1,6 +1,6 @@
 {
     "name": "@vechain/dapp-kit",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "private": false,
     "homepage": "https://github.com/vechainfoundation/vechain-dapp-kit",
     "repository": "github:vechain/vechain-dapp-kit",
@@ -14,12 +14,12 @@
         "LICENSE"
     ],
     "scripts": {
-        "build": "tsup src/index.ts --format cjs,esm --dts",
+        "build": "tsup",
         "clean": "rm -rf dist .turbo",
         "lint": "tsc --noEmit && eslint src --ext .js,.jsx,.ts,.tsx",
         "purge": "yarn clean && rm -rf node_modules",
         "test": "vitest run --coverage",
-        "watch": "tsup src/index.ts --format cjs,esm --watch --dts"
+        "watch": "yarn build --watch"
     },
     "dependencies": {
         "@vechain/connex": "2.1.0",
@@ -31,7 +31,7 @@
         "@walletconnect/utils": "2.10.2",
         "events": "^3.3.0",
         "thor-devkit": "^2.0.9",
-        "valtio": "^1.12.1"
+        "valtio": "1.11.2"
     },
     "devDependencies": {
         "@types/react": "^18.2.28",
