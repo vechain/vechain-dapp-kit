@@ -50,7 +50,6 @@ export default function RootLayout({
                     genesis="test"
                     logLevel="DEBUG"
                     nodeUrl="https://testnet.vechain.org/"
-                    themeMode="DARK"
                     usePersistence
                     walletConnectOptions={walletConnectOptions}
                 >
