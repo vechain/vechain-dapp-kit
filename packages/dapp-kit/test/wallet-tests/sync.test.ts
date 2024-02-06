@@ -8,21 +8,30 @@ vi.mock('@vechain/connex');
 
 vi.mocked(Connex.Vendor).mockImplementation((): Connex.Vendor => {
     return {
-        sign: (type, msg) => {
+        sign: ((
+            type: string,
+            msg: Connex.Vendor.TxMessage | Connex.Vendor.CertMessage,
+        ) => {
             if (type === 'tx') {
                 return {
                     request: () => {
-                        return mockedConnexSigner.signTx(msg, {});
+                        return mockedConnexSigner.signTx(
+                            msg as Connex.Vendor.TxMessage,
+                            {},
+                        );
                     },
                 };
             } else {
                 return {
                     request: () => {
-                        return mockedConnexSigner.signCert(msg, {});
+                        return mockedConnexSigner.signCert(
+                            msg as Connex.Vendor.CertMessage,
+                            {},
+                        );
                     },
                 };
             }
-        },
+        }) as any,
     };
 });
 
