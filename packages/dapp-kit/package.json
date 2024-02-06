@@ -1,6 +1,6 @@
 {
     "name": "@vechain/dapp-kit",
-    "version": "1.0.3",
+    "version": "1.0.4-alpha-5",
     "private": false,
     "homepage": "https://github.com/vechainfoundation/vechain-dapp-kit",
     "repository": "github:vechain/vechain-dapp-kit",
