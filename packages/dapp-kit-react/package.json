@@ -30,7 +30,7 @@
         "@vechain/dapp-kit": "*",
         "@vechain/dapp-kit-ui": "*",
         "thor-devkit": "^2.0.9",
-        "valtio": "^1.12.1"
+        "valtio": "1.11.2"
     },
     "devDependencies": {
         "@testing-library/react": "^14.1.2",

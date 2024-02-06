@@ -31,7 +31,7 @@
         "@walletconnect/utils": "2.10.2",
         "events": "^3.3.0",
         "thor-devkit": "^2.0.9",
-        "valtio": "^1.12.1"
+        "valtio": "1.11.2"
     },
     "devDependencies": {
         "@types/react": "^18.2.28",
