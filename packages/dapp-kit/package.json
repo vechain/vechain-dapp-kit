@@ -14,12 +14,12 @@
         "LICENSE"
     ],
     "scripts": {
-        "build": "tsup src/index.ts --format cjs,esm --dts",
+        "build": "tsup",
         "clean": "rm -rf dist .turbo",
         "lint": "tsc --noEmit && eslint src --ext .js,.jsx,.ts,.tsx",
         "purge": "yarn clean && rm -rf node_modules",
         "test": "vitest run --coverage",
-        "watch": "tsup src/index.ts --format cjs,esm --watch --dts"
+        "watch": "yarn build --watch"
     },
     "dependencies": {
         "@vechain/connex": "2.1.0",

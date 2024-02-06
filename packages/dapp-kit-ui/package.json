@@ -31,7 +31,7 @@
         "purge": "yarn clean && rm -rf node_modules",
         "test": "vitest run --coverage",
         "test:dev": "vitest run ",
-        "watch": "tsup --watch"
+        "watch": "yarn build --watch"
     },
     "dependencies": {
         "@vechain/connex": "2.1.0",

@@ -1,8 +1,21 @@
 {
-    "extends": "@vechain/repo-config/src/tsconfig/base.json",
-    "include": ["."],
-    "exclude": ["dist", "node_modules", "test"],
     "compilerOptions": {
-        "target": "ES6"
-    }
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "target": "es2021",
+        "experimentalDecorators": true,
+        "composite": false,
+        "declaration": true,
+        "declarationMap": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "inlineSources": false,
+        "isolatedModules": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "preserveWatchOutput": true,
+        "skipLibCheck": true,
+        "strict": true
+    },
+    "include": ["src/**/*.ts", "test/**/*.test.ts"]
 }
