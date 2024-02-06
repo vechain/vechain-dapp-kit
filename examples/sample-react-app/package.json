@@ -13,9 +13,9 @@
         "test": "vitest"
     },
     "dependencies": {
-        "@vechain/dapp-kit": "*",
-        "@vechain/dapp-kit-react": "*",
-        "@vechain/dapp-kit-ui": "*",
+        "@vechain/dapp-kit": "1.0.4-alpha-5",
+        "@vechain/dapp-kit-react": "1.0.4-alpha-5",
+        "@vechain/dapp-kit-ui": "1.0.4-alpha-5",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "vite": "^5.0.12"
