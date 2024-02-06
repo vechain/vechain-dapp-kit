@@ -11,7 +11,7 @@
         "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
-        "@vechain/dapp-kit-ui": "1.0.4-alpha-5"
+        "@vechain/dapp-kit-ui": "1.0.4-alpha-6"
     },
     "devDependencies": {
         "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
