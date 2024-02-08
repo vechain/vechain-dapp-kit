@@ -37,6 +37,10 @@ interface DAppKitOptions {
     useFirstDetectedSource?: boolean;
     logLevel?: LogLevel;
     requireCertificate?: boolean;
+    connectionCertificate?: {
+        message?: Connex.Vendor.CertMessage;
+        options?: Connex.Signer.CertOptions;
+    };
 }
 
 type BaseWallet = Connex.Signer & {

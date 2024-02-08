@@ -31,6 +31,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     language,
     modalParent,
     onSourceClick,
+    connectionCertificate: connectionCertificateData,
 }): React.ReactElement => {
     const connex = useMemo(
         () =>
@@ -47,6 +48,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
                 language,
                 modalParent,
                 onSourceClick,
+                connectionCertificate: connectionCertificateData,
             }),
         [
             nodeUrl,
@@ -61,6 +63,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
             language,
             modalParent,
             onSourceClick,
+            connectionCertificateData,
         ],
     );
 

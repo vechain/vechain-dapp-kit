@@ -1,0 +1,3 @@
+{
+    "extends": "@vechain/repo-config/src/tsconfig/base.json"
+}

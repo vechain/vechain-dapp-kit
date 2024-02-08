@@ -25,6 +25,7 @@ export const createWallet = ({
     genesis,
     walletConnectOptions,
     onDisconnected,
+    connectionCertificate,
 }: ICreateWallet): ConnexWallet => {
     const genesisId = normalizeGenesisId(genesis);
 
@@ -38,12 +39,18 @@ export const createWallet = ({
 
             const vendor = new ConnexLib.Connex.Vendor(genesisId, 'sync');
 
-            return new CertificateBasedWallet(convertVendorToSigner(vendor));
+            return new CertificateBasedWallet(
+                convertVendorToSigner(vendor),
+                connectionCertificate,
+            );
         }
         case 'sync2': {
             const vendor = new ConnexLib.Connex.Vendor(genesisId, 'sync2');
 
-            return new CertificateBasedWallet(convertVendorToSigner(vendor));
+            return new CertificateBasedWallet(
+                convertVendorToSigner(vendor),
+                connectionCertificate,
+            );
         }
         case 'veworld': {
             if (!window.vechain) {
@@ -52,7 +59,7 @@ export const createWallet = ({
 
             const signer = window.vechain.newConnexSigner(genesisId);
 
-            return new CertificateBasedWallet(signer);
+            return new CertificateBasedWallet(signer, connectionCertificate);
         }
         case 'wallet-connect': {
             if (!walletConnectOptions) {
