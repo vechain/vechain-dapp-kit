@@ -68,14 +68,18 @@ class WalletManager {
 
     // this is needed for wallet connect connections when a connection certificate is required
     signConnectionCertificate = async (): Promise<ConnectResponse> => {
-        const cert = DEFAULT_CONNECT_CERT_MESSAGE;
+        const certificateMessage =
+            this.options.connectionCertificate?.message ||
+            DEFAULT_CONNECT_CERT_MESSAGE;
+        const certificateOptions =
+            this.options.connectionCertificate?.options || {};
         const {
             annex: { domain, signer, timestamp },
             signature,
-        } = await this.wallet.signCert(cert, {});
+        } = await this.wallet.signCert(certificateMessage, certificateOptions);
 
         const connectionCertificate = {
-            ...cert,
+            ...certificateMessage,
             signature,
             signer,
             domain,
