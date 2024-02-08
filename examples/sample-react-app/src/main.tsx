@@ -23,6 +23,15 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             genesis={'test'}
             usePersistence
             walletConnectOptions={walletConnectOptions}
+            connectionCertificate={{
+                message: {
+                    purpose: 'identification',
+                    payload: {
+                        type: 'text',
+                        content: `Sign this message to confirm that you own this wallet: GINOOOOOO`,
+                    },
+                },
+            }}
         >
             <App />
         </DAppKitProvider>
