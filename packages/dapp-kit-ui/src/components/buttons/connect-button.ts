@@ -6,6 +6,7 @@ import { buttonStyle } from '../../assets/styles';
 import { defaultI18n, type I18n } from '../../constants';
 import { useTranslate } from '../../utils';
 import { DAppKitUI } from '../../client';
+import { DarkLinkSvg, LightLinkSvg } from '../../assets/icons';
 
 @customElement('vdk-connect-button')
 export class ConnectButton extends LitElement {
@@ -14,6 +15,10 @@ export class ConnectButton extends LitElement {
         css`
             button {
                 width: auto;
+            }
+            button.mobile {
+                height: 41px;
+                width: 41px;
             }
         `,
     ];
@@ -33,11 +38,35 @@ export class ConnectButton extends LitElement {
         DAppKitUI.modal.open();
     };
 
+    @property()
+    disabled = false;
+
+    @property()
+    mobile = false;
+
     override render(): TemplateResult {
+        if (this.mobile) {
+            const connectIcon =
+                this.mode === 'LIGHT' ? LightLinkSvg : DarkLinkSvg;
+
+            return html` <vdk-fonts></vdk-fonts>
+                <button
+                    class="${this.mode} mobile"
+                    @click=${this.handleOpen}
+                    ?disabled=${this.disabled}
+                >
+                    ${connectIcon}
+                </button>`;
+        }
+
         const translate = useTranslate(this.i18n, this.language);
         return html`
             <vdk-fonts></vdk-fonts>
-            <button class="${this.mode}" @click=${this.handleOpen}>
+            <button
+                class="${this.mode}"
+                @click=${this.handleOpen}
+                ?disabled=${this.disabled}
+            >
                 ${translate('connect-wallet')}
             </button>
         `;

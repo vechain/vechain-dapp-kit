@@ -273,18 +273,20 @@ class WalletManager {
     };
 
     private getAvailableSources = (): WalletSource[] => {
-        const wallets: WalletSource[] = ['sync2'];
+        const wallets: WalletSource[] = [];
 
         if (window.vechain) {
             wallets.push('veworld');
         }
 
-        if (window.connex) {
-            wallets.push('sync');
-        }
-
         if (this.options.walletConnectOptions) {
             wallets.push('wallet-connect');
+        }
+
+        wallets.push('sync2');
+
+        if (window.connex) {
+            wallets.push('sync');
         }
 
         return wallets;

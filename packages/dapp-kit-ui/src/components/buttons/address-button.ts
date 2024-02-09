@@ -16,6 +16,14 @@ export class AddressButton extends LitElement {
                 gap: 4px;
             }
 
+            button.mobile {
+                padding: 0px;
+            }
+
+            button.mobile:hover {
+                opacity: 0.9;
+            }
+
             /* Style for the wallet address */
 
             .wallet-address {
@@ -28,6 +36,12 @@ export class AddressButton extends LitElement {
                 width: 23px;
                 height: 23px;
                 border-radius: 50%;
+            }
+
+            .address-icon.mobile {
+                width: 41px;
+                height: 41px;
+                border-radius: 12px;
             }
         `,
     ];
@@ -43,11 +57,31 @@ export class AddressButton extends LitElement {
         DAppKitUI.modal.open();
     };
 
+    @property()
+    disabled = false;
+
+    @property()
+    mobile = false;
+
     render(): TemplateResult {
+        if (this.mobile) {
+            return html` <vdk-fonts></vdk-fonts>
+                <button
+                    class="wallet-button ${this.mode} mobile"
+                    @click=${this.handleOpen}
+                    ?disabled=${this.disabled}
+                >
+                    <img
+                        class="address-icon mobile"
+                        src=${getPicassoImage(this.address ?? '')}
+                    />
+                </button>`;
+        }
         return html` <vdk-fonts></vdk-fonts>
             <button
                 class="wallet-button ${this.mode}"
                 @click=${this.handleOpen}
+                ?disabled=${this.disabled}
             >
                 <img
                     class="address-icon"
