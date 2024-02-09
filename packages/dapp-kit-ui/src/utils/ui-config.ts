@@ -83,17 +83,16 @@ const getInitOptions = (
 };
 
 export const initButton = (options: DAppKitUIOptions): void => {
-    const button = document.querySelector('vdk-button');
+    const buttons = document.querySelectorAll('vdk-button');
     const initOptions = getInitOptions(options);
-    if (!button) {
-        return;
-    }
-    for (const [key, value] of Object.entries(initOptions)) {
-        if (value) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (button as any)[key] = value;
+    buttons.forEach((button) => {
+        for (const [key, value] of Object.entries(initOptions)) {
+            if (value) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (button as any)[key] = value;
+            }
         }
-    }
+    });
 };
 
 export const initModal = (options: DAppKitUIOptions): void => {

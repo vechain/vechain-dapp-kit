@@ -50,17 +50,27 @@ export class Button extends LitElement {
     @property()
     address = '';
 
+    @property()
+    disabled = false;
+
+    @property()
+    mobile = false;
+
     override render(): TemplateResult {
         return html`
             ${this.address
                 ? html`<vdk-address-button
                       .mode=${this.mode}
                       .address=${this.address}
+                      .disabled=${this.disabled}
+                      .mobile=${this.mobile}
                   ></vdk-address-button>`
                 : html`<vdk-connect-button
                       .mode=${this.mode}
                       .i18n=${this.i18n}
                       .language=${this.language}
+                      .disabled=${this.disabled}
+                      .mobile=${this.mobile}
                   ></vdk-connect-button>`}
         `;
     }
