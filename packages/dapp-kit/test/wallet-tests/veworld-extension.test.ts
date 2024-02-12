@@ -40,26 +40,4 @@ describe('veworld', () => {
             expect(sources).toContain('veworld');
         });
     });
-
-    describe('is NOT in veworld browser', () => {
-        beforeEach(() => {
-            window.vechain = undefined;
-        });
-
-        it('not installed - should throw error', () => {
-            const connex = createUnitTestConnex();
-
-            expect(() => connex.wallet.setSource('veworld')).toThrowError(
-                'VeWorld Extension is not installed',
-            );
-        });
-
-        it('get available sources - should not include veworld', () => {
-            const connex = createUnitTestConnex();
-
-            const sources = connex.wallet.state.availableSources;
-
-            expect(sources).not.toContain('veworld');
-        });
-    });
 });

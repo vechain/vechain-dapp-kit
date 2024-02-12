@@ -82,7 +82,7 @@ describe('sync', () => {
             );
         });
 
-        it('get available sources - should not include veworld', () => {
+        it('get available sources - should not include sync', () => {
             const connex = createUnitTestConnex();
 
             const sources = connex.wallet.state.availableSources;
