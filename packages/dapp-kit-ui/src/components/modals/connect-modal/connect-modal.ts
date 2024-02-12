@@ -9,6 +9,7 @@ import {
     defaultI18n,
     Font,
     WalletSources,
+    VEWORLD_WEBSITE,
 } from '../../../constants';
 import {
     DarkChevronLeftSvg,
@@ -97,6 +98,14 @@ export class ConnectModal extends LitElement {
     @property({ type: Function })
     onSourceClick = (source?: SourceInfo): void => {
         if (source) {
+            if (source.id === 'veworld' && !window.vechain) {
+                const path = `${location.host}${location.pathname}${location.search}`;
+                window.open(
+                    `${VEWORLD_WEBSITE}/?discoveryUrl=${path}`,
+                    '_self',
+                );
+                return;
+            }
             if (source.id !== 'wallet-connect') {
                 this.setWaitingForTheSignature(true);
                 this.requestForConnectionCertificate = true;

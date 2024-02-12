@@ -275,9 +275,7 @@ class WalletManager {
     private getAvailableSources = (): WalletSource[] => {
         const wallets: WalletSource[] = [];
 
-        if (window.vechain) {
-            wallets.push('veworld');
-        }
+        wallets.push('veworld');
 
         if (this.options.walletConnectOptions) {
             wallets.push('wallet-connect');
