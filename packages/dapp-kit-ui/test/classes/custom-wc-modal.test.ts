@@ -15,5 +15,9 @@ describe('CustomWalletConnectModal', () => {
         modal.closeModal();
         modal.askForConnectionCertificate();
         modal.onConnectionCertificateSigned();
+
+        modal.subscribeModal((newState) => {
+            console.log(newState);
+        });
     });
 });
