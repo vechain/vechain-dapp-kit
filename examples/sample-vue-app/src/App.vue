@@ -4,7 +4,9 @@
         <div class="label">kit button:</div>
         <vdk-button></vdk-button>
         <div class="label">custom button:</div>
-        <button id="custom-button" v-on:click="openModal">Connect Custom Button</button>
+        <button id="custom-button" v-on:click="openModal">
+            Connect Custom Button
+        </button>
     </div>
 </template>
 
@@ -43,9 +45,10 @@ setTimeout(() => {
 
         const handleConnected = (address: string | null) => {
             if (address) {
-                const formattedAddress = `${address.slice(0, 6)}...${address.slice(
-                    -4,
-                )}`;
+                const formattedAddress = `${address.slice(
+                    0,
+                    6,
+                )}...${address.slice(-4)}`;
                 customButton.innerText = `Disconnect from ${formattedAddress}`;
             } else {
                 customButton.innerText = 'Connect Custom Button';
@@ -60,35 +63,35 @@ setTimeout(() => {
 
 export default defineComponent({
     methods: {
-        openModal:() => {
+        openModal: () => {
             DAppKitUI.modal.open();
-        }
+        },
     },
 });
 </script>
 
 <style>
-    body {
-        margin: 0;
-        display: flex;
-        height: 100vh;
-        align-items: center;
-        justify-content: center;
-    }
-    h2 {
-        margin: 0;
-    }
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid #000;
-        border-radius: 20px;
-        padding: 20px;
-    }
-    .label {
-        margin-top: 20px;
-        margin-bottom: 10px;
-    }
+body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+h2 {
+    margin: 0;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000;
+    border-radius: 20px;
+    padding: 20px;
+}
+.label {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
 </style>

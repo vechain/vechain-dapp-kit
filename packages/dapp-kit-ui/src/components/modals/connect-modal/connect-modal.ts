@@ -69,7 +69,11 @@ export class ConnectModal extends LitElement {
             this.openingVeWorld = false;
         });
         subscribeToCustomEvent('vdk-open-wallet-modal', () => {
-            this.open = true;
+            if (window.vechain?.isInAppBrowser) {
+                this.onSourceClick(WalletSources.veworld);
+            } else {
+                this.open = true;
+            }
         });
         subscribeToCustomEvent('vdk-close-wallet-modal', () => {
             this.open = false;

@@ -7,7 +7,6 @@ import { defaultI18n, type I18n } from '../../constants';
 import { useTranslate } from '../../utils';
 import { DAppKitUI } from '../../client';
 import { DarkLinkSvg, LightLinkSvg } from '../../assets/icons';
-import { DAppKitLogger } from '@vechain/dapp-kit';
 
 @customElement('vdk-connect-button')
 export class ConnectButton extends LitElement {
@@ -35,24 +34,8 @@ export class ConnectButton extends LitElement {
 
     @property()
     handleOpen = (): void => {
-        if (window.vechain?.isInAppBrowser) {
-            DAppKitUI.wallet.setSource('veworld');
-            DAppKitUI.wallet
-                .connect()
-                .then(() => {
-                    this.requestUpdate();
-                })
-                .catch((err): void => {
-                    DAppKitLogger.error(
-                        'Connection Attempt',
-                        'error trying to connect',
-                        err,
-                    );
-                });
-        } else {
-            DAppKitUI.wallet.disconnect();
-            DAppKitUI.modal.open();
-        }
+        DAppKitUI.wallet.disconnect();
+        DAppKitUI.modal.open();
     };
 
     @property()
