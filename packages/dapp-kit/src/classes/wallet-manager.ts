@@ -20,7 +20,9 @@ class WalletManager {
         this.initPersistence(options.usePersistence ?? false);
         DAppKitLogger.debug('WalletManager', 'constructor', this.state);
 
-        if (options.useFirstDetectedSource) {
+        if (window.vechain?.isInAppBrowser === true) {
+            this.setSource('veworld');
+        } else if (options.useFirstDetectedSource) {
             this.setFirstDetectedSource();
         }
     }

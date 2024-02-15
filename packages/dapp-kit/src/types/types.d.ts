@@ -6,6 +6,7 @@ declare global {
     interface Window {
         vechain?: {
             newConnexSigner: (genesisId: string) => Connex.Signer;
+            isInAppBrowser?: boolean;
         };
         connex?: unknown;
     }
