@@ -1,50 +1,49 @@
 name: Publish GitHub NPM Packages
 
 on:
-  push:
-    tags:
-      - '*'
+    push:
+        tags:
+            - '*'
 
 permissions:
-  contents: read
-  packages: write
+    contents: read
+    packages: write
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          registry-url: https://npm.pkg.github.com/
-      - run: yarn install:all
-      - run: yarn build
+    publish:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+                  registry-url: https://npm.pkg.github.com/
+            - run: yarn install:all
+            - run: yarn build
 
-      - name: Publish DApp-Kit
-        run: |
-          cd packages/dapp-kit
-          yarn version --no-git-tag-version --new-version ${{ github.ref_name }}
-          yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+            - name: Publish DApp-Kit
+              run: |
+                  cd packages/dapp-kit
+                  yarn version --no-git-tag-version --new-version ${{ github.ref_name }}
+                  yarn publish
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Publish DApp-Kit-UI
-        run: |
-          cd packages/dapp-kit-ui
-          yarn version --no-git-tag-version --new-version ${{ github.ref_name }}
-          yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+            - name: Publish DApp-Kit-UI
+              run: |
+                  cd packages/dapp-kit-ui
+                  yarn version --no-git-tag-version --new-version ${{ github.ref_name }}
+                  yarn publish
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Publish DApp-Kit-React
-        run: |
-          cd packages/dapp-kit-react
-          yarn version --no-git-tag-version --new-version ${{ github.ref_name }}
-          yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
+            - name: Publish DApp-Kit-React
+              run: |
+                  cd packages/dapp-kit-react
+                  yarn version --no-git-tag-version --new-version ${{ github.ref_name }}
+                  yarn publish
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
