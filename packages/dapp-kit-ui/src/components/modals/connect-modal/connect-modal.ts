@@ -103,9 +103,8 @@ export class ConnectModal extends LitElement {
     onSourceClick = (source?: SourceInfo): void => {
         if (source) {
             if (source.id === 'veworld' && !window.vechain) {
-                const path = `${location.host}${location.pathname}${location.search}`;
                 window.open(
-                    `${VEWORLD_WEBSITE}/?discoveryUrl=${path}`,
+                    `${VEWORLD_WEBSITE}${encodeURIComponent(location.href)}`,
                     '_self',
                 );
                 return;
