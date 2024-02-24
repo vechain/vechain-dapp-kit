@@ -10,6 +10,8 @@ import {
 } from '../../constants';
 import { subscribeToCustomEvent } from '../../utils';
 
+let dappKitConfiguredListener: () => void;
+
 @customElement('vdk-modal')
 export class Modal extends LitElement {
     constructor() {
@@ -17,10 +19,18 @@ export class Modal extends LitElement {
         if (DAppKitUI.initialized) {
             this.init();
         } else {
-            subscribeToCustomEvent('vdk-dapp-kit-configured', () => {
-                this.init();
-            });
+            dappKitConfiguredListener = subscribeToCustomEvent(
+                'vdk-dapp-kit-configured',
+                () => {
+                    this.init();
+                },
+            );
         }
+    }
+
+    disconnectedCallback(): void {
+        super.disconnectedCallback();
+        dappKitConfiguredListener?.();
     }
 
     private init(): void {
