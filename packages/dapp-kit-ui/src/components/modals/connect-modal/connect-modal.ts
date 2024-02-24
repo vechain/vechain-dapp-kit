@@ -21,6 +21,13 @@ import { isMobile, subscribeToCustomEvent, useTranslate } from '../../../utils';
 import { DAppKitUI } from '../../../client';
 import { iconButtonStyle } from '../../../assets/styles';
 
+let openWcQrcodeListener: () => void;
+let closeWcQrcodeListener: () => void;
+let openWalletModalListener: () => void;
+let closeWalletModalListener: () => void;
+let requestConnectionCertificateListener: () => void;
+let closeConnectionCertificateRequestListener: () => void;
+
 @customElement('vdk-connect-modal')
 export class ConnectModal extends LitElement {
     static override styles = [
@@ -51,42 +58,67 @@ export class ConnectModal extends LitElement {
     constructor() {
         super();
 
-        subscribeToCustomEvent('vdk-open-wc-qrcode', (options) => {
-            if (isMobile()) {
-                this.openingVeWorld = true;
-                window.open(
-                    `veworld://app.veworld?uri=${encodeURIComponent(
-                        options.uri,
-                    )}`,
-                    '_self',
-                );
-            }
-            this.open = true;
-            this.walletConnectQRcode = options.uri;
-        });
-        subscribeToCustomEvent('vdk-close-wc-qrcode', () => {
-            this.walletConnectQRcode = undefined;
-            this.openingVeWorld = false;
-        });
-        subscribeToCustomEvent('vdk-open-wallet-modal', () => {
-            if (window.vechain?.isInAppBrowser) {
-                this.onSourceClick(WalletSources.veworld);
-            } else {
+        openWcQrcodeListener = subscribeToCustomEvent(
+            'vdk-open-wc-qrcode',
+            (options) => {
+                if (isMobile()) {
+                    this.openingVeWorld = true;
+                    window.open(
+                        `veworld://app.veworld?uri=${encodeURIComponent(
+                            options.uri,
+                        )}`,
+                        '_self',
+                    );
+                }
                 this.open = true;
-            }
-        });
-        subscribeToCustomEvent('vdk-close-wallet-modal', () => {
-            this.open = false;
-        });
-        subscribeToCustomEvent('vdk-request-connection-certificate', () => {
-            this.requestForConnectionCertificate = true;
-        });
-        subscribeToCustomEvent(
+                this.walletConnectQRcode = options.uri;
+            },
+        );
+        closeWcQrcodeListener = subscribeToCustomEvent(
+            'vdk-close-wc-qrcode',
+            () => {
+                this.walletConnectQRcode = undefined;
+                this.openingVeWorld = false;
+            },
+        );
+        openWalletModalListener = subscribeToCustomEvent(
+            'vdk-open-wallet-modal',
+            () => {
+                if (window.vechain?.isInAppBrowser) {
+                    this.onSourceClick(WalletSources.veworld);
+                } else {
+                    this.open = true;
+                }
+            },
+        );
+        closeWalletModalListener = subscribeToCustomEvent(
+            'vdk-close-wallet-modal',
+            () => {
+                this.open = false;
+            },
+        );
+        requestConnectionCertificateListener = subscribeToCustomEvent(
+            'vdk-request-connection-certificate',
+            () => {
+                this.requestForConnectionCertificate = true;
+            },
+        );
+        closeConnectionCertificateRequestListener = subscribeToCustomEvent(
             'vdk-close-connection-certificate-request',
             () => {
                 this.requestForConnectionCertificate = false;
             },
         );
+    }
+
+    disconnectedCallback(): void {
+        super.disconnectedCallback();
+        openWcQrcodeListener?.();
+        closeWcQrcodeListener?.();
+        openWalletModalListener?.();
+        closeWalletModalListener?.();
+        requestConnectionCertificateListener?.();
+        closeConnectionCertificateRequestListener?.();
     }
 
     private get availableSources(): SourceInfo[] {

@@ -22,6 +22,8 @@ import {
 } from '../../assets/icons';
 import { DAppKitUI } from '../../client';
 
+let openWalletModalListener: () => void;
+let closeWalletModalListener: () => void;
 @customElement('vdk-address-modal')
 export class AddressModal extends LitElement {
     static override styles = [
@@ -133,13 +135,25 @@ export class AddressModal extends LitElement {
     constructor() {
         super();
 
-        subscribeToCustomEvent('vdk-open-wallet-modal', () => {
-            this.open = true;
-        });
+        openWalletModalListener = subscribeToCustomEvent(
+            'vdk-open-wallet-modal',
+            () => {
+                this.open = true;
+            },
+        );
 
-        subscribeToCustomEvent('vdk-close-wallet-modal', () => {
-            this.open = false;
-        });
+        closeWalletModalListener = subscribeToCustomEvent(
+            'vdk-close-wallet-modal',
+            () => {
+                this.open = false;
+            },
+        );
+    }
+
+    disconnectedCallback(): void {
+        super.disconnectedCallback();
+        openWalletModalListener?.();
+        closeWalletModalListener?.();
     }
 
     @property({ type: Function })

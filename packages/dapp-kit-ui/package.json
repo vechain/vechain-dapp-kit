@@ -1,6 +1,6 @@
 {
     "name": "@vechain/dapp-kit-ui",
-    "version": "1.0.8",
+    "version": "1.0.11",
     "private": false,
     "description": "Vanilla JS DAppKit",
     "keywords": [
@@ -35,7 +35,7 @@
     },
     "dependencies": {
         "@vechain/connex": "2.1.0",
-        "@vechain/dapp-kit": "1.0.8",
+        "@vechain/dapp-kit": "*",
         "@vechain/picasso": "2.1.1",
         "@wagmi/core": "^1.4.5",
         "@web3modal/ethereum": "^2.7.1",

@@ -4,6 +4,8 @@ import { DAppKitUI } from '../../client';
 import { defaultI18n, type I18n, type ThemeMode } from '../../constants';
 import { subscribeToCustomEvent } from '../../utils';
 
+let dappKitConfiguredListener: () => void;
+
 @customElement('vdk-button')
 export class Button extends LitElement {
     constructor() {
@@ -15,16 +17,27 @@ export class Button extends LitElement {
             this.initAddressListener();
 
             // this subscribeToCustomEvent need to be done if the DappKitUI button is reconfigured and so recreated after the initial configuration
-            subscribeToCustomEvent('vdk-dapp-kit-configured', () => {
-                this.setAddressFromState();
-                this.initAddressListener();
-            });
+            dappKitConfiguredListener = subscribeToCustomEvent(
+                'vdk-dapp-kit-configured',
+                () => {
+                    this.setAddressFromState();
+                    this.initAddressListener();
+                },
+            );
         } else {
-            subscribeToCustomEvent('vdk-dapp-kit-configured', () => {
-                this.setAddressFromState();
-                this.initAddressListener();
-            });
+            dappKitConfiguredListener = subscribeToCustomEvent(
+                'vdk-dapp-kit-configured',
+                () => {
+                    this.setAddressFromState();
+                    this.initAddressListener();
+                },
+            );
         }
+    }
+
+    disconnectedCallback(): void {
+        super.disconnectedCallback();
+        dappKitConfiguredListener?.();
     }
 
     private setAddressFromState(): void {
