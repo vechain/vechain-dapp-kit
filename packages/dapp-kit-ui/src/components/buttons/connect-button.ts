@@ -19,6 +19,15 @@ export class ConnectButton extends LitElement {
             button.mobile {
                 height: 41px;
                 width: 41px;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .icon {
+                padding-top: 4px;
+                width: 18px;
+                height: 18px;
             }
         `,
     ];
@@ -55,7 +64,7 @@ export class ConnectButton extends LitElement {
                     @click=${this.handleOpen}
                     ?disabled=${this.disabled}
                 >
-                    ${connectIcon}
+                    <div class="icon">${connectIcon}</div>
                 </button>`;
         }
 

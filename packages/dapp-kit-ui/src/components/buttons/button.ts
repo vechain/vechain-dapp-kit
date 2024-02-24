@@ -1,6 +1,5 @@
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { subscribeKey } from 'valtio/vanilla/utils';
 import { DAppKitUI } from '../../client';
 import { defaultI18n, type I18n, type ThemeMode } from '../../constants';
 import { subscribeToCustomEvent } from '../../utils';
@@ -9,10 +8,17 @@ import { subscribeToCustomEvent } from '../../utils';
 export class Button extends LitElement {
     constructor() {
         super();
+
         if (DAppKitUI.initialized) {
-            this.initAddressListener();
             this.setAddressFromState();
             this.configureButtonUI();
+            this.initAddressListener();
+
+            // this subscribeToCustomEvent need to be done if the DappKitUI button is reconfigured and so recreated after the initial configuration
+            subscribeToCustomEvent('vdk-dapp-kit-configured', () => {
+                this.setAddressFromState();
+                this.initAddressListener();
+            });
         } else {
             subscribeToCustomEvent('vdk-dapp-kit-configured', () => {
                 this.setAddressFromState();
@@ -23,19 +29,24 @@ export class Button extends LitElement {
 
     private setAddressFromState(): void {
         this.address = DAppKitUI.wallet.state.address ?? '';
+        this.requestUpdate();
     }
 
     private configureButtonUI(): void {
         this.mode = DAppKitUI.configuration?.themeMode ?? 'LIGHT';
         this.i18n = DAppKitUI.configuration?.i18n ?? defaultI18n;
         this.language = DAppKitUI.configuration?.language ?? 'en';
+        this.requestUpdate();
     }
 
     private initAddressListener(): void {
-        subscribeKey(DAppKitUI.wallet.state, 'address', (v) => {
-            this.address = v ?? '';
-            this.requestUpdate();
-        });
+        DAppKitUI.wallet.subscribeToKey(
+            'address',
+            (_address: string | null) => {
+                this.address = _address ?? '';
+                this.requestUpdate();
+            },
+        );
     }
 
     @property()
