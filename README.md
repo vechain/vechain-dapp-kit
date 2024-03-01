@@ -52,7 +52,12 @@ Key Features a.k.a scope
 
 ## Sample Projects
 
--   Please refer to the [apps](./examples) folder for sample projects.
+https://github.com/vechain/vechain-dapp-kit/assets/150018882/5cc133ae-4c6b-4e08-8cff-0e09b6ca43aa
+
+-   Look at some live demos here:
+    -   [VueJs Demo](https://vechain.github.io/vechain-dapp-kit/vue/)
+    -   [VanillaJS Demo](https://vechain.github.io/vechain-dapp-kit/vanilla/)
+-   Refer to the [apps](./examples) folder for sample projects.
 
 ---
 
