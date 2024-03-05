@@ -9,7 +9,7 @@
         "typescript",
         "lit"
     ],
-    "homepage": "https://github.com/vechainfoundation/vechain-dapp-kit",
+    "homepage": "https://github.com/vechain/vechain-dapp-kit",
     "repository": "github:vechain/vechain-dapp-kit",
     "license": "MIT",
     "author": "Davide Carpini",
