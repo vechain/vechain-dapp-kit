@@ -1,40 +1,57 @@
-import {
-    WalletButton,
-    useWallet,
-    useWalletModal,
-} from '@vechain/dapp-kit-react';
-import { useEffect, useState } from 'react';
+import { useConnex, useWallet } from '@vechain/dapp-kit-react';
+import { useCallback } from 'react';
 
 function App() {
-    const { account } = useWallet();
-    const { open, onConnectionStatusChange } = useWalletModal();
-    const [buttonText, setButtonText] = useState('Connect Custom Button');
+    const { account, setSource, connect, disconnect, source } = useWallet();
+    const { vendor } = useConnex();
 
-    useEffect(() => {
-        const handleConnected = (address: string | null) => {
-            if (address) {
-                const formattedAddress = `${address.slice(
-                    0,
-                    6,
-                )}...${address.slice(-4)}`;
-                setButtonText(`Disconnect from ${formattedAddress}`);
-            } else {
-                setButtonText('Connect Custom Button');
-            }
-        };
+    const sendVetTransaction = useCallback(() => {
+        if (account) {
+            const clauses = [
+                {
+                    to: account,
+                    value: '1000000000000000000', // vets
+                },
+            ];
+            return vendor.sign('tx', clauses).signer(account).request();
+        }
+    }, [account, vendor]);
 
-        handleConnected(account);
+    const connectWithVeworld = useCallback(() => {
+        setSource('veworld');
+        connect();
+    }, [setSource, connect]);
 
-        onConnectionStatusChange(handleConnected);
-    }, [account, onConnectionStatusChange]);
+    const connectWithWalletConnect = useCallback(() => {
+        setSource('wallet-connect');
+        connect();
+    }, [setSource, connect]);
+
+    const handleDisconnect = useCallback(() => {
+        disconnect();
+    }, [disconnect]);
 
     return (
         <div className="container">
-            <h2>React JS</h2>
-            <div className="label">kit button:</div>
-            <WalletButton />
-            <div className="label">custom button:</div>
-            <button onClick={open}>{buttonText}</button>
+            {!account && (
+                <>
+                    <button onClick={connectWithVeworld}>
+                        connect with veworld
+                    </button>
+                    <button onClick={connectWithWalletConnect}>
+                        connect with wallet connect
+                    </button>
+                </>
+            )}
+            {account && (
+                <>
+                    <button onClick={handleDisconnect}>disconnect</button>
+                    <button onClick={sendVetTransaction}>
+                        send vet transaction
+                    </button>
+                </>
+            )}
+            <p>source: {source || 'null'}</p>
         </div>
     );
 }
