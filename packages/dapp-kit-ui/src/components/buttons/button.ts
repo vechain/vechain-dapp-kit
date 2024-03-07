@@ -10,29 +10,23 @@ let dappKitConfiguredListener: () => void;
 export class Button extends LitElement {
     constructor() {
         super();
-
         if (DAppKitUI.initialized) {
-            this.setAddressFromState();
             this.configureButtonUI();
-            this.initAddressListener();
-
-            // this subscribeToCustomEvent need to be done if the DappKitUI button is reconfigured and so recreated after the initial configuration
-            dappKitConfiguredListener = subscribeToCustomEvent(
-                'vdk-dapp-kit-configured',
-                () => {
-                    this.setAddressFromState();
-                    this.initAddressListener();
-                },
-            );
-        } else {
-            dappKitConfiguredListener = subscribeToCustomEvent(
-                'vdk-dapp-kit-configured',
-                () => {
-                    this.setAddressFromState();
-                    this.initAddressListener();
-                },
-            );
         }
+    }
+
+    connectedCallback(): void {
+        super.connectedCallback();
+        if (DAppKitUI.initialized) {
+            this.initAddressListener();
+        }
+        dappKitConfiguredListener = subscribeToCustomEvent(
+            'vdk-dapp-kit-configured',
+            () => {
+                this.setAddressFromState();
+                this.initAddressListener();
+            },
+        );
     }
 
     disconnectedCallback(): void {
@@ -49,6 +43,7 @@ export class Button extends LitElement {
         this.mode = DAppKitUI.configuration?.themeMode ?? 'LIGHT';
         this.i18n = DAppKitUI.configuration?.i18n ?? defaultI18n;
         this.language = DAppKitUI.configuration?.language ?? 'en';
+        this.address = DAppKitUI.wallet.state.address ?? '';
         this.requestUpdate();
     }
 

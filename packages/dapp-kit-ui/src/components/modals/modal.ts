@@ -1,6 +1,5 @@
 import { html, LitElement, type TemplateResult, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { type WalletManager } from '@vechain/dapp-kit';
 import { DAppKitUI } from '../../client';
 import {
     defaultI18n,
@@ -17,15 +16,22 @@ export class Modal extends LitElement {
     constructor() {
         super();
         if (DAppKitUI.initialized) {
-            this.init();
-        } else {
-            dappKitConfiguredListener = subscribeToCustomEvent(
-                'vdk-dapp-kit-configured',
-                () => {
-                    this.init();
-                },
-            );
+            this.setAddressFromState();
         }
+    }
+
+    connectedCallback(): void {
+        super.connectedCallback();
+        if (DAppKitUI.initialized) {
+            this.initAddressListener();
+        }
+        dappKitConfiguredListener = subscribeToCustomEvent(
+            'vdk-dapp-kit-configured',
+            () => {
+                this.setAddressFromState();
+                this.initAddressListener();
+            },
+        );
     }
 
     disconnectedCallback(): void {
@@ -33,12 +39,19 @@ export class Modal extends LitElement {
         dappKitConfiguredListener?.();
     }
 
-    private init(): void {
+    private setAddressFromState(): void {
         this.address = DAppKitUI.wallet.state.address ?? '';
-        this.wallet.subscribeToKey('address', (addr) => {
-            this.address = addr ?? '';
-            this.requestUpdate();
-        });
+        this.requestUpdate();
+    }
+
+    private initAddressListener(): void {
+        DAppKitUI.wallet.subscribeToKey(
+            'address',
+            (_address: string | null) => {
+                this.address = _address ?? '';
+                this.requestUpdate();
+            },
+        );
     }
 
     @property()
@@ -53,16 +66,12 @@ export class Modal extends LitElement {
     @property()
     language = 'en';
 
-    private get wallet(): WalletManager {
-        return DAppKitUI.wallet;
-    }
-
     @property({ type: Function })
     onSourceClick?: (source?: SourceInfo) => void;
 
     @property({ type: Function })
     onDisconnectClick = (): void => {
-        this.wallet.disconnect();
+        DAppKitUI.wallet.disconnect();
     };
 
     override render(): TemplateResult {
