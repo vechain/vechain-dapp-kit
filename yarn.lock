@@ -17019,7 +17019,7 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
-thor-devkit@2.0.9, thor-devkit@^2.0.5:
+thor-devkit@^2.0.5, thor-devkit@^2.0.9:
   version "2.0.9"
   resolved "https://registry.yarnpkg.com/thor-devkit/-/thor-devkit-2.0.9.tgz#5ec18741448382e5ae5180ec99f3c592fb2263d7"
   integrity sha512-qCbkjAFhlLq4Tb7YIQokEryPb9pCCGUX0gRIBGJr+sBNlyOFO8TGJFZ8d7+VXWpdDhcWerpFdekB55lD43GiGQ==
