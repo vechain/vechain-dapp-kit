@@ -7,6 +7,11 @@ import { resolve } from 'path';
 
 export default defineConfig({
     plugins: [nodePolyfills(), react()],
+    build: {
+        commonjsOptions: {
+            transformMixedEsModules: true,
+        },
+    },
     preview: {
         port: 5001,
         strictPort: true,
