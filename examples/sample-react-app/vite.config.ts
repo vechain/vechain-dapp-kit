@@ -7,6 +7,16 @@ import { resolve } from 'path';
 
 export default defineConfig({
     plugins: [nodePolyfills(), react()],
+    preview: {
+        port: 5001,
+        strictPort: true,
+    },
+    server: {
+        port: 5001,
+        strictPort: true,
+        host: true,
+        origin: 'http://0.0.0.0:5001',
+    },
     //vitest
     test: {
         globals: true,

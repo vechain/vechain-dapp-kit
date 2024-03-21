@@ -1,0 +1,76 @@
+{
+    "short_name": "VeWorld",
+    "name": "VeWorld",
+    "version": "0.8.3",
+    "manifest_version": 3,
+    "permissions": [
+        "storage",
+        "unlimitedStorage",
+        "downloads",
+        "tabs",
+        "alarms",
+        "idle",
+        "scripting"
+    ],
+    "background": {
+        "service_worker": "ServiceWorker.js"
+    },
+    "host_permissions": [
+        "file://*/*",
+        "http://localhost/*",
+        "http://127.0.0.1/*",
+        "https://*/*"
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": ["VeWorldAPI.js"],
+            "matches": [
+                "http://localhost/*",
+                "http://127.0.0.1/*",
+                "https://*/*"
+            ],
+            "all_frames": false
+        },
+        {
+            "resources": ["index.html"],
+            "matches": ["<all_urls>"]
+        }
+    ],
+    "content_scripts": [
+        {
+            "js": ["ContentScriptController.js", "InjectIframeContainer.js"],
+            "matches": [
+                "http://localhost/*",
+                "http://127.0.0.1/*",
+                "https://*/*"
+            ],
+            "all_frames": false,
+            "run_at": "document_start"
+        }
+    ],
+    "action": {
+        "default_popup": "index.html",
+        "default_icon": {
+            "16": "/images/vechain-vet-logo16.png",
+            "32": "/images/vechain-vet-logo32.png",
+            "48": "/images/vechain-vet-logo48.png",
+            "64": "/images/vechain-vet-logo64.png",
+            "128": "/images/vechain-vet-logo128.png",
+            "256": "/images/vechain-vet-logo256.png",
+            "512": "/images/vechain-vet-logo512.png"
+        },
+        "default_title": "VeWorld"
+    },
+    "externally_connectable": {
+        "matches": ["<all_urls>"]
+    },
+    "icons": {
+        "16": "/images/vechain-vet-logo16.png",
+        "32": "/images/vechain-vet-logo32.png",
+        "48": "/images/vechain-vet-logo48.png",
+        "64": "/images/vechain-vet-logo64.png",
+        "128": "/images/vechain-vet-logo128.png",
+        "256": "/images/vechain-vet-logo256.png",
+        "512": "/images/vechain-vet-logo512.png"
+    }
+}

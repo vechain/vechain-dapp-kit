@@ -13,6 +13,7 @@
         "test": "vitest"
     },
     "dependencies": {
+        "@originjs/vite-plugin-commonjs": "^1.0.3",
         "@vechain/dapp-kit": "*",
         "@vechain/dapp-kit-react": "*",
         "@vechain/dapp-kit-ui": "*",
@@ -21,6 +22,7 @@
         "vite": "^5.0.12"
     },
     "devDependencies": {
+        "@originjs/vite-plugin-commonjs": "^1.0.3",
         "@types/react": "^18.2.37",
         "@types/react-dom": "^18.2.15",
         "@typescript-eslint/eslint-plugin": "^6.10.0",

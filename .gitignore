@@ -37,3 +37,5 @@ yarn-error.log*
 .idea
 .vscode
 .parcel-cache
+
+.reports

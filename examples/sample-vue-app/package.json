@@ -43,7 +43,7 @@
         "@babel/eslint-parser": "^7.12.16",
         "@typescript-eslint/eslint-plugin": "^5.4.0",
         "@typescript-eslint/parser": "^5.4.0",
-        "@vechain/repo-config": "https://github.com/vechainfoundation/repo-config#v0.0.2",
+        "@vechain/repo-config": "https://github.com/vechain/repo-config#v0.0.2",
         "@vue/cli-plugin-babel": "~5.0.8",
         "@vue/cli-plugin-eslint": "~5.0.8",
         "@vue/cli-plugin-typescript": "~5.0.0",

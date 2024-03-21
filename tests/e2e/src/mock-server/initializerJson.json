@@ -1,0 +1,186 @@
+[
+    {
+        "httpRequest": {
+            "path": "/main.json"
+        },
+        "httpResponse": {
+            "body": []
+        }
+    },
+    {
+        "httpRequest": {
+            "path": "/test.json"
+        },
+        "httpResponse": {
+            "body": []
+        }
+    },
+    {
+        "httpRequest": {
+            "path": "/solo.json"
+        },
+        "httpResponse": {
+            "body": []
+        }
+    },
+    {
+        "httpRequest": {
+            "path": "/app-hub/index.json"
+        },
+        "httpResponse": {
+            "body": [
+                {
+                    "name": "WorldOfV NFT Marketplace",
+                    "href": "https://worldofv.art/",
+                    "desc": "The first gas-free, green NFT platform built on the Vechainthor blockchain",
+                    "category": "marketplaces",
+                    "tags": [
+                        "WOV",
+                        "World Of V NFTs'",
+                        "NFTs",
+                        "Digital Art",
+                        "Phygital",
+                        "Artists"
+                    ],
+                    "id": "com.worldofv.marketplace-nft",
+                    "createAt": 1637639264000
+                }
+            ]
+        }
+    },
+    {
+        "httpRequest": {
+            "path": "/simple/supported_vs_currencies"
+        },
+        "httpResponse": {
+            "body": ["btc", "usd", "eur"]
+        }
+    },
+    {
+        "httpRequest": {
+            "path": "/coins/vechain/market_chart",
+            "queryStringParameters": {
+                "vs_currency": ["usd"],
+                "days": ["1"]
+            }
+        },
+        "httpResponse": {
+            "body": {
+                "prices": [
+                    [1666361823529, 0.022109136801440048],
+                    [1666448084000, 0.02257070406752461]
+                ]
+            }
+        }
+    },
+    {
+        "httpRequest": {
+            "path": "/coins/vethor-token/market_chart",
+            "queryStringParameters": {
+                "vs_currency": ["usd"],
+                "days": ["1"]
+            }
+        },
+        "httpResponse": {
+            "body": {
+                "prices": [
+                    [1666361761818, 0.0012814186375779129],
+                    [1666448196000, 0.0012950082940327958]
+                ]
+            }
+        }
+    },
+    {
+        "httpRequest": {
+            "path": "/coins/vechain/market_chart",
+            "queryStringParameters": {
+                "vs_currency": ["eur"],
+                "days": ["1"]
+            }
+        },
+        "httpResponse": {
+            "body": {
+                "prices": [
+                    [1671008142192, 0.01792803986747638],
+                    [1671008421696, 0.017922588648777812]
+                ]
+            }
+        }
+    },
+    {
+        "httpRequest": {
+            "path": "/coins/vethor-token/market_chart",
+            "queryStringParameters": {
+                "vs_currency": ["eur"],
+                "days": ["1"]
+            }
+        },
+        "httpResponse": {
+            "body": {
+                "prices": [
+                    [1671008173095, 0.0009849012592812753],
+                    [1671008509773, 0.0009839160111859593]
+                ]
+            }
+        }
+    },
+    {
+        "httpRequest": {
+            "path": "/currencies"
+        },
+        "httpResponse": {
+            "body": {
+                "data": [
+                    {
+                        "id": "USD",
+                        "name": "US Dollar",
+                        "min_size": "0.01000000"
+                    },
+                    {
+                        "id": "EUR",
+                        "name": "Euro",
+                        "min_size": "0.01000000"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "httpRequest": {
+            "path": "/exchange-rates",
+            "queryStringParameters": {
+                "currency": ["VET"]
+            }
+        },
+        "httpResponse": {
+            "body": {
+                "data": {
+                    "currency": "VET",
+                    "rates": {
+                        "EUR": "0.022927624644",
+                        "USD": "0.02260884"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "httpRequest": {
+            "path": "/exchange-rates",
+            "queryStringParameters": {
+                "currency": ["VTHO"]
+            }
+        },
+        "httpResponse": {
+            "body": {
+                "data": {
+                    "currency": "VTHO",
+                    "rates": {
+                        "USD": "0.001293099634243818",
+                        "EUR": "0.0013113323390866558338"
+                    }
+                }
+            }
+        }
+    }
+]
