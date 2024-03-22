@@ -25,9 +25,7 @@ const isAccountVisible = async (windowHandle: string) => {
     return AddressUtils.isValid(addr);
 };
 
-const connectWallet = async (windowHandle: string) => {
-    await NavigationUtils.goToUrl(TestDefaults.DAPP_URL);
-
+const connectWallet = async () => {
     // Click connect button
     const vdkButtonShadowRoot = await extension.driver
         .findElement(By.css('vdk-button'))

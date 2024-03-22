@@ -7,7 +7,7 @@
         "clean": "rm -rf .next dist .turbo",
         "dev": "next dev",
         "purge": "yarn clean; rm -rf node_modules",
-        "start": "next start"
+        "start": "next start -- -p 5002"
     },
     "dependencies": {
         "@vechain/dapp-kit": "*",

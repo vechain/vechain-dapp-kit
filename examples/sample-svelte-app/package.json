@@ -8,6 +8,7 @@
         "clean": "rm -rf .svelte-kit dist .turbo",
         "dev": "vite dev",
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+        "preview": "vite preview",
         "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {

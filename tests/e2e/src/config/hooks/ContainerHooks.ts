@@ -21,18 +21,43 @@ BeforeAll(async function () {
     const composePath = path.join(__dirname, '..', '..', '..');
     const composeFile = 'docker-compose.yaml';
 
-    dockerEnvironment = await new DockerComposeEnvironment(
-        composePath,
-        composeFile,
-    )
-        .withStartupTimeout(60_000)
-        .withWaitStrategy('thor-solo', Wait.forHealthCheck())
-        .withWaitStrategy(
-            'sample-react-app',
-            Wait.forLogMessage('Local:   http://localhost:5001'),
+    try {
+        dockerEnvironment = await new DockerComposeEnvironment(
+            composePath,
+            composeFile,
         )
-        .withWaitStrategy('mockserver', Wait.forLogMessage('INFO'))
-        .up();
+            .withStartupTimeout(60_000)
+            .withWaitStrategy('thor-solo', Wait.forHealthCheck())
+            .withWaitStrategy(
+                'sample-react-app',
+                Wait.forLogMessage('Local:   http://localhost:5001'),
+            )
+            .withWaitStrategy(
+                'sample-next-app',
+                Wait.forLogMessage('Local:        http://localhost:5002'),
+            )
+            .withWaitStrategy(
+                'sample-svelte-app',
+                Wait.forLogMessage('Local:   http://localhost:5005'),
+            )
+            .withWaitStrategy(
+                'sample-vue-app',
+                Wait.forLogMessage('Local:   http://localhost:5006'),
+            )
+            // .withWaitStrategy(
+            //     'sample-vanilla-app',
+            //     Wait.forLogMessage('Server running at http://localhost:5003'),
+            // )
+            // .withWaitStrategy(
+            //     'sample-angular-app',
+            //     Wait.forLogMessage('Server running at http://localhost:5004'),
+            // )
+            .withWaitStrategy('mockserver', Wait.forLogMessage('INFO'))
+            .up();
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
 
     console.log('Docker compose environment started');
 });

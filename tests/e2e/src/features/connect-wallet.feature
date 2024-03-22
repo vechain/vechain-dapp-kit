@@ -5,5 +5,10 @@ Feature: The user can connect to a wallet
     * The user has unlocked VeWorld
 
   Scenario: the user can connect the wallet
-    * The user connect to VeWorld wallet
-
+    * The user connect to VeWorld wallet in dapp "<dapp>"
+    Examples:
+      | dapp |
+      | react |
+      | next |
+      | svelte |
+      | vue |

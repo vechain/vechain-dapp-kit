@@ -22,6 +22,7 @@
         "@types/selenium-webdriver": "^4.1.13",
         "@vechain/repo-config": "https://github.com/vechain/repo-config",
         "selenium-webdriver": "4.8.2",
-        "testcontainers": "^10.7.2"
+        "testcontainers": "^10.7.2",
+        "ts-node": "^10.9.2"
     }
 }

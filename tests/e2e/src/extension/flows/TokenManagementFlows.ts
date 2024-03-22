@@ -8,7 +8,7 @@ const connectAndInteract = async function <T>(
     responseCallback: (windowHandle: string) => Promise<T>,
 ) {
     const windowHandle = await NavigationUtils.goToUrl(TestDefaults.DAPP_URL);
-    await ConnectedAppScreen.connectWallet(windowHandle);
+    await ConnectedAppScreen.connectWallet();
     return await ApproveAppScreen.approveAndSign();
     // const isConnected = await ConnectedAppScreen.isConnected(windowHandle);
 
