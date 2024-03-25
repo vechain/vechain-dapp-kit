@@ -37,6 +37,12 @@ BeforeAll(async function () {
                 Wait.forLogMessage('Local:        http://localhost:5002'),
             )
             .withWaitStrategy(
+                'sample-vanilla-app',
+                Wait.forLogMessage(
+                    'Accepting connections at http://localhost:5003',
+                ),
+            )
+            .withWaitStrategy(
                 'sample-svelte-app',
                 Wait.forLogMessage('Local:   http://localhost:5005'),
             )
@@ -44,10 +50,6 @@ BeforeAll(async function () {
                 'sample-vue-app',
                 Wait.forLogMessage('Local:   http://localhost:5006'),
             )
-            // .withWaitStrategy(
-            //     'sample-vanilla-app',
-            //     Wait.forLogMessage('Server running at http://localhost:5003'),
-            // )
             // .withWaitStrategy(
             //     'sample-angular-app',
             //     Wait.forLogMessage('Server running at http://localhost:5004'),

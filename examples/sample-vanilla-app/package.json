@@ -10,7 +10,7 @@
         "build": "parcel build index.html --public-url /vechain-dapp-kit/vanilla",
         "clean": "rm -rf dist .turbo",
         "dev": "rm -rf .parcel-cache && parcel index.html --port 5003",
-        "e2e-build": "parcel build index.html ",
+        "e2e-build": "parcel build index.html",
         "preview": "npx serve dist -p 5003",
         "purge": "yarn clean && rm -rf node_modules",
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,6 +19,9 @@
         "@vechain/dapp-kit-ui": "*"
     },
     "devDependencies": {
-        "parcel": "^2.10.2"
+        "parcel": "^2.10.2",
+        "typescript": "^5.4.3",
+        "vite": "^5.2.6",
+        "vite-plugin-node-polyfills": "^0.21.0"
     }
 }

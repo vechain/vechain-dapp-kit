@@ -48,13 +48,13 @@ services:
         ports:
             - 5002:5002
 
-    # sample-vanilla-app:
-    #     container_name: sample-vanilla-app
-    #     build:
-    #         context: ../../examples/sample-vanilla-app
-    #         dockerfile: Dockerfile
-    #     ports:
-    #         - 5003:5003
+    sample-vanilla-app:
+        container_name: sample-vanilla-app
+        build:
+            context: ../../examples/sample-vanilla-app
+            dockerfile: Dockerfile
+        ports:
+            - 5003:5003
 
     # sample-angular-app:
     #     container_name: sample-angular-app
