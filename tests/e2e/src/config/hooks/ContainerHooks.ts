@@ -28,34 +28,6 @@ BeforeAll(async function () {
         )
             .withStartupTimeout(60_000)
             .withWaitStrategy('thor-solo', Wait.forHealthCheck())
-            .withWaitStrategy(
-                'sample-react-app',
-                Wait.forLogMessage('Local:   http://localhost:5001'),
-            )
-            .withWaitStrategy(
-                'sample-next-app',
-                Wait.forLogMessage('Local:        http://localhost:5002'),
-            )
-            .withWaitStrategy(
-                'sample-vanilla-app',
-                Wait.forLogMessage(
-                    'Accepting connections at http://localhost:5003',
-                ),
-            )
-            .withWaitStrategy(
-                'sample-angular-app',
-                Wait.forLogMessage(
-                    'Accepting connections at http://localhost:5004',
-                ),
-            )
-            .withWaitStrategy(
-                'sample-svelte-app',
-                Wait.forLogMessage('Local:   http://localhost:5005'),
-            )
-            .withWaitStrategy(
-                'sample-vue-app',
-                Wait.forLogMessage('Local:   http://localhost:5006'),
-            )
             .withWaitStrategy('mockserver', Wait.forLogMessage('INFO'))
             .up();
     } catch (e) {
