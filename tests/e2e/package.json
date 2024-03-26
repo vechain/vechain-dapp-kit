@@ -6,8 +6,8 @@
     "author": "",
     "main": "index.js",
     "scripts": {
-        "test": "cucumber-js",
-        "test:debug": "DEBUG=cucumber yarn test"
+        "test:debug": "DEBUG=cucumber yarn test",
+        "test:e2e": "cucumber-js"
     },
     "dependencies": {},
     "devDependencies": {
