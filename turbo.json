@@ -18,6 +18,9 @@
         "test:e2e": {
             "dependsOn": ["preview", "build"]
         },
+        "test:e2e:ci": {
+            "dependsOn": ["preview", "build"]
+        },
         "lint": {},
         "dev": {
             "cache": false,
