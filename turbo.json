@@ -12,6 +12,12 @@
             "outputs": ["coverage/**"],
             "dependsOn": ["build"]
         },
+        "preview": {
+            "dependsOn": ["build"]
+        },
+        "test:e2e": {
+            "dependsOn": ["preview"]
+        },
         "lint": {},
         "dev": {
             "cache": false,

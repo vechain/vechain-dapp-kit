@@ -20,9 +20,11 @@
         "install:all": "yarn && yarn run build:deps",
         "lint": "turbo run lint",
         "prepare": "husky install",
+        "preview": "turbo run preview",
         "purge": "npx turbo@latest run purge && rm -rf node_modules",
         "reinstall": "yarn clean && yarn purge && yarn && yarn run build:deps",
-        "test": "turbo run test --filter='@vechain/*'"
+        "test": "turbo run test --filter='@vechain/*'",
+        "test:e2e": "turbo run test:e2e"
     },
     "husky": {
         "hooks": {

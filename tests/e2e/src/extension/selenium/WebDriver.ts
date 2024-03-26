@@ -54,7 +54,7 @@ export const buildWebDriver = async (
             '..',
             '..',
             '..',
-            'veworld-0.8.3-chrome',
+            'veworld-dist',
         );
 
         console.log('Building web driver...', extensionPath);
