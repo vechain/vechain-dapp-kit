@@ -1,6 +1,6 @@
-import ScreenUtils from '../../utils/ScreenUtils';
-import Locators from '../../selenium/Locators';
-import { extension } from '../../selenium/WebDriver';
+import ScreenUtils from '../utils/ScreenUtils';
+import Locators from '../selenium/Locators';
+import { extension } from '../selenium/WebDriver';
 
 const passwordInput = () => Locators.byDataTestId('password-input');
 const submitButton = () => Locators.byDataTestId('unlock-button');

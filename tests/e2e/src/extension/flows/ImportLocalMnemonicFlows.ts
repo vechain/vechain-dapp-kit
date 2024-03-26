@@ -1,8 +1,8 @@
-import Locators from '../../selenium/Locators';
-import TestDefaults from '../../TestDefaults';
-import { ROUTES } from '../../enums';
-import ScreenUtils from '../../utils/ScreenUtils';
-import { extension } from '../../selenium/WebDriver';
+import Locators from '../selenium/Locators';
+import TestDefaults from '../TestDefaults';
+import { ROUTES } from '../enums';
+import ScreenUtils from '../utils/ScreenUtils';
+import { extension } from '../selenium/WebDriver';
 
 const isActive = async () => {
     const locator = Locators.byDataTestId('importLocalWalletMnemonicButton');

@@ -1,9 +1,9 @@
+import assert from 'assert';
+import { ROUTES } from '../enums';
 import ScreenUtils from '../utils/ScreenUtils';
 import { extension } from '../selenium/WebDriver';
 import Locators from '../selenium/Locators';
 import NavigationUtils from '../utils/NavigationUtils';
-import assert from 'assert';
-import { ROUTES } from 'extension/enums';
 
 const isActive = async () => {
     const locator = Locators.byId('yourBalanceTitle');

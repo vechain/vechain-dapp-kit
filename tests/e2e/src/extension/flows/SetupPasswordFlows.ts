@@ -1,7 +1,7 @@
-import Locators from '../../selenium/Locators';
-import { ROUTES } from '../../enums';
-import ScreenUtils from '../../utils/ScreenUtils';
-import { extension } from '../../selenium/WebDriver';
+import Locators from '../selenium/Locators';
+import { ROUTES } from '../enums';
+import ScreenUtils from '../utils/ScreenUtils';
+import { extension } from '../selenium/WebDriver';
 
 const isActive = async () => {
     const locator = Locators.byId('submitPasswordButton');
@@ -30,7 +30,7 @@ const submit = async () => {
  * Checks for next screen's elements
  */
 const isPasswordSubmitted = async () => {
-    return await extension.driver.isElementPresent(
+    return extension.driver.isElementPresent(
         Locators.byRole('goToImportWallet'),
     );
 };
@@ -42,26 +42,6 @@ const navigateToImportWalletMnemonic = async () => {
     );
     await extension.driver.waitAndClick(
         Locators.byRole('goToImportLocalWalletMnemonic'),
-    );
-};
-
-const navigateToImportWalletPrivateKey = async () => {
-    await extension.driver.waitAndClick(Locators.byRole('goToImportWallet'));
-    await extension.driver.waitAndClick(
-        Locators.byRole('goToImportLocalWallet'),
-    );
-    await extension.driver.waitAndClick(
-        Locators.byRole('goToImportLocalWalletPrivateKey'),
-    );
-};
-
-const navigateToImportKeystore = async () => {
-    await extension.driver.waitAndClick(Locators.byRole('goToImportWallet'));
-    await extension.driver.waitAndClick(
-        Locators.byRole('goToImportLocalWallet'),
-    );
-    await extension.driver.waitAndClick(
-        Locators.byRole('goToImportLocalWalletKeystore'),
     );
 };
 
@@ -77,7 +57,5 @@ export default {
     enterConfirmPassword,
     submit,
     navigateToImportWalletMnemonic,
-    navigateToImportWalletPrivateKey,
-    navigateToImportKeystore,
     navigateToSetupNewWallet,
 };

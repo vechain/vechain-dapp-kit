@@ -1,10 +1,10 @@
-import { defineStep } from '@cucumber/cucumber';
 import assert from 'assert';
-import { DappUrl } from 'constants/dapp';
-import AccessFlows from 'extension/flows/AccessFlows';
-import OnboardingFlows from 'extension/flows/OnboardingFlows';
-import DashboardScreen from 'extension/screens/DashboardScreen';
-import { connectDapp } from 'flows/ConnectFlows';
+import { defineStep } from '@cucumber/cucumber';
+import AccessFlows from '../extension/flows/AccessFlows';
+import OnboardingFlows from '../extension/flows/OnboardingFlows';
+import DashboardFlows from '../extension/flows/DashboardFlows';
+import { connectDapp } from '../flows/ConnectFlows';
+import { DappUrl } from '../constants/dapp';
 
 defineStep('The user has previously onboarded', async function () {
     await OnboardingFlows.completeOnboarding();
@@ -15,7 +15,7 @@ defineStep('The user has unlocked VeWorld', async function () {
 });
 
 defineStep('The user should be on the dashboard', async function () {
-    const isActive = await DashboardScreen.isActive();
+    const isActive = await DashboardFlows.isActive();
     assert(isActive, 'The user is not on the dashboard');
 });
 

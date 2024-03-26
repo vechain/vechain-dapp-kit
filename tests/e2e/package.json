@@ -23,6 +23,9 @@
         "@vechain/repo-config": "https://github.com/vechain/repo-config",
         "selenium-webdriver": "4.8.2",
         "testcontainers": "^10.7.2",
-        "ts-node": "^10.9.2"
+        "ts-node": "^10.9.2",
+        "typescript": "4.9.5",
+        "async-mutex": "^0.2.6",
+        "thor-devkit": "2.0.5"
     }
 }

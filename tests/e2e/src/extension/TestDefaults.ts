@@ -9,5 +9,4 @@ export default {
     ADDRESS: '0xf077b491b355E64048cE21E3A6Fc4751eEeA77fa',
     TIMEOUT: 5_000,
     TRANSACTION_TIMEOUT: 20_000,
-    DAPP_URL: 'http://localhost:5001',
 };
