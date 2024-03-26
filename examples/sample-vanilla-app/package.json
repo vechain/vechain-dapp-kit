@@ -4,10 +4,11 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "tsc && vite build",
+        "build": "tsc && vite build --mode=development",
         "clean": "rm -rf dist .turbo",
         "dev": "vite",
-        "preview": "vite preview",
+        "gh-pages-build": "tsc && vite build",
+        "preview": "vite preview --mode=development",
         "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {

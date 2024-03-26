@@ -4,12 +4,12 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
+        "build": "vite build --mode=development",
         "clean": "rm -rf .svelte-kit dist .turbo",
         "dev": "vite dev",
         "gh-pages-build": "vite build",
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-        "preview": "vite preview",
+        "preview": "vite preview --mode=development",
         "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {

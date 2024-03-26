@@ -4,12 +4,12 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "tsc && vite build",
+        "build": "tsc && vite build --mode=development",
         "clean": "rm -rf dist .turbo",
         "dev": "vite",
         "gh-pages-build": "tsc && vite build",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-        "preview": "vite preview",
+        "preview": "vite preview --mode=development",
         "purge": "yarn clean; rm -rf node_modules",
         "test": "vitest"
     },

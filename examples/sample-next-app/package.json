@@ -6,7 +6,7 @@
         "build": "next build",
         "clean": "rm -rf .next dist .turbo",
         "dev": "next dev",
-        "gh-pages-build": "next build",
+        "gh-pages-build": "BASE_PATH='/vechain-dapp-kit/next' next build",
         "preview": "next start -- -p 5002",
         "purge": "yarn clean; rm -rf node_modules"
     },
