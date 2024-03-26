@@ -9,8 +9,8 @@ Feature: The user can connect to a wallet
     Examples:
       | dapp |
       | angular |
-      # | vanilla |
-      # | react |
-      # | next |
-      # | svelte |
-      # | vue |
+      | vanilla |
+      | react   |
+      | next    |
+      | svelte  |
+      | vue     |

@@ -7,7 +7,7 @@
     "main": "index.js",
     "scripts": {
         "test:debug": "DEBUG=cucumber yarn test",
-        "test:e2e": "cucumber-js"
+        "test:e2e": "SELENIUM_HEADLESS=true cucumber-js"
     },
     "dependencies": {},
     "devDependencies": {
@@ -21,11 +21,11 @@
         "@types/jest": "^29.5.12",
         "@types/selenium-webdriver": "^4.1.13",
         "@vechain/repo-config": "https://github.com/vechain/repo-config",
+        "async-mutex": "^0.2.6",
         "selenium-webdriver": "4.8.2",
         "testcontainers": "^10.7.2",
+        "thor-devkit": "2.0.5",
         "ts-node": "^10.9.2",
-        "typescript": "4.9.5",
-        "async-mutex": "^0.2.6",
-        "thor-devkit": "2.0.5"
+        "typescript": "4.9.5"
     }
 }
