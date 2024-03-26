@@ -24,7 +24,8 @@
         "purge": "npx turbo@latest run purge && rm -rf node_modules",
         "reinstall": "yarn clean && yarn purge && yarn && yarn run build:deps",
         "test": "turbo run test --filter='@vechain/*'",
-        "test:e2e": "turbo run test:e2e"
+        "test:e2e": "turbo run test:e2e",
+        "test:e2e:ci": "turbo run test:e2e:ci"
     },
     "husky": {
         "hooks": {

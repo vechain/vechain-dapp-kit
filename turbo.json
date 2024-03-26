@@ -13,10 +13,10 @@
             "dependsOn": ["build"]
         },
         "preview": {
-            "dependsOn": ["build"]
+            "dependsOn": ["^preview", "build"]
         },
         "test:e2e": {
-            "dependsOn": ["preview"]
+            "dependsOn": ["preview", "build"]
         },
         "lint": {},
         "dev": {
