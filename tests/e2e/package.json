@@ -7,8 +7,8 @@
     "main": "index.js",
     "scripts": {
         "test:debug": "DEBUG=cucumber yarn test",
-        "test:e2e": "cucumber-js",
-        "test:e2e:ci": "SELENIUM_HEADLESS=true cucumber-js"
+        "test:e2e": "cucumber-js --force-exit",
+        "test:e2e:ci": "SELENIUM_HEADLESS=true cucumber-js --force-exit"
     },
     "dependencies": {},
     "devDependencies": {

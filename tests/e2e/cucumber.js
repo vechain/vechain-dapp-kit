@@ -7,5 +7,6 @@ module.exports = {
             snippetInterface: 'synchronous',
         },
         format: ['@serenity-js/cucumber'],
+        forceExit: true,
     },
 };

@@ -14,7 +14,6 @@
         "build:deps": "turbo build --no-daemon --filter='@vechain/*'",
         "build:release": "ts-node scripts/prepare-packages.ts",
         "clean": "rm -rf .turbo .parcel-cache .reports build && npx turbo@latest run clean",
-        "cucumber": "yarn && cucumber-js",
         "dev": "turbo run dev --filter='@vechain/*'",
         "format": "prettier --write \"**/*.{ts,tsx,md,json,js,jsx}\"",
         "install:all": "yarn && yarn run build:deps",
