@@ -13,7 +13,8 @@
             "dependsOn": ["build"]
         },
         "preview": {
-            "dependsOn": ["build"]
+            "dependsOn": ["build"],
+            "persistent": true
         },
         "test:e2e": {
             "dependsOn": ["preview"]

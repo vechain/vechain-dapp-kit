@@ -12,7 +12,7 @@ RUN npm i -g parcel
 
 COPY . .
 
-RUN yarn e2e-build
+RUN yarn build
 
 EXPOSE 5003
 

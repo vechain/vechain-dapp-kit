@@ -7,10 +7,10 @@
     "author": "",
     "type": "module",
     "scripts": {
-        "build": "parcel build index.html --public-url /vechain-dapp-kit/vanilla",
+        "build": "parcel build index.html",
         "clean": "rm -rf dist .turbo",
         "dev": "rm -rf .parcel-cache && parcel index.html --port 5003",
-        "e2e-build": "parcel build index.html",
+        "gh-pages-build": "parcel build index.html --public-url /vechain-dapp-kit/vanilla",
         "preview": "npx serve dist -p 5003",
         "purge": "yarn clean && rm -rf node_modules",
         "test": "echo \"Error: no test specified\" && exit 1"

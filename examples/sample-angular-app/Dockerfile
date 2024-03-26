@@ -14,7 +14,7 @@ RUN yarn global add serve
 
 COPY . .
 
-RUN yarn e2e-build
+RUN yarn build
 
 EXPOSE 5004
 

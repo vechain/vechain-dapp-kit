@@ -4,11 +4,12 @@
     "private": true,
     "scripts": {
         "add-page": "ng g m pages/page-name --routing && ng g component pages/page-name --skip-tests",
-        "build": "ng build --configuration development --base-href '/vechain-dapp-kit/angular/'",
+        "build": "ng build --configuration development",
         "clean": "rm -rf dist .turbo .angular",
         "dev": "ng serve --port 5004",
-        "e2e-build": "ng build --configuration development",
+        "gh-pages-build": "ng build --configuration development --base-href '/vechain-dapp-kit/angular/'",
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+        "preview": "ng serve --port 5004",
         "purge": "yarn clean; rm -rf node_modules",
         "watch": "ng build --watch --configuration development"
     },
