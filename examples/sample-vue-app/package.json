@@ -1,58 +1,23 @@
 {
-    "name": "sample-vue-app",
-    "version": "0.1.0",
+    "name": "sample-vue-app-2",
+    "version": "0.0.0",
     "private": true,
+    "type": "module",
     "scripts": {
-        "build": "vue-cli-service build",
-        "clean": "rm -rf dist .turbo",
-        "dev": "vue-cli-service serve --port 5006",
-        "gh-pages-build": "vue-cli-service build",
-        "lint": "vue-cli-service lint",
-        "preview": "vue-cli-service serve --port 5006",
-        "purge": "yarn clean && rm -rf node_modules"
-    },
-    "browserslist": [
-        "> 1%",
-        "last 2 versions",
-        "not dead",
-        "not ie 11"
-    ],
-    "eslintConfig": {
-        "env": {
-            "node": true
-        },
-        "parserOptions": {
-            "parser": "@typescript-eslint/parser"
-        },
-        "extends": [
-            "plugin:vue/vue3-essential",
-            "eslint:recommended",
-            "@vue/typescript"
-        ],
-        "rules": {},
-        "root": true
+        "build": "vue-tsc && vite build",
+        "dev": "vite",
+        "preview": "vite preview"
     },
     "dependencies": {
         "@vechain/dapp-kit": "*",
         "@vechain/dapp-kit-ui": "*",
-        "core-js": "^3.8.3",
-        "node-polyfill-webpack-plugin": "^2.0.1",
-        "vue": "^3.2.13",
-        "vue-class-component": "^8.0.0-0"
+        "vue": "^3.4.21"
     },
     "devDependencies": {
-        "@babel/core": "^7.12.16",
-        "@babel/eslint-parser": "^7.12.16",
-        "@typescript-eslint/eslint-plugin": "^5.4.0",
-        "@typescript-eslint/parser": "^5.4.0",
-        "@vechain/repo-config": "https://github.com/vechain/repo-config#v0.0.2",
-        "@vue/cli-plugin-babel": "~5.0.8",
-        "@vue/cli-plugin-eslint": "~5.0.8",
-        "@vue/cli-plugin-typescript": "~5.0.0",
-        "@vue/cli-service": "~5.0.8",
-        "@vue/eslint-config-typescript": "^9.1.0",
-        "eslint": "^7.32.0",
-        "eslint-plugin-vue": "^8.0.3",
-        "typescript": "~4.5.5"
+        "@vitejs/plugin-vue": "^5.0.4",
+        "typescript": "^5.2.2",
+        "vite": "^5.2.0",
+        "vite-plugin-node-polyfills": "^0.21.0",
+        "vue-tsc": "^2.0.6"
     }
 }

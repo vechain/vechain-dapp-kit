@@ -1,28 +1,20 @@
 {
-    "name": "sample-vanilla-app",
-    "version": "1.0.0",
+    "name": "sample-vanilla-app-2",
+    "version": "0.0.0",
     "private": true,
-    "description": "",
-    "license": "ISC",
-    "author": "",
     "type": "module",
     "scripts": {
-        "build": "parcel build index.html",
+        "build": "tsc && vite build",
         "clean": "rm -rf dist .turbo",
-        "dev": "rm -rf .parcel-cache && parcel index.html --port 5003",
-        "gh-pages-build": "parcel build index.html --public-url /vechain-dapp-kit/vanilla",
-        "preview": "npx serve dist -p 5003",
-        "purge": "yarn clean && rm -rf node_modules",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "dev": "vite",
+        "preview": "vite preview",
+        "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
         "@vechain/dapp-kit-ui": "*"
     },
     "devDependencies": {
-        "parcel": "^2.10.2",
-        "serve": "^14.2.1",
-        "typescript": "^5.4.3",
-        "vite": "^5.2.6",
-        "vite-plugin-node-polyfills": "^0.21.0"
+        "typescript": "^5.2.2",
+        "vite": "^5.2.0"
     }
 }
