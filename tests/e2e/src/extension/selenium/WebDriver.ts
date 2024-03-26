@@ -120,7 +120,6 @@ export class ExtensionDriver extends WebDriver {
             outerShadowRoot,
             By.id('veworld-inner-container'),
         );
-        console.log('Veworld Inner Container', innerContainer);
         const innerShadowRoot = await this.waitUntilShadowRoot(innerContainer);
 
         console.log('Looking for VeWorld Iframe element');

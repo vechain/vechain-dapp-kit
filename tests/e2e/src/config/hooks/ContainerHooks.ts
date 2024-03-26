@@ -5,10 +5,34 @@ import {
     Wait,
 } from 'testcontainers';
 import path from 'path';
+import { DappUrl } from '../../constants/dapp';
+import axios from 'axios';
 
 setDefaultTimeout(180_000);
 
 let dockerEnvironment: StartedDockerComposeEnvironment;
+
+const appHealthCheck = async () => {
+    const dapps = Object.entries(DappUrl);
+
+    for (const [app, url] of dapps) {
+        console.log(`Performing health check for ${app} at ${url}...`);
+
+        for (let j = 0; j < 120; j++) {
+            try {
+                await axios.get(url, { proxy: undefined });
+                break;
+            } catch (e) {
+                if (e instanceof axios.AxiosError) {
+                    console.log(app, e.message, e.code);
+                } else {
+                    console.log(`Waiting for ${app} to be ready...`);
+                }
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+            }
+        }
+    }
+};
 
 BeforeAll(async function () {
     console.log('Starting docker compose environment...');
@@ -34,6 +58,8 @@ BeforeAll(async function () {
         console.error(e);
         throw e;
     }
+
+    await appHealthCheck();
 
     console.log('Docker compose environment started');
 });
