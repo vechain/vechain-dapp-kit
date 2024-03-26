@@ -7,6 +7,7 @@
         "build": "ng build --configuration development --base-href '/vechain-dapp-kit/angular/'",
         "clean": "rm -rf dist .turbo .angular",
         "dev": "ng serve --port 5004",
+        "e2e-build": "ng build --configuration development",
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
         "purge": "yarn clean; rm -rf node_modules",
         "watch": "ng build --watch --configuration development"

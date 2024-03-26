@@ -8,8 +8,14 @@ RUN apk add git
 
 RUN yarn
 
+RUN yarn global add @angular/cli
+
+RUN yarn global add serve
+
 COPY . .
+
+RUN yarn e2e-build
 
 EXPOSE 5004
 
-CMD [ "yarn", "dev" ]
+CMD [ "serve", "dist/easy-angular", "-p", "5004"]

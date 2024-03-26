@@ -8,6 +8,7 @@ Feature: The user can connect to a wallet
     * The user connect to VeWorld wallet in dapp "<dapp>"
     Examples:
       | dapp |
+      | angular |
       | vanilla |
       | react |
       | next |

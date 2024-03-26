@@ -56,13 +56,13 @@ services:
         ports:
             - 5003:5003
 
-    # sample-angular-app:
-    #     container_name: sample-angular-app
-    #     build:
-    #         context: ../../examples/sample-angular-app
-    #         dockerfile: Dockerfile
-    #     ports:
-    #         - 5004:5004
+    sample-angular-app:
+        container_name: sample-angular-app
+        build:
+            context: ../../examples/sample-angular-app
+            dockerfile: Dockerfile
+        ports:
+            - 5004:5004
 
     sample-svelte-app:
         container_name: sample-svelte-app
