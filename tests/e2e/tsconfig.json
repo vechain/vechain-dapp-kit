@@ -3,7 +3,8 @@
     "compilerOptions": {
         "noImplicitAny": false,
         "noImplicitThis": false,
-        "baseUrl": "src"
+        "baseUrl": "src",
+        "esModuleInterop": true
     },
     "include": ["src"]
 }

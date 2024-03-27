@@ -4,10 +4,12 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
+        "build": "vite build --mode=development",
         "clean": "rm -rf .svelte-kit dist .turbo",
         "dev": "vite dev",
+        "gh-pages-build": "vite build",
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+        "preview": "vite preview --mode=development",
         "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
@@ -21,7 +23,7 @@
         "@sveltejs/kit": "^1.27.4",
         "@typescript-eslint/eslint-plugin": "^6.0.0",
         "@typescript-eslint/parser": "^6.0.0",
-        "@vechain/repo-config": "https://github.com/vechainfoundation/repo-config#v0.0.1",
+        "@vechain/repo-config": "https://github.com/vechain/repo-config#v0.0.1",
         "eslint": "^8.28.0",
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-svelte": "^2.30.0",

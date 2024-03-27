@@ -40,7 +40,7 @@ jobs:
             - name: Build React App
               run: |
                   yarn install:all
-                  yarn build
+                  yarn gh-pages-build
 
             - name: Setup Pages
               uses: actions/configure-pages@v2

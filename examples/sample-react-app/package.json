@@ -4,15 +4,17 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "tsc && vite build",
+        "build": "tsc && vite build --mode=development",
         "clean": "rm -rf dist .turbo",
         "dev": "vite",
+        "gh-pages-build": "tsc && vite build",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-        "preview": "vite preview",
+        "preview": "vite preview --mode=development",
         "purge": "yarn clean; rm -rf node_modules",
         "test": "vitest"
     },
     "dependencies": {
+        "@originjs/vite-plugin-commonjs": "^1.0.3",
         "@vechain/dapp-kit": "*",
         "@vechain/dapp-kit-react": "*",
         "@vechain/dapp-kit-ui": "*",
@@ -21,6 +23,7 @@
         "vite": "^5.0.12"
     },
     "devDependencies": {
+        "@originjs/vite-plugin-commonjs": "^1.0.3",
         "@types/react": "^18.2.37",
         "@types/react-dom": "^18.2.15",
         "@typescript-eslint/eslint-plugin": "^6.10.0",
