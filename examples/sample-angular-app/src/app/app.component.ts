@@ -14,8 +14,25 @@ export class AppComponent implements OnInit {
     // -------------------------------------------------------------------------------
 
     public ngOnInit(): void {
-        // custom button configuration
+        const walletConnectOptions = {
+            projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
+            metadata: {
+                name: 'Sample VeChain dApp',
+                description: 'A sample VeChain dApp',
+                url: window.location.origin,
+                icons: [`${window.location.origin}/images/logo/my-dapp.png`],
+            },
+        };
 
+        const vechainDAppKitOptions = {
+            nodeUrl: 'https://testnet.vechain.org/',
+            genesis: 'test',
+            walletConnectOptions,
+            usePersistence: true,
+        };
+        DAppKitUI.configure(vechainDAppKitOptions);
+
+        // custom button configuration
         const customButton = document.getElementById('custom-button');
         if (customButton) {
             const handleConnected = (address: string | null): void => {
