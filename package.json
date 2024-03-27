@@ -22,9 +22,10 @@
         "preview": "turbo run preview",
         "purge": "npx turbo@latest run purge && rm -rf node_modules",
         "reinstall": "yarn clean && yarn purge && yarn && yarn run build:deps",
+        "stop-preview": "kill -2 $(ps aux | grep '[t]urbo run preview' | awk '{print $2}')",
         "test": "turbo run test --filter='@vechain/*'",
-        "test:e2e": "turbo run test:e2e",
-        "test:e2e:ci": "turbo run test:e2e:ci"
+        "test:e2e": "turbo run preview > /dev/null 2>&1 & turbo run test:e2e; yarn stop-preview",
+        "test:e2e:ci": "turbo run preview > /dev/null 2>&1 & turbo run test:e2e:ci; yarn stop-preview"
     },
     "husky": {
         "hooks": {

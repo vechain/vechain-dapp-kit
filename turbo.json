@@ -13,13 +13,14 @@
             "dependsOn": ["build"]
         },
         "preview": {
-            "dependsOn": ["^preview", "build"]
+            "dependsOn": ["build"],
+            "cache": false
         },
         "test:e2e": {
-            "dependsOn": ["preview", "build"]
+            "cache": false
         },
         "test:e2e:ci": {
-            "dependsOn": ["preview", "build"]
+            "cache": false
         },
         "lint": {},
         "dev": {
