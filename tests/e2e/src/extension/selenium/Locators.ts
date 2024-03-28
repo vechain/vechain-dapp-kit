@@ -30,8 +30,12 @@ const byClass = (className: string) => By.className(className);
 const byText = (text: string, element = 'div') =>
     By.xpath(`//${element}[text()='${text}']`);
 
+const buttonByText = (text: string) => byText(text, 'button');
+
 const byTextPart = (text: string, element = 'div') =>
     By.xpath(`//${element}[contains(text(),'${text}')]`);
+
+const buttonByTextPart = (text: string) => byTextPart(text, 'button');
 
 const byDataRowKey = (key: string) => byAttribute('data-row-key', key);
 
@@ -51,6 +55,8 @@ export default {
     elementByAttribute,
     buttonByType,
     byText,
+    buttonByText,
     byTextPart,
+    buttonByTextPart,
     bySelector,
 };
