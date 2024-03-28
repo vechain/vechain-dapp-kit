@@ -1,4 +1,3 @@
-// eslint-disable
 'use client'; // This is a client component
 
 import { Inter } from 'next/font/google';

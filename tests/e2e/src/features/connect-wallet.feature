@@ -11,6 +11,7 @@ Feature: The user can connect to a wallet
     * The user disconnect from the wallet with custom button
     Examples:
       | dapp    |
+      | remix   |
       | react   |
       | next    |
       | svelte  |

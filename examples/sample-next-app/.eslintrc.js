@@ -1,7 +1,5 @@
-const Config = require('@vechain/repo-config');
-
 module.exports = {
-    ...Config.EslintReact,
+    extends: ['next'],
     rules: {
         '@typescript-eslint/unbound-method': 'off',
     },

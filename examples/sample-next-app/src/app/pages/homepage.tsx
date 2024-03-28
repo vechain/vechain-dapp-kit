@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable react/function-component-definition */
 'use client'; // This is a client component
 import { type ReactElement, useEffect, useState } from 'react';
 import {
