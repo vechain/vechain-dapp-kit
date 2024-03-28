@@ -13,5 +13,8 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/naming-convention': 'off',
         '@typescript-eslint/consistent-type-imports': 'off',
+        'unicorn/filename-case': 'off',
+        'import/no-default-export': 'off',
+        'unicorn/prefer-node-protocol': 'off',
     },
 };

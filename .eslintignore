@@ -5,3 +5,4 @@ tsup.config.ts
 **/test/**
 vite.config.ts
 scripts/prepare-packages.ts
+tests/e2e

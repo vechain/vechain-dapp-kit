@@ -1,9 +1,19 @@
 Feature: The user can connect to a wallet
 
   Background:
-    Given The user is in the homepage
+    * The user has previously onboarded
+    * The user has unlocked VeWorld
 
-  Scenario Outline: The user can see every wallet option
-    When The user click the CTA to connect to a wallet
-    Then The user should see every wallet option
-
+  Scenario: the user can connect and disconnect from the wallet
+    * The user connect to VeWorld wallet in dapp "<dapp>"
+    * The user disconnect from the wallet
+    * The user connect to VeWorld wallet with custom button in dapp "<dapp>"
+    * The user disconnect from the wallet with custom button
+    Examples:
+      | dapp    |
+      | react   |
+      | next    |
+      | svelte  |
+      | vue     |
+      | angular |
+      | vanilla |

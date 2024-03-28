@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+    thor-solo:
+        image: vechain/thor:v2.0.0
+        container_name: thor-solo
+        # Install curl for our healthcheck, then start thor solo
+        entrypoint:
+            [
+                '/bin/sh',
+                '-c',
+                "apk update && apk upgrade && apk add curl && thor solo --on-demand --data-dir /data/thor --api-addr 0.0.0.0:8669 --api-cors '*' --api-backtrace-limit -1 --verbosity 4",
+            ]
+        ports:
+            - '8669:8669'
+            - '11235:11235'
+        healthcheck:
+            test: curl --fail 0.0.0.0:8669/blocks/0 || exit 1
+            interval: '2s'
+            retries: 30
+
+    mockserver:
+        image: mockserver/mockserver:5.14.0
+        container_name: mockserver
+        ports:
+            - '1080:1080'
+        environment:
+            MOCKSERVER_PROPERTY_FILE: /config/mockserver.properties
+            MOCKSERVER_INITIALIZATION_JSON_PATH: /config/initializerJson.json
+        volumes:
+            - type: bind
+              source: ./src/mock-server
+              target: /config

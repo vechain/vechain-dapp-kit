@@ -1,0 +1,42 @@
+name: E2E Tests
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+concurrency:
+    group: ${{ github.head_ref || github.ref_name }}-e2e-test
+    cancel-in-progress: true
+
+jobs:
+    e2e-tests:
+        runs-on: ubuntu-latest
+        name: E2E Tests
+
+        steps:
+            - name: Install Stable Chrome
+              run: |
+                  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+                  sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+                  sudo apt-get update
+                  sudo apt-get install google-chrome-stable
+
+            - name: Install Stable chromedriver
+              uses: nanasess/setup-chromedriver@v2
+
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version-file: .nvmrc
+                  cache: 'yarn'
+
+            - name: Install
+              run: yarn install:all
+
+            - name: Run E2E Tests
+              run: yarn test:e2e:ci

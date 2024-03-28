@@ -1,29 +1,9 @@
-# sample-vue-app
+# Vue 3 + TypeScript + Vite
 
-## Project setup
+This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-```
-yarn install
-```
+## Recommended Setup
 
-### Compiles and hot-reloads for development
+-   [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (previously Volar) and disable Vetur
 
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-
-```
-yarn build
-```
-
-### Lints and fixes files
-
-```
-yarn lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
+-   Use [vue-tsc](https://github.com/vuejs/language-tools/tree/master/packages/tsc) for performing the same type checking from the command line, or for generating d.ts files for SFCs.

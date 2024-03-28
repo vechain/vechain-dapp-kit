@@ -5,7 +5,7 @@ ensure a smooth collaboration, please follow these guidelines:
 
 ## Submitting a Bug Report
 
--   Search the [issue tracker](https://github.com/vechainfoundation/vechain-dapp-kit/issues) to ensure that the bug has
+-   Search the [issue tracker](https://github.com/vechain/vechain-dapp-kit/issues) to ensure that the bug has
     not been reported already.
 -   If the bug has not been reported, create a new issue with a descriptive title and a clear description of the bug.
 
@@ -29,4 +29,4 @@ ensure a smooth collaboration, please follow these guidelines:
 ## Reporting Issues
 
 If you encounter any issues or have suggestions,
-please [open an issue](https://github.com/vechainfoundation/vechain-dapp-kit/issues) on GitHub.
+please [open an issue](https://github.com/vechain/vechain-dapp-kit/issues) on GitHub.
