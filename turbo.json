@@ -1,6 +1,7 @@
 {
     "$schema": "https://turbo.build/schema.json",
     "pipeline": {
+        "gh-pages-build": {},
         "build": {
             "outputs": ["build/**", "dist/**"],
             "dependsOn": ["^build"]
