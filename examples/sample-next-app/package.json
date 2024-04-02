@@ -7,7 +7,7 @@
         "clean": "rm -rf .next dist .turbo",
         "dev": "next dev",
         "gh-pages-build": "BASE_PATH='/vechain-dapp-kit/next' next build",
-        "preview": "next start -- -p 5002",
+        "preview": "npx serve -p 5002 dist",
         "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
