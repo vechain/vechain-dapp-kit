@@ -8,6 +8,7 @@ import {
     initModalAndButton,
 } from './utils';
 import type { SourceInfo, I18n, ThemeMode } from './constants';
+export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
 
 let dappKit: DAppKit | null = null;
 let dappKitOptions: DAppKitUIOptions | null = null;
