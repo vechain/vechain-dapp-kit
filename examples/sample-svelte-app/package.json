@@ -4,12 +4,12 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build --mode=development",
+        "build": "vite build",
         "clean": "rm -rf .svelte-kit dist .turbo",
         "dev": "vite dev",
-        "gh-pages-build": "vite build",
+        "gh-pages-build": "BASE_PATH='/vechain-dapp-kit/svelte' vite build",
         "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-        "preview": "vite preview --mode=development",
+        "preview": "vite preview",
         "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
