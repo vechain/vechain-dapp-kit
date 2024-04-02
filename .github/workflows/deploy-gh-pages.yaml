@@ -53,6 +53,7 @@ jobs:
                   cp -r examples/sample-react-app/dist build/react
                   cp -r examples/sample-vanilla-app/dist build/vanilla
                   cp -r examples/sample-angular-app/dist/easy-angular build/angular
+                  cp -r examples/sample-next-app/dist build/next
 
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v1
