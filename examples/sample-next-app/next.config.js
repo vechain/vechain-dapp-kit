@@ -3,6 +3,8 @@ const basePath = process.env.BASE_PATH ?? '';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     basePath,
+    output: 'export',
+    distDir: 'dist',
     env: {
         basePath,
     },
