@@ -49,6 +49,7 @@ jobs:
               run: |
                   mkdir build
                   cp -r examples/sample-vue-app/dist build/vue
+                  cp -r examples/sample-svelte-app/dist build/svelte
                   cp -r examples/sample-react-app/dist build/react
                   cp -r examples/sample-vanilla-app/dist build/vanilla
                   cp -r examples/sample-angular-app/dist/easy-angular build/angular

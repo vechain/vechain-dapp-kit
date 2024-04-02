@@ -2,7 +2,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
     plugins: [nodePolyfills(), sveltekit()],
     preview: {
         port: 5005,
@@ -19,5 +19,4 @@ export default defineConfig(({ mode }) => ({
             transformMixedEsModules: true,
         },
     },
-    base: mode === 'production' ? '/vechain-dapp-kit/svelte/' : '/',
-}));
+});
