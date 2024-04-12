@@ -90,7 +90,12 @@ function App() {
                 extendedClause,
                 extendedClause,
                 extendedClause,
-            ]);
+            ], {
+                delegator: {
+                    url: "https://sponsor-testnet.vechain.energy/by/90"
+                },
+                gas: 100_000
+            });
 
             const receipt = await wait();
 
