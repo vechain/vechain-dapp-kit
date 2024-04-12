@@ -1,12 +1,13 @@
 export type {
     DAppKitOptions,
-    ConnexWallet,
+    RemoteWallet,
     WalletSource,
     ConnectResponse,
     WalletConfig,
     BaseWallet,
     WalletManagerState,
     Genesis,
+    ThorClient,
 } from './types';
 
 export type {
@@ -19,3 +20,12 @@ export type {
     OpenOptions,
     SubscribeModalState,
 } from './wc-types';
+
+export type {
+    CertificateResponse,
+    SendTxOptions,
+    ExtendedClause,
+    SendTxResponse,
+    CertOptions,
+    CertMessage,
+} from './signer';

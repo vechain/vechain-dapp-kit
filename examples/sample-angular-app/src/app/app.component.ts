@@ -1,6 +1,6 @@
 // Angular modules
 import { CUSTOM_ELEMENTS_SCHEMA, Component, type OnInit } from '@angular/core';
-import { DAppKitUI } from '@vechain/dapp-kit-ui';
+import { DAppKitUI, DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 
 @Component({
     selector: 'app-root',
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
             },
         };
 
-        const vechainDAppKitOptions = {
+        const vechainDAppKitOptions: DAppKitUIOptions = {
             nodeUrl: 'https://testnet.vechain.org/',
             genesis: 'test',
             walletConnectOptions,

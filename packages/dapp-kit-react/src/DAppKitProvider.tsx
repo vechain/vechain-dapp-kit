@@ -10,7 +10,7 @@ import type { WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import type { DAppKitProviderOptions, DAppKitContext } from './types';
-import * as ThorDevkit from 'thor-devkit';
+import { Certificate } from '@vechain/sdk-core';
 
 /**
  * Context
@@ -33,7 +33,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     onSourceClick,
     connectionCertificate: connectionCertificateData,
 }): React.ReactElement => {
-    const connex = useMemo(
+    const dappKit = useMemo(
         () =>
             DAppKitUI.configure({
                 nodeUrl,
@@ -68,25 +68,29 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     );
 
     const [account, setAccount] = useState<string | null>(
-        connex.wallet.state.address,
+        dappKit.wallet.state.address,
     );
     const [source, setSource] = useState<WalletSource | null>(
-        connex.wallet.state.source,
+        dappKit.wallet.state.source,
     );
     const [connectionCertificate, setConnectionCertificate] =
-        useState<ThorDevkit.Certificate | null>(
-            connex.wallet.state.connectionCertificate,
+        useState<Certificate | null>(
+            dappKit.wallet.state.connectionCertificate,
         );
 
     useEffect(() => {
-        const addressSub = subscribeKey(connex.wallet.state, 'address', (v) => {
-            setAccount(v);
-        });
-        const sourceSub = subscribeKey(connex.wallet.state, 'source', (v) => {
+        const addressSub = subscribeKey(
+            dappKit.wallet.state,
+            'address',
+            (v) => {
+                setAccount(v);
+            },
+        );
+        const sourceSub = subscribeKey(dappKit.wallet.state, 'source', (v) => {
             setSource(v);
         });
         const certificateSub = subscribeKey(
-            connex.wallet.state,
+            dappKit.wallet.state,
             'connectionCertificate',
             (v) => {
                 setConnectionCertificate(v);
@@ -98,7 +102,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
             sourceSub();
             certificateSub();
         };
-    }, [connex.wallet.state]);
+    }, [dappKit.wallet.state]);
 
     const openModal = useCallback(() => {
         DAppKitUI.modal.open();
@@ -115,15 +119,14 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
 
     const context: DAppKitContext = useMemo(() => {
         return {
-            connex: {
-                thor: connex.thor,
-                vendor: connex.vendor,
-            },
+            thor: dappKit.thor,
             wallet: {
-                setSource: connex.wallet.setSource,
-                disconnect: connex.wallet.disconnect,
-                connect: connex.wallet.connect,
-                availableWallets: connex.wallet.state.availableSources,
+                setSource: dappKit.wallet.setSource,
+                disconnect: dappKit.wallet.disconnect,
+                connect: dappKit.wallet.connect,
+                availableWallets: dappKit.wallet.state.availableSources,
+                signCertificate: dappKit.wallet.signCert,
+                requestTransaction: dappKit.wallet.requestTransaction,
                 account,
                 source,
                 connectionCertificate,
@@ -135,7 +138,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
             },
         };
     }, [
-        connex,
+        dappKit,
         account,
         source,
         closeModal,
@@ -147,14 +150,14 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     return <Context.Provider value={context}>{children}</Context.Provider>;
 };
 
-export const useConnex = (): DAppKitContext['connex'] => {
+export const useThor = (): DAppKitContext['thor'] => {
     const context = useContext(Context);
 
     if (!context) {
         throw new Error('"useConnex" must be used within a ConnexProvider');
     }
 
-    return context.connex;
+    return context.thor;
 };
 
 export const useWallet = (): DAppKitContext['wallet'] => {

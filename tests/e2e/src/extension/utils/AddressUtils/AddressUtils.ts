@@ -1,4 +1,4 @@
-import { address } from 'thor-devkit';
+import {addressUtils} from "@vechain/sdk-core"
 
 const PREFIX = '0x';
 const PREFIX_REGEX = /^0[xX]/;
@@ -28,12 +28,7 @@ const validate = (hex: string) => {
 };
 
 export const isValid = (addr: string): boolean => {
-    try {
-        address.toChecksumed(addPrefix(addr));
-        return true;
-    } catch (e) {
-        return false;
-    }
+    return addressUtils.isAddress(addr);
 };
 
 /**
@@ -57,8 +52,8 @@ export const compareAddresses = (
         address1 = addPrefix(address1);
         address2 = addPrefix(address2);
         return (
-            address.toChecksumed(address1 as string) ===
-            address.toChecksumed(address2 as string)
+            addressUtils.toChecksummed(address1 as string) ===
+            addressUtils.toChecksummed(address2 as string)
         );
     } catch (e) {
         return false;

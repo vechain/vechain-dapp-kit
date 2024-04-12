@@ -1,7 +1,6 @@
-import * as ConnexLib from '@vechain/connex';
 import type {
-    ConnexWallet,
     DAppKitOptions,
+    RemoteWallet,
     WalletSource,
     WCClient,
     WCModal,
@@ -11,9 +10,9 @@ import { WCWallet } from '../classes/wc-wallet';
 import { createWcClient } from './create-wc-client';
 import { createWcModal } from './create-wc-modal';
 import { createWcSigner } from './create-wc-signer';
-import { convertVendorToSigner } from './convert-vendor-to-signer';
 import { normalizeGenesisId } from './genesis';
 import { DAppKitLogger } from './logger';
+import { createSync, createSync2 } from './sync-signers';
 
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
@@ -26,7 +25,7 @@ export const createWallet = ({
     walletConnectOptions,
     onDisconnected,
     connectionCertificate,
-}: ICreateWallet): ConnexWallet => {
+}: ICreateWallet): RemoteWallet => {
     const genesisId = normalizeGenesisId(genesis);
 
     DAppKitLogger.debug('createWallet', source);
@@ -37,20 +36,14 @@ export const createWallet = ({
                 throw new Error('User is not in a Sync wallet');
             }
 
-            const vendor = new ConnexLib.Connex.Vendor(genesisId, 'sync');
+            const vendor = createSync(genesisId);
 
-            return new CertificateBasedWallet(
-                convertVendorToSigner(vendor),
-                connectionCertificate,
-            );
+            return new CertificateBasedWallet(vendor, connectionCertificate);
         }
         case 'sync2': {
-            const vendor = new ConnexLib.Connex.Vendor(genesisId, 'sync2');
+            const vendor = createSync2(genesisId);
 
-            return new CertificateBasedWallet(
-                convertVendorToSigner(vendor),
-                connectionCertificate,
-            );
+            return new CertificateBasedWallet(vendor, connectionCertificate);
         }
         case 'veworld': {
             if (!window.vechain) {
@@ -59,7 +52,10 @@ export const createWallet = ({
 
             const signer = window.vechain.newConnexSigner(genesisId);
 
-            return new CertificateBasedWallet(signer, connectionCertificate);
+            return new CertificateBasedWallet(
+                Promise.resolve(signer),
+                connectionCertificate,
+            );
         }
         case 'wallet-connect': {
             if (!walletConnectOptions) {

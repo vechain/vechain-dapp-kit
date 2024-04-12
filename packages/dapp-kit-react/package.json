@@ -1,6 +1,6 @@
 {
     "name": "@vechain/dapp-kit-react",
-    "version": "1.0.11",
+    "version": "2.0.0",
     "private": false,
     "homepage": "https://github.com/vechain/vechain-dapp-kit",
     "repository": "github:vechain/vechain-dapp-kit",
@@ -25,11 +25,10 @@
     },
     "dependencies": {
         "@lit/react": "^1.0.1",
-        "@vechain/connex": "2.1.0",
-        "@vechain/connex-framework": "2.1.0",
         "@vechain/dapp-kit": "*",
         "@vechain/dapp-kit-ui": "*",
-        "thor-devkit": "2.0.5",
+        "@vechain/sdk-core": "1.0.0-beta.3",
+        "@vechain/sdk-network": "1.0.0-beta.3",
         "valtio": "1.11.2"
     },
     "devDependencies": {

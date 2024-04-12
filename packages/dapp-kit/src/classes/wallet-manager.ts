@@ -1,19 +1,25 @@
-import * as ThorDevkit from 'thor-devkit';
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
-import type {
+import {
+    CertificateResponse,
+    CertMessage,
+    CertOptions,
     ConnectResponse,
-    ConnexWallet,
     DAppKitOptions,
+    ExtendedClause,
+    RemoteWallet,
+    SendTxOptions,
+    SendTxResponse,
     WalletManagerState,
     WalletSource,
 } from '../types';
-import { DAppKitLogger, Storage, createWallet } from '../utils';
+import { createWallet, DAppKitLogger, Storage } from '../utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
+import { certificate } from '@vechain/sdk-core';
 
 class WalletManager {
     public readonly state: WalletManagerState;
-    private wallets: Record<string, ConnexWallet | undefined> = {};
+    private wallets: Record<string, RemoteWallet | undefined> = {};
 
     constructor(private readonly options: DAppKitOptions) {
         this.state = this.initState(options.usePersistence ?? false);
@@ -27,7 +33,7 @@ class WalletManager {
         }
     }
 
-    private get wallet(): ConnexWallet {
+    private get wallet(): RemoteWallet {
         const source = this.state.source;
 
         DAppKitLogger.debug(
@@ -89,7 +95,7 @@ class WalletManager {
         };
 
         try {
-            ThorDevkit.Certificate.verify(connectionCertificate);
+            certificate.verify(connectionCertificate);
             this.state.address = signer;
             this.state.connectionCertificate = connectionCertificate;
             return {
@@ -110,7 +116,7 @@ class WalletManager {
     connect = (): Promise<ConnectResponse> =>
         this.wallet
             .connect()
-            .then((res) => {
+            .then((res: ConnectResponse) => {
                 if (
                     this.state.source === 'wallet-connect' &&
                     this.options.requireCertificate &&
@@ -125,7 +131,7 @@ class WalletManager {
                 }
                 return res;
             })
-            .catch((e) => {
+            .catch((e: unknown) => {
                 DAppKitLogger.error('WalletManager', 'connect', e);
                 throw e;
             });
@@ -162,34 +168,34 @@ class WalletManager {
         this.state.connectionCertificate = null;
     };
 
-    signTx = (
-        msg: Connex.Vendor.TxMessage,
-        options: Connex.Signer.TxOptions,
-    ): Promise<Connex.Vendor.TxResponse> =>
+    requestTransaction = (
+        msg: ExtendedClause[],
+        options: SendTxOptions = {},
+    ): Promise<SendTxResponse> =>
         this.wallet
             .signTx(msg, options)
-            .then((res) => {
+            .then((res: SendTxResponse) => {
                 // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
                 this.state.address = res.signer;
                 return res;
             })
-            .catch((e) => {
+            .catch((e: unknown) => {
                 DAppKitLogger.error('WalletManager', 'signTx', e);
                 throw e;
             });
 
     signCert = (
-        msg: Connex.Vendor.CertMessage,
-        options: Connex.Signer.CertOptions,
-    ): Promise<Connex.Vendor.CertResponse> =>
+        msg: CertMessage,
+        options: CertOptions = {},
+    ): Promise<CertificateResponse> =>
         this.wallet
             .signCert(msg, options)
-            .then((res) => {
+            .then((res: CertificateResponse) => {
                 // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
                 this.state.address = res.annex.signer;
                 return res;
             })
-            .catch((e) => {
+            .catch((e: unknown) => {
                 DAppKitLogger.error('WalletManager', 'signCert', e);
                 throw e;
             });
