@@ -1,4 +1,5 @@
 import { TransactionClause } from '@vechain/sdk-core';
+import { TransactionReceipt } from '@vechain/sdk-network';
 
 /**
  * Defines the extended clause for sending a transaction.
@@ -38,9 +39,13 @@ interface SendTxOptions {
  * @property id - The transaction ID.
  * @property signer - The signer for the transaction.
  */
-interface SendTxResponse {
-    readonly id: string;
+interface WalletTransactionResponse {
+    readonly txid: string;
     readonly signer: string;
+}
+
+interface TransactionResponse extends WalletTransactionResponse {
+    wait: () => Promise<TransactionReceipt>;
 }
 
 type CertificateResponse = {
@@ -69,8 +74,9 @@ type CertOptions = {
 export {
     ExtendedClause,
     SendTxOptions,
-    SendTxResponse,
+    WalletTransactionResponse,
     CertificateResponse,
     CertMessage,
     CertOptions,
+    TransactionResponse,
 };

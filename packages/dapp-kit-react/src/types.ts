@@ -1,15 +1,22 @@
 import type React from 'react';
 import type {
-    CertificateResponse, CertMessage, CertOptions,
+    CertificateResponse,
+    CertMessage,
+    CertOptions,
     ConnectResponse,
-    ExtendedClause, SendTxOptions,
-    SendTxResponse,
-    WalletSource
+    ExtendedClause,
+    SendTxOptions,
+    TransactionResponse,
+    WalletSource,
 } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 import { Certificate } from '@vechain/sdk-core';
-import { ThorClient } from '@vechain/dapp-kit'
-export type { WalletConnectOptions, DAppKitOptions, ThorClient } from '@vechain/dapp-kit';
+import { ThorClient } from '@vechain/dapp-kit';
+export type {
+    WalletConnectOptions,
+    DAppKitOptions,
+    ThorClient,
+} from '@vechain/dapp-kit';
 
 export interface AccountState {
     address: string | null;
@@ -34,8 +41,14 @@ export interface DAppKitContext {
     thor: ThorClient;
     wallet: {
         setSource: (source: WalletSource) => void;
-        requestTransaction: (clauses: ExtendedClause[], options?: SendTxOptions) => Promise<SendTxResponse>;
-        signCertificate: (msg: CertMessage, options?: CertOptions) => Promise<CertificateResponse>;
+        requestTransaction: (
+            clauses: ExtendedClause[],
+            options?: SendTxOptions,
+        ) => Promise<TransactionResponse>;
+        signCertificate: (
+            msg: CertMessage,
+            options?: CertOptions,
+        ) => Promise<CertificateResponse>;
         availableWallets: WalletSource[];
         disconnect: () => void;
         connect: () => Promise<ConnectResponse>;

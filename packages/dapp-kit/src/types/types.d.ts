@@ -7,9 +7,9 @@ import {
     CertOptions,
     ExtendedClause,
     SendTxOptions,
-    SendTxResponse,
+    WalletTransactionResponse,
 } from './signer';
-import {ThorClient as SDKClient} from "@vechain/sdk-network/src/thor-client/thor-client"
+import { ThorClient as SDKClient } from '@vechain/sdk-network/src/thor-client/thor-client';
 
 declare global {
     interface Window {
@@ -58,7 +58,7 @@ type BaseWallet = Signer & {
     signTx: (
         clauses: ExtendedClause[],
         options?: SendTxOptions,
-    ) => Promise<SendTxResponse>;
+    ) => Promise<WalletTransactionResponse>;
     signCert: (
         msg: CertMessage,
         options?: CertOptions,
@@ -85,11 +85,13 @@ interface WalletManagerState {
     connectionCertificate: Certificate | null;
 }
 
-
-type TransactionsModule = Omit<typeof SDKClient.prototype.transactions, 'signTransaction'>;
+type TransactionsModule = Omit<
+    typeof SDKClient.prototype.transactions,
+    'signTransaction'
+>;
 
 interface ThorClient extends Omit<SDKClient, 'transactions'> {
-    transactions: TransactionsModule
+    transactions: TransactionsModule;
 }
 
 export type {

@@ -7,7 +7,7 @@ import {
     RemoteWallet,
     ExtendedClause,
     SendTxOptions,
-    SendTxResponse,
+    WalletTransactionResponse,
 } from '../types';
 import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
 import { certificate } from '@vechain/sdk-core';
@@ -68,7 +68,7 @@ class CertificateBasedWallet implements RemoteWallet {
     signTx = (
         msg: ExtendedClause[],
         options: SendTxOptions,
-    ): Promise<SendTxResponse> =>
+    ): Promise<WalletTransactionResponse> =>
         this.wallet.then((w) => w.signTx(msg, options));
 
     disconnect = async (): Promise<void> =>

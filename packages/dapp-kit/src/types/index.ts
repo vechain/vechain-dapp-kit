@@ -25,7 +25,8 @@ export type {
     CertificateResponse,
     SendTxOptions,
     ExtendedClause,
-    SendTxResponse,
+    WalletTransactionResponse,
     CertOptions,
     CertMessage,
+    TransactionResponse,
 } from './signer';

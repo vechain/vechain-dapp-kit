@@ -9,9 +9,11 @@ import {
     ExtendedClause,
     RemoteWallet,
     SendTxOptions,
-    SendTxResponse,
+    WalletTransactionResponse,
+    ThorClient,
     WalletManagerState,
     WalletSource,
+    TransactionResponse,
 } from '../types';
 import { createWallet, DAppKitLogger, Storage } from '../utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
@@ -21,7 +23,10 @@ class WalletManager {
     public readonly state: WalletManagerState;
     private wallets: Record<string, RemoteWallet | undefined> = {};
 
-    constructor(private readonly options: DAppKitOptions) {
+    constructor(
+        private readonly options: DAppKitOptions,
+        private readonly thorClient: ThorClient,
+    ) {
         this.state = this.initState(options.usePersistence ?? false);
         this.initPersistence(options.usePersistence ?? false);
         DAppKitLogger.debug('WalletManager', 'constructor', this.state);
@@ -171,13 +176,20 @@ class WalletManager {
     requestTransaction = (
         msg: ExtendedClause[],
         options: SendTxOptions = {},
-    ): Promise<SendTxResponse> =>
+    ): Promise<TransactionResponse> =>
         this.wallet
             .signTx(msg, options)
-            .then((res: SendTxResponse) => {
+            .then((res: WalletTransactionResponse) => {
                 // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
                 this.state.address = res.signer;
-                return res;
+                return {
+                    signer: res.signer,
+                    txid: res.txid,
+                    wait: async () =>
+                        this.thorClient.transactions.waitForTransaction(
+                            res.txid,
+                        ),
+                };
             })
             .catch((e: unknown) => {
                 DAppKitLogger.error('WalletManager', 'signTx', e);

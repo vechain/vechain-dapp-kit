@@ -14,7 +14,7 @@ import {
     CertOptions,
     ExtendedClause,
     SendTxOptions,
-    SendTxResponse,
+    WalletTransactionResponse,
 } from '../types';
 
 interface SessionAccount {
@@ -199,8 +199,8 @@ export const createWcSigner = ({
     const signTx = async (
         message: ExtendedClause[],
         options: SendTxOptions,
-    ): Promise<SendTxResponse> => {
-        return makeRequest<SendTxResponse>({
+    ): Promise<WalletTransactionResponse> => {
+        return makeRequest<WalletTransactionResponse>({
             method: DefaultMethods.RequestTransaction,
             params: [{ message, options }],
         });

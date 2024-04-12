@@ -2,7 +2,7 @@ import { WalletManager } from './classes';
 import { DAppKitLogger } from './utils';
 import type { DAppKitOptions } from './types';
 import { HttpClient, ThorClient as SDKClient } from '@vechain/sdk-network';
-import {ThorClient} from "./types/types"
+import { ThorClient } from './types/types';
 
 class DAppKit {
     public readonly thor: ThorClient;
@@ -16,12 +16,12 @@ class DAppKit {
 
         const client = new HttpClient(options.nodeUrl);
 
-        const walletManager = new WalletManager(options);
         const thorClient = new SDKClient(client);
+        const walletManager = new WalletManager(options, thorClient);
 
         thorClient.transactions.signTransaction = () => {
             throw new Error('Signing transactions is not supported in DAppKit');
-        }
+        };
 
         this.thor = thorClient;
         this.wallet = walletManager;

@@ -6,7 +6,7 @@ import {
     CertOptions,
     ExtendedClause,
     SendTxOptions,
-    SendTxResponse,
+    WalletTransactionResponse,
 } from '../types';
 import { blake2b256 } from '@vechain/sdk-core';
 
@@ -49,7 +49,7 @@ export const createSync: NewSignerFunc = async () => {
         signTx: (
             msg: ExtendedClause[],
             options: SendTxOptions,
-        ): Promise<SendTxResponse> => {
+        ): Promise<WalletTransactionResponse> => {
             const s1 = v1.sign('tx');
             options.signer && s1.signer(options.signer);
             options.gas && s1.gas(options.gas);

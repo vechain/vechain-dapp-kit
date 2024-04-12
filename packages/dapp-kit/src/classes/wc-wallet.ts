@@ -5,7 +5,7 @@ import type {
     ExtendedClause,
     RemoteWallet,
     SendTxOptions,
-    SendTxResponse,
+    WalletTransactionResponse,
     WCSigner,
 } from '../types';
 
@@ -27,7 +27,7 @@ class WCWallet implements RemoteWallet {
     signTx = (
         msg: ExtendedClause[],
         options: SendTxOptions,
-    ): Promise<SendTxResponse> => this.signer.signTx(msg, options);
+    ): Promise<WalletTransactionResponse> => this.signer.signTx(msg, options);
 
     disconnect = (): Promise<void> => this.signer.disconnect();
 }

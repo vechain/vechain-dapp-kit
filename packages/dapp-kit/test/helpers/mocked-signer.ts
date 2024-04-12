@@ -1,5 +1,11 @@
-import {blake2b256, certificate, Certificate, HDNode, secp256k1} from "@vechain/sdk-core"
-import {CertMessage, RemoteWallet} from "../../src"
+import {
+    blake2b256,
+    certificate,
+    Certificate,
+    HDNode,
+    secp256k1,
+} from '@vechain/sdk-core';
+import { CertMessage, RemoteWallet } from '../../src';
 
 const mnemonicWords =
     'denial kitchen pet squirrel other broom bar gas better priority spoil cross';

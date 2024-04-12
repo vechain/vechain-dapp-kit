@@ -1,4 +1,4 @@
-import {addressUtils} from "@vechain/sdk-core"
+import { addressUtils } from '@vechain/sdk-core';
 
 const PREFIX = '0x';
 const PREFIX_REGEX = /^0[xX]/;
