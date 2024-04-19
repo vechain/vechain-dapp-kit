@@ -32,6 +32,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     modalParent,
     onSourceClick,
     connectionCertificate: connectionCertificateData,
+    changeAccountWithWallet = true, // this will work just for veworld for now
 }): React.ReactElement => {
     const connex = useMemo(
         () =>
@@ -49,6 +50,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
                 modalParent,
                 onSourceClick,
                 connectionCertificate: connectionCertificateData,
+                changeAccountWithWallet,
             }),
         [
             nodeUrl,
@@ -64,6 +66,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
             modalParent,
             onSourceClick,
             connectionCertificateData,
+            changeAccountWithWallet,
         ],
     );
 

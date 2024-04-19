@@ -112,6 +112,17 @@ class WalletManager {
             .connect()
             .then((res) => {
                 if (
+                    this.state.source === 'veworld' &&
+                    this.options.changeAccountWithWallet
+                ) {
+                    window.vechain?.on(
+                        'accountsChanged',
+                        (address: unknown) => {
+                            this.state.address = (address as string[])[0];
+                        },
+                    );
+                }
+                if (
                     this.state.source === 'wallet-connect' &&
                     this.options.requireCertificate &&
                     this.options.walletConnectOptions?.modal

@@ -14,6 +14,7 @@ import { createWcSigner } from './create-wc-signer';
 import { convertVendorToSigner } from './convert-vendor-to-signer';
 import { normalizeGenesisId } from './genesis';
 import { DAppKitLogger } from './logger';
+import { VeWorldWallet } from '../classes/veworld-wallet';
 
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
@@ -57,9 +58,7 @@ export const createWallet = ({
                 throw new Error('VeWorld Extension is not installed');
             }
 
-            const signer = window.vechain.newConnexSigner(genesisId);
-
-            return new CertificateBasedWallet(signer, connectionCertificate);
+            return new VeWorldWallet(genesisId);
         }
         case 'wallet-connect': {
             if (!walletConnectOptions) {

@@ -7,6 +7,11 @@ declare global {
         vechain?: {
             newConnexSigner: (genesisId: string) => Connex.Signer;
             isInAppBrowser?: boolean;
+            request: (args: {
+                method: string;
+                params?: unknown[] | object;
+            }) => Promise<unknown>;
+            on: (event: string, callback: (data: unknown) => void) => void;
         };
         connex?: unknown;
     }
@@ -42,6 +47,7 @@ interface DAppKitOptions {
         message?: Connex.Vendor.CertMessage;
         options?: Connex.Signer.CertOptions;
     };
+    changeAccountWithWallet?: boolean;
 }
 
 type BaseWallet = Connex.Signer & {
