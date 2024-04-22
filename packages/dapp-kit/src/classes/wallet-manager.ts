@@ -107,6 +107,10 @@ class WalletManager {
         }
     };
 
+    accountsChangedHandler = (address: unknown): void => {
+        this.state.address = (address as string[])[0];
+    };
+
     connect = (): Promise<ConnectResponse> =>
         this.wallet
             .connect()
@@ -117,9 +121,7 @@ class WalletManager {
                 ) {
                     window.vechain?.on(
                         'accountsChanged',
-                        (address: unknown) => {
-                            this.state.address = (address as string[])[0];
-                        },
+                        this.accountsChangedHandler,
                     );
                 }
                 if (
@@ -160,6 +162,16 @@ class WalletManager {
 
         if (wallet && !remote && wallet.disconnect) {
             const res = wallet.disconnect();
+
+            if (
+                this.state.source === 'veworld' &&
+                this.options.changeAccountWithWallet
+            ) {
+                window.vechain?.removeListener(
+                    'accountsChanged',
+                    this.accountsChangedHandler,
+                );
+            }
 
             if (res instanceof Promise) {
                 res.catch((e) => {

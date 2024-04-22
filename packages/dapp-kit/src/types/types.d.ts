@@ -12,6 +12,10 @@ declare global {
                 params?: unknown[] | object;
             }) => Promise<unknown>;
             on: (event: string, callback: (data: unknown) => void) => void;
+            removeListener: (
+                event: string,
+                callback: (data: unknown) => void,
+            ) => void;
         };
         connex?: unknown;
     }

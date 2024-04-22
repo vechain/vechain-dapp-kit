@@ -23,10 +23,7 @@ export class VeWorldWallet implements ConnexWallet {
         msg: Connex.Vendor.CertMessage,
         options: Connex.Signer.CertOptions,
     ): Promise<Connex.Vendor.CertResponse> => {
-        if (!window.vechain) {
-            throw new Error('VeChain not found');
-        }
-        return window.vechain.request({
+        return window.vechain?.request({
             method: 'thor_signCertificate',
             params: [msg, options, this.genesisId],
         }) as Promise<Connex.Vendor.CertResponse>;
@@ -36,16 +33,20 @@ export class VeWorldWallet implements ConnexWallet {
         msg: Connex.Vendor.TxMessage,
         options: Connex.Signer.TxOptions,
     ): Promise<Connex.Vendor.TxResponse> => {
-        if (!window.vechain) {
-            throw new Error('VeChain not found');
-        }
-        return window.vechain.request({
+        return window.vechain?.request({
             method: 'thor_sendTransaction',
             params: [msg, options, this.genesisId],
         }) as Promise<Connex.Vendor.TxResponse>;
     };
 
     disconnect = async (): Promise<void> => {
-        // TODO
+        await window.vechain?.request({
+            method: 'wallet_revokePermissions',
+            params: [
+                {
+                    eth_accounts: {},
+                },
+            ],
+        });
     };
 }
