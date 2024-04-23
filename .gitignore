@@ -39,3 +39,5 @@ yarn-error.log*
 .parcel-cache
 
 .reports
+
+.vscode/settings.json
