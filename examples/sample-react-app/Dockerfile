@@ -6,6 +6,8 @@ COPY package.json .
 
 RUN yarn
 
+RUN yarn global add vite
+
 COPY . .
 
 RUN yarn build
