@@ -200,6 +200,7 @@ export class AddressModal extends LitElement {
                     <button
                             class="${this.mode}"
                             @click=${this.onDisconnectClick}
+                            data-testid="Disconnect"
                     >
                         <div class="disconnect-icon ${this.mode}">
                             ${
