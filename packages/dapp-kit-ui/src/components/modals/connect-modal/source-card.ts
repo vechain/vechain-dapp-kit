@@ -49,6 +49,7 @@ export class SourceCard extends LitElement {
             <button
                 class="card ${this.mode}"
                 @click=${(): void => this.handleSourceClick()}
+                data-testid="${this.source?.name}"
             >
                 <div>${this.source?.name}</div>
                 <img src=${this.source?.logo} />
