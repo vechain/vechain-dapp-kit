@@ -8,13 +8,13 @@ import type {
 } from '../types';
 import { CertificateBasedWallet } from '../classes/certificate-wallet';
 import { WCWallet } from '../classes/wc-wallet';
+import { VeWorldWallet } from '../classes/veworld-wallet';
 import { createWcClient } from './create-wc-client';
 import { createWcModal } from './create-wc-modal';
 import { createWcSigner } from './create-wc-signer';
 import { convertVendorToSigner } from './convert-vendor-to-signer';
 import { normalizeGenesisId } from './genesis';
 import { DAppKitLogger } from './logger';
-import { VeWorldWallet } from '../classes/veworld-wallet';
 
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;

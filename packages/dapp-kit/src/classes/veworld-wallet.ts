@@ -3,20 +3,13 @@ import type { ConnectResponse, ConnexWallet } from '../types';
 export class VeWorldWallet implements ConnexWallet {
     constructor(private readonly genesisId: string) {}
     connect = async (): Promise<ConnectResponse> => {
-        try {
-            const connectedAccounts = (await window.vechain?.request({
-                method: 'eth_requestAccounts',
-            })) as string[];
-            return {
-                account: connectedAccounts[0],
-                verified: true,
-            };
-        } catch (e) {
-            return {
-                account: '',
-                verified: false,
-            };
-        }
+        const connectedAccounts = (await window.vechain?.request({
+            method: 'eth_requestAccounts',
+        })) as string[];
+        return {
+            account: connectedAccounts[0],
+            verified: true,
+        };
     };
 
     signCert = (

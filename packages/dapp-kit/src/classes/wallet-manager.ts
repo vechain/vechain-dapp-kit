@@ -135,10 +135,12 @@ class WalletManager {
                     this.state.address = res.account;
                     this.state.connectionCertificate =
                         res.connectionCertificate ?? null;
+                    this.options.walletConnectOptions?.modal?.onConnectionCertificateSigned?.();
                 }
                 return res;
             })
             .catch((e) => {
+                this.options.walletConnectOptions?.modal?.onConnectionCertificateSigned?.();
                 DAppKitLogger.error('WalletManager', 'connect', e);
                 throw e;
             });
