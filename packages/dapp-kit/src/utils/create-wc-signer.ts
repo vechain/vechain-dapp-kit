@@ -8,6 +8,14 @@ import type { SignClient } from '@walletconnect/sign-client/dist/types/client';
 import type { WCSigner, WCSignerOptions } from '../types/wc-types';
 import { DefaultMethods } from '../constants/wallet-connect';
 import { DAppKitLogger } from './logger';
+import {
+    CertificateResponse,
+    CertMessage,
+    CertOptions,
+    ExtendedClause,
+    SendTxOptions,
+    WalletTransactionResponse,
+} from '../types';
 
 interface SessionAccount {
     networkIdentifier: string;
@@ -189,20 +197,20 @@ export const createWcSigner = ({
     };
 
     const signTx = async (
-        message: Connex.Vendor.TxMessage,
-        options: Connex.Signer.TxOptions,
-    ): Promise<Connex.Vendor.TxResponse> => {
-        return makeRequest<Connex.Vendor.TxResponse>({
+        message: ExtendedClause[],
+        options: SendTxOptions,
+    ): Promise<WalletTransactionResponse> => {
+        return makeRequest<WalletTransactionResponse>({
             method: DefaultMethods.RequestTransaction,
             params: [{ message, options }],
         });
     };
 
     const signCert = async (
-        message: Connex.Vendor.CertMessage,
-        options: Connex.Signer.CertOptions,
-    ): Promise<Connex.Vendor.CertResponse> => {
-        return makeRequest<Connex.Vendor.CertResponse>({
+        message: CertMessage,
+        options: CertOptions,
+    ): Promise<CertificateResponse> => {
+        return makeRequest<CertificateResponse>({
             method: DefaultMethods.SignCertificate,
             params: [{ message, options }],
         });
