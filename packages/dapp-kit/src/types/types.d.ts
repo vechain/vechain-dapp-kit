@@ -1,7 +1,7 @@
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
 import type { LogLevel } from '../utils/logger';
-import { Certificate } from '@vechain/sdk-core';
-import {
+import type { Certificate } from '@vechain/sdk-core';
+import type {
     CertificateResponse,
     CertMessage,
     CertOptions,
@@ -9,7 +9,7 @@ import {
     SendTxOptions,
     WalletTransactionResponse,
 } from './signer';
-import { ThorClient as SDKClient } from '@vechain/sdk-network/src/thor-client/thor-client';
+import { CompressedBlockDetail } from '@vechain/sdk-network';
 
 declare global {
     interface Window {
@@ -17,7 +17,7 @@ declare global {
             newConnexSigner: (genesisId: string) => BaseWallet;
             isInAppBrowser?: boolean;
         };
-        connex?: unknown;
+        connex?: any;
     }
 }
 
@@ -41,7 +41,6 @@ type Genesis = 'main' | 'test';
  */
 interface DAppKitOptions {
     nodeUrl: string;
-    genesis?: Genesis;
     walletConnectOptions?: WalletConnectOptions;
     usePersistence?: boolean;
     useFirstDetectedSource?: boolean;
@@ -53,8 +52,7 @@ interface DAppKitOptions {
     };
 }
 
-type BaseWallet = Signer & {
-    disconnect?: () => Promise<void> | void;
+interface BaseWallet {
     signTx: (
         clauses: ExtendedClause[],
         options?: SendTxOptions,
@@ -63,13 +61,14 @@ type BaseWallet = Signer & {
         msg: CertMessage,
         options?: CertOptions,
     ) => Promise<CertificateResponse>;
-};
+}
 
 /**
- * Modifies the BaseWallet interface to include a disconnect method
+ * Modifies the BaseWallet interface to include a connect/disconnect method
  */
 type RemoteWallet = BaseWallet & {
-    connect: () => Promise<ConnectResponse>;
+    connect: (addr?: string) => Promise<ConnectResponse>;
+    disconnect?: () => Promise<void>;
 };
 
 interface ConnectResponse {
@@ -85,14 +84,7 @@ interface WalletManagerState {
     connectionCertificate: Certificate | null;
 }
 
-type TransactionsModule = Omit<
-    typeof SDKClient.prototype.transactions,
-    'signTransaction'
->;
-
-interface ThorClient extends Omit<SDKClient, 'transactions'> {
-    transactions: TransactionsModule;
-}
+export type GetGenesisBlockFunc = () => Promise<CompressedBlockDetail>;
 
 export type {
     BaseWallet,
@@ -103,5 +95,4 @@ export type {
     WalletManagerState,
     ConnectResponse,
     Genesis,
-    ThorClient,
 };

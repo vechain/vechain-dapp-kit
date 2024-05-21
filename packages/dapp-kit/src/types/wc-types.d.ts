@@ -1,6 +1,10 @@
 import type { SignClientTypes } from '@walletconnect/types';
 import type { SignClient } from '@walletconnect/sign-client';
-import { RemoteWallet } from './types';
+import type {
+    ConnectResponse,
+    GetGenesisBlockFunc,
+    RemoteWallet,
+} from './types';
 
 export type ResolvedSignClient = Awaited<ReturnType<typeof SignClient.init>>;
 
@@ -15,14 +19,9 @@ export type WCSigner = RemoteWallet & {
     disconnect: () => Promise<void>;
 
     /**
-     * The genesis ID of the current signer
-     */
-    genesisId: string;
-
-    /**
      * Connects to the Wallet and return the account address
      */
-    connect: () => Promise<string>;
+    connect: (account?: string) => Promise<ConnectResponse>;
 };
 
 export interface WCClient {
@@ -89,5 +88,5 @@ export interface WCSignerOptions {
     wcClient: WCClient;
     web3Modal: WCModal;
     onDisconnected: () => void;
-    genesisId: string;
+    getGenesisBlock: GetGenesisBlockFunc;
 }

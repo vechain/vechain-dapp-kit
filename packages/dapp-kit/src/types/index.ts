@@ -7,7 +7,6 @@ export type {
     BaseWallet,
     WalletManagerState,
     Genesis,
-    ThorClient,
 } from './types';
 
 export type {

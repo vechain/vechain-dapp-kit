@@ -1,6 +1,7 @@
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
-import {
+import { certificate } from '@vechain/sdk-core';
+import type {
     CertificateResponse,
     CertMessage,
     CertOptions,
@@ -9,15 +10,14 @@ import {
     ExtendedClause,
     RemoteWallet,
     SendTxOptions,
-    WalletTransactionResponse,
-    ThorClient,
+    TransactionResponse,
     WalletManagerState,
     WalletSource,
-    TransactionResponse,
+    WalletTransactionResponse,
 } from '../types';
 import { createWallet, DAppKitLogger, Storage } from '../utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
-import { certificate } from '@vechain/sdk-core';
+import type { ThorClient } from '@vechain/sdk-network';
 
 class WalletManager {
     public readonly state: WalletManagerState;
@@ -70,6 +70,7 @@ class WalletManager {
                 ...this.options,
                 source,
                 onDisconnected: () => this.disconnect(true),
+                thorClient: this.thorClient,
             };
             wallet = createWallet(opts);
 
@@ -118,9 +119,9 @@ class WalletManager {
         }
     };
 
-    connect = (): Promise<ConnectResponse> =>
+    connect = (addr?: string): Promise<ConnectResponse> =>
         this.wallet
-            .connect()
+            .connect(addr)
             .then((res: ConnectResponse) => {
                 if (
                     this.state.source === 'wallet-connect' &&
@@ -185,7 +186,7 @@ class WalletManager {
                 return {
                     signer: res.signer,
                     txid: res.txid,
-                    wait: async () =>
+                    wait: () =>
                         this.thorClient.transactions.waitForTransaction(
                             res.txid,
                         ),

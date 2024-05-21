@@ -10,24 +10,36 @@ import { WCWallet } from '../classes/wc-wallet';
 import { createWcClient } from './create-wc-client';
 import { createWcModal } from './create-wc-modal';
 import { createWcSigner } from './create-wc-signer';
-import { normalizeGenesisId } from './genesis';
 import { DAppKitLogger } from './logger';
 import { createSync, createSync2 } from './sync-signers';
+import { ThorClient } from '@vechain/sdk-network';
+import { GetGenesisBlockFunc } from '../types/types';
 
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
     onDisconnected: () => void;
+    thorClient: ThorClient;
 };
+
+const getGenesisBlock =
+    (thorClient: ThorClient): GetGenesisBlockFunc =>
+    async () => {
+        const block = await thorClient.blocks.getGenesisBlock();
+
+        if (!block) {
+            throw new Error('Failed to get genesis block');
+        }
+
+        return block;
+    };
 
 export const createWallet = ({
     source,
-    genesis,
     walletConnectOptions,
     onDisconnected,
     connectionCertificate,
+    thorClient,
 }: ICreateWallet): RemoteWallet => {
-    const genesisId = normalizeGenesisId(genesis);
-
     DAppKitLogger.debug('createWallet', source);
 
     switch (source) {
@@ -36,12 +48,12 @@ export const createWallet = ({
                 throw new Error('User is not in a Sync wallet');
             }
 
-            const vendor = createSync(genesisId);
+            const vendor = createSync(getGenesisBlock(thorClient));
 
             return new CertificateBasedWallet(vendor, connectionCertificate);
         }
         case 'sync2': {
-            const vendor = createSync2(genesisId);
+            const vendor = createSync2(getGenesisBlock(thorClient));
 
             return new CertificateBasedWallet(vendor, connectionCertificate);
         }
@@ -50,12 +62,13 @@ export const createWallet = ({
                 throw new Error('VeWorld Extension is not installed');
             }
 
-            const signer = window.vechain.newConnexSigner(genesisId);
-
-            return new CertificateBasedWallet(
-                Promise.resolve(signer),
-                connectionCertificate,
+            const signer = getGenesisBlock(thorClient)().then(
+                (genesisBlock) => {
+                    return window.vechain!.newConnexSigner(genesisBlock.id);
+                },
             );
+
+            return new CertificateBasedWallet(signer, connectionCertificate);
         }
         case 'wallet-connect': {
             if (!walletConnectOptions) {
@@ -72,7 +85,7 @@ export const createWallet = ({
             const web3Modal: WCModal = modal ?? createWcModal(projectId);
 
             const wallet = createWcSigner({
-                genesisId,
+                getGenesisBlock: getGenesisBlock(thorClient),
                 wcClient,
                 web3Modal,
                 onDisconnected,

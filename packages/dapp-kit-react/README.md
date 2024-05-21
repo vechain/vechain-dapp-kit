@@ -27,18 +27,16 @@ const walletConnectOptions: WalletConnectOptions = {
 };
 ```
 
--   Initialise the `DAppKitProvider`
+-   Initialise the `ProviderWallet`
 
 ```typescript jsx
-import { DAppKitProvider } from '@vechain/dapp-kit-react';
+import { ProviderWallet } from '@vechain/dapp-kit-react';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <DAppKitProvider
+        <ProviderWallet
             // REQUIRED: The URL of the node you want to connect to
             nodeUrl={'https://testnet.vechain.org/'}
-            // OPTIONAL: Required if you're not connecting to the main net
-            genesis={'test'}
             // OPTIONAL: Whether or not to persist state in local storage (account, wallet source)
             usePersistence={true}
             // OPTIONAL: Options to enable wallet connect
@@ -47,12 +45,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             logLevel="DEBUG"
         >
             <App />
-        </DAppKitProvider>
+        </ProviderWallet>
     </React.StrictMode>,
 );
 ```
 
--   Use the hooks provided by the `DAppKitProvider`
+-   Use the hooks provided by the `ProviderWallet`
 
 ```typescript jsx
 import { useWallet, useConnex } from '@vechain/dapp-kit-react';

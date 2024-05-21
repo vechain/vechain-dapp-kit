@@ -19,7 +19,6 @@ test('Welcome', async () => {
         <React.StrictMode>
             <DAppKitProvider
                 nodeUrl={'https://testnet.vechain.org/'}
-                genesis={'test'}
                 usePersistence
                 walletConnectOptions={walletConnectOptions}
             >

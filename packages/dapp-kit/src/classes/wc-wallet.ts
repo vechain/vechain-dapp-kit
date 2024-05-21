@@ -1,4 +1,5 @@
 import type {
+    CertificateResponse,
     CertMessage,
     CertOptions,
     ConnectResponse,
@@ -12,21 +13,17 @@ import type {
 class WCWallet implements RemoteWallet {
     constructor(private readonly signer: WCSigner) {}
 
-    connect = async (): Promise<ConnectResponse> => {
-        const account = await this.signer.connect();
+    connect = async (account?: string): Promise<ConnectResponse> =>
+        this.signer.connect(account);
 
-        return {
-            account,
-            verified: false,
-        };
-    };
-
-    signCert = (msg: CertMessage, options: CertOptions) =>
-        this.signer.signCert(msg, options);
+    signCert = (
+        msg: CertMessage,
+        options: CertOptions = {},
+    ): Promise<CertificateResponse> => this.signer.signCert(msg, options);
 
     signTx = (
         msg: ExtendedClause[],
-        options: SendTxOptions,
+        options: SendTxOptions = {},
     ): Promise<WalletTransactionResponse> => this.signer.signTx(msg, options);
 
     disconnect = (): Promise<void> => this.signer.disconnect();

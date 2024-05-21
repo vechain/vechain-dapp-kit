@@ -1,4 +1,4 @@
-import { CompressedBlockDetail } from '@vechain/sdk-network';
+import type { CompressedBlockDetail } from '@vechain/sdk-network';
 
 type NetworkType = 'main' | 'test';
 

@@ -10,13 +10,10 @@ import type {
     WalletSource,
 } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
-import { Certificate } from '@vechain/sdk-core';
-import { ThorClient } from '@vechain/dapp-kit';
-export type {
-    WalletConnectOptions,
-    DAppKitOptions,
-    ThorClient,
-} from '@vechain/dapp-kit';
+import type { Certificate } from '@vechain/sdk-core';
+import type { ThorClient } from '@vechain/sdk-network';
+
+export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
 
 export interface AccountState {
     address: string | null;

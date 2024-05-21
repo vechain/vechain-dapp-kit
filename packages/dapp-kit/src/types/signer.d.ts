@@ -1,11 +1,6 @@
-import { TransactionClause } from '@vechain/sdk-core';
-import { TransactionReceipt } from '@vechain/sdk-network';
+import type { TransactionClause } from '@vechain/sdk-core';
+import type { ThorClient } from '@vechain/sdk-network';
 
-/**
- * Defines the extended clause for sending a transaction.
- * @property comment - The comment for the transaction clause.
- * @property abi - The ABI for the transaction clause.
- */
 type ExtendedClause = TransactionClause & {
     comment?: string;
     abi?: object;
@@ -13,65 +8,60 @@ type ExtendedClause = TransactionClause & {
 
 /**
  * Defines the options for sending a transaction.
- * @property signer - Request an account to send the transaction.
- * @property gas - The gas limit for the transaction.
- * @property dependsOn - The transaction hash that this transaction depends on.
- * @property link - The callback URL for the transaction.
- * @property comment - The comment for the transaction.
- * @property delegator - The delegator for the transaction.
- * @property onAccepted - The callback function that is called when the transaction is sent to the wallet.
  */
 interface SendTxOptions {
+    /** The signer for the transaction. */
     signer?: string;
+    /** The gas limit for the transaction. */
     gas?: number;
+    /** The transaction hash that this transaction depends on. */
     dependsOn?: string;
+    /** The callback URL for the transaction ID. */
     link?: string;
+    /** The comment for the transaction. */
     comment?: string;
+    /** The delegator for the transaction. */
     delegator?: {
         url: string;
         signer?: string;
     };
+    /** The callback function that is called when the transaction is sent to the wallet. */
     onAccepted?: () => void;
 }
 
-/**
- * Defines the response for sending a transaction.
- * @property id - The transaction ID.
- * @property signer - The signer for the transaction.
- */
 interface WalletTransactionResponse {
     readonly txid: string;
     readonly signer: string;
 }
 
 interface TransactionResponse extends WalletTransactionResponse {
-    wait: () => Promise<TransactionReceipt>;
+    wait: () => ReturnType<ThorClient['transactions']['waitForTransaction']>;
 }
 
-type CertificateResponse = {
+interface CertificateResponse {
     annex: {
         domain: string;
         timestamp: number;
         signer: string;
     };
     signature: string;
-};
+}
 
-type CertMessage = {
+interface CertMessage {
     purpose: 'identification' | 'agreement';
     payload: {
         type: 'text';
         content: string;
     };
-};
+}
 
-type CertOptions = {
+interface CertOptions {
     signer?: string;
     link?: string;
     onAccepted?: () => void;
-};
+}
 
-export {
+export type {
     ExtendedClause,
     SendTxOptions,
     WalletTransactionResponse,

@@ -1,16 +1,14 @@
-import type {
-    DAppKitOptions,
-    WalletManager,
-    ThorClient,
-} from '@vechain/dapp-kit';
+import type { DAppKitOptions, WalletManager } from '@vechain/dapp-kit';
 import { DAppKit } from '@vechain/dapp-kit';
-import { CustomWalletConnectModal, ConnectModalManager } from './classes';
+import { ConnectModalManager, CustomWalletConnectModal } from './classes';
 import {
     type CustomizedStyle,
     dispatchCustomEvent,
     initModalAndButton,
 } from './utils';
-import type { SourceInfo, I18n, ThemeMode } from './constants';
+import type { I18n, SourceInfo, ThemeMode } from './constants';
+import type { ThorClient } from '@vechain/sdk-network';
+
 export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
 
 let dappKit: DAppKit | null = null;

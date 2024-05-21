@@ -85,17 +85,20 @@ function App() {
                 abi: fragment.format('json'),
             };
 
-            const { wait } = await requestTransaction([
-                extendedClause,
-                extendedClause,
-                extendedClause,
-                extendedClause,
-            ], {
-                delegator: {
-                    url: "https://sponsor-testnet.vechain.energy/by/90"
+            const { wait } = await requestTransaction(
+                [
+                    extendedClause,
+                    extendedClause,
+                    extendedClause,
+                    extendedClause,
+                ],
+                {
+                    delegator: {
+                        url: 'https://sponsor-testnet.vechain.energy/by/90',
+                    },
+                    gas: 100_000,
                 },
-                gas: 100_000
-            });
+            );
 
             const receipt = await wait();
 

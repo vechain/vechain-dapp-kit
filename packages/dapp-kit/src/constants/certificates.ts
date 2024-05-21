@@ -1,4 +1,4 @@
-import { CertMessage } from '../types';
+import type { CertMessage } from '../types';
 
 const DEFAULT_CONNECT_CERT_MESSAGE: CertMessage = {
     purpose: 'identification',
