@@ -1,37 +1,11 @@
-import {
-    DriverNoVendor,
-    SimpleNet,
-} from '@vechain/connex-driver/dist/index.js';
-import { Framework } from '@vechain/connex-framework';
-import * as ThorDevkit from 'thor-devkit';
 import { WalletManager } from './classes';
-import { DAppKitLogger, normalizeGenesisBlock } from './utils';
+import { DAppKitLogger } from './utils';
 import type { DAppKitOptions } from './types';
-
-const cache: Record<string, DriverNoVendor | undefined> = {};
-
-const createThorDriver = (
-    node: string,
-    genesis: Connex.Thor.Block,
-): DriverNoVendor => {
-    const key = ThorDevkit.blake2b256(
-        JSON.stringify({
-            node,
-            genesis,
-        }),
-    ).toString('hex');
-
-    let driver = cache[key];
-    if (!driver) {
-        driver = new DriverNoVendor(new SimpleNet(node), genesis);
-        cache[key] = driver;
-    }
-    return driver;
-};
+import { HttpClient, ThorClient as SDKClient } from '@vechain/sdk-network';
+import { ThorClient } from './types/types';
 
 class DAppKit {
-    public readonly thor: Connex.Thor;
-    public readonly vendor: Connex.Vendor;
+    public readonly thor: ThorClient;
     public readonly wallet: WalletManager;
 
     constructor(options: DAppKitOptions) {
@@ -40,21 +14,11 @@ class DAppKit {
             DAppKitLogger.debug('DAppKit', 'constructor', options);
         }
 
-        const { nodeUrl, genesis } = options;
+        const client = new HttpClient(options.nodeUrl);
+        const thorClient = new SDKClient(client);
+        const walletManager = new WalletManager(options, thorClient);
 
-        const genesisBlock = normalizeGenesisBlock(genesis);
-
-        const driver = createThorDriver(nodeUrl, genesisBlock);
-
-        const walletManager = new WalletManager(options);
-
-        driver.signTx = walletManager.signTx.bind(walletManager);
-        driver.signCert = walletManager.signCert.bind(walletManager);
-
-        const framework = new Framework(driver);
-
-        this.thor = framework.thor;
-        this.vendor = framework.vendor;
+        this.thor = thorClient;
         this.wallet = walletManager;
     }
 }

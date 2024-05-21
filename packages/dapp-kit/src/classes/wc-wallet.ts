@@ -1,6 +1,15 @@
-import type { ConnectResponse, ConnexWallet, WCSigner } from '../types';
+import type {
+    CertMessage,
+    CertOptions,
+    ConnectResponse,
+    ExtendedClause,
+    RemoteWallet,
+    SendTxOptions,
+    WalletTransactionResponse,
+    WCSigner,
+} from '../types';
 
-class WCWallet implements ConnexWallet {
+class WCWallet implements RemoteWallet {
     constructor(private readonly signer: WCSigner) {}
 
     connect = async (): Promise<ConnectResponse> => {
@@ -12,16 +21,13 @@ class WCWallet implements ConnexWallet {
         };
     };
 
-    signCert = (
-        msg: Connex.Vendor.CertMessage,
-        options: Connex.Signer.CertOptions,
-    ): Promise<Connex.Vendor.CertResponse> =>
+    signCert = (msg: CertMessage, options: CertOptions) =>
         this.signer.signCert(msg, options);
 
     signTx = (
-        msg: Connex.Vendor.TxMessage,
-        options: Connex.Signer.TxOptions,
-    ): Promise<Connex.Vendor.TxResponse> => this.signer.signTx(msg, options);
+        msg: ExtendedClause[],
+        options: SendTxOptions,
+    ): Promise<WalletTransactionResponse> => this.signer.signTx(msg, options);
 
     disconnect = (): Promise<void> => this.signer.disconnect();
 }

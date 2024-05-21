@@ -1,4 +1,6 @@
-const DEFAULT_CONNECT_CERT_MESSAGE: Connex.Vendor.CertMessage = {
+import { CertMessage } from '../types';
+
+const DEFAULT_CONNECT_CERT_MESSAGE: CertMessage = {
     purpose: 'identification',
     payload: {
         type: 'text',
