@@ -34,61 +34,59 @@ class ProviderWallet implements ProviderInternalWallet {
 
     constructor(
         private readonly wallet: WalletManager,
-        private delegationOptions?: DelegationOptions,
+        private readonly delegationOptions?: DelegationOptions,
     ) {
         this.delegationOptions = delegationOptions;
     }
 
-    async getAccount(): Promise<WalletAccount | null> {
+    getAccount(): Promise<WalletAccount | null> {
         const addr = this.wallet.state.address;
 
         if (!addr) {
-            const res = await this.wallet.connect();
-            return {
-                address: res.account,
-            };
+            return Promise.resolve(null);
         }
 
-        return {
+        return Promise.resolve({
             address: addr,
-        };
+        });
     }
 
-    async getAddresses(): Promise<string[]> {
+    getAddresses(): Promise<string[]> {
         const addr = this.wallet.state.address;
 
-        if (addr) return [addr];
+        const addresses = [];
 
-        const res = await this.wallet.connect();
-        return [res.account];
-    }
+        if (addr) addresses.push(addr);
 
-    setDelegator(options: DelegationOptions): void {
-        this.delegationOptions = options;
-    }
-
-    private async connect(addr?: string): Promise<string> {
-        const currentAddress = this.wallet.state.address;
-
-        if (currentAddress === addr) {
-            return addr;
-        }
-
-        const res = await this.wallet.connect(addr);
-        return res.account;
+        return Promise.resolve(addresses);
     }
 
     getDelegator(): Promise<DelegationOptions | null> {
         return Promise.resolve(this.delegationOptions ?? null);
     }
 
-    async getSigner(
+    getSigner(
         parentProvider: VechainProvider,
-        address: string,
-    ): Promise<VechainSigner | null> {
-        const account = await this.connect(address);
+        addressOrIndex?: string | number,
+    ): Promise<VechainSigner> {
+        return Promise.resolve(
+            this.getSignerSync(parentProvider, addressOrIndex),
+        );
+    }
 
-        return new DAppKitSigner(parentProvider, this.wallet, account);
+    getSignerSync(
+        parentProvider: VechainProvider,
+        addressOrIndex?: string | number,
+    ): VechainSigner {
+        if (typeof addressOrIndex === 'string') {
+            return new DAppKitSigner(
+                parentProvider,
+                this.wallet,
+                addressOrIndex,
+            );
+        }
+
+        return new DAppKitSigner(parentProvider, this.wallet);
     }
 }
 

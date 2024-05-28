@@ -1,13 +1,12 @@
-import { HttpClient, ThorClient, VechainProvider } from '@vechain/sdk-network';
-import { WalletManager } from './classes';
+import { HttpClient, ThorClient } from '@vechain/sdk-network';
+import { EthersProvider, ProviderWallet, WalletManager } from './classes';
 import { DAppKitLogger } from './utils';
 import type { DAppKitOptions } from './types';
-import { ProviderWallet } from './classes/provider-wallet';
 
 class DAppKit {
     public readonly thor: ThorClient;
     public readonly wallet: WalletManager;
-    public readonly provider: VechainProvider;
+    public readonly provider: EthersProvider;
 
     constructor(options: DAppKitOptions) {
         if (options.logLevel) {
@@ -23,7 +22,7 @@ class DAppKit {
 
         this.thor = thorClient;
         this.wallet = walletManager;
-        this.provider = new VechainProvider(thorClient, providerWallet);
+        this.provider = new EthersProvider(thorClient, providerWallet);
     }
 }
 

@@ -9,6 +9,7 @@ import type {
     TransactionResponse,
     WalletSource,
 } from '@vechain/dapp-kit';
+import { EthersProvider } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 import type { Certificate } from '@vechain/sdk-core';
 import type { ThorClient } from '@vechain/sdk-network';
@@ -60,4 +61,5 @@ export interface DAppKitContext {
             callback: (address: string | null) => void,
         ) => void;
     };
+    provider: EthersProvider;
 }

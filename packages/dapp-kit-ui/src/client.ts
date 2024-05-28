@@ -1,5 +1,6 @@
 import type { DAppKitOptions, WalletManager } from '@vechain/dapp-kit';
 import { DAppKit } from '@vechain/dapp-kit';
+import type { ThorClient } from '@vechain/sdk-network';
 import { ConnectModalManager, CustomWalletConnectModal } from './classes';
 import {
     type CustomizedStyle,
@@ -7,7 +8,6 @@ import {
     initModalAndButton,
 } from './utils';
 import type { I18n, SourceInfo, ThemeMode } from './constants';
-import type { ThorClient } from '@vechain/sdk-network';
 
 export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
 

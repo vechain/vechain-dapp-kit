@@ -133,6 +133,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
                 close: closeModal,
                 onConnectionStatusChange: onModalConnected,
             },
+            provider: dappKit.provider,
         };
     }, [
         dappKit,
@@ -155,6 +156,16 @@ export const useThor = (): DAppKitContext['thor'] => {
     }
 
     return context.thor;
+};
+
+export const useProvider = (): DAppKitContext['provider'] => {
+    const context = useContext(Context);
+
+    if (!context) {
+        throw new Error('"useProvider" must be used within a ConnexProvider');
+    }
+
+    return context.provider;
 };
 
 export const useWallet = (): DAppKitContext['wallet'] => {
