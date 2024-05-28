@@ -41,7 +41,7 @@ export const DAppKitUI = {
             modalParent: options.modalParent,
         });
 
-        // configure bottons and modals options
+        // configure buttons and modals options
         initModalAndButton(options);
         dispatchCustomEvent('vdk-dapp-kit-configured');
 
