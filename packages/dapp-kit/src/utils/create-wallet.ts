@@ -26,7 +26,7 @@ const getGenesisBlock =
     async () => {
         const block = await thorClient.blocks.getGenesisBlock();
 
-        if (!block) {
+        if (block === null) {
             throw new Error('Failed to get genesis block');
         }
 
