@@ -1,6 +1,6 @@
-import * as ThorDevkit from 'thor-devkit';
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
+import { certificate } from '@vechain/sdk-core';
 import type {
     ConnectResponse,
     ConnexWallet,
@@ -8,7 +8,7 @@ import type {
     WalletManagerState,
     WalletSource,
 } from '../types';
-import { DAppKitLogger, Storage, createWallet } from '../utils';
+import { createWallet, DAppKitLogger, Storage } from '../utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
 
 class WalletManager {
@@ -89,7 +89,7 @@ class WalletManager {
         };
 
         try {
-            ThorDevkit.Certificate.verify(connectionCertificate);
+            certificate.verify(connectionCertificate);
             this.state.address = signer;
             this.state.connectionCertificate = connectionCertificate;
             return {
