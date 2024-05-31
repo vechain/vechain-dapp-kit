@@ -32,7 +32,6 @@
         "@walletconnect/sign-client": "2.10.2",
         "@walletconnect/utils": "2.10.2",
         "events": "^3.3.0",
-        "thor-devkit": "2.0.5",
         "valtio": "1.11.2"
     },
     "devDependencies": {
