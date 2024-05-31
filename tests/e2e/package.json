@@ -10,7 +10,9 @@
         "test:e2e": "DEBUG=cucumber cucumber-js",
         "test:e2e:headless": "SELENIUM_HEADLESS=true cucumber-js"
     },
-    "dependencies": {},
+    "dependencies": {
+        "@vechain/sdk-core": "1.0.0-beta.10"
+    },
     "devDependencies": {
         "@cucumber/cucumber": "^10.3.1",
         "@serenity-js/console-reporter": "^3.4.1",
