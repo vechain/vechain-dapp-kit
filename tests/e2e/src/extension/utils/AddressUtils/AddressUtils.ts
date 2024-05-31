@@ -1,22 +1,4 @@
-import { address } from 'thor-devkit';
-
-const PREFIX = '0x';
-const PREFIX_REGEX = /^0[xX]/;
-
-/**
- * Returns the provided hex string with the hex prefix added.
- * If the prefix already exists the string is returned unmodified.
- * If the string contains an UPPER case `X` in the prefix it will be replaced with a lower case `x`
- * @param hex - the input hex string
- * @returns the input hex string with the hex prefix added
- * @throws an error if the input is not a valid hex string
- */
-const addPrefix = (hex: string): string => {
-    validate(hex);
-    return PREFIX_REGEX.test(hex)
-        ? hex.replace(PREFIX_REGEX, PREFIX)
-        : `${PREFIX}${hex}`;
-};
+import { addressUtils, Hex0x } from '@vechain/sdk-core';
 
 /**
  * Validate the hex string. Throws an Error if not valid
@@ -24,16 +6,8 @@ const addPrefix = (hex: string): string => {
  * @throws an error if the input is not a valid hex string
  */
 const validate = (hex: string) => {
-    if (!isValid(hex)) throw Error(`Provided hex value is not valid ${hex}`);
-};
-
-export const isValid = (addr: string): boolean => {
-    try {
-        address.toChecksumed(addPrefix(addr));
-        return true;
-    } catch (e) {
-        return false;
-    }
+    if (!addressUtils.isAddress(hex))
+        throw Error(`Provided hex value is not valid ${hex}`);
 };
 
 /**
@@ -41,12 +15,13 @@ export const isValid = (addr: string): boolean => {
  *  - The two values are equal OR
  *  - The checksumed addresses are equal
  *
- * @param address1
- * @param address2
+ * @param address1 - the first address
+ * @param address2 - the second address
+ * @returns true if the addresses are equal
  */
 export const compareAddresses = (
-    address1: unknown,
-    address2: unknown,
+    address1: unknown | string,
+    address2: unknown | string,
 ): boolean => {
     if (typeof address1 !== 'string' || typeof address2 !== 'string')
         return false;
@@ -54,11 +29,11 @@ export const compareAddresses = (
     if (address2 === address1) return true;
 
     try {
-        address1 = addPrefix(address1);
-        address2 = addPrefix(address2);
+        address1 = Hex0x(address1);
+        address2 = Hex0x(address2);
         return (
-            address.toChecksumed(address1 as string) ===
-            address.toChecksumed(address2 as string)
+            addressUtils.toERC55Checksum(address1 as string) ===
+            addressUtils.toERC55Checksum(address2 as string)
         );
     } catch (e) {
         return false;
