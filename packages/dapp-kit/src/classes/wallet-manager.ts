@@ -1,6 +1,5 @@
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
-import { certificate } from '@vechain/sdk-core';
 import type {
     ConnectResponse,
     ConnexWallet,
@@ -10,6 +9,7 @@ import type {
 } from '../types';
 import { createWallet, DAppKitLogger, Storage } from '../utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
+import { certificate } from '@vechain/sdk-core';
 
 class WalletManager {
     public readonly state: WalletManagerState;
