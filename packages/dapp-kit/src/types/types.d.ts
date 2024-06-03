@@ -1,5 +1,5 @@
-import type { Certificate } from '@vechain/sdk-core';
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
+import { type Certificate } from '@vechain/sdk-core';
 import type { LogLevel } from '../utils/logger';
 
 declare global {
