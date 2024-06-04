@@ -10,6 +10,16 @@ import type { DAppKitOptions } from './types';
 
 const cache: Record<string, DriverNoVendor | undefined> = {};
 
+/**
+ * START: TEMPORARY COMMENT
+ * For hashing we will improve SDK conversion and encoding later
+ * END: TEMPORARY COMMENT
+ *
+ * Create a new Thor driver
+ *
+ * @param node - The node URL
+ * @param genesis - The genesis block
+ */
 const createThorDriver = (
     node: string,
     genesis: Connex.Thor.Block,
@@ -22,7 +32,7 @@ const createThorDriver = (
 
     // Encode the certificate to hash
     const encodedCertificateToHash = new TextEncoder().encode(
-        certificateToHash.normalize('NFKC'),
+        certificateToHash.normalize(),
     );
 
     // Get the key (the hash of the certificate) without 0x prefix
