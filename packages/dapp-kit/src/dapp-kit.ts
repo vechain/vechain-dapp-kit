@@ -3,7 +3,7 @@ import {
     SimpleNet,
 } from '@vechain/connex-driver/dist/index.js';
 import { Framework } from '@vechain/connex-framework';
-import * as ThorDevkit from 'thor-devkit';
+import { blake2b256, Hex } from '@vechain/sdk-core';
 import { WalletManager } from './classes';
 import { DAppKitLogger, normalizeGenesisBlock } from './utils';
 import type { DAppKitOptions } from './types';
@@ -14,12 +14,21 @@ const createThorDriver = (
     node: string,
     genesis: Connex.Thor.Block,
 ): DriverNoVendor => {
-    const key = ThorDevkit.blake2b256(
-        JSON.stringify({
-            node,
-            genesis,
-        }),
-    ).toString('hex');
+    // Stringify the certificate to hash
+    const certificateToHash = JSON.stringify({
+        node,
+        genesis,
+    });
+
+    // Encode the certificate to hash
+    const encodedCertificateToHash = new TextEncoder().encode(
+        certificateToHash.normalize('NFKC'),
+    );
+
+    // Get the key (the hash of the certificate) without 0x prefix
+    const key: string = Hex.canon(
+        blake2b256(new Uint8Array(encodedCertificateToHash), 'hex'),
+    );
 
     let driver = cache[key];
     if (!driver) {
