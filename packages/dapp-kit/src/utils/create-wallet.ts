@@ -1,7 +1,6 @@
-import * as ConnexLib from '@vechain/connex';
 import type {
-    ConnexWallet,
     DAppKitOptions,
+    RemoteWallet,
     WalletSource,
     WCClient,
     WCModal,
@@ -11,24 +10,36 @@ import { WCWallet } from '../classes/wc-wallet';
 import { createWcClient } from './create-wc-client';
 import { createWcModal } from './create-wc-modal';
 import { createWcSigner } from './create-wc-signer';
-import { convertVendorToSigner } from './convert-vendor-to-signer';
-import { normalizeGenesisId } from './genesis';
 import { DAppKitLogger } from './logger';
+import { createSync, createSync2 } from './sync-signers';
+import { ThorClient } from '@vechain/sdk-network';
+import { GetGenesisBlockFunc } from '../types/types';
 
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
     onDisconnected: () => void;
+    thorClient: ThorClient;
 };
+
+const getGenesisBlock =
+    (thorClient: ThorClient): GetGenesisBlockFunc =>
+    async () => {
+        const block = await thorClient.blocks.getGenesisBlock();
+
+        if (block === null) {
+            throw new Error('Failed to get genesis block');
+        }
+
+        return block;
+    };
 
 export const createWallet = ({
     source,
-    genesis,
     walletConnectOptions,
     onDisconnected,
     connectionCertificate,
-}: ICreateWallet): ConnexWallet => {
-    const genesisId = normalizeGenesisId(genesis);
-
+    thorClient,
+}: ICreateWallet): RemoteWallet => {
     DAppKitLogger.debug('createWallet', source);
 
     switch (source) {
@@ -37,27 +48,25 @@ export const createWallet = ({
                 throw new Error('User is not in a Sync wallet');
             }
 
-            const vendor = new ConnexLib.Connex.Vendor(genesisId, 'sync');
+            const vendor = createSync(getGenesisBlock(thorClient));
 
-            return new CertificateBasedWallet(
-                convertVendorToSigner(vendor),
-                connectionCertificate,
-            );
+            return new CertificateBasedWallet(vendor, connectionCertificate);
         }
         case 'sync2': {
-            const vendor = new ConnexLib.Connex.Vendor(genesisId, 'sync2');
+            const vendor = createSync2(getGenesisBlock(thorClient));
 
-            return new CertificateBasedWallet(
-                convertVendorToSigner(vendor),
-                connectionCertificate,
-            );
+            return new CertificateBasedWallet(vendor, connectionCertificate);
         }
         case 'veworld': {
             if (!window.vechain) {
                 throw new Error('VeWorld Extension is not installed');
             }
 
-            const signer = window.vechain.newConnexSigner(genesisId);
+            const signer = getGenesisBlock(thorClient)().then(
+                (genesisBlock) => {
+                    return window.vechain!.newConnexSigner(genesisBlock.id);
+                },
+            );
 
             return new CertificateBasedWallet(signer, connectionCertificate);
         }
@@ -76,7 +85,7 @@ export const createWallet = ({
             const web3Modal: WCModal = modal ?? createWcModal(projectId);
 
             const wallet = createWcSigner({
-                genesisId,
+                getGenesisBlock: getGenesisBlock(thorClient),
                 wcClient,
                 web3Modal,
                 onDisconnected,

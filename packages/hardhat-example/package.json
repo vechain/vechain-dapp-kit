@@ -1,0 +1,30 @@
+{
+    "name": "@vechain/hardhat-example",
+    "version": "1.0.0",
+    "private": true,
+    "main": "./dist/index.mjs",
+    "types": "typechain-types/index.ts",
+    "scripts": {
+        "build": "yarn compile; tsup typechain-types/index.ts --format esm,cjs",
+        "clean": "rm -rf artifacts/ cache/ typechain-types/",
+        "compile": "hardhat compile",
+        "purge": "yarn clean"
+    },
+    "devDependencies": {
+        "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+        "@nomicfoundation/hardhat-ethers": "^3.0.0",
+        "@nomicfoundation/hardhat-ignition": "^0.15.4",
+        "@nomicfoundation/hardhat-ignition-ethers": "^0.15.0",
+        "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+        "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+        "@nomicfoundation/hardhat-verify": "^2.0.0",
+        "@nomicfoundation/ignition-core": "^0.15.4",
+        "@typechain/ethers-v6": "^0.5.0",
+        "@typechain/hardhat": "^9.0.0",
+        "@types/mocha": ">=9.1.0",
+        "hardhat": "^2.22.4",
+        "hardhat-gas-reporter": "^1.0.8",
+        "solidity-coverage": "^0.8.1",
+        "typechain": "^8.3.0"
+    }
+}

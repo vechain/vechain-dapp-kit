@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { SignClient } from '@walletconnect/sign-client';
-import { createUnitTestConnex } from '../helpers/connex-helper';
+import { createUnitTestDAppKit } from '../helpers/connex-helper';
 import type { WalletConnectOptions } from '../../src';
 import { mockedSignClient } from '../helpers/mocked-sign-client';
 import { certMessage } from '../helpers/request-data';
@@ -20,9 +20,9 @@ vi.spyOn(SignClient, 'init').mockResolvedValue(mockedSignClient);
 describe('wallet-connect', () => {
     describe('no options provided', () => {
         it('get available sources - should not include WC', () => {
-            const connex = createUnitTestConnex();
+            const dk = createUnitTestDAppKit();
 
-            const sources = connex.wallet.state.availableSources;
+            const sources = dk.wallet.state.availableSources;
 
             expect(sources).not.toContain('wallet-connect');
         });
@@ -30,41 +30,39 @@ describe('wallet-connect', () => {
 
     describe('options provided', () => {
         it('get available sources - should include WC', () => {
-            const connex = createUnitTestConnex(wcOptions);
+            const dk = createUnitTestDAppKit(wcOptions);
 
-            const sources = connex.wallet.state.availableSources;
+            const sources = dk.wallet.state.availableSources;
 
             expect(sources).toContain('wallet-connect');
         });
 
         it('can connect', async () => {
-            const connex = createUnitTestConnex(wcOptions);
+            const dk = createUnitTestDAppKit(wcOptions);
 
-            connex.wallet.setSource('wallet-connect');
+            dk.wallet.setSource('wallet-connect');
 
-            const acc = await connex.wallet.connect();
+            const acc = await dk.wallet.connect();
 
             expect(acc).toBeDefined();
         });
 
         it('it can sign a cert', async () => {
-            const connex = createUnitTestConnex(wcOptions);
+            const dk = createUnitTestDAppKit(wcOptions);
 
-            connex.wallet.setSource('wallet-connect');
+            dk.wallet.setSource('wallet-connect');
 
-            const certRes = await connex.vendor
-                .sign('cert', certMessage)
-                .request();
+            const certRes = await dk.wallet.signCert(certMessage);
 
             expect(certRes).toBeDefined();
         });
 
         it('can sign a tx', async () => {
-            const connex = createUnitTestConnex(wcOptions);
+            const dk = createUnitTestDAppKit(wcOptions);
 
-            connex.wallet.setSource('wallet-connect');
+            dk.wallet.setSource('wallet-connect');
 
-            const txRes = await connex.vendor.sign('tx', []).request();
+            const txRes = await dk.wallet.requestTransaction([]);
 
             expect(txRes).toBeDefined();
         });

@@ -1,6 +1,8 @@
-import * as chrome from 'selenium-webdriver/chrome';
 import util from 'util';
 import { exec as execSync } from 'child_process';
+import * as path from 'path';
+import * as console from 'console';
+import { By } from 'selenium-webdriver/lib/by';
 import wd, {
     Key,
     Session,
@@ -8,15 +10,13 @@ import wd, {
     WebDriver,
     WebElement,
 } from 'selenium-webdriver';
-import * as http from 'selenium-webdriver/http';
-import Locators from './Locators';
-import { By } from 'selenium-webdriver/lib/by';
-import * as path from 'path';
-import * as console from 'console';
+import * as chrome from 'selenium-webdriver/chrome';
 import { Mutex } from 'async-mutex';
-import TestDefaults from '../TestDefaults';
 import { ShadowRoot } from 'selenium-webdriver/lib/webdriver';
+import { Executor } from 'selenium-webdriver/lib/command';
 import { ROUTES } from '../enums';
+import TestDefaults from '../TestDefaults';
+import Locators from './Locators';
 
 const exec = util.promisify(execSync);
 
@@ -84,7 +84,7 @@ export const buildWebDriver = async (
         await driver.manage().setTimeouts({ implicit: TestDefaults.TIMEOUT });
 
         const session = await driver.getSession();
-        const executor = driver.getExecutor();
+        const executor: Executor = driver.getExecutor();
         const extensionDriver = new ExtensionDriver(session, executor);
 
         globalWebDriver = extensionDriver;
@@ -102,7 +102,7 @@ export const buildWebDriver = async (
 export class ExtensionDriver extends WebDriver {
     private extensionUrl: string | undefined;
 
-    constructor(session: Session | Promise<Session>, executor: http.Executor) {
+    constructor(session: Session | Promise<Session>, executor: Executor) {
         super(session, executor);
     }
 
@@ -143,7 +143,7 @@ export class ExtensionDriver extends WebDriver {
         }
         const id = await element.getId();
         throw Error(
-            'Timed out searching for shadow root on element with ID: ' + id,
+            `Timed out searching for shadow root on element with ID: ${id}`,
         );
     };
 
@@ -160,8 +160,7 @@ export class ExtensionDriver extends WebDriver {
             }
         }
         throw Error(
-            'Timed out searching for shadow root on locator: ' +
-                locator.toString(),
+            `Timed out searching for shadow root on locator: ${locator.toString()}`,
         );
     };
 
@@ -189,7 +188,7 @@ export class ExtensionDriver extends WebDriver {
             );
         } catch (e) {
             console.error(
-                'Failed to scroll into view for element ID: ' + elementId,
+                `Failed to scroll into view for element ID: ${elementId}`,
                 e,
             );
             throw e;
@@ -208,7 +207,7 @@ export class ExtensionDriver extends WebDriver {
                 await this.sleep(sleepTime);
             }
         }
-        throw Error('Could not find the shadow root element: ' + locator.value);
+        throw Error(`Could not find the shadow root element: ${locator.value}`);
     };
 
     public waitAndClick = async (locator: By) => {
@@ -243,7 +242,7 @@ export class ExtensionDriver extends WebDriver {
             await this.sleep(sleepTime);
         }
         throw Error(
-            'Timed out waiting for element to be removed: ' + locator.value,
+            `Timed out waiting for element to be removed: ${locator.value}`,
         );
     };
 
@@ -275,27 +274,6 @@ export class ExtensionDriver extends WebDriver {
                 until.elementLocated(locator),
                 timeout,
                 `Timed out waiting until element located by: ${
-                    locator.value
-                } on page: ${
-                    debug ? await this.getPageSource() : 'NOT LOGGED'
-                }`,
-            );
-        } catch (e) {
-            console.log(`Timed out waiting for element ${locator.value}`);
-            throw e;
-        }
-    };
-
-    public waitUntilElements = async (
-        locator: By,
-        timeout = TestDefaults.TIMEOUT,
-        debug = false,
-    ): Promise<WebElement[]> => {
-        try {
-            return await this.wait(
-                until.elementsLocated(locator),
-                timeout,
-                `Timed out waiting until elements located by: ${
                     locator.value
                 } on page: ${
                     debug ? await this.getPageSource() : 'NOT LOGGED'

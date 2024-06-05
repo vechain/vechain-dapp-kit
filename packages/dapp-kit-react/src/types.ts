@@ -1,10 +1,20 @@
-/// <reference types="@vechain/connex" />
 import type React from 'react';
-import * as ThorDevkit from 'thor-devkit';
-import type { ConnectResponse, WalletSource } from '@vechain/dapp-kit';
+import type {
+    CertificateResponse,
+    CertMessage,
+    CertOptions,
+    ConnectResponse,
+    ExtendedClause,
+    SendTxOptions,
+    TransactionResponse,
+    WalletSource,
+} from '@vechain/dapp-kit';
+import { EthersProvider } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
+import type { Certificate } from '@vechain/sdk-core';
+import type { ThorClient } from '@vechain/sdk-network';
+
 export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
-export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 
 export interface AccountState {
     address: string | null;
@@ -26,18 +36,23 @@ export type DAppKitProviderOptions = DAppKitUIOptions & {
  */
 
 export interface DAppKitContext {
-    connex: {
-        thor: Connex.Thor;
-        vendor: Connex.Vendor;
-    };
+    thor: ThorClient;
     wallet: {
         setSource: (source: WalletSource) => void;
+        requestTransaction: (
+            clauses: ExtendedClause[],
+            options?: SendTxOptions,
+        ) => Promise<TransactionResponse>;
+        signCertificate: (
+            msg: CertMessage,
+            options?: CertOptions,
+        ) => Promise<CertificateResponse>;
         availableWallets: WalletSource[];
         disconnect: () => void;
         connect: () => Promise<ConnectResponse>;
         account: string | null;
         source: WalletSource | null;
-        connectionCertificate: ThorDevkit.Certificate | null;
+        connectionCertificate: Certificate | null;
     };
     modal: {
         open: () => void;
@@ -46,4 +61,5 @@ export interface DAppKitContext {
             callback: (address: string | null) => void,
         ) => void;
     };
+    provider: EthersProvider;
 }

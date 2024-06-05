@@ -39,3 +39,13 @@ yarn-error.log*
 .parcel-cache
 
 .reports
+
+packages/**/dist
+packages/**/.turbo
+packages/**/node_modules
+apps/**/dist
+apps/**/.turbo
+apps/**/node_modules
+docs/**/dist
+
+coverageUnit

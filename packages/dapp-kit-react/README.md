@@ -27,7 +27,7 @@ const walletConnectOptions: WalletConnectOptions = {
 };
 ```
 
--   Initialise the `DAppKitProvider`
+-   Initialise the `ProviderWallet`
 
 ```typescript jsx
 import { DAppKitProvider } from '@vechain/dapp-kit-react';
@@ -37,8 +37,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <DAppKitProvider
             // REQUIRED: The URL of the node you want to connect to
             nodeUrl={'https://testnet.vechain.org/'}
-            // OPTIONAL: Required if you're not connecting to the main net
-            genesis={'test'}
             // OPTIONAL: Whether or not to persist state in local storage (account, wallet source)
             usePersistence={true}
             // OPTIONAL: Options to enable wallet connect

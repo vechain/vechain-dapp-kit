@@ -1,14 +1,23 @@
-import * as ThorDevkit from 'thor-devkit';
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
 import type { LogLevel } from '../utils/logger';
+import type { Certificate } from '@vechain/sdk-core';
+import type {
+    CertificateResponse,
+    CertMessage,
+    CertOptions,
+    ExtendedClause,
+    SendTxOptions,
+    WalletTransactionResponse,
+} from './signer';
+import { CompressedBlockDetail } from '@vechain/sdk-network';
 
 declare global {
     interface Window {
         vechain?: {
-            newConnexSigner: (genesisId: string) => Connex.Signer;
+            newConnexSigner: (genesisId: string) => BaseWallet;
             isInAppBrowser?: boolean;
         };
-        connex?: unknown;
+        connex?: any;
     }
 }
 
@@ -18,12 +27,12 @@ interface WalletConfig {
     requiresCertificate: boolean;
 }
 
-type Genesis = 'main' | 'test' | Connex.Thor.Block;
+type Genesis = 'main' | 'test';
 
 /**
  * Options for the DAppKit class
  * @param nodeUrl - The URL of the VeChain node to connect to
- * @param genesis - Optional. The genesis block of the VeChain network you want to connect to. Eg, 'main', 'test', or a Connex.Thor.Block object
+ * @param genesis - Optional. The genesis block of the VeChain network you want to connect to. Eg, 'main', 'test'
  * @param onDisconnected - A callback that will be called when the session is disconnected
  * @param walletConnectOptions - Optional. Options for the WalletConnect integration
  * @param usePersistence - Optional. Whether to persist the wallet source/ account
@@ -32,46 +41,55 @@ type Genesis = 'main' | 'test' | Connex.Thor.Block;
  */
 interface DAppKitOptions {
     nodeUrl: string;
-    genesis?: Genesis;
     walletConnectOptions?: WalletConnectOptions;
     usePersistence?: boolean;
     useFirstDetectedSource?: boolean;
     logLevel?: LogLevel;
     requireCertificate?: boolean;
     connectionCertificate?: {
-        message?: Connex.Vendor.CertMessage;
-        options?: Connex.Signer.CertOptions;
+        message?: CertMessage;
+        options?: CertOptions;
     };
 }
 
-type BaseWallet = Connex.Signer & {
-    disconnect?: () => Promise<void> | void;
-};
+interface BaseWallet {
+    signTx: (
+        clauses: ExtendedClause[],
+        options?: SendTxOptions,
+    ) => Promise<WalletTransactionResponse>;
+    signCert: (
+        msg: CertMessage,
+        options?: CertOptions,
+    ) => Promise<CertificateResponse>;
+}
 
 /**
- * Modifies the Connex.Signer interface to include a disconnect method
+ * Modifies the BaseWallet interface to include a connect/disconnect method
  */
-type ConnexWallet = BaseWallet & {
-    connect: () => Promise<ConnectResponse>;
+type RemoteWallet = BaseWallet & {
+    connect: (addr?: string) => Promise<ConnectResponse>;
+    disconnect?: () => Promise<void>;
 };
 
 interface ConnectResponse {
     account: string;
     verified: boolean;
-    connectionCertificate?: ThorDevkit.Certificate;
+    connectionCertificate?: Certificate;
 }
 
 interface WalletManagerState {
     source: WalletSource | null;
     address: string | null;
     availableSources: WalletSource[];
-    connectionCertificate: ThorDevkit.Certificate | null;
+    connectionCertificate: Certificate | null;
 }
+
+export type GetGenesisBlockFunc = () => Promise<CompressedBlockDetail>;
 
 export type {
     BaseWallet,
     DAppKitOptions,
-    ConnexWallet,
+    RemoteWallet,
     WalletConfig,
     WalletSource,
     WalletManagerState,

@@ -1,17 +1,17 @@
 import { beforeEach, expect } from 'vitest';
 import { mockedConnexSigner } from '../helpers/mocked-signer';
-import { createUnitTestConnex } from '../helpers/connex-helper';
+import { createUnitTestDAppKit } from '../helpers/connex-helper';
 
 describe('veworld', () => {
     describe('is in veworld browser', () => {
         beforeEach(() => {
             window.vechain = {
-                newConnexSigner: (): Connex.Signer => mockedConnexSigner,
+                newConnexSigner: () => mockedConnexSigner,
             };
         });
 
         it('should connect', async () => {
-            const connex = createUnitTestConnex();
+            const connex = createUnitTestDAppKit();
 
             connex.wallet.setSource('veworld');
 
@@ -21,7 +21,7 @@ describe('veworld', () => {
         });
 
         it('can disconnect', async () => {
-            const connex = createUnitTestConnex();
+            const connex = createUnitTestDAppKit();
 
             connex.wallet.setSource('veworld');
 
@@ -33,7 +33,7 @@ describe('veworld', () => {
         });
 
         it('get available sources - should include veworld', () => {
-            const connex = createUnitTestConnex();
+            const connex = createUnitTestDAppKit();
 
             const sources = connex.wallet.state.availableSources;
 

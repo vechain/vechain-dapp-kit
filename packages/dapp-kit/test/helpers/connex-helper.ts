@@ -2,7 +2,7 @@ import { vi } from 'vitest';
 import type { WalletConnectOptions } from '../../src';
 import { DAppKit } from '../../src';
 
-export const createUnitTestConnex = (
+export const createUnitTestDAppKit = (
     walletConnectOptions?: WalletConnectOptions,
 ): DAppKit => {
     if (walletConnectOptions) {

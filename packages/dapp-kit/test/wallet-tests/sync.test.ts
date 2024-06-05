@@ -1,38 +1,13 @@
 import { beforeEach, expect, vi } from 'vitest';
 import { mockedConnexSigner } from '../helpers/mocked-signer';
-import { createUnitTestConnex } from '../helpers/connex-helper';
+import { createUnitTestDAppKit } from '../helpers/connex-helper';
 import { genesisBlocks } from '../../src';
-import { Connex } from '@vechain/connex';
+import { createSync } from '../../src/utils/sync-signers';
 
-vi.mock('@vechain/connex');
+vi.mock('../../src/utils/sync-signers');
 
-vi.mocked(Connex.Vendor).mockImplementation((): Connex.Vendor => {
-    return {
-        sign: ((
-            type: string,
-            msg: Connex.Vendor.TxMessage | Connex.Vendor.CertMessage,
-        ) => {
-            if (type === 'tx') {
-                return {
-                    request: () => {
-                        return mockedConnexSigner.signTx(
-                            msg as Connex.Vendor.TxMessage,
-                            {},
-                        );
-                    },
-                };
-            } else {
-                return {
-                    request: () => {
-                        return mockedConnexSigner.signCert(
-                            msg as Connex.Vendor.CertMessage,
-                            {},
-                        );
-                    },
-                };
-            }
-        }) as any,
-    };
+vi.mocked(createSync).mockImplementation(() => {
+    return Promise.resolve(mockedConnexSigner);
 });
 
 describe('sync', () => {
@@ -51,7 +26,7 @@ describe('sync', () => {
         });
 
         it('window.connex is defined - should connect', async () => {
-            const connex = createUnitTestConnex();
+            const connex = createUnitTestDAppKit();
 
             connex.wallet.setSource('sync');
 
@@ -61,7 +36,7 @@ describe('sync', () => {
         });
 
         it('get available sources - should include sync', () => {
-            const connex = createUnitTestConnex();
+            const connex = createUnitTestDAppKit();
 
             const sources = connex.wallet.state.availableSources;
 
@@ -75,7 +50,7 @@ describe('sync', () => {
         });
 
         it('window.connex not defined - should throw error', () => {
-            const connex = createUnitTestConnex();
+            const connex = createUnitTestDAppKit();
 
             expect(() => connex.wallet.setSource('sync')).toThrowError(
                 'User is not in a Sync wallet',
@@ -83,7 +58,7 @@ describe('sync', () => {
         });
 
         it('get available sources - should not include sync', () => {
-            const connex = createUnitTestConnex();
+            const connex = createUnitTestDAppKit();
 
             const sources = connex.wallet.state.availableSources;
 

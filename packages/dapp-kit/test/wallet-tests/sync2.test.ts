@@ -1,42 +1,18 @@
 import { expect, vi } from 'vitest';
-import { createUnitTestConnex } from '../helpers/connex-helper';
-import { Connex } from '@vechain/connex';
+import { createUnitTestDAppKit } from '../helpers/connex-helper';
 import { mockedConnexSigner } from '../helpers/mocked-signer';
 
-vi.mock('@vechain/connex');
+import { createSync2 } from '../../src/utils/sync-signers';
 
-vi.mocked(Connex.Vendor).mockImplementation((): Connex.Vendor => {
-    return {
-        sign: ((
-            type: string,
-            msg: Connex.Vendor.TxMessage | Connex.Vendor.CertMessage,
-        ) => {
-            if (type === 'tx') {
-                return {
-                    request: () => {
-                        return mockedConnexSigner.signTx(
-                            msg as Connex.Vendor.TxMessage,
-                            {},
-                        );
-                    },
-                };
-            } else {
-                return {
-                    request: () => {
-                        return mockedConnexSigner.signCert(
-                            msg as Connex.Vendor.CertMessage,
-                            {},
-                        );
-                    },
-                };
-            }
-        }) as any,
-    };
+vi.mock('../../src/utils/sync-signers');
+
+vi.mocked(createSync2).mockImplementation(() => {
+    return Promise.resolve(mockedConnexSigner);
 });
 
 describe('sync2', () => {
     it('should connect', async () => {
-        const connex = createUnitTestConnex();
+        const connex = createUnitTestDAppKit();
 
         connex.wallet.setSource('sync2');
 
@@ -46,7 +22,7 @@ describe('sync2', () => {
     });
 
     it('is always available', () => {
-        const connex = createUnitTestConnex();
+        const connex = createUnitTestDAppKit();
 
         const sources = connex.wallet.state.availableSources;
 

@@ -1,38 +1,12 @@
-import {
-    DriverNoVendor,
-    SimpleNet,
-} from '@vechain/connex-driver/dist/index.js';
-import { Framework } from '@vechain/connex-framework';
-import * as ThorDevkit from 'thor-devkit';
-import { WalletManager } from './classes';
-import { DAppKitLogger, normalizeGenesisBlock } from './utils';
+import { HttpClient, ThorClient } from '@vechain/sdk-network';
+import { EthersProvider, ProviderWallet, WalletManager } from './classes';
+import { DAppKitLogger } from './utils';
 import type { DAppKitOptions } from './types';
 
-const cache: Record<string, DriverNoVendor | undefined> = {};
-
-const createThorDriver = (
-    node: string,
-    genesis: Connex.Thor.Block,
-): DriverNoVendor => {
-    const key = ThorDevkit.blake2b256(
-        JSON.stringify({
-            node,
-            genesis,
-        }),
-    ).toString('hex');
-
-    let driver = cache[key];
-    if (!driver) {
-        driver = new DriverNoVendor(new SimpleNet(node), genesis);
-        cache[key] = driver;
-    }
-    return driver;
-};
-
 class DAppKit {
-    public readonly thor: Connex.Thor;
-    public readonly vendor: Connex.Vendor;
+    public readonly thor: ThorClient;
     public readonly wallet: WalletManager;
+    public readonly provider: EthersProvider;
 
     constructor(options: DAppKitOptions) {
         if (options.logLevel) {
@@ -40,22 +14,15 @@ class DAppKit {
             DAppKitLogger.debug('DAppKit', 'constructor', options);
         }
 
-        const { nodeUrl, genesis } = options;
+        const client = new HttpClient(options.nodeUrl);
 
-        const genesisBlock = normalizeGenesisBlock(genesis);
+        const thorClient = new ThorClient(client);
+        const walletManager = new WalletManager(options, thorClient);
+        const providerWallet = new ProviderWallet(walletManager);
 
-        const driver = createThorDriver(nodeUrl, genesisBlock);
-
-        const walletManager = new WalletManager(options);
-
-        driver.signTx = walletManager.signTx.bind(walletManager);
-        driver.signCert = walletManager.signCert.bind(walletManager);
-
-        const framework = new Framework(driver);
-
-        this.thor = framework.thor;
-        this.vendor = framework.vendor;
+        this.thor = thorClient;
         this.wallet = walletManager;
+        this.provider = new EthersProvider(thorClient, providerWallet);
     }
 }
 
