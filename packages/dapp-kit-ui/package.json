@@ -37,16 +37,15 @@
     "dependencies": {
         "@vechain/dapp-kit": "*",
         "@vechain/picasso": "2.1.1",
-        "@vechain/sdk-core": "1.0.0-beta.6",
-        "@vechain/sdk-logging": "^1.0.0-beta.6",
-        "@vechain/sdk-network": "1.0.0-beta.6",
+        "@vechain/sdk-core": "1.0.0-beta.13",
+        "@vechain/sdk-logging": "^1.0.0-beta.13",
+        "@vechain/sdk-network": "1.0.0-beta.13",
         "@wagmi/core": "^1.4.5",
         "@web3modal/ethereum": "^2.7.1",
         "@web3modal/html": "^2.7.1",
         "lit": "^3.0.0",
         "qrcode": "1.5.3",
-        "valtio": "1.11.2",
-        "viem": "^1.18.4"
+        "valtio": "1.11.2"
     },
     "devDependencies": {
         "@types/qrcode": "^1.5.5",
@@ -62,6 +61,6 @@
         "typechain": "^8.3.2",
         "typescript": "~5.2.0",
         "vite": "^4.5.2",
-        "vitest": "^0.34.6"
+        "vitest": "1.5.3"
     }
 }

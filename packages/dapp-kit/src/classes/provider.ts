@@ -1,8 +1,8 @@
 import type { ThorClient } from '@vechain/sdk-network';
-import { VechainProvider, VechainSigner } from '@vechain/sdk-network';
+import { VeChainProvider, VeChainSigner } from '@vechain/sdk-network';
 import { ProviderWallet } from './provider-wallet';
 
-class EthersProvider extends VechainProvider {
+class EthersProvider extends VeChainProvider {
     constructor(
         readonly thorClient: ThorClient,
         readonly wallet: ProviderWallet,
@@ -11,7 +11,7 @@ class EthersProvider extends VechainProvider {
         super(thorClient, wallet, enableDelegation);
     }
 
-    getSignerSync(): VechainSigner {
+    getSignerSync(): VeChainSigner {
         return this.wallet.getSignerSync(this);
     }
 }

@@ -1,37 +1,28 @@
 import {
-    AvailableVechainProviders,
+    AvailableVeChainProviders,
     TransactionRequestInput,
-    TransactionSimulationResult,
-    VechainAbstractSigner,
+    VeChainAbstractSigner,
 } from '@vechain/sdk-network';
 import { WalletManager } from './wallet-manager';
 import { addressUtils, TransactionClause } from '@vechain/sdk-core';
 import { assert, JSONRPC } from '@vechain/sdk-errors';
 import { DAppKitLogger } from '../utils';
 
-class DAppKitSigner extends VechainAbstractSigner {
+class DAppKitSigner extends VeChainAbstractSigner {
     constructor(
-        public readonly provider: AvailableVechainProviders,
+        public readonly provider: AvailableVeChainProviders,
         private readonly wallet: WalletManager,
         private address?: string,
     ) {
         super(provider);
     }
 
-    connect(provider: AvailableVechainProviders | null): this {
+    connect(provider: AvailableVeChainProviders | null): this {
         return new DAppKitSigner(
             provider ?? this.provider,
             this.wallet,
             this.address,
         ) as this;
-    }
-
-    override async call(
-        transactionToEvaluate: TransactionRequestInput,
-        revision?: string,
-    ): Promise<TransactionSimulationResult[]> {
-        const res = await super.call(transactionToEvaluate, revision);
-        return res[0].data as unknown as TransactionSimulationResult[];
     }
 
     async getAddress(): Promise<string> {

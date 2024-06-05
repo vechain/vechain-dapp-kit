@@ -1,21 +1,21 @@
 import {
+    addressUtils,
     blake2b256,
     certificate,
     Certificate,
     HDNode,
     secp256k1,
 } from '@vechain/sdk-core';
-import { CertMessage, RemoteWallet } from '../../src';
+import { CertMessage, ConnectResponse, RemoteWallet } from '../../src';
 
 const mnemonicWords =
     'denial kitchen pet squirrel other broom bar gas better priority spoil cross';
-
 const hdNode = HDNode.fromMnemonic(mnemonicWords.split(' '));
 
-const firstAccount = hdNode.derive(0);
+const firstAccount = hdNode.deriveChild(0);
 
-const privateKey: Buffer = firstAccount.privateKey!;
-const address = firstAccount.address;
+const privateKey = firstAccount.privateKey!;
+let address = addressUtils.fromPublicKey(firstAccount.publicKey as Uint8Array);
 
 const mockedConnexSigner: RemoteWallet = {
     signTx() {
@@ -24,7 +24,7 @@ const mockedConnexSigner: RemoteWallet = {
 
     signCert(msg: CertMessage) {
         const cert: Certificate = {
-            domain: ' localhost:3000',
+            domain: 'localhost:3000',
             timestamp: 12341234,
             signer: address,
             payload: msg.payload,
@@ -43,6 +43,12 @@ const mockedConnexSigner: RemoteWallet = {
                 signer: cert.signer,
             },
             signature: `0x${Buffer.from(signature).toString('hex')}`,
+        });
+    },
+    connect(): Promise<ConnectResponse> {
+        return Promise.resolve({
+            account: address,
+            verified: false,
         });
     },
 };

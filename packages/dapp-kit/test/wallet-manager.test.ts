@@ -2,13 +2,16 @@ import { describe, expect, it, vi } from 'vitest';
 import type { WalletConnectOptions } from '../src';
 import { WalletManager } from '../src';
 import { mockedConnexSigner } from './helpers/mocked-signer';
+import { ThorClient } from '@vechain/sdk-network';
 
 const newWalletManager = (wcOptions?: WalletConnectOptions): WalletManager => {
-    return new WalletManager({
-        nodeUrl: 'https://testnet.veblocks.net/',
-        walletConnectOptions: wcOptions,
-        genesis: 'main',
-    });
+    return new WalletManager(
+        {
+            nodeUrl: 'https://testnet.veblocks.net/',
+            walletConnectOptions: wcOptions,
+        },
+        ThorClient.fromUrl('https://testnet.veblocks.net/'),
+    );
 };
 
 window.vechain = {
@@ -45,7 +48,7 @@ describe('WalletManager', () => {
         it('should sign the tx', async () => {
             const walletManager = newWalletManager();
             walletManager.setSource('veworld');
-            const res = await walletManager.signTx([], {});
+            const res = await walletManager.requestTransaction([], {});
 
             expect(res.txid).toBeDefined();
         });

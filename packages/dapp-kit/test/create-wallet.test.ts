@@ -1,16 +1,19 @@
 import { describe, expect, it, vi } from 'vitest';
-import type { Connex1 } from '@vechain/connex/esm/signer';
 import { createWallet } from '../src/utils';
 import type {
+    BaseWallet,
     DAppKitOptions,
     WalletConnectOptions,
     WalletSource,
 } from '../src';
+import { ThorClient } from '@vechain/sdk-network';
 
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
     onDisconnected: () => void;
+    thorClient: ThorClient;
 };
+
 const createOptions = (
     source: WalletSource,
     wcOptions?: WalletConnectOptions,
@@ -19,8 +22,8 @@ const createOptions = (
         nodeUrl: 'https://testnet.veblocks.net/',
         source,
         walletConnectOptions: wcOptions,
-        genesis: 'main',
         onDisconnected: () => {},
+        thorClient: ThorClient.fromUrl('https://testnet.vechain.org'),
     };
 };
 
@@ -37,7 +40,7 @@ describe('createWallet', () => {
         });
 
         it('is in sync2 browser', () => {
-            window.connex = {} as Connex1;
+            window.connex = {} as any;
 
             const wallet = createWallet(createOptions('sync2'));
 
@@ -56,7 +59,7 @@ describe('createWallet', () => {
 
         it('is installed', () => {
             window.vechain = {
-                newConnexSigner: () => ({} as Connex.Signer),
+                newConnexSigner: () => ({} as any as BaseWallet),
             };
 
             const wallet = createWallet(createOptions('veworld'));

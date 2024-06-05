@@ -1,14 +1,12 @@
-import type {
+import {
     ProviderInternalWallet,
-    VechainProvider,
-    VechainSigner,
+    ProviderInternalWalletAccount,
+    SignTransactionOptions,
+    VeChainProvider,
+    VeChainSigner,
 } from '@vechain/sdk-network';
 import { WalletManager } from './wallet-manager';
 import { DAppKitSigner } from './provider-signer';
-
-interface WalletAccount {
-    address: string;
-}
 
 interface DelegationOptions {
     delegatorUrl: string;
@@ -19,8 +17,15 @@ interface DelegationOptions {
  * This signer can be initialized using a private key.
  */
 class ProviderWallet implements ProviderInternalWallet {
-    get accounts(): WalletAccount[] {
-        const connectedAccount = this.wallet.state.address;
+    constructor(
+        private readonly wallet: WalletManager,
+        private readonly delegationOptions?: DelegationOptions,
+    ) {
+        this.delegationOptions = delegationOptions;
+    }
+
+    get accounts(): ProviderInternalWalletAccount[] {
+        const connectedAccount = this.account;
 
         if (connectedAccount)
             return [
@@ -32,23 +37,8 @@ class ProviderWallet implements ProviderInternalWallet {
         return [];
     }
 
-    constructor(
-        private readonly wallet: WalletManager,
-        private readonly delegationOptions?: DelegationOptions,
-    ) {
-        this.delegationOptions = delegationOptions;
-    }
-
-    getAccount(): Promise<WalletAccount | null> {
-        const addr = this.wallet.state.address;
-
-        if (!addr) {
-            return Promise.resolve(null);
-        }
-
-        return Promise.resolve({
-            address: addr,
-        });
+    private get account(): `0x${string}` | null {
+        return this.wallet.state.address as `0x${string}` | null;
     }
 
     getAddresses(): Promise<string[]> {
@@ -66,18 +56,18 @@ class ProviderWallet implements ProviderInternalWallet {
     }
 
     getSigner(
-        parentProvider: VechainProvider,
+        parentProvider: VeChainProvider,
         addressOrIndex?: string | number,
-    ): Promise<VechainSigner> {
+    ): Promise<VeChainSigner> {
         return Promise.resolve(
             this.getSignerSync(parentProvider, addressOrIndex),
         );
     }
 
     getSignerSync(
-        parentProvider: VechainProvider,
+        parentProvider: VeChainProvider,
         addressOrIndex?: string | number,
-    ): VechainSigner {
+    ): VeChainSigner {
         if (typeof addressOrIndex === 'string') {
             return new DAppKitSigner(
                 parentProvider,
@@ -87,6 +77,38 @@ class ProviderWallet implements ProviderInternalWallet {
         }
 
         return new DAppKitSigner(parentProvider, this.wallet);
+    }
+
+    getAccount(
+        addressOrIndex: string | number | undefined,
+    ): Promise<ProviderInternalWalletAccount | null> {
+        return Promise.resolve(this.getAccountSync(addressOrIndex));
+    }
+
+    getAccountSync(
+        addressOrIndex: string | number | undefined,
+    ): ProviderInternalWalletAccount | null {
+        if (typeof addressOrIndex === 'string') {
+            return (
+                this.accounts.find(
+                    (account) => account.address === addressOrIndex,
+                ) ?? null
+            );
+        }
+
+        return this.accounts[0] ?? null;
+    }
+
+    getAddressesSync(): string[] {
+        const address = this.account;
+
+        if (address) return [address];
+
+        return [];
+    }
+
+    getDelegatorSync(): SignTransactionOptions | null {
+        return null;
     }
 }
 
