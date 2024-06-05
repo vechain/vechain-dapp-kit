@@ -49,11 +49,9 @@ export const compareAddresses = (
     if (address2 === address1) return true;
 
     try {
-        address1 = addPrefix(address1);
-        address2 = addPrefix(address2);
         return (
-            addressUtils.toChecksummed(address1 as string) ===
-            addressUtils.toChecksummed(address2 as string)
+            addressUtils.toERC55Checksum(addPrefix(address1)) ===
+            addressUtils.toERC55Checksum(addPrefix(address2))
         );
     } catch (e) {
         return false;

@@ -1,12 +1,12 @@
+import path from 'path';
 import { AfterAll, BeforeAll, setDefaultTimeout } from '@cucumber/cucumber';
 import {
     DockerComposeEnvironment,
     StartedDockerComposeEnvironment,
     Wait,
 } from 'testcontainers';
-import path from 'path';
-import { DappUrl } from '../../constants/dapp';
 import axios from 'axios';
+import { DappUrl } from '../../constants/dapp';
 
 setDefaultTimeout(180_000);
 
@@ -28,7 +28,7 @@ const appHealthCheck = async () => {
                 break;
             } catch (e) {
                 if (e instanceof axios.AxiosError) {
-                    console.log(app, e.message, e.code);
+                    console.log(app, e.message, e.code, url);
                 } else {
                     console.log(`Waiting for ${app} to be ready...`);
                 }
