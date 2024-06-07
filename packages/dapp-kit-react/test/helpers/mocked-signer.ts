@@ -1,5 +1,6 @@
 /// <reference types="@vechain/connex" />
 import { blake2b256, Certificate, HDNode, secp256k1 } from 'thor-devkit';
+// import { blake2b256 } from '@vechain/sdk-core';
 
 const mnemonicWords =
     'denial kitchen pet squirrel other broom bar gas better priority spoil cross';
@@ -25,6 +26,7 @@ const mockedConnexSigner: Connex.Signer = {
             purpose: msg.purpose,
         };
 
+        console.log('pippo', blake2b256(Certificate.encode(certificate)));
         const signature = secp256k1.sign(
             blake2b256(Certificate.encode(certificate)),
             privateKey,

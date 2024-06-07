@@ -9,7 +9,7 @@ import type {
 } from '../types';
 import { createWallet, DAppKitLogger, Storage } from '../utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
-import { certificate } from '@vechain/sdk-core';
+import { Certificate } from 'thor-devkit';
 
 class WalletManager {
     public readonly state: WalletManagerState;
@@ -89,7 +89,7 @@ class WalletManager {
         };
 
         try {
-            certificate.verify(connectionCertificate);
+            Certificate.verify(connectionCertificate);
             this.state.address = signer;
             this.state.connectionCertificate = connectionCertificate;
             return {
