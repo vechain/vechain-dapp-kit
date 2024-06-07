@@ -42,6 +42,7 @@
         "@web3modal/html": "^2.7.1",
         "lit": "^3.0.0",
         "qrcode": "1.5.3",
+        "thor-devkit": "2.0.5",
         "valtio": "1.11.2",
         "viem": "^1.18.4"
     },

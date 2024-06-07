@@ -10,7 +10,7 @@ import type { WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import type { DAppKitProviderOptions, DAppKitContext } from './types';
-import * as ThorDevkit from 'thor-devkit';
+import { type Certificate } from '@vechain/sdk-core';
 
 /**
  * Context
@@ -74,9 +74,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
         connex.wallet.state.source,
     );
     const [connectionCertificate, setConnectionCertificate] =
-        useState<ThorDevkit.Certificate | null>(
-            connex.wallet.state.connectionCertificate,
-        );
+        useState<Certificate | null>(connex.wallet.state.connectionCertificate);
 
     useEffect(() => {
         const addressSub = subscribeKey(connex.wallet.state, 'address', (v) => {

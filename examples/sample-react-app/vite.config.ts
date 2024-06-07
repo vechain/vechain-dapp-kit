@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
         //vitest
         test: {
             globals: true,
-            environment: 'jsdom',
+            environment: 'happy-dom',
             setupFiles: [
                 resolve(__dirname, 'test/setup/setup.ts'),
                 resolve(__dirname, 'test/setup/resizeObserverMock.ts'),

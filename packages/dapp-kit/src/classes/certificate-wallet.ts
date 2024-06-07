@@ -1,4 +1,4 @@
-import * as ThorDevkit from 'thor-devkit';
+import { Certificate } from 'thor-devkit';
 import type { BaseWallet, ConnectResponse, ConnexWallet } from '../types';
 import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
 
@@ -34,7 +34,7 @@ class CertificateBasedWallet implements ConnexWallet {
         };
 
         try {
-            ThorDevkit.Certificate.verify(connectionCertificate);
+            Certificate.verify(connectionCertificate);
 
             return {
                 account: signer,
