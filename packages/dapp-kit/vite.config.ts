@@ -5,7 +5,7 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
     test: {
         include: ['test/**/*.test.ts'],
-        environment: 'jsdom',
+        environment: 'happy-dom',
         setupFiles: [resolve(__dirname, 'test/setup/setup.ts')],
         reporters: 'dot',
         coverage: {

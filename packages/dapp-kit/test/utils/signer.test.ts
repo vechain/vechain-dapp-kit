@@ -2,7 +2,11 @@ import { describe, expect, it, vi } from 'vitest';
 import { SignClient } from '@walletconnect/sign-client';
 import type { SignClientTypes } from '@walletconnect/types';
 import type { WCModal, WCSigner } from '../../src';
-import { createWcClient, createWcSigner } from '../../src';
+import {
+    createWcClient,
+    createWcSigner,
+    normalizeGenesisBlock,
+} from '../../src';
 import { mockedSignClient } from '../helpers/mocked-sign-client';
 import { normalizeGenesisId } from '../../src';
 import { address } from '../helpers/mocked-signer';
@@ -27,7 +31,7 @@ const customModal: WCModal = {
 
 const createNewSignClient = (): WCSigner =>
     createWcSigner({
-        genesisId: normalizeGenesisId('main'),
+        getGenesisBlock: async () => normalizeGenesisBlock('main'),
         wcClient: createWcClient({ projectId, metadata }),
         onDisconnected: () => {
             console.log('disconnected');
