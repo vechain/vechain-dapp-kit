@@ -4,7 +4,6 @@ on:
     push:
         branches:
           - main
-          - sonar-integration
     pull_request:
 
 jobs:
