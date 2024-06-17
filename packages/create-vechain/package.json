@@ -1,6 +1,6 @@
 {
     "name": "create-vechain",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "private": false,
     "license": "MIT",
     "type": "module",

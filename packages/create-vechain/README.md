@@ -5,9 +5,11 @@ This project is a template for creating a decentralized application (Dapp) on th
 ## Usage
 
 ```bash
-npx create vechain
-cd my-dapp
-npm start
+npm create vechain
+```
+
+```bash
+yarn create vechain
 ```
 
 ## License
