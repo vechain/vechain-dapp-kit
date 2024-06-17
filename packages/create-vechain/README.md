@@ -8,6 +8,8 @@ This project is a template for creating a decentralized application (Dapp) on th
 npm create vechain
 ```
 
+or
+
 ```bash
 yarn create vechain
 ```
