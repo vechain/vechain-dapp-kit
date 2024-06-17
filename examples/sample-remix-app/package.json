@@ -6,10 +6,12 @@
     "type": "module",
     "scripts": {
         "build": "remix vite:build --mode=development",
+        "clean": "rm -rf dist .turbo",
         "dev": "remix vite:dev",
         "gh-pages-build": "remix vite:build",
         "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
         "preview": "PORT=5007 remix-serve ./build/server/index.js",
+        "purge": "yarn clean; rm -rf node_modules",
         "typecheck": "tsc"
     },
     "dependencies": {

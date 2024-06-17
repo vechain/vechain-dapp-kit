@@ -5,9 +5,11 @@
     "type": "module",
     "scripts": {
         "build": "vue-tsc && vite build --mode=development",
+        "clean": "rm -rf dist .turbo",
         "dev": "vite",
         "gh-pages-build": "vue-tsc && vite build ",
-        "preview": "vite preview --mode=development"
+        "preview": "vite preview --mode=development",
+        "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
         "@vechain/dapp-kit": "*",

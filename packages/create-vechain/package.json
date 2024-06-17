@@ -1,0 +1,25 @@
+{
+    "name": "create-vechain",
+    "version": "1.0.9",
+    "private": false,
+    "license": "MIT",
+    "type": "module",
+    "main": "index.js",
+    "bin": {
+        "create-vechain": "index.js"
+    },
+    "files": [
+        "index.js",
+        "utils.js",
+        "examples/**"
+    ],
+    "scripts": {
+        "copy-examples": "rm -rf ./examples && mkdir -p ./examples && cp -r ../../examples/* ./examples"
+    },
+    "dependencies": {
+        "prompts": "^2.4.2"
+    },
+    "engines": {
+        "node": "^18.0.0 || >=20.0.0"
+    }
+}
