@@ -1,7 +1,5 @@
-import {
-    DriverNoVendor,
-    SimpleNet,
-} from '@vechain/connex-driver/dist/index.js';
+import type { Net } from '@vechain/connex-driver';
+import { DriverNoVendor, SimpleNet } from '@vechain/connex-driver';
 import { Framework } from '@vechain/connex-framework';
 import * as ThorDevkit from 'thor-devkit';
 import { WalletManager } from './classes';
@@ -13,6 +11,7 @@ const cache: Record<string, DriverNoVendor | undefined> = {};
 const createThorDriver = (
     node: string,
     genesis: Connex.Thor.Block,
+    net: Net,
 ): DriverNoVendor => {
     const key = ThorDevkit.blake2b256(
         JSON.stringify({
@@ -23,7 +22,7 @@ const createThorDriver = (
 
     let driver = cache[key];
     if (!driver) {
-        driver = new DriverNoVendor(new SimpleNet(node), genesis);
+        driver = new DriverNoVendor(net, genesis);
         cache[key] = driver;
     }
     return driver;
@@ -44,7 +43,8 @@ class DAppKit {
 
         const genesisBlock = normalizeGenesisBlock(genesis);
 
-        const driver = createThorDriver(nodeUrl, genesisBlock);
+        const net = options.customNet || new SimpleNet(nodeUrl);
+        const driver = createThorDriver(nodeUrl, genesisBlock, net);
 
         const walletManager = new WalletManager(options);
 

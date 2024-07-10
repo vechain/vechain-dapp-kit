@@ -1,4 +1,5 @@
-import * as ThorDevkit from 'thor-devkit';
+import type * as ThorDevkit from 'thor-devkit';
+import type { Net } from '@vechain/connex-driver';
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
 import type { LogLevel } from '../utils/logger';
 
@@ -42,6 +43,7 @@ interface DAppKitOptions {
         message?: Connex.Vendor.CertMessage;
         options?: Connex.Signer.CertOptions;
     };
+    customNet?: Net;
 }
 
 type BaseWallet = Connex.Signer & {

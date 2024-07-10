@@ -1,8 +1,9 @@
 /// <reference types="@vechain/connex" />
 import type React from 'react';
-import * as ThorDevkit from 'thor-devkit';
+import type * as ThorDevkit from 'thor-devkit';
 import type { ConnectResponse, WalletSource } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
+
 export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
 export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 
