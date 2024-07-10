@@ -26,7 +26,6 @@ const mockedConnexSigner: Connex.Signer = {
             purpose: msg.purpose,
         };
 
-        console.log('pippo', blake2b256(Certificate.encode(certificate)));
         const signature = secp256k1.sign(
             blake2b256(Certificate.encode(certificate)),
             privateKey,

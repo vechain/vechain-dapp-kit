@@ -6,7 +6,7 @@ import { resolve } from 'node:path'; // eslint-disable-next-line import/no-defau
 export default defineConfig({
     test: {
         include: ['test/**/*.test.ts'],
-        environment: 'happy-dom',
+        environment: 'jsdom',
         reporters: 'dot',
         setupFiles: [resolve(__dirname, 'test/setup/setup.ts')],
         coverage: {
