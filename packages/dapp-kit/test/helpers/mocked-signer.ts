@@ -1,6 +1,7 @@
 /// <reference types="@vechain/connex" />
-import { Certificate } from 'thor-devkit';
 import {
+    type Certificate,
+    certificate,
     addressUtils,
     blake2b256,
     HDNode,
@@ -25,7 +26,7 @@ const mockedConnexSigner: Connex.Signer = {
 
     signCert(msg) {
         // Init the certificate object
-        const certificate: Certificate = {
+        const newCertificate: Certificate = {
             domain: ' localhost:3000',
             timestamp: 12341234,
             signer: address,
@@ -34,9 +35,7 @@ const mockedConnexSigner: Connex.Signer = {
         };
 
         // Encode the certificate to hash
-        const encodedCertificateToHash = new TextEncoder().encode(
-            Certificate.encode(certificate).normalize(),
-        );
+        const encodedCertificateToHash = certificate.encode(newCertificate);
 
         // Sign the certificate
         const signatureCore = Buffer.from(
@@ -45,9 +44,9 @@ const mockedConnexSigner: Connex.Signer = {
 
         return Promise.resolve({
             annex: {
-                domain: certificate.domain,
-                timestamp: certificate.timestamp,
-                signer: certificate.signer,
+                domain: newCertificate.domain,
+                timestamp: newCertificate.timestamp,
+                signer: newCertificate.signer,
             },
             signature: Hex0x.of(signatureCore),
         });
