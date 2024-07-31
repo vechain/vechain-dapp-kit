@@ -14,7 +14,7 @@ const mnemonicWords =
 
 const hdNode = HDNode.fromMnemonic(mnemonicWords.split(' '));
 
-const firstAccount = hdNode.derive('m/0');
+const firstAccount = hdNode.deriveChild(0);
 
 const privateKey = firstAccount.privateKey!;
 const address = addressUtils.fromPrivateKey(privateKey);
