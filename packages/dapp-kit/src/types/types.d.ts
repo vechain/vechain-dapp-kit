@@ -1,6 +1,6 @@
-import * as ThorDevkit from 'thor-devkit';
+import type * as ThorDevkit from 'thor-devkit';
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
-import type { LogLevel } from '../utils/logger';
+import type { LogLevel } from '../utils';
 
 declare global {
     interface Window {

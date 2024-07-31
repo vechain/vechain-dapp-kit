@@ -1,4 +1,4 @@
-import * as ThorDevkit from 'thor-devkit';
+import type * as ThorDevkit from 'thor-devkit';
 import type { WalletSource } from '../types';
 import { DAppKitLogger } from './logger';
 
