@@ -5,4 +5,5 @@ export const DappUrl = {
     angular: 'http://localhost:5004',
     svelte: 'http://localhost:5005',
     vue: 'http://localhost:5006',
+    remix: 'http://localhost:5007/',
 };

@@ -1,4 +1,3 @@
-import './style.css';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `

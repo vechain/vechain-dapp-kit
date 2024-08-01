@@ -7,23 +7,24 @@
         "clean": "rm -rf .next dist .turbo",
         "dev": "next dev",
         "gh-pages-build": "BASE_PATH='/vechain-dapp-kit/next' next build",
-        "preview": "next start -- -p 5002",
+        "preview": "npx serve -p 5002 dist",
         "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
         "@vechain/dapp-kit": "*",
         "@vechain/dapp-kit-react": "*",
         "@vechain/dapp-kit-ui": "*",
-        "next": "14.0.3",
+        "next": "14.1.4",
         "react": "^18",
         "react-dom": "^18"
     },
     "devDependencies": {
+        "@next/eslint-plugin-next": "^14.1.4",
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "eslint": "^8",
-        "eslint-config-next": "14.0.3",
-        "typescript": "^5"
+        "eslint-config-next": "14.1.4",
+        "typescript": "5.3.3"
     }
 }

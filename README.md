@@ -135,6 +135,32 @@ yarn build
 
 ---
 
+### E2E Testing
+
+We utilize Cucumber.js with Selenium for end-to-end (E2E) testing. To conduct these tests, you'll require the ChromeDriver. Here's how to install it:
+
+**On Mac:**
+
+```shell
+brew install chromedriver
+cd "$(dirname "$(which chromedriver)")"
+xattr -d com.apple.quarantine chromedriver
+```
+
+Once installed, you can run tests in the browser using:
+
+```bash
+yarn test:e2e
+```
+
+Alternatively, you can run headless tests directly in the console using:
+
+```bash
+yarn test:e2e:headless
+```
+
+---
+
 ## Further Documentation & Usage
 
 -   Please refer to [Vechain Docs](https://docs.vechain.org/developer-resources/sdks-and-providers) for more information

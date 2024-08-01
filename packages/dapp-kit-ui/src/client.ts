@@ -8,6 +8,7 @@ import {
     initModalAndButton,
 } from './utils';
 import type { SourceInfo, I18n, ThemeMode } from './constants';
+export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
 
 let dappKit: DAppKit | null = null;
 let dappKitOptions: DAppKitUIOptions | null = null;
@@ -39,7 +40,7 @@ export const DAppKitUI = {
             modalParent: options.modalParent,
         });
 
-        // configure bottons and modals options
+        // configure buttons and modals options
         initModalAndButton(options);
         dispatchCustomEvent('vdk-dapp-kit-configured');
 

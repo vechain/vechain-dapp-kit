@@ -16,6 +16,7 @@
         "clean": "rm -rf .turbo .parcel-cache .reports build && npx turbo@latest run clean",
         "dev": "turbo run dev --filter='@vechain/*'",
         "format": "prettier --write \"**/*.{ts,tsx,md,json,js,jsx}\"",
+        "gh-pages-build": "turbo run gh-pages-build",
         "install:all": "yarn && yarn run build:deps",
         "lint": "turbo run lint",
         "prepare": "husky install",
