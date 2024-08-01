@@ -1,22 +1,15 @@
-import * as chrome from 'selenium-webdriver/chrome';
 import util from 'util';
 import { exec as execSync } from 'child_process';
-import wd, {
-    Key,
-    Session,
-    until,
-    WebDriver,
-    WebElement,
-} from 'selenium-webdriver';
-import * as http from 'selenium-webdriver/http';
-import Locators from './Locators';
-import { By } from 'selenium-webdriver/lib/by';
 import * as path from 'path';
 import * as console from 'console';
+import * as chrome from 'selenium-webdriver/chrome';
+import { Key, logging, until, WebDriver, WebElement } from 'selenium-webdriver';
+import { By } from 'selenium-webdriver/lib/by';
 import { Mutex } from 'async-mutex';
-import TestDefaults from '../TestDefaults';
 import { ShadowRoot } from 'selenium-webdriver/lib/webdriver';
 import { ROUTES } from '../enums';
+import TestDefaults from '../TestDefaults';
+import Locators from './Locators';
 
 const exec = util.promisify(execSync);
 
@@ -31,8 +24,10 @@ export const extension = {
 
 export const quitWebDriver = async () => {
     try {
-        globalWebDriver?.quit();
-    } catch (e) {}
+        await globalWebDriver?.quit();
+    } catch (e) {
+        console.error('Failed to quit WebDriver', e);
+    }
 };
 
 export const resetWebDriver = async (startupTimeout?: number) => {
@@ -46,7 +41,7 @@ const buildMutex = new Mutex();
 export const buildWebDriver = async (
     startupTimeout?: number,
 ): Promise<ExtensionDriver> => {
-    return await buildMutex.runExclusive(async () => {
+    return buildMutex.runExclusive(async () => {
         if (globalWebDriver) return globalWebDriver;
 
         const extensionPath = path.join(
@@ -60,8 +55,8 @@ export const buildWebDriver = async (
         console.log('Building web driver...', extensionPath);
         const options = new chrome.Options();
 
-        const prefs = new wd.logging.Preferences();
-        prefs.setLevel(wd.logging.Type.BROWSER, wd.logging.Level.ALL);
+        const prefs = new logging.Preferences();
+        prefs.setLevel(logging.Type.BROWSER, logging.Level.ALL);
         options.setLoggingPrefs(prefs);
 
         options.addArguments(`load-extension=${extensionPath}`);
@@ -102,10 +97,6 @@ export const buildWebDriver = async (
 export class ExtensionDriver extends WebDriver {
     private extensionUrl: string | undefined;
 
-    constructor(session: Session | Promise<Session>, executor: http.Executor) {
-        super(session, executor);
-    }
-
     public switchToExtensionIframe = async () => {
         console.log('Looking for VeWorld Outer Container');
         const veWorldContainer = await this.waitUntilElement(
@@ -143,7 +134,7 @@ export class ExtensionDriver extends WebDriver {
         }
         const id = await element.getId();
         throw Error(
-            'Timed out searching for shadow root on element with ID: ' + id,
+            `Timed out searching for shadow root on element with ID: ${id}`,
         );
     };
 
@@ -160,8 +151,7 @@ export class ExtensionDriver extends WebDriver {
             }
         }
         throw Error(
-            'Timed out searching for shadow root on locator: ' +
-                locator.toString(),
+            `Timed out searching for shadow root on locator: ${locator.toString()}`,
         );
     };
 
@@ -189,7 +179,7 @@ export class ExtensionDriver extends WebDriver {
             );
         } catch (e) {
             console.error(
-                'Failed to scroll into view for element ID: ' + elementId,
+                `Failed to scroll into view for element ID: ${elementId}`,
                 e,
             );
             throw e;
@@ -208,7 +198,7 @@ export class ExtensionDriver extends WebDriver {
                 await this.sleep(sleepTime);
             }
         }
-        throw Error('Could not find the shadow root element: ' + locator.value);
+        throw Error(`Could not find the shadow root element: ${locator.value}`);
     };
 
     public waitAndClick = async (locator: By) => {
@@ -243,7 +233,7 @@ export class ExtensionDriver extends WebDriver {
             await this.sleep(sleepTime);
         }
         throw Error(
-            'Timed out waiting for element to be removed: ' + locator.value,
+            `Timed out waiting for element to be removed: ${locator.value}`,
         );
     };
 
@@ -257,6 +247,7 @@ export class ExtensionDriver extends WebDriver {
 
         await element.click();
         await this.executeScript(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (e: { select: () => any }) => e.select(),
             element,
         );
@@ -290,7 +281,7 @@ export class ExtensionDriver extends WebDriver {
         locator: By,
         timeout = TestDefaults.TIMEOUT,
         debug = false,
-    ): Promise<WebElement[]> => {
+    ): Promise<WebElement> => {
         try {
             return await this.wait(
                 until.elementsLocated(locator),
