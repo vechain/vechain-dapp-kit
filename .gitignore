@@ -38,4 +38,5 @@ yarn-error.log*
 .vscode
 .parcel-cache
 
+veworld-dist
 .reports
