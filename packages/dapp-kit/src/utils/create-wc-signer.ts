@@ -5,8 +5,8 @@ import type {
 } from '@walletconnect/types';
 import { getSdkError } from '@walletconnect/utils';
 import type { SignClient } from '@walletconnect/sign-client/dist/types/client';
-import type { WCSigner, WCSignerOptions } from '../types/wc-types';
-import { DefaultMethods } from '../constants/wallet-connect';
+import type { WCSigner, WCSignerOptions } from '../types';
+import { DefaultMethods } from '../constants';
 import { DAppKitLogger } from './logger';
 
 interface SessionAccount {

@@ -16,5 +16,6 @@ module.exports = {
         'unicorn/filename-case': 'off',
         'import/no-default-export': 'off',
         'unicorn/prefer-node-protocol': 'off',
+        'no-await-in-loop': 'off',
     },
 };

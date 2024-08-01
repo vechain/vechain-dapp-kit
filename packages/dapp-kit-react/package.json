@@ -29,7 +29,7 @@
         "@vechain/connex-framework": "2.1.0",
         "@vechain/dapp-kit": "*",
         "@vechain/dapp-kit-ui": "*",
-        "thor-devkit": "2.0.5",
+        "@vechain/sdk-core": "1.0.0-beta.24",
         "valtio": "1.11.2"
     },
     "devDependencies": {
@@ -37,7 +37,7 @@
         "@types/react": "^18.2.28",
         "@types/react-dom": "^18.2.13",
         "@vechain/repo-config": "https://github.com/vechain/repo-config#v0.0.1",
-        "eslint": "*",
+        "eslint": "^8.15.0",
         "react": "^18.2.0",
         "tsup": "*",
         "typescript": "*",
