@@ -1,7 +1,6 @@
-import type * as ThorDevkit from 'thor-devkit';
-import type { Net } from '@vechain/connex-driver';
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
-import type { LogLevel } from '../utils/logger';
+import { type Certificate } from '@vechain/sdk-core';
+import type { LogLevel } from '../utils';
 
 declare global {
     interface Window {
@@ -60,14 +59,14 @@ type ConnexWallet = BaseWallet & {
 interface ConnectResponse {
     account: string;
     verified: boolean;
-    connectionCertificate?: ThorDevkit.Certificate;
+    connectionCertificate?: Certificate;
 }
 
 interface WalletManagerState {
     source: WalletSource | null;
     address: string | null;
     availableSources: WalletSource[];
-    connectionCertificate: ThorDevkit.Certificate | null;
+    connectionCertificate: Certificate | null;
 }
 
 export type {

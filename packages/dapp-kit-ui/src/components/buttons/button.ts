@@ -76,22 +76,20 @@ export class Button extends LitElement {
     mobile = false;
 
     override render(): TemplateResult {
-        return html`
-            ${this.address
-                ? html`<vdk-address-button
-                      .mode=${this.mode}
-                      .address=${this.address}
-                      .disabled=${this.disabled}
-                      .mobile=${this.mobile}
-                  ></vdk-address-button>`
-                : html`<vdk-connect-button
-                      .mode=${this.mode}
-                      .i18n=${this.i18n}
-                      .language=${this.language}
-                      .disabled=${this.disabled}
-                      .mobile=${this.mobile}
-                  ></vdk-connect-button>`}
-        `;
+        return this.address
+            ? html`<vdk-address-button
+                  .mode=${this.mode}
+                  .address=${this.address}
+                  .disabled=${this.disabled}
+                  .mobile=${this.mobile}
+              ></vdk-address-button>`
+            : html`<vdk-connect-button
+                  .mode=${this.mode}
+                  .i18n=${this.i18n}
+                  .language=${this.language}
+                  .disabled=${this.disabled}
+                  .mobile=${this.mobile}
+              ></vdk-connect-button>`;
     }
 }
 

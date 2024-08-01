@@ -1,8 +1,8 @@
 /// <reference types="@vechain/connex" />
 import type React from 'react';
-import type * as ThorDevkit from 'thor-devkit';
 import type { ConnectResponse, WalletSource } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
+import { type Certificate } from '@vechain/sdk-core';
 
 export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
 export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
@@ -38,7 +38,7 @@ export interface DAppKitContext {
         connect: () => Promise<ConnectResponse>;
         account: string | null;
         source: WalletSource | null;
-        connectionCertificate: ThorDevkit.Certificate | null;
+        connectionCertificate: Certificate | null;
     };
     modal: {
         open: () => void;

@@ -1,24 +1,42 @@
 import type { Net } from '@vechain/connex-driver';
 import { DriverNoVendor, SimpleNet } from '@vechain/connex-driver';
 import { Framework } from '@vechain/connex-framework';
-import * as ThorDevkit from 'thor-devkit';
+import { blake2b256, Hex } from '@vechain/sdk-core';
 import { WalletManager } from './classes';
 import { DAppKitLogger, normalizeGenesisBlock } from './utils';
 import type { DAppKitOptions } from './types';
 
 const cache: Record<string, DriverNoVendor | undefined> = {};
 
+/**
+ * START: TEMPORARY COMMENT
+ * For hashing we will improve SDK conversion and encoding later
+ * END: TEMPORARY COMMENT
+ *
+ * Create a new Thor driver
+ *
+ * @param node - The node URL
+ * @param genesis - The genesis block
+ * @param net - The network
+ */
 const createThorDriver = (
     node: string,
     genesis: Connex.Thor.Block,
     net: Net,
 ): DriverNoVendor => {
-    const key = ThorDevkit.blake2b256(
-        JSON.stringify({
-            node,
-            genesis,
-        }),
-    ).toString('hex');
+    // Stringify the certificate to hash
+    const certificateToHash = JSON.stringify({
+        node,
+        genesis,
+    });
+
+    // Encode the certificate to hash
+    const encodedCertificateToHash = new TextEncoder().encode(
+        certificateToHash.normalize(),
+    );
+
+    // Get the key (the hash of the certificate) without 0x prefix
+    const key: string = Hex.canon(blake2b256(encodedCertificateToHash, 'hex'));
 
     let driver = cache[key];
     if (!driver) {
@@ -43,7 +61,9 @@ class DAppKit {
 
         const genesisBlock = normalizeGenesisBlock(genesis);
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const net = options.customNet || new SimpleNet(nodeUrl);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const driver = createThorDriver(nodeUrl, genesisBlock, net);
 
         const walletManager = new WalletManager(options);
