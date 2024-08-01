@@ -5,7 +5,7 @@ import * as path from 'path';
 
 const exec = util.promisify(child_process.exec);
 
-// variable packages should be all of the child folders in the packages folder
+// variable packages should be all the child folders in the packages folder
 const packages = fs.readdirSync(path.resolve(__dirname, '../packages'));
 
 console.log('packages', packages);
