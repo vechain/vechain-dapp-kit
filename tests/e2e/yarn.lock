@@ -4282,19 +4282,6 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
-thor-devkit@2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/thor-devkit/-/thor-devkit-2.0.5.tgz#1cdd6d623f755e82aacf27290624372bfe6d1b90"
-  integrity sha512-82Z0/sY0+S54bhmg57r7iqoK7sJB1F5md3zWXjXXGPin3ejsR0Whw1O9wzWvE0DkTp1EiPHWFMTPtOejxaiXeA==
-  dependencies:
-    "@vechain/ethers" "^4.0.27-5"
-    bignumber.js "^7.2.1"
-    blakejs "^1.1.0"
-    elliptic "6.5.4"
-    fast-json-stable-stringify "^2.0.0"
-    js-sha3 "0.5.7"
-    rlp "^2.0.0"
-
 tiny-case@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/tiny-case/-/tiny-case-1.0.3.tgz#d980d66bc72b5d5a9ca86fb7c9ffdb9c898ddd03"
