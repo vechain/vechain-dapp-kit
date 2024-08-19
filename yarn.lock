@@ -5776,24 +5776,6 @@
     "@vercel/style-guide" "^4.0.2"
     eslint-config-turbo latest
 
-"@vechain/sdk-core@1.0.0-beta.12":
-  version "1.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@vechain/sdk-core/-/sdk-core-1.0.0-beta.12.tgz#b2909f2a0b6f532005b672a1e9ad3e6ba50670d3"
-  integrity sha512-JUKuamlOKI3cniy2U/pVIHUlX3OC3DZXfvl1wYIAVU4JIbqgSFA9I7164yIwPv1zqjK3+Drd36ezWA8V/F1XEw==
-  dependencies:
-    "@ethereumjs/rlp" "^5.0.2"
-    "@noble/ciphers" "^0.5.2"
-    "@scure/bip32" "^1.4.0"
-    "@scure/bip39" "^1.3.0"
-    "@types/elliptic" "^6.4.18"
-    "@vechain/sdk-errors" "1.0.0-beta.12"
-    "@vechain/sdk-logging" "1.0.0-beta.12"
-    bignumber.js "^9.1.2"
-    blakejs "^1.2.1"
-    elliptic "^6.5.5"
-    ethers "6.12.1"
-    fast-json-stable-stringify "^2.1.0"
-
 "@vechain/sdk-core@1.0.0-beta.24":
   version "1.0.0-beta.24"
   resolved "https://registry.yarnpkg.com/@vechain/sdk-core/-/sdk-core-1.0.0-beta.24.tgz#8dafdf41bfef8ab82fec0ddb8c7827b77809dda6"
@@ -5812,22 +5794,10 @@
     ethers "6.13.1"
     fast-json-stable-stringify "^2.1.0"
 
-"@vechain/sdk-errors@1.0.0-beta.12":
-  version "1.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@vechain/sdk-errors/-/sdk-errors-1.0.0-beta.12.tgz#5685740f6035a02c3585bbde9d3fe25164d9933b"
-  integrity sha512-Nn+cZYGiRKyYeaaAtiTO1L9tsT3aS18wl4JBUke+Tvo8v7VSt/PbDwhZNC4YNzgPtI0GzviIrnEymVu/XvEHig==
-
 "@vechain/sdk-errors@1.0.0-beta.24":
   version "1.0.0-beta.24"
   resolved "https://registry.yarnpkg.com/@vechain/sdk-errors/-/sdk-errors-1.0.0-beta.24.tgz#4ab483ae6747eccf69226da2d74fafb61b704f37"
   integrity sha512-evB+y904J5di65o1HTpt2/fgaC+HivoISwqjSRvWiBo7mOIAYDN5xK405dySBHcpl9rhOxGWp3NPRJwSdmUH9Q==
-
-"@vechain/sdk-logging@1.0.0-beta.12":
-  version "1.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@vechain/sdk-logging/-/sdk-logging-1.0.0-beta.12.tgz#fa35b5a92d7797f020e034068ae0792069229a26"
-  integrity sha512-eUKMBqHF7d2wFupcg0LddB6V3PKOmmp+O+iyvk7sTqOyr+W1yWVlm3hViMpdSOdykaI6+h5o1aYk7NGTPSamKQ==
-  dependencies:
-    "@vechain/sdk-errors" "1.0.0-beta.12"
 
 "@vechain/sdk-logging@1.0.0-beta.24":
   version "1.0.0-beta.24"
@@ -10413,19 +10383,6 @@ ethereum-cryptography@^2.0.0:
     "@noble/hashes" "1.4.0"
     "@scure/bip32" "1.4.0"
     "@scure/bip39" "1.3.0"
-
-ethers@6.12.1:
-  version "6.12.1"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.12.1.tgz#517ff6d66d4fd5433e38e903051da3e57c87ff37"
-  integrity sha512-j6wcVoZf06nqEcBbDWkKg8Fp895SS96dSnTCjiXT+8vt2o02raTn4Lo9ERUuIVU5bAjoPYeA+7ytQFexFmLuVw==
-  dependencies:
-    "@adraffy/ens-normalize" "1.10.1"
-    "@noble/curves" "1.2.0"
-    "@noble/hashes" "1.3.2"
-    "@types/node" "18.15.13"
-    aes-js "4.0.0-beta.5"
-    tslib "2.4.0"
-    ws "8.5.0"
 
 ethers@6.13.1:
   version "6.13.1"
@@ -19311,11 +19268,6 @@ ws@8.17.1, ws@~8.17.1:
   version "8.17.1"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.17.1.tgz#9293da530bb548febc95371d90f9c878727d919b"
   integrity sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==
-
-ws@8.5.0:
-  version "8.5.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.5.0.tgz#bfb4be96600757fe5382de12c670dab984a1ed4f"
-  integrity sha512-BWX0SWVgLPzYwF8lTzEy1egjhS4S4OEAHfsO8o65WOVsrnSRGaSiUaa9e0ggGlkMTtBlmOpEXiie9RUcBO86qg==
 
 ws@>=8.11.0, ws@^8.13.0:
   version "8.18.0"
