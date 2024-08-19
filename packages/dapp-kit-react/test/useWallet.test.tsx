@@ -55,7 +55,7 @@ describe('useWallet', () => {
         await waitFor(() => {
             expect(result.current.source).toBe('sync2');
             expect(result.current.account).toBe(
-                '0xf077b491b355e64048ce21e3a6fc4751eeea77fa',
+                '0xf077b491b355E64048cE21E3A6Fc4751eEeA77fa',
             );
         });
 
