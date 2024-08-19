@@ -1,6 +1,6 @@
-import type { Certificate } from '@vechain/sdk-core';
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
-import type { LogLevel } from '../utils/logger';
+import { type Certificate } from '@vechain/sdk-core';
+import type { LogLevel } from '../utils';
 
 declare global {
     interface Window {

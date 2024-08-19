@@ -6,7 +6,7 @@ import { defineConfig } from 'vitest/config'; // eslint-disable-next-line import
 export default defineConfig({
     test: {
         include: ['test/**/*.test.ts'],
-        environment: 'jsdom',
+        environment: 'happy-dom',
         setupFiles: [resolve(__dirname, 'test/setup/setup.ts')],
         reporters: 'dot',
         coverage: {
