@@ -3,6 +3,7 @@ import type React from 'react';
 import type { ConnectResponse, WalletSource } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 import { type Certificate } from '@vechain/sdk-core';
+import type { ThorClient } from '@vechain/sdk-network';
 
 export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
 export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
@@ -27,9 +28,8 @@ export type DAppKitProviderOptions = DAppKitUIOptions & {
  */
 
 export interface DAppKitContext {
-    connex: {
-        thor: Connex.Thor;
-        vendor: Connex.Vendor;
+    sdk: {
+        thor: ThorClient;
     };
     wallet: {
         setSource: (source: WalletSource) => void;
