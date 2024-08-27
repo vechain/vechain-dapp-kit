@@ -3,7 +3,7 @@ import { subscribeKey } from 'valtio/vanilla/utils';
 import { certificate } from '@vechain/sdk-core';
 import type {
     ConnectResponse,
-    ConnexWallet,
+    VechainWallet,
     DAppKitOptions,
     WalletManagerState,
     WalletSource,
@@ -13,7 +13,7 @@ import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
 
 class WalletManager {
     public readonly state: WalletManagerState;
-    private wallets: Record<string, ConnexWallet | undefined> = {};
+    private wallets: Record<string, VechainWallet | undefined> = {};
 
     constructor(private readonly options: DAppKitOptions) {
         this.state = this.initState(options.usePersistence ?? false);
@@ -27,7 +27,7 @@ class WalletManager {
         }
     }
 
-    private get wallet(): ConnexWallet {
+    private get wallet(): VechainWallet {
         const source = this.state.source;
 
         DAppKitLogger.debug(

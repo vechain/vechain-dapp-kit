@@ -1,6 +1,6 @@
 export type {
     DAppKitOptions,
-    ConnexWallet,
+    VechainWallet,
     WalletSource,
     ConnectResponse,
     WalletConfig,

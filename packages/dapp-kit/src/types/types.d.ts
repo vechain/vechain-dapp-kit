@@ -51,7 +51,7 @@ type BaseWallet = Connex.Signer & {
 /**
  * Modifies the Connex.Signer interface to include a disconnect method
  */
-type ConnexWallet = BaseWallet & {
+type VechainWallet = BaseWallet & {
     connect: () => Promise<ConnectResponse>;
 };
 
@@ -71,7 +71,7 @@ interface WalletManagerState {
 export type {
     BaseWallet,
     DAppKitOptions,
-    ConnexWallet,
+    VechainWallet,
     WalletConfig,
     WalletSource,
     WalletManagerState,
