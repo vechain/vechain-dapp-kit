@@ -11,10 +11,6 @@ import type { DAppKitOptions } from './types';
 const cache: Record<string, DriverNoVendor | undefined> = {};
 
 /**
- * START: TEMPORARY COMMENT
- * For hashing we will improve SDK conversion and encoding later
- * END: TEMPORARY COMMENT
- *
  * Create a new Thor driver
  *
  * @param node - The node URL
