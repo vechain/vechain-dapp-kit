@@ -22,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             nodeUrl={'https://testnet.vechain.org/'}
             usePersistence
             walletConnectOptions={walletConnectOptions}
+            genesis={'main'}
         >
             <App />
         </DAppKitProvider>

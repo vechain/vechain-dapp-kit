@@ -5819,7 +5819,7 @@
     ethers "6.13.1"
     fast-json-stable-stringify "^2.1.0"
 
-"@vechain/sdk-core@1.0.0-beta.30":
+"@vechain/sdk-core@1.0.0-beta.30", "@vechain/sdk-core@^1.0.0-beta.30":
   version "1.0.0-beta.30"
   resolved "https://registry.yarnpkg.com/@vechain/sdk-core/-/sdk-core-1.0.0-beta.30.tgz#2fb0d6b5c616608779df210b8eb5e66d67522e0d"
   integrity sha512-pcaBItNJdk7ndE1ZIoknbP3V5gnD6p3YWE57RAegMZGbjQri74G2vc7mjijFpYnmCubb2+4EvyIolOyUfd3eGg==

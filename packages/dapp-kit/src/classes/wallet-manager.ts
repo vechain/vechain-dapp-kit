@@ -10,6 +10,8 @@ import type {
 } from '../types';
 import { createWallet, DAppKitLogger, Storage } from '../utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
+import { createSDKSigner } from '../utils/create-signer';
+import { VeChainSignerDappKit } from './vechain-signer';
 
 class WalletManager {
     public readonly state: WalletManagerState;
@@ -66,6 +68,40 @@ class WalletManager {
         }
 
         return wallet;
+    }
+
+    public get signer(): VeChainSignerDappKit | undefined {
+        const source = this.state.source;
+
+        DAppKitLogger.debug(
+            'WalletManager',
+            'get signer',
+            'current source',
+            source,
+        );
+
+        // If there is no source, genesis or address, we can't create a signer
+        if (!source || !this.options.genesis || !this.state.address) {
+            return undefined;
+        }
+
+        // If it's not a built-in wallet, we can't create it
+        if (!WalletSources.includes(source)) {
+            throw new Error(`No wallet found for: ${source}`);
+        }
+
+        DAppKitLogger.debug(
+            'WalletManager',
+            'get wallet',
+            'creating a new wallet',
+            source,
+        );
+
+        return createSDKSigner(
+            source,
+            this.options.genesis,
+            this.state.address,
+        );
     }
 
     // this is needed for wallet connect connections when a connection certificate is required

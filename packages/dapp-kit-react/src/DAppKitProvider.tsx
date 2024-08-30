@@ -126,6 +126,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
                 setSource: dAppKit.wallet.setSource,
                 disconnect: dAppKit.wallet.disconnect,
                 connect: dAppKit.wallet.connect,
+                signer: dAppKit.wallet.signer,
                 availableWallets: dAppKit.wallet.state.availableSources,
                 account,
                 source,
