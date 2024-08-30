@@ -3223,6 +3223,11 @@
   resolved "https://registry.yarnpkg.com/@noble/ciphers/-/ciphers-0.5.3.tgz#48b536311587125e0d0c1535f73ec8375cd76b23"
   integrity sha512-B0+6IIHiqEs3BPMT0hcRmHvEj2QHOLu+uwt+tqDDeVd0oyVzh7BPrDcPjRnV1PV/5LaknXJJQvOuRGR0zQJz+w==
 
+"@noble/ciphers@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@noble/ciphers/-/ciphers-0.6.0.tgz#a3d82c72ce71ba43128e7eb71757b5ecb75b1273"
+  integrity sha512-mIbq/R9QXk5/cTfESb1OKtyFnk7oc1Om/8onA1158K9/OZUQFDEVy55jVTato+xmp3XX6F6Qh0zz0Nc1AxAlRQ==
+
 "@noble/curves@1.2.0", "@noble/curves@~1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-1.2.0.tgz#92d7e12e4e49b23105a2555c6984d41733d65c35"
@@ -3367,6 +3372,16 @@
     node-gyp "^9.0.0"
     read-package-json-fast "^3.0.0"
     which "^3.0.0"
+
+"@openzeppelin/contracts-upgradeable@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-5.0.2.tgz#3e5321a2ecdd0b206064356798c21225b6ec7105"
+  integrity sha512-0MmkHSHiW2NRFiT9/r5Lu4eJq5UJ4/tzlOgYXNAIj/ONkQTVnz22pLxDvp4C4uZ9he7ZFvGn3Driptn1/iU7tQ==
+
+"@openzeppelin/contracts@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-5.0.2.tgz#b1d03075e49290d06570b2fd42154d76c2a5d210"
+  integrity sha512-ytPc6eLGcHHnapAZ9S+5qsdomhjo6QBHTDRRBFfTxXIpsicMhVPouPgmUPebZZZGX7vt9USA+Z+0M0dSVtSUEA==
 
 "@originjs/vite-plugin-commonjs@^1.0.3":
   version "1.0.3"
@@ -5804,22 +5819,22 @@
     ethers "6.13.1"
     fast-json-stable-stringify "^2.1.0"
 
-"@vechain/sdk-core@1.0.0-beta.29":
-  version "1.0.0-beta.29"
-  resolved "https://registry.yarnpkg.com/@vechain/sdk-core/-/sdk-core-1.0.0-beta.29.tgz#43b191901b5d7bfb8e04358a2280117b32de5a3c"
-  integrity sha512-a23t6wO3bB1NdNryNCs4qZBHfoc1GSC8o/SkEG7Mmeow/QbZFRcaFd0PMhaHw8mLwqvNXV44P45HUIC0KJRMKQ==
+"@vechain/sdk-core@1.0.0-beta.30":
+  version "1.0.0-beta.30"
+  resolved "https://registry.yarnpkg.com/@vechain/sdk-core/-/sdk-core-1.0.0-beta.30.tgz#2fb0d6b5c616608779df210b8eb5e66d67522e0d"
+  integrity sha512-pcaBItNJdk7ndE1ZIoknbP3V5gnD6p3YWE57RAegMZGbjQri74G2vc7mjijFpYnmCubb2+4EvyIolOyUfd3eGg==
   dependencies:
     "@ethereumjs/rlp" "^5.0.2"
-    "@noble/ciphers" "^0.5.2"
+    "@noble/ciphers" "^0.6.0"
     "@scure/bip32" "^1.4.0"
     "@scure/bip39" "^1.3.0"
     "@types/elliptic" "^6.4.18"
-    "@vechain/sdk-errors" "1.0.0-beta.29"
-    "@vechain/sdk-logging" "1.0.0-beta.29"
+    "@vechain/sdk-errors" "1.0.0-beta.30"
+    "@vechain/sdk-logging" "1.0.0-beta.30"
     bignumber.js "^9.1.2"
     blakejs "^1.2.1"
-    elliptic "^6.5.6"
-    ethers "6.13.1"
+    elliptic "^6.5.7"
+    ethers "6.13.2"
     fast-json-stable-stringify "^2.1.0"
 
 "@vechain/sdk-errors@1.0.0-beta.24":
@@ -5827,10 +5842,10 @@
   resolved "https://registry.yarnpkg.com/@vechain/sdk-errors/-/sdk-errors-1.0.0-beta.24.tgz#4ab483ae6747eccf69226da2d74fafb61b704f37"
   integrity sha512-evB+y904J5di65o1HTpt2/fgaC+HivoISwqjSRvWiBo7mOIAYDN5xK405dySBHcpl9rhOxGWp3NPRJwSdmUH9Q==
 
-"@vechain/sdk-errors@1.0.0-beta.29":
-  version "1.0.0-beta.29"
-  resolved "https://registry.yarnpkg.com/@vechain/sdk-errors/-/sdk-errors-1.0.0-beta.29.tgz#2cc8fae1c1c478651c59d292e9600dfeabfce5fa"
-  integrity sha512-EpD0B1K3Pxm9/A1uyecxUllDKeU7OCp26w2qz+G6SN0RVszVp3aG7u36rJtDTmTZwjqaTfWLjitVz2qEmlG8fw==
+"@vechain/sdk-errors@1.0.0-beta.30":
+  version "1.0.0-beta.30"
+  resolved "https://registry.yarnpkg.com/@vechain/sdk-errors/-/sdk-errors-1.0.0-beta.30.tgz#8d725ce88ff918828d26e6b402a0f4b751a16219"
+  integrity sha512-7D+FCB7dbbydLgFNJ8e20zcIqkVcW9xvIl2OcV+nu5wSIzoo6qPtVNYAku5pfSm6YbkF7xzlIGZu7rlUvgEzFQ==
 
 "@vechain/sdk-logging@1.0.0-beta.24":
   version "1.0.0-beta.24"
@@ -5839,25 +5854,36 @@
   dependencies:
     "@vechain/sdk-errors" "1.0.0-beta.24"
 
-"@vechain/sdk-logging@1.0.0-beta.29":
-  version "1.0.0-beta.29"
-  resolved "https://registry.yarnpkg.com/@vechain/sdk-logging/-/sdk-logging-1.0.0-beta.29.tgz#eba0bd7c67a0bae051e80a8f0371e7aee5d5ce88"
-  integrity sha512-cXr0wH13t8Rz8JbVoMGc22IPphx4HTzWcoBhz8mq8jX4naA/6p3dKUVKl75Wj0d3yhyqheLcpEKPdnnVJt0vDQ==
+"@vechain/sdk-logging@1.0.0-beta.30":
+  version "1.0.0-beta.30"
+  resolved "https://registry.yarnpkg.com/@vechain/sdk-logging/-/sdk-logging-1.0.0-beta.30.tgz#59290d86e7e952880d7a1625d9823bcb44822b92"
+  integrity sha512-01zPbdaVA8KWh1L+xr385kEo5NxoTS8omErdO42KAn9LdhfBVyvxUglGJXed2UoJcLCejaJ9EeiObwbG62V7jg==
   dependencies:
-    "@vechain/sdk-errors" "1.0.0-beta.29"
+    "@vechain/sdk-errors" "1.0.0-beta.30"
 
-"@vechain/sdk-network@1.0.0-beta.29", "@vechain/sdk-network@^1.0.0-beta.29":
-  version "1.0.0-beta.29"
-  resolved "https://registry.yarnpkg.com/@vechain/sdk-network/-/sdk-network-1.0.0-beta.29.tgz#3cfe1a0bb15406b5e94d02ab0050b6b4533fa7a1"
-  integrity sha512-4zNLygMREpV8DO/O7EEoOaOC6S72Epe/iyvUlsFTbKj+uffPmIjdZuevQOo3vyh+QkMzF14cgwzZOcXQk4mOKg==
+"@vechain/sdk-network@1.0.0-beta.30", "@vechain/sdk-network@^1.0.0-beta.30":
+  version "1.0.0-beta.30"
+  resolved "https://registry.yarnpkg.com/@vechain/sdk-network/-/sdk-network-1.0.0-beta.30.tgz#f6bce7bc9782cbc1a0b99c19aa52cb9ccbe82954"
+  integrity sha512-hVrRXsVBDG5VMXWMhuWfT2wUMLVPQo9PX99QJM1C5ek7uP/UD2A6QA68f/iJAAgN5eFvGSp4CyG4WXWuU72o7w==
   dependencies:
     "@types/ws" "^8.5.12"
-    "@vechain/sdk-core" "1.0.0-beta.29"
-    "@vechain/sdk-errors" "1.0.0-beta.29"
-    "@vechain/sdk-logging" "1.0.0-beta.29"
+    "@vechain/sdk-core" "1.0.0-beta.30"
+    "@vechain/sdk-errors" "1.0.0-beta.30"
+    "@vechain/sdk-logging" "1.0.0-beta.30"
+    "@vechain/vebetterdao-contracts" "^1.0.0"
     abitype "^1.0.6"
     isomorphic-ws "^5.0.0"
+    viem "^2.19.3"
     ws "^8.18.0"
+
+"@vechain/vebetterdao-contracts@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@vechain/vebetterdao-contracts/-/vebetterdao-contracts-1.0.0.tgz#bbb2d9ca9a4762f80aef8a3daf42eee156c485aa"
+  integrity sha512-YTAmMDkq+JLkTi8RVdK4EsZlLyLIHdmqZRjfbSby/m1F3p6L10j6UHMafcajyXgsZOJz7884D/Aj3ObF0hdcgQ==
+  dependencies:
+    "@openzeppelin/contracts" "^5.0.2"
+    "@openzeppelin/contracts-upgradeable" "^5.0.2"
+    ethers "^6.9.0"
 
 "@vercel/style-guide@^4.0.2":
   version "4.0.2"
@@ -9294,7 +9320,7 @@ elliptic@6.5.4:
     minimalistic-assert "^1.0.1"
     minimalistic-crypto-utils "^1.0.1"
 
-elliptic@^6.5.3, elliptic@^6.5.5, elliptic@^6.5.6:
+elliptic@^6.5.3, elliptic@^6.5.5, elliptic@^6.5.6, elliptic@^6.5.7:
   version "6.5.7"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.7.tgz#8ec4da2cb2939926a1b9a73619d768207e647c8b"
   integrity sha512-ESVCtTwiA+XhY3wyh24QqRGBoP3rEdDUl3EDUUo9tft074fi19IrdpH7hLCMMP3CIj7jb3W96rn8lt/BqIlt5Q==
@@ -10454,6 +10480,19 @@ ethers@6.13.1:
   version "6.13.1"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.13.1.tgz#2b9f9c7455cde9d38b30fe6589972eb083652961"
   integrity sha512-hdJ2HOxg/xx97Lm9HdCWk949BfYqYWpyw4//78SiwOLgASyfrNszfMUNB2joKjvGUdwhHfaiMMFFwacVVoLR9A==
+  dependencies:
+    "@adraffy/ens-normalize" "1.10.1"
+    "@noble/curves" "1.2.0"
+    "@noble/hashes" "1.3.2"
+    "@types/node" "18.15.13"
+    aes-js "4.0.0-beta.5"
+    tslib "2.4.0"
+    ws "8.17.1"
+
+ethers@6.13.2, ethers@^6.9.0:
+  version "6.13.2"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.13.2.tgz#4b67d4b49e69b59893931a032560999e5e4419fe"
+  integrity sha512-9VkriTTed+/27BGuY1s0hf441kqwHJ1wtN2edksEtiRvXx+soxRX3iSXTfFqq2+YwrOqbDoTHjIhQnjJRlzKmg==
   dependencies:
     "@adraffy/ens-normalize" "1.10.1"
     "@noble/curves" "1.2.0"
@@ -18741,6 +18780,21 @@ viem@^2.1.1:
   version "2.19.8"
   resolved "https://registry.yarnpkg.com/viem/-/viem-2.19.8.tgz#25de37d7ba3e8c0a549450b5f8268c374a098917"
   integrity sha512-2SkT6kHgp1MZnPl+fJ8kT2Eozv2tOuri30DI5dSnOecJpvachZY5PdgCdvXw7AUZCwNUkLX9ZEpKqyhqjQoUPg==
+  dependencies:
+    "@adraffy/ens-normalize" "1.10.0"
+    "@noble/curves" "1.4.0"
+    "@noble/hashes" "1.4.0"
+    "@scure/bip32" "1.4.0"
+    "@scure/bip39" "1.3.0"
+    abitype "1.0.5"
+    isows "1.0.4"
+    webauthn-p256 "0.0.5"
+    ws "8.17.1"
+
+viem@^2.19.3:
+  version "2.21.0"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.21.0.tgz#715ad561853fba50d6ed48ebcaee007b5f9bf7ff"
+  integrity sha512-9g3Gw2nOU6t4bNuoDI5vwVExzIxseU0J7Jjx10gA2RNQVrytIrLxggW++tWEe3w4mnnm/pS1WgZFjQ/QKf/nHw==
   dependencies:
     "@adraffy/ens-normalize" "1.10.0"
     "@noble/curves" "1.4.0"

@@ -37,7 +37,7 @@
         "@vechain/connex": "2.1.0",
         "@vechain/dapp-kit": "*",
         "@vechain/picasso": "2.1.1",
-        "@vechain/sdk-network": "^1.0.0-beta.29",
+        "@vechain/sdk-network": "^1.0.0-beta.30",
         "@wagmi/core": "^1.4.5",
         "@web3modal/ethereum": "^2.7.1",
         "@web3modal/html": "^2.7.1",

@@ -1,5 +1,6 @@
 import {
     WalletButton,
+    useSDK,
     useWallet,
     useWalletModal,
 } from '@vechain/dapp-kit-react';
@@ -7,6 +8,8 @@ import { useEffect, useState } from 'react';
 
 function App() {
     const { account } = useWallet();
+
+    const thor = useSDK().thor;
     const { open, onConnectionStatusChange } = useWalletModal();
     const [buttonText, setButtonText] = useState('Connect Custom Button');
 
@@ -27,6 +30,14 @@ function App() {
 
         onConnectionStatusChange(handleConnected);
     }, [account, onConnectionStatusChange]);
+
+    useEffect(() => {
+        if (account != null) {
+            thor.accounts.getAccount(account).then((account) => {
+                console.log(account);
+            });
+        }
+    }, [thor]);
 
     return (
         <div className="container">
