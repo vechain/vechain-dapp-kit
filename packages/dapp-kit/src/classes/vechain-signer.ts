@@ -1,28 +1,20 @@
-import {
-    Address,
-    Hex,
-    Transaction,
-    TransactionHandler,
-    secp256k1,
-    vechain_sdk_core_ethers as ethers,
-    type TransactionBody,
-} from '@vechain/sdk-core';
+import { vechain_sdk_core_ethers as ethers } from '@vechain/sdk-core';
 import { JSONRPCInvalidParams } from '@vechain/sdk-errors';
 import {
+    AvailableVeChainProviders,
     DelegationHandler,
     SignTransactionOptions,
-    ThorClient,
-    AvailableVeChainProviders,
     TransactionRequestInput,
     VeChainAbstractSigner,
 } from '@vechain/sdk-network';
+import { VechainWallet } from '../types';
 
-class VeChainSignerDappKit extends VeChainAbstractSigner {
-    signer: Connex.Signer;
+class VeChainSignerDAppKit extends VeChainAbstractSigner {
+    wallet: VechainWallet;
     address: string;
 
     constructor(
-        signer: Connex.Signer,
+        wallet: VechainWallet,
         address: string,
         provider: AvailableVeChainProviders | null,
     ) {
@@ -30,12 +22,12 @@ class VeChainSignerDappKit extends VeChainAbstractSigner {
         super(provider);
 
         this.address = address;
-        this.signer = signer;
+        this.wallet = wallet;
     }
 
     connect(provider: AvailableVeChainProviders | null): this {
-        return new VeChainSignerDappKit(
-            this.signer,
+        return new VeChainSignerDAppKit(
+            this.wallet,
             this.address,
             provider,
         ) as this;
@@ -53,7 +45,7 @@ class VeChainSignerDappKit extends VeChainAbstractSigner {
             throw new JSONRPCInvalidParams(
                 'VeChainPrivateKeySigner.signTransaction()',
                 -32602,
-                'Thor provider is not found into the signer. Please attach a Provider to your signer instance.',
+                'Thor provider is not found into the wallet. Please attach a Provider to your wallet instance.',
                 { transactionToSign },
             );
         }
@@ -65,7 +57,7 @@ class VeChainSignerDappKit extends VeChainAbstractSigner {
             ).delegatorOrNull(),
         );
 
-        // Sign the transaction
+        // Return the transaction hash
         return tx.txid;
     }
 
@@ -77,16 +69,13 @@ class VeChainSignerDappKit extends VeChainAbstractSigner {
             throw new JSONRPCInvalidParams(
                 'VeChainPrivateKeySigner.sendTransaction()',
                 -32602,
-                'Thor provider is not found into the signer. Please attach a Provider to your signer instance.',
+                'Thor provider is not found into the wallet. Please attach a Provider to your wallet instance.',
                 { transactionToSend },
             );
         }
 
-        // 2 - Sign the transaction
-        const txResult = await this.signTransaction(transactionToSend);
-
-        // 3 - Send the signed transaction
-        return txResult;
+        // 2 - Sign and send the transaction
+        return this.signTransaction(transactionToSend);
     }
 
     async signMessage(_message: string | Uint8Array): Promise<string> {
@@ -116,7 +105,7 @@ class VeChainSignerDappKit extends VeChainAbstractSigner {
         })[] = [];
 
         if (Array.isArray(transaction.clauses)) {
-            clauses = transaction.clauses.map((clause) => {
+            clauses = populatedTransaction.clauses.map((clause) => {
                 return {
                     to: clause.to,
                     value: clause.value,
@@ -130,63 +119,15 @@ class VeChainSignerDappKit extends VeChainAbstractSigner {
         const txOptions: Connex.Signer.TxOptions = {
             signer: this.address,
             gas: Number(transaction.gas),
-            dependsOn:
-                populatedTransaction.dependsOn !== null
-                    ? populatedTransaction.dependsOn
-                    : '',
+            dependsOn: populatedTransaction.dependsOn ?? '',
             delegator: {
                 url: delegator?.delegatorUrl ?? '',
                 signer: delegator?.delegatorPrivateKey ?? '',
             },
         };
 
-        return this.signer.signTx(clauses, txOptions);
-    }
-
-    async _signWithDelegator(
-        unsignedTransactionBody: TransactionBody,
-        originPrivateKey: Buffer,
-        thorClient: ThorClient,
-        delegatorOptions?: SignTransactionOptions,
-    ): Promise<string> {
-        // Address of the origin account
-        const originAddress = Address.ofPrivateKey(originPrivateKey).toString();
-
-        const unsignedTx = new Transaction(unsignedTransactionBody);
-
-        // Sign transaction with origin private key and delegator private key
-        if (delegatorOptions?.delegatorPrivateKey !== undefined)
-            return Hex.of(
-                TransactionHandler.signWithDelegator(
-                    unsignedTransactionBody,
-                    originPrivateKey,
-                    Buffer.from(delegatorOptions?.delegatorPrivateKey, 'hex'),
-                ).encoded,
-            ).toString();
-
-        // Otherwise, get the signature of the delegator from the delegator endpoint
-        const delegatorSignature = await DelegationHandler(
-            delegatorOptions,
-        ).getDelegationSignatureUsingUrl(
-            unsignedTx,
-            originAddress,
-            thorClient.httpClient,
-        );
-
-        // Sign transaction with origin private key
-        const originSignature = secp256k1.sign(
-            unsignedTx.getSignatureHash(),
-            originPrivateKey,
-        );
-
-        // Sign the transaction with both signatures. Concat both signatures to get the final signature
-        const signature = Buffer.concat([originSignature, delegatorSignature]);
-
-        // Return new signed transaction
-        return Hex.of(
-            new Transaction(unsignedTx.body, signature).encoded,
-        ).toString();
+        return this.wallet.signTx(clauses, txOptions);
     }
 }
 
-export { VeChainSignerDappKit };
+export { VeChainSignerDAppKit };

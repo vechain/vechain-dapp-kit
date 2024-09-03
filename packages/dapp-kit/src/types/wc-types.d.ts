@@ -14,7 +14,7 @@ export type WCSigner = Connex.Signer & {
     disconnect: () => Promise<void>;
 
     /**
-     * The genesis ID of the current signer
+     * The genesis ID of the current wallet
      */
     genesisId: string;
 

@@ -4,7 +4,7 @@ import type { ConnectResponse, WalletSource } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 import { type Certificate } from '@vechain/sdk-core';
 import type { ThorClient } from '@vechain/sdk-network';
-import { VeChainSignerDappKit } from '@vechain/dapp-kit/src/classes/vechain-signer';
+import { VeChainSignerDAppKit } from '@vechain/dapp-kit/src/classes/vechain-signer';
 
 export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
 export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
@@ -38,7 +38,7 @@ export interface DAppKitContext {
         disconnect: () => void;
         connect: () => Promise<ConnectResponse>;
         account: string | null;
-        signer: VeChainSignerDappKit | undefined;
+        signer: VeChainSignerDAppKit | undefined;
         source: WalletSource | null;
         connectionCertificate: Certificate | null;
     };
