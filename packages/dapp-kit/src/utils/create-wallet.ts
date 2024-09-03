@@ -1,6 +1,6 @@
 import * as ConnexLib from '@vechain/connex';
 import type {
-    ConnexWallet,
+    VechainWallet,
     DAppKitOptions,
     WalletSource,
     WCClient,
@@ -26,7 +26,7 @@ export const createWallet = ({
     walletConnectOptions,
     onDisconnected,
     connectionCertificate,
-}: ICreateWallet): ConnexWallet => {
+}: ICreateWallet): VechainWallet => {
     const genesisId = normalizeGenesisId(genesis);
 
     DAppKitLogger.debug('createWallet', source);

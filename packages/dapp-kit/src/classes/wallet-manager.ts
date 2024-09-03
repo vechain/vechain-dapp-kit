@@ -3,17 +3,19 @@ import { subscribeKey } from 'valtio/vanilla/utils';
 import { certificate } from '@vechain/sdk-core';
 import type {
     ConnectResponse,
-    ConnexWallet,
+    VechainWallet,
     DAppKitOptions,
     WalletManagerState,
     WalletSource,
 } from '../types';
 import { createWallet, DAppKitLogger, Storage } from '../utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
+import { createSDKSigner } from '../utils/create-signer';
+import { VeChainSignerDAppKit } from './vechain-signer';
 
 class WalletManager {
     public readonly state: WalletManagerState;
-    private wallets: Record<string, ConnexWallet | undefined> = {};
+    private wallets: Record<string, VechainWallet | undefined> = {};
 
     constructor(private readonly options: DAppKitOptions) {
         this.state = this.initState(options.usePersistence ?? false);
@@ -27,7 +29,7 @@ class WalletManager {
         }
     }
 
-    private get wallet(): ConnexWallet {
+    private get wallet(): VechainWallet {
         const source = this.state.source;
 
         DAppKitLogger.debug(
@@ -66,6 +68,25 @@ class WalletManager {
         }
 
         return wallet;
+    }
+
+    public get signer(): VeChainSignerDAppKit | undefined {
+        let wallet: VechainWallet;
+
+        // try to get the wallet
+        try {
+            wallet = this.wallet;
+            if (!wallet) return undefined;
+        } catch (e) {
+            return undefined;
+        }
+
+        // create the signer from the wallet
+        return createSDKSigner(
+            wallet,
+            this.options.nodeUrl,
+            this.state.address as string,
+        );
     }
 
     // this is needed for wallet connect connections when a connection certificate is required

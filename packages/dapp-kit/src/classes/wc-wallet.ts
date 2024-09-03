@@ -1,6 +1,6 @@
-import type { ConnectResponse, ConnexWallet, WCSigner } from '../types';
+import type { ConnectResponse, VechainWallet, WCSigner } from '../types';
 
-class WCWallet implements ConnexWallet {
+class WCWallet implements VechainWallet {
     constructor(private readonly signer: WCSigner) {}
 
     connect = async (): Promise<ConnectResponse> => {

@@ -1,11 +1,11 @@
 import { certificate } from '@vechain/sdk-core';
-import type { BaseWallet, ConnectResponse, ConnexWallet } from '../types';
+import type { BaseWallet, ConnectResponse, VechainWallet } from '../types';
 import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
 
 /**
- * A `ConnexWallet` for wallet's that use a certificate connection
+ * A `VechainWallet` for wallet's that use a certificate connection
  */
-class CertificateBasedWallet implements ConnexWallet {
+class CertificateBasedWallet implements VechainWallet {
     constructor(
         private readonly wallet: BaseWallet,
         private readonly connectionCertificateData?: {

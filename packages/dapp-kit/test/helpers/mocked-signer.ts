@@ -5,8 +5,8 @@ import {
     addressUtils,
     blake2b256,
     HDNode,
-    Hex0x,
     secp256k1,
+    Hex,
 } from '@vechain/sdk-core';
 
 const mnemonicWords =
@@ -39,7 +39,10 @@ const mockedConnexSigner: Connex.Signer = {
 
         // Sign the certificate
         const signatureCore = Buffer.from(
-            secp256k1.sign(blake2b256(encodedCertificateToHash), privateKey),
+            secp256k1.sign(
+                blake2b256(encodedCertificateToHash, 'buffer'),
+                privateKey,
+            ),
         );
 
         return Promise.resolve({
@@ -48,7 +51,7 @@ const mockedConnexSigner: Connex.Signer = {
                 timestamp: newCertificate.timestamp,
                 signer: newCertificate.signer,
             },
-            signature: Hex0x.of(signatureCore),
+            signature: Hex.of(signatureCore).toString(),
         });
     },
 };

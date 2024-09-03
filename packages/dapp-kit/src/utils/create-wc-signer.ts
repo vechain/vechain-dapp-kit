@@ -16,8 +16,8 @@ interface SessionAccount {
 }
 
 /**
- * Creates a new WalletConnect signer
- * @param options - The signer options. See {@link WCSignerOptions}
+ * Creates a new WalletConnect wallet
+ * @param options - The wallet options. See {@link WCSignerOptions}
  * @returns A new {@link WCSigner}
  */
 export const createWcSigner = ({
@@ -42,7 +42,7 @@ export const createWcSigner = ({
     // listen for session updates
     const listenToEvents = (_client: SignClient): void => {
         _client.on('session_update', ({ topic, params }): void => {
-            DAppKitLogger.debug('wallet connect signer', 'session_update', {
+            DAppKitLogger.debug('wallet connect wallet', 'session_update', {
                 topic,
                 params,
             });
@@ -63,7 +63,7 @@ export const createWcSigner = ({
     const restoreSession = (_client: SignClient): void => {
         if (typeof session !== 'undefined') return;
 
-        DAppKitLogger.debug('wallet connect signer', 'restore session');
+        DAppKitLogger.debug('wallet connect wallet', 'restore session');
         const sessionKeys = _client.session.keys;
 
         for (const key of sessionKeys) {
@@ -87,7 +87,7 @@ export const createWcSigner = ({
         requestedAddress?: string,
     ): SessionAccount | undefined => {
         if (!session) return;
-        DAppKitLogger.debug('wallet connect signer', 'validate session');
+        DAppKitLogger.debug('wallet connect wallet', 'validate session');
 
         const firstAccount = session.namespaces.vechain.accounts[0];
 
@@ -112,7 +112,7 @@ export const createWcSigner = ({
     };
 
     const connect = async (): Promise<SessionTypes.Struct> => {
-        DAppKitLogger.debug('wallet connect signer', 'connect');
+        DAppKitLogger.debug('wallet connect wallet', 'connect');
         const signClient = await wcClient.get();
 
         const namespace: ProposalTypes.RequiredNamespace = {
