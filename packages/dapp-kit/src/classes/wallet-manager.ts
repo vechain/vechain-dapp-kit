@@ -82,7 +82,11 @@ class WalletManager {
         }
 
         // create the signer from the wallet
-        return createSDKSigner(wallet, this.state.address as string);
+        return createSDKSigner(
+            wallet,
+            this.options.nodeUrl,
+            this.state.address as string,
+        );
     }
 
     // this is needed for wallet connect connections when a connection certificate is required
