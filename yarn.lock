@@ -5692,51 +5692,6 @@
     randombytes "^2.1.0"
     thor-devkit "^2.0.5"
 
-"@vechain/dapp-kit-react@^1.0.12":
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/@vechain/dapp-kit-react/-/dapp-kit-react-1.0.12.tgz#7221762cdf035660a34630ebc39b9b99d0c592ea"
-  integrity sha512-rkLeo7d1Du0Id40n8Rp/ZTkVT8aQSgstdmvKpWmqmMUvYe74gJQT3qaokzwOq5cDJKBEmbDlxlP/mb/EebC8TA==
-  dependencies:
-    "@lit/react" "^1.0.1"
-    "@vechain/connex" "2.1.0"
-    "@vechain/connex-framework" "2.1.0"
-    "@vechain/dapp-kit" "1.0.12"
-    "@vechain/dapp-kit-ui" "1.0.12"
-    thor-devkit "2.0.5"
-    valtio "1.11.2"
-
-"@vechain/dapp-kit-ui@1.0.12":
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/@vechain/dapp-kit-ui/-/dapp-kit-ui-1.0.12.tgz#884ee61675f0cd3d1495e28e80cede9fac65cee1"
-  integrity sha512-ocVAdxg9+l5vjHJV0at/BcmVjTgI/KdVsdJBFJVmSuW417G4XKYSYj7zZhwI4ZRWO5pb+PveFGKpppz5HUjNvg==
-  dependencies:
-    "@vechain/connex" "2.1.0"
-    "@vechain/dapp-kit" "1.0.12"
-    "@vechain/picasso" "2.1.1"
-    "@wagmi/core" "^1.4.5"
-    "@web3modal/ethereum" "^2.7.1"
-    "@web3modal/html" "^2.7.1"
-    lit "^3.0.0"
-    qrcode "1.5.3"
-    valtio "1.11.2"
-    viem "^1.18.4"
-
-"@vechain/dapp-kit@1.0.12":
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/@vechain/dapp-kit/-/dapp-kit-1.0.12.tgz#9c5f5ee2d8b4f16eda8d03b866ff90538652eece"
-  integrity sha512-xHEidsbuX0pwB1KwVssrnnrjkLA5VmbiMGciniwrYTw8PDLr5A9/5thyyO/1sWyIK6JzEy3s3KAHUfFgOYB3eQ==
-  dependencies:
-    "@vechain/connex" "2.1.0"
-    "@vechain/connex-driver" "2.1.0"
-    "@vechain/connex-framework" "2.1.0"
-    "@vechain/connex-types" "^2.1.0"
-    "@walletconnect/modal" "2.6.2"
-    "@walletconnect/sign-client" "2.10.2"
-    "@walletconnect/utils" "2.10.2"
-    events "^3.3.0"
-    thor-devkit "2.0.5"
-    valtio "1.11.2"
-
 "@vechain/ethers@^4.0.27-5":
   version "4.0.27-5"
   resolved "https://registry.yarnpkg.com/@vechain/ethers/-/ethers-4.0.27-5.tgz#2e7d40294b2e14ddf4cf6f6094bbdc871e26e299"
@@ -7503,7 +7458,7 @@ bl@^4.0.3, bl@^4.1.0:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
-blakejs@^1.1.0, blakejs@^1.1.2, blakejs@^1.2.1:
+blakejs@^1.1.2, blakejs@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/blakejs/-/blakejs-1.2.1.tgz#5057e4206eadb4a97f7c0b6e197a505042fc3814"
   integrity sha512-QXUSXI3QVc/gJME0dBpXrag1kbzOqCjCX8/b54ntNyW6sjtoqxqRk3LTmXzaJoh71zMsDCjM+47jS7XiwN/+fQ==
@@ -7682,7 +7637,7 @@ buffer-from@^1.0.0:
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
   integrity sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==
 
-"buffer-polyfill@npm:buffer@^6.0.3", buffer@^6.0.3:
+"buffer-polyfill@npm:buffer@^6.0.3":
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-6.0.3.tgz#2ace578459cc8fbe2a70aaa8f52ee63b6a74c6c6"
   integrity sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==
@@ -7702,6 +7657,14 @@ buffer@5.7.1, buffer@^5.5.0, buffer@^5.7.1:
   dependencies:
     base64-js "^1.3.1"
     ieee754 "^1.1.13"
+
+buffer@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/buffer/-/buffer-6.0.3.tgz#2ace578459cc8fbe2a70aaa8f52ee63b6a74c6c6"
+  integrity sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==
+  dependencies:
+    base64-js "^1.3.1"
+    ieee754 "^1.2.1"
 
 buildcheck@~0.0.6:
   version "0.0.6"
@@ -13879,9 +13842,9 @@ micromark@^3.0.0:
     uvu "^0.5.0"
 
 micromatch@^4.0.2, micromatch@^4.0.4, micromatch@^4.0.5, micromatch@~4.0.7:
-  version "4.0.7"
-  resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-4.0.7.tgz#33e8190d9fe474a9895525f5618eee136d46c2e5"
-  integrity sha512-LPP/3KorzCwBxfeUuZmaR6bG2kdeHSbe0P2tY3FLRU4vYrjYz5hI4QZwV0njUx3jeuKe67YukQ1LSPZBKDqO/Q==
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-4.0.8.tgz#d66fa18f3a47076789320b9b1af32bd86d9fa202"
+  integrity sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==
   dependencies:
     braces "^3.0.3"
     picomatch "^2.3.1"
@@ -17125,7 +17088,16 @@ string-natural-compare@^3.0.1:
   resolved "https://registry.yarnpkg.com/string-natural-compare/-/string-natural-compare-3.0.1.tgz#7a42d58474454963759e8e8b7ae63d71c1e7fdf4"
   integrity sha512-n3sPwynL1nwKi3WJ6AIsClwBMa0zTi54fn2oLU6ndfTSIO05xaznjSf15PcBZU6FNWbmN5Q6cxT4V5hGvB4taw==
 
-"string-width-cjs@npm:string-width@^4.2.0", "string-width@^1.0.2 || 2 || 3 || 4", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+"string-width-cjs@npm:string-width@^4.2.0":
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
+  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
+  dependencies:
+    emoji-regex "^8.0.0"
+    is-fullwidth-code-point "^3.0.0"
+    strip-ansi "^6.0.1"
+
+"string-width@^1.0.2 || 2 || 3 || 4", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -17236,7 +17208,14 @@ stringify-entities@^4.0.0:
     character-entities-html4 "^2.0.0"
     character-entities-legacy "^3.0.0"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@6.0.1, strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
+  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
+  dependencies:
+    ansi-regex "^5.0.1"
+
+strip-ansi@6.0.1, strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -17625,19 +17604,6 @@ thenify-all@^1.0.0:
   integrity sha512-RVZSIV5IG10Hk3enotrhvz0T9em6cyHBLkH/YAZuKqd8hRkKhSfCGIcP2KUY0EPxndzANBmNllzWPwak+bheSw==
   dependencies:
     any-promise "^1.0.0"
-
-thor-devkit@2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/thor-devkit/-/thor-devkit-2.0.5.tgz#1cdd6d623f755e82aacf27290624372bfe6d1b90"
-  integrity sha512-82Z0/sY0+S54bhmg57r7iqoK7sJB1F5md3zWXjXXGPin3ejsR0Whw1O9wzWvE0DkTp1EiPHWFMTPtOejxaiXeA==
-  dependencies:
-    "@vechain/ethers" "^4.0.27-5"
-    bignumber.js "^7.2.1"
-    blakejs "^1.1.0"
-    elliptic "6.5.4"
-    fast-json-stable-stringify "^2.0.0"
-    js-sha3 "0.5.7"
-    rlp "^2.0.0"
 
 thor-devkit@^2.0.5:
   version "2.0.9"
@@ -19218,7 +19184,7 @@ wordwrapjs@^4.0.0:
     reduce-flatten "^2.0.0"
     typical "^5.2.0"
 
-"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
@@ -19231,6 +19197,15 @@ wrap-ansi@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-6.2.0.tgz#e9393ba07102e6c91a3b221478f0257cd2856e53"
   integrity sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==
+  dependencies:
+    ansi-styles "^4.0.0"
+    string-width "^4.1.0"
+    strip-ansi "^6.0.0"
+
+wrap-ansi@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
+  integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
   dependencies:
     ansi-styles "^4.0.0"
     string-width "^4.1.0"
