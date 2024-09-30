@@ -10662,7 +10662,7 @@ ethers@6.13.1:
     tslib "2.4.0"
     ws "8.17.1"
 
-ethers@6.13.2, ethers@^6.9.0:
+ethers@6.13.2, ethers@^6.13.2, ethers@^6.9.0:
   version "6.13.2"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.13.2.tgz#4b67d4b49e69b59893931a032560999e5e4419fe"
   integrity sha512-9VkriTTed+/27BGuY1s0hf441kqwHJ1wtN2edksEtiRvXx+soxRX3iSXTfFqq2+YwrOqbDoTHjIhQnjJRlzKmg==

@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import type { ConnectResponse, VechainWallet, WCSigner } from '../types';
 
 class WCWallet implements VechainWallet {
@@ -22,6 +23,14 @@ class WCWallet implements VechainWallet {
         msg: Connex.Vendor.TxMessage,
         options: Connex.Signer.TxOptions,
     ): Promise<Connex.Vendor.TxResponse> => this.signer.signTx(msg, options);
+
+    signTypedData = (
+        _domain: ethers.TypedDataDomain,
+        _types: Record<string, ethers.TypedDataField[]>,
+        _value: Record<string, unknown>,
+    ): Promise<string> => {
+        return this.signer.signTypedData(_domain, _types, _value);
+    };
 
     disconnect = (): Promise<void> => this.signer.disconnect();
 }

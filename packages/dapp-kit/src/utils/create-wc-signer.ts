@@ -8,6 +8,7 @@ import type { SignClient } from '@walletconnect/sign-client/dist/types/client';
 import type { WCSigner, WCSignerOptions } from '../types';
 import { DefaultMethods } from '../constants';
 import { DAppKitLogger } from './logger';
+import { ethers } from 'ethers';
 
 interface SessionAccount {
     networkIdentifier: string;
@@ -208,6 +209,17 @@ export const createWcSigner = ({
         });
     };
 
+    const signTypedData = async (
+        _domain: ethers.TypedDataDomain,
+        _types: Record<string, ethers.TypedDataField[]>,
+        _value: Record<string, unknown>,
+    ): Promise<string> => {
+        return makeRequest<string>({
+            method: DefaultMethods.SignTypedData,
+            params: [{ _domain, _types, _value }],
+        });
+    };
+
     const disconnect = async (): Promise<void> => {
         if (!session) return;
 
@@ -252,6 +264,7 @@ export const createWcSigner = ({
     return {
         signTx,
         signCert,
+        signTypedData,
         disconnect,
         genesisId,
         connect: connectAccount,
