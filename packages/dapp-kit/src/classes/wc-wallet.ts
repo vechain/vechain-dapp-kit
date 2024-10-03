@@ -1,4 +1,6 @@
+import { ethers } from 'ethers';
 import type { ConnectResponse, ConnexWallet, WCSigner } from '../types';
+import { SignTypedDataOptions } from '../types/types';
 
 class WCWallet implements ConnexWallet {
     constructor(private readonly signer: WCSigner) {}
@@ -22,6 +24,16 @@ class WCWallet implements ConnexWallet {
         msg: Connex.Vendor.TxMessage,
         options: Connex.Signer.TxOptions,
     ): Promise<Connex.Vendor.TxResponse> => this.signer.signTx(msg, options);
+
+    signTypedData = async (
+        _domain: ethers.TypedDataDomain,
+        _types: Record<string, ethers.TypedDataField[]>,
+        _value: Record<string, unknown>,
+        _options?: SignTypedDataOptions,
+    ): Promise<string> => {
+        // Delegating the signTypedData to the signer instance
+        return this.signer.signTypedData(_domain, _types, _value, _options);
+    };
 
     disconnect = (): Promise<void> => this.signer.disconnect();
 }

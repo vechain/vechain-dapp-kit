@@ -31,6 +31,7 @@
         "@walletconnect/modal": "2.6.2",
         "@walletconnect/sign-client": "2.10.2",
         "@walletconnect/utils": "2.10.2",
+        "ethers": "^6.13.3",
         "events": "^3.3.0",
         "valtio": "1.11.2"
     },

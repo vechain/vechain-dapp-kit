@@ -51,6 +51,10 @@ const mockedConnexSigner: Connex.Signer = {
             signature: Hex0x.of(signatureCore),
         });
     },
+
+    signTypedData() {
+        return Promise.resolve('0x1234');
+    },
 };
 
 export { mockedConnexSigner, hdNode, mnemonicWords, privateKey, address };

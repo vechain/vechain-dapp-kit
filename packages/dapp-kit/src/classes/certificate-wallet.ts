@@ -1,6 +1,8 @@
 import { certificate } from '@vechain/sdk-core';
 import type { BaseWallet, ConnectResponse, ConnexWallet } from '../types';
 import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
+import { ethers } from 'ethers';
+import { SignTypedDataOptions } from '../types/types';
 
 /**
  * A `ConnexWallet` for wallet's that use a certificate connection
@@ -59,6 +61,15 @@ class CertificateBasedWallet implements ConnexWallet {
         msg: Connex.Vendor.TxMessage,
         options: Connex.Signer.TxOptions,
     ): Promise<Connex.Vendor.TxResponse> => this.wallet.signTx(msg, options);
+
+    signTypedData = (
+        _domain: ethers.TypedDataDomain,
+        _types: Record<string, ethers.TypedDataField[]>,
+        _value: Record<string, unknown>,
+        _options?: SignTypedDataOptions,
+    ): Promise<string> => {
+        return this.wallet.signTypedData(_domain, _types, _value);
+    };
 
     disconnect = async (): Promise<void> => this.wallet.disconnect?.();
 }

@@ -7,8 +7,21 @@ import { blake2b256, Hex } from '@vechain/sdk-core';
 import { WalletManager } from './classes';
 import { DAppKitLogger, normalizeGenesisBlock } from './utils';
 import type { DAppKitOptions } from './types';
+import { ethers } from 'ethers';
+import { SignTypedDataOptions } from './types/types';
 
-const cache: Record<string, DriverNoVendor | undefined> = {};
+// Define an interface that extends DriverNoVendor to include signTypedData
+interface DriverNoVendorExtended extends DriverNoVendor {
+    signTypedData: (
+        domain: ethers.TypedDataDomain,
+        types: Record<string, ethers.TypedDataField[]>,
+        value: Record<string, unknown>,
+        options?: SignTypedDataOptions,
+    ) => Promise<any>;
+}
+
+// Update the createThorDriver function to use the extended interface
+const cache: Record<string, DriverNoVendorExtended | undefined> = {};
 
 /**
  * START: TEMPORARY COMMENT
@@ -23,7 +36,7 @@ const cache: Record<string, DriverNoVendor | undefined> = {};
 const createThorDriver = (
     node: string,
     genesis: Connex.Thor.Block,
-): DriverNoVendor => {
+): DriverNoVendorExtended => {
     // Stringify the certificate to hash
     const certificateToHash = JSON.stringify({
         node,
@@ -40,7 +53,11 @@ const createThorDriver = (
 
     let driver = cache[key];
     if (!driver) {
-        driver = new DriverNoVendor(new SimpleNet(node), genesis);
+        driver = new DriverNoVendor(
+            new SimpleNet(node),
+            genesis,
+        ) as DriverNoVendorExtended;
+
         cache[key] = driver;
     }
     return driver;
@@ -65,8 +82,10 @@ class DAppKit {
 
         const walletManager = new WalletManager(options);
 
+        // Assign additional methods from walletManager to driver
         driver.signTx = walletManager.signTx.bind(walletManager);
         driver.signCert = walletManager.signCert.bind(walletManager);
+        driver.signTypedData = walletManager.signTypedData.bind(walletManager); // Add the binding for signTypedData
 
         const framework = new Framework(driver);
 
