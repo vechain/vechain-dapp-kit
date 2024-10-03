@@ -125,6 +125,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
                 account,
                 source,
                 connectionCertificate,
+                signTypedData: connex.wallet.signTypedData,
             },
             modal: {
                 open: openModal,

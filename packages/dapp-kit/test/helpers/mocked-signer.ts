@@ -8,6 +8,7 @@ import {
     Hex0x,
     secp256k1,
 } from '@vechain/sdk-core';
+import { ExpandedConnexSigner } from '../../src/types/types';
 
 const mnemonicWords =
     'denial kitchen pet squirrel other broom bar gas better priority spoil cross';
@@ -19,7 +20,7 @@ const firstAccount = hdNode.deriveChild(0);
 const privateKey = firstAccount.privateKey!;
 const address = addressUtils.fromPrivateKey(privateKey);
 
-const mockedConnexSigner: Connex.Signer = {
+const mockedConnexSigner: ExpandedConnexSigner = {
     signTx() {
         return Promise.resolve({ txid: '0x1234', signer: address });
     },

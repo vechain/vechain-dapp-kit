@@ -1,6 +1,10 @@
 /// <reference types="@vechain/connex" />
 import type React from 'react';
-import type { ConnectResponse, WalletSource } from '@vechain/dapp-kit';
+import type {
+    ConnectResponse,
+    WalletManager,
+    WalletSource,
+} from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 import { type Certificate } from '@vechain/sdk-core';
 
@@ -39,6 +43,7 @@ export interface DAppKitContext {
         account: string | null;
         source: WalletSource | null;
         connectionCertificate: Certificate | null;
+        signTypedData: WalletManager['signTypedData'];
     };
     modal: {
         open: () => void;
