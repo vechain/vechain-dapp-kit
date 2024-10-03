@@ -70,7 +70,7 @@ export const convertVendorToSigner = (
             return service.request();
         },
         signTypedData(_domain, _types, _value, _options) {
-            throw new Error('Method not implemented.');
+            throw new Error('Sign typed data it is not available with sync2');
         },
     };
 };
