@@ -25,7 +25,7 @@ const defaultMockConnectHandler = (): ReturnType<IEngine['connect']> => {
 
 const defaultMockRequestHandler = (
     params: EngineTypes.RequestParams,
-): Promise<Connex.Vendor.CertResponse | Connex.Vendor.TxResponse> => {
+): Promise<Connex.Vendor.CertResponse | Connex.Vendor.TxResponse | string> => {
     if (params.request.method === DefaultMethods.RequestTransaction) {
         return Promise.resolve({
             txid: '0x123',
@@ -36,6 +36,14 @@ const defaultMockRequestHandler = (
             mockedConnexSigner.signCert(
                 params.request.params[0].message,
                 params.request.params[0].options,
+            ),
+        );
+    } else if (params.request.method === DefaultMethods.SignTypedData) {
+        return Promise.resolve(
+            mockedConnexSigner.signTypedData(
+                params.request.params[0].domain,
+                params.request.params[0].types,
+                params.request.params[0].value,
             ),
         );
     }
