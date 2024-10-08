@@ -67,9 +67,8 @@ class CertificateBasedWallet implements ConnexWallet {
         _types: Record<string, ethers.TypedDataField[]>,
         _value: Record<string, unknown>,
         _options?: SignTypedDataOptions,
-    ): Promise<string> => {
-        return this.wallet.signTypedData(_domain, _types, _value);
-    };
+    ): Promise<string> =>
+        this.wallet.signTypedData(_domain, _types, _value, _options);
 
     disconnect = async (): Promise<void> => this.wallet.disconnect?.();
 }

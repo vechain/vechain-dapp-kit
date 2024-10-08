@@ -30,10 +30,8 @@ class WCWallet implements ConnexWallet {
         _types: Record<string, ethers.TypedDataField[]>,
         _value: Record<string, unknown>,
         _options?: SignTypedDataOptions,
-    ): Promise<string> => {
-        // Delegating the signTypedData to the signer instance
-        return this.signer.signTypedData(_domain, _types, _value, _options);
-    };
+    ): Promise<string> =>
+        this.signer.signTypedData(_domain, _types, _value, _options);
 
     disconnect = (): Promise<void> => this.signer.disconnect();
 }
