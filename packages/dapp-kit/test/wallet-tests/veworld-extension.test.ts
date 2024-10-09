@@ -1,12 +1,13 @@
 import { beforeEach, expect } from 'vitest';
 import { mockedConnexSigner } from '../helpers/mocked-signer';
 import { createUnitTestConnex } from '../helpers/connex-helper';
+import { ExpandedConnexSigner } from '../../src/types/types';
 
 describe('veworld', () => {
     describe('is in veworld browser', () => {
         beforeEach(() => {
             window.vechain = {
-                newConnexSigner: (): Connex.Signer => mockedConnexSigner,
+                newConnexSigner: (): ExpandedConnexSigner => mockedConnexSigner,
             };
         });
 
