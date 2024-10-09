@@ -173,6 +173,8 @@ yarn test:e2e:headless
 
 ## Publishing
 
+Before publishing create the release on github called `X.Y.Z` and then `git pull` the tag.
+
 ```bash
 git clone git@github.com:vechainfoundation/vechain-dapp-kit.git
 cd vechain-dapp-kit

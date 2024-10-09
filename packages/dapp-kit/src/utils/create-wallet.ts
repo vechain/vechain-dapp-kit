@@ -1,5 +1,6 @@
 import * as ConnexLib from '@vechain/connex';
 import type {
+    BaseWallet,
     ConnexWallet,
     DAppKitOptions,
     WalletSource,
@@ -59,7 +60,10 @@ export const createWallet = ({
 
             const signer = window.vechain.newConnexSigner(genesisId);
 
-            return new CertificateBasedWallet(signer, connectionCertificate);
+            return new CertificateBasedWallet(
+                signer as BaseWallet,
+                connectionCertificate,
+            );
         }
         case 'wallet-connect': {
             if (!walletConnectOptions) {
