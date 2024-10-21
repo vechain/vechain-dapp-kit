@@ -1,6 +1,9 @@
+import { ExpandedConnexSigner } from '../types/types';
 import { DAppKitLogger } from './logger';
 
-export const convertVendorToSigner = (vendor: Connex.Vendor): Connex.Signer => {
+export const convertVendorToSigner = (
+    vendor: Connex.Vendor,
+): ExpandedConnexSigner => {
     return {
         signTx: (msg, options): Promise<Connex.Vendor.TxResponse> => {
             const service = vendor.sign('tx', msg);
@@ -65,6 +68,9 @@ export const convertVendorToSigner = (vendor: Connex.Vendor): Connex.Signer => {
             });
 
             return service.request();
+        },
+        signTypedData(_domain, _types, _value, _options) {
+            throw new Error('Sign typed data it is not available with sync2');
         },
     };
 };

@@ -6,6 +6,7 @@ import type {
     WalletConnectOptions,
     WalletSource,
 } from '../src';
+import { ExpandedConnexSigner } from '../src/types/types';
 
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
@@ -56,7 +57,7 @@ describe('createWallet', () => {
 
         it('is installed', () => {
             window.vechain = {
-                newConnexSigner: () => ({} as Connex.Signer),
+                newConnexSigner: () => ({} as ExpandedConnexSigner),
             };
 
             const wallet = createWallet(createOptions('veworld'));
