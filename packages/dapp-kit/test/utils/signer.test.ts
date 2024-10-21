@@ -6,6 +6,7 @@ import { createWcClient, createWcSigner } from '../../src';
 import { mockedSignClient } from '../helpers/mocked-sign-client';
 import { normalizeGenesisId } from '../../src';
 import { address } from '../helpers/mocked-signer';
+import { typedData } from '../fixture';
 
 vi.spyOn(SignClient, 'init').mockResolvedValue(mockedSignClient);
 
@@ -64,6 +65,18 @@ describe('createWcSigner', () => {
         );
 
         expect(certRes).toBeDefined();
+    });
+
+    it('can sign typed data', async () => {
+        const signer = createNewSignClient();
+
+        const signedData = await signer.signTypedData(
+            typedData.domain,
+            typedData.types,
+            typedData.value,
+        );
+
+        expect(signedData).toBeDefined();
     });
 
     it('can disconnect', async () => {

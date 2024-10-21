@@ -1,6 +1,6 @@
 {
     "name": "@vechain/dapp-kit-react",
-    "version": "1.0.13",
+    "version": "1.0.14",
     "private": false,
     "homepage": "https://github.com/vechain/vechain-dapp-kit",
     "repository": "github:vechain/vechain-dapp-kit",
@@ -41,7 +41,7 @@
         "react": "^18.2.0",
         "tsup": "*",
         "typescript": "*",
-        "vite": "^4.5.2",
+        "vite": "^4.5.5",
         "vitest": "^0.34.6"
     }
 }

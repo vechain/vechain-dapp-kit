@@ -1,6 +1,6 @@
 {
     "name": "@vechain/dapp-kit",
-    "version": "1.0.13",
+    "version": "1.0.14",
     "private": false,
     "homepage": "https://github.com/vechain/vechain-dapp-kit",
     "repository": "github:vechain/vechain-dapp-kit",
@@ -31,6 +31,7 @@
         "@walletconnect/modal": "2.6.2",
         "@walletconnect/sign-client": "2.10.2",
         "@walletconnect/utils": "2.10.2",
+        "ethers": "^6.13.3",
         "events": "^3.3.0",
         "valtio": "1.11.2"
     },
@@ -45,7 +46,7 @@
         "lokijs": "^1.5.12",
         "tsup": "*",
         "typescript": "*",
-        "vite": "^4.5.2",
+        "vite": "^4.5.5",
         "vitest": "^0.34.6"
     }
 }

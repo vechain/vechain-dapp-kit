@@ -1,5 +1,6 @@
 import type { SignClientTypes } from '@walletconnect/types';
 import type { SignClient } from '@walletconnect/sign-client';
+import { ExpandedConnexSigner } from './types';
 
 export type ResolvedSignClient = Awaited<ReturnType<typeof SignClient.init>>;
 
@@ -7,7 +8,7 @@ export type ResolvedSignClient = Awaited<ReturnType<typeof SignClient.init>>;
  * WCSigner is a {@link Connex.Signer} with an additional disconnect method
  *
  */
-export type WCSigner = Connex.Signer & {
+export type WCSigner = ExpandedConnexSigner & {
     /**
      * Disconnects and cleans up the WalletConnect session
      */

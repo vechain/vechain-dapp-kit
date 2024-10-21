@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { WalletConnectOptions } from '../src';
 import { WalletManager } from '../src';
 import { mockedConnexSigner } from './helpers/mocked-signer';
+import { typedData } from './fixture';
 
 const newWalletManager = (wcOptions?: WalletConnectOptions): WalletManager => {
     return new WalletManager({
@@ -64,6 +65,20 @@ describe('WalletManager', () => {
             );
 
             expect(res.signature).toBeDefined();
+        });
+    });
+
+    describe('signTypedData', () => {
+        it('should sign the typedData', async () => {
+            const walletManager = newWalletManager();
+            walletManager.setSource('veworld');
+            const res = await walletManager.signTypedData(
+                typedData.domain,
+                typedData.types,
+                typedData.value,
+            );
+
+            expect(res).toBeDefined();
         });
     });
 
