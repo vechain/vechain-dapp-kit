@@ -6,67 +6,24 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-import type { WalletSource } from '@vechain/dapp-kit';
+import type { DAppKit, WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import { subscribeKey } from 'valtio/vanilla/utils';
-import type { DAppKitProviderOptions, DAppKitContext } from './types';
 import { type Certificate } from '@vechain/sdk-core';
+import type { DAppKitProviderOptions, DAppKitContext } from './types';
 
 /**
  * Context
  */
 const Context = createContext<DAppKitContext | undefined>(undefined);
 
-export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
+export const DAppKitDataProvider = ({
     children,
-    nodeUrl,
-    genesis,
-    walletConnectOptions,
-    usePersistence = false,
-    logLevel,
-    requireCertificate,
-    themeMode,
-    themeVariables,
-    i18n,
-    language,
-    modalParent,
-    onSourceClick,
-    connectionCertificate: connectionCertificateData,
+    connex,
+}: {
+    children: React.ReactNode;
+    connex: DAppKit;
 }): React.ReactElement => {
-    const connex = useMemo(
-        () =>
-            DAppKitUI.configure({
-                nodeUrl,
-                genesis,
-                walletConnectOptions,
-                usePersistence,
-                logLevel,
-                requireCertificate,
-                themeVariables,
-                themeMode,
-                i18n,
-                language,
-                modalParent,
-                onSourceClick,
-                connectionCertificate: connectionCertificateData,
-            }),
-        [
-            nodeUrl,
-            genesis,
-            walletConnectOptions,
-            usePersistence,
-            logLevel,
-            requireCertificate,
-            themeVariables,
-            themeMode,
-            i18n,
-            language,
-            modalParent,
-            onSourceClick,
-            connectionCertificateData,
-        ],
-    );
-
     const [account, setAccount] = useState<string | null>(
         connex.wallet.state.address,
     );
@@ -144,6 +101,64 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     ]);
 
     return <Context.Provider value={context}>{children}</Context.Provider>;
+};
+
+export const DAppKitProvider = ({
+    children,
+    nodeUrl,
+    genesis,
+    walletConnectOptions,
+    usePersistence = false,
+    logLevel,
+    requireCertificate,
+    themeMode,
+    themeVariables,
+    i18n,
+    language,
+    modalParent,
+    onSourceClick,
+    connectionCertificate: connectionCertificateData,
+}: DAppKitProviderOptions): React.ReactElement | null => {
+    const [connex, setConnex] = useState<DAppKit | null>(null);
+    useEffect(() => {
+        setConnex(
+            DAppKitUI.configure({
+                nodeUrl,
+                genesis,
+                walletConnectOptions,
+                usePersistence,
+                logLevel,
+                requireCertificate,
+                themeVariables,
+                themeMode,
+                i18n,
+                language,
+                modalParent,
+                onSourceClick,
+                connectionCertificate: connectionCertificateData,
+            }),
+        );
+    }, [
+        nodeUrl,
+        genesis,
+        walletConnectOptions,
+        usePersistence,
+        logLevel,
+        requireCertificate,
+        themeVariables,
+        themeMode,
+        i18n,
+        language,
+        modalParent,
+        onSourceClick,
+        connectionCertificateData,
+    ]);
+    if (!connex) {
+        return null;
+    }
+    return (
+        <DAppKitDataProvider connex={connex}>{children}</DAppKitDataProvider>
+    );
 };
 
 export const useConnex = (): DAppKitContext['connex'] => {
