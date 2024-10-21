@@ -10,6 +10,8 @@ import type {
 import { DAppKitLogger, Storage, createWallet } from '../utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
 import { certificate } from '@vechain/sdk-core';
+import { ethers } from 'ethers';
+import { SignTypedDataOptions } from '../types/types';
 
 class WalletManager {
     public readonly state: WalletManagerState;
@@ -193,6 +195,17 @@ class WalletManager {
                 DAppKitLogger.error('WalletManager', 'signCert', e);
                 throw e;
             });
+
+    signTypedData = (
+        domain: ethers.TypedDataDomain,
+        types: Record<string, ethers.TypedDataField[]>,
+        value: Record<string, unknown>,
+        options?: SignTypedDataOptions,
+    ): Promise<string> =>
+        this.wallet.signTypedData(domain, types, value, options).catch((e) => {
+            DAppKitLogger.error('WalletManager', 'signTypedData', e);
+            throw e;
+        });
 
     setSource = (src: WalletSource): void => {
         if (this.state.source === src) {
