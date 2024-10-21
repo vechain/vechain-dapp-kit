@@ -1,7 +1,5 @@
-import {
-    DriverNoVendor,
-    SimpleNet,
-} from '@vechain/connex-driver/dist/index.js';
+import type { Net } from '@vechain/connex-driver';
+import { DriverNoVendor, SimpleNet } from '@vechain/connex-driver';
 import { Framework } from '@vechain/connex-framework';
 import { blake2b256, Hex } from '@vechain/sdk-core';
 import { WalletManager } from './classes';
@@ -19,10 +17,12 @@ const cache: Record<string, DriverNoVendor | undefined> = {};
  *
  * @param node - The node URL
  * @param genesis - The genesis block
+ * @param net - The network
  */
 const createThorDriver = (
     node: string,
     genesis: Connex.Thor.Block,
+    net: Net,
 ): DriverNoVendor => {
     // Stringify the certificate to hash
     const certificateToHash = JSON.stringify({
@@ -40,7 +40,7 @@ const createThorDriver = (
 
     let driver = cache[key];
     if (!driver) {
-        driver = new DriverNoVendor(new SimpleNet(node), genesis);
+        driver = new DriverNoVendor(net, genesis);
         cache[key] = driver;
     }
     return driver;
@@ -61,7 +61,10 @@ class DAppKit {
 
         const genesisBlock = normalizeGenesisBlock(genesis);
 
-        const driver = createThorDriver(nodeUrl, genesisBlock);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const net = options.customNet || new SimpleNet(nodeUrl);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        const driver = createThorDriver(nodeUrl, genesisBlock, net);
 
         const walletManager = new WalletManager(options);
 
