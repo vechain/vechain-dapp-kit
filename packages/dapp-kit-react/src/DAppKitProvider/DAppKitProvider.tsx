@@ -1,23 +1,13 @@
-import React, {
-    createContext,
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { DAppKit, WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import { type Certificate } from '@vechain/sdk-core';
-import type { DAppKitProviderOptions, DAppKitContext } from './types';
+import type { DAppKitProviderOptions, DAppKitContext } from '../types';
+import { useVnsDomainByConnex } from '../hooks/useVnsDomain';
+import { Context } from './context';
 
-/**
- * Context
- */
-const Context = createContext<DAppKitContext | undefined>(undefined);
-
-export const DAppKitDataProvider = ({
+export const DAppKitProviderData = ({
     children,
     connex,
 }: {
@@ -68,6 +58,12 @@ export const DAppKitDataProvider = ({
         [],
     );
 
+    const { domain: accountDomain, isLoading: isAccountDomainLoading } =
+        useVnsDomainByConnex({
+            address: account,
+            connex,
+        });
+
     const context: DAppKitContext = useMemo(() => {
         return {
             connex: {
@@ -80,6 +76,8 @@ export const DAppKitDataProvider = ({
                 connect: connex.wallet.connect,
                 availableWallets: connex.wallet.state.availableSources,
                 account,
+                accountDomain,
+                isAccountDomainLoading,
                 source,
                 connectionCertificate,
                 signTypedData: connex.wallet.signTypedData,
@@ -93,11 +91,13 @@ export const DAppKitDataProvider = ({
     }, [
         connex,
         account,
+        accountDomain,
+        isAccountDomainLoading,
         source,
-        closeModal,
-        openModal,
-        onModalConnected,
         connectionCertificate,
+        openModal,
+        closeModal,
+        onModalConnected,
     ]);
 
     return <Context.Provider value={context}>{children}</Context.Provider>;
@@ -157,37 +157,6 @@ export const DAppKitProvider = ({
         return null;
     }
     return (
-        <DAppKitDataProvider connex={connex}>{children}</DAppKitDataProvider>
+        <DAppKitProviderData connex={connex}>{children}</DAppKitProviderData>
     );
-};
-
-export const useConnex = (): DAppKitContext['connex'] => {
-    const context = useContext(Context);
-
-    if (!context) {
-        throw new Error('"useConnex" must be used within a ConnexProvider');
-    }
-
-    return context.connex;
-};
-
-export const useWallet = (): DAppKitContext['wallet'] => {
-    const context = useContext(Context);
-
-    if (!context) {
-        throw new Error('"useWallet" must be used within a ConnexProvider');
-    }
-
-    return context.wallet;
-};
-
-export const useWalletModal = (): DAppKitContext['modal'] => {
-    const context = useContext(Context);
-
-    if (!context) {
-        throw new Error(
-            '"useWalletModal" must be used within a ConnexProvider',
-        );
-    }
-    return context.modal;
 };

@@ -6,7 +6,8 @@ import {
 import { useEffect, useState } from 'react';
 
 function App() {
-    const { account } = useWallet();
+    const { account, accountDomain } = useWallet();
+    console.log('accountDomain', accountDomain);
     const { open, onConnectionStatusChange } = useWalletModal();
     const [buttonText, setButtonText] = useState('Connect Custom Button');
 
