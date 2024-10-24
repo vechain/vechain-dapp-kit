@@ -4,7 +4,6 @@ import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import { type Certificate } from '@vechain/sdk-core';
 import type { DAppKitProviderOptions, DAppKitContext } from '../types';
-import { useVnsDomainByConnex } from '../hooks/useVnsDomain';
 import { Context } from './context';
 
 export const DAppKitProviderData = ({
@@ -17,6 +16,12 @@ export const DAppKitProviderData = ({
     const [account, setAccount] = useState<string | null>(
         connex.wallet.state.address,
     );
+    const [accountDomain, setAccountDomain] = useState<string | null>(
+        connex.wallet.state.accountDomain,
+    );
+    const [isAccountDomainLoading, setIsAccountDomainLoading] = useState(
+        connex.wallet.state.isAccountDomainLoading,
+    );
     const [source, setSource] = useState<WalletSource | null>(
         connex.wallet.state.source,
     );
@@ -27,6 +32,20 @@ export const DAppKitProviderData = ({
         const addressSub = subscribeKey(connex.wallet.state, 'address', (v) => {
             setAccount(v);
         });
+        const domainSub = subscribeKey(
+            connex.wallet.state,
+            'accountDomain',
+            (v) => {
+                setAccountDomain(v);
+            },
+        );
+        const isAccountDomainLoadingSub = subscribeKey(
+            connex.wallet.state,
+            'isAccountDomainLoading',
+            (v) => {
+                setIsAccountDomainLoading(v);
+            },
+        );
         const sourceSub = subscribeKey(connex.wallet.state, 'source', (v) => {
             setSource(v);
         });
@@ -40,6 +59,8 @@ export const DAppKitProviderData = ({
 
         return () => {
             addressSub();
+            domainSub();
+            isAccountDomainLoadingSub();
             sourceSub();
             certificateSub();
         };
@@ -57,12 +78,6 @@ export const DAppKitProviderData = ({
             DAppKitUI.modal.onConnectionStatusChange(callback),
         [],
     );
-
-    const { domain: accountDomain, isLoading: isAccountDomainLoading } =
-        useVnsDomainByConnex({
-            address: account,
-            connex,
-        });
 
     const context: DAppKitContext = useMemo(() => {
         return {

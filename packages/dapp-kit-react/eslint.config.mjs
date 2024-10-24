@@ -1,7 +1,6 @@
 import { resolve } from 'node:path';
 
 const project = resolve(process.cwd(), 'tsconfig.json');
-
 // eslint-disable-next-line import/no-default-export
 export default {
     extends: [
