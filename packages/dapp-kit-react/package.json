@@ -18,7 +18,7 @@
     "scripts": {
         "build": "tsup",
         "clean": "rm -rf dist .turbo",
-        "lint": "tsc --noEmit && eslint src --ext .js,.jsx,.ts,.tsx",
+        "lint": "eslint",
         "purge": "yarn clean && rm -rf node_modules",
         "test": "vitest run --coverage",
         "watch": "yarn build --watch"

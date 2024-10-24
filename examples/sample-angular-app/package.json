@@ -8,7 +8,7 @@
         "clean": "rm -rf dist .turbo .angular",
         "dev": "ng serve --port 5004",
         "gh-pages-build": "ng build --configuration development --base-href '/vechain-dapp-kit/angular/'",
-        "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+        "lint": "eslint",
         "preview": "ng serve --port 5004",
         "purge": "yarn clean; rm -rf node_modules",
         "watch": "ng build --watch --configuration development"

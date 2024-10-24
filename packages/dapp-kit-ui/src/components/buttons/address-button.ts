@@ -4,6 +4,7 @@ import { Font, type ThemeMode } from '../../constants';
 import { friendlyAddress, getPicassoImage } from '../../utils/account';
 import { buttonStyle } from '../../assets/styles';
 import { DAppKitUI } from '../../client';
+import { shortenedDomain } from '@vechain/dapp-kit';
 
 @customElement('vdk-address-button')
 export class AddressButton extends LitElement {
@@ -86,7 +87,7 @@ export class AddressButton extends LitElement {
 
         const addressOrDomain =
             this.accountDomain && !this.isAccountDomainLoading
-                ? this.accountDomain
+                ? shortenedDomain(this.accountDomain, 7)
                 : friendlyAddress(this.address ?? '');
         return html` <vdk-fonts></vdk-fonts>
             <button

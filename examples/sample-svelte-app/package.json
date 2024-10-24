@@ -8,7 +8,7 @@
         "clean": "rm -rf .svelte-kit dist .turbo",
         "dev": "vite dev",
         "gh-pages-build": "BASE_PATH='/vechain-dapp-kit/svelte' vite build",
-        "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+        "lint": "eslint",
         "preview": "vite preview",
         "purge": "yarn clean; rm -rf node_modules"
     },

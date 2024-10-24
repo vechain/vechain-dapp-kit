@@ -8,7 +8,7 @@
         "build": "remix vite:build --mode=development",
         "dev": "remix vite:dev",
         "gh-pages-build": "remix vite:build",
-        "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+        "lint": "eslint",
         "preview": "PORT=5007 remix-serve ./build/server/index.js",
         "typecheck": "tsc"
     },

@@ -7,7 +7,7 @@ export default {
         '@vercel/style-guide/eslint/browser',
         '@vercel/style-guide/eslint/typescript',
         '@vercel/style-guide/eslint/react',
-    ].map(resolve),
+    ],
     parserOptions: {
         project,
         ecmaVersion: 'latest',
