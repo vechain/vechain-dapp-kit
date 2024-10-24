@@ -48,6 +48,5 @@ export const getAddress = async ({
         decoded: { addresses },
     } = res;
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     return (addresses?.[0] as string) || null;
 };

@@ -1,22 +1,17 @@
-export default {
-    root: true,
-    env: { browser: true, es2020: true },
-    extends: [
-        'eslint:recommended',
-        'plugin:@typescript-eslint/recommended',
-        'plugin:react-hooks/recommended',
-    ],
-    globals: {
-        JSX: true,
-    },
-    ignorePatterns: ['dist', '.eslintrc.cjs'],
-    parser: '@typescript-eslint/parser',
-    plugins: ['react-refresh'],
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config({
+    ignores: ['**/*.config.ts', 'dist/**'],
+    extends: [...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
     rules: {
-        'react-refresh/only-export-components': [
-            'warn',
-            { allowConstantExport: true },
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
+        'no-console': ['error', { allow: ['error'] }],
+        'eslint-comments/no-unused-disable': 'off',
+        '@typescript-eslint/no-unused-vars': [
+            'error',
+            { argsIgnorePattern: '^_' },
         ],
-        'react/react-in-jsx-scope': 'off',
     },
-};
+});

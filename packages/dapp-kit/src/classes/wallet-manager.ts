@@ -87,7 +87,6 @@ class WalletManager {
                     this.state.accountDomain = domain;
                 })
                 .catch((e) => {
-                    // eslint-disable-next-line no-console
                     console.error('Error getting account domain', e);
                     this.state.accountDomain = null;
                 })
@@ -148,6 +147,7 @@ class WalletManager {
                 connectionCertificate,
             };
         } catch (e) {
+            console.error('Failed to sign connection certificate', e);
             return {
                 account: signer,
                 verified: false,

@@ -1,51 +1,17 @@
-import { resolve } from 'node:path';
+import tseslint from 'typescript-eslint';
 
-const project = resolve(process.cwd(), 'tsconfig.json');
-
-export default {
-    extends: [
-        '@vercel/style-guide/eslint/browser',
-        '@vercel/style-guide/eslint/typescript',
-        '@vercel/style-guide/eslint/react',
-    ],
-    parserOptions: {
-        project,
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-    },
-    parser: '@typescript-eslint/parser',
-    globals: {
-        JSX: true,
-    },
-    settings: {
-        'import/resolver': {
-            typescript: {
-                project,
-            },
-        },
-    },
-    ignorePatterns: [
-        'node_modules/',
-        'dist/',
-        '.eslintrc.js',
-        '**/*.css',
-        '*.test.ts',
-        'test/**',
-    ],
-    // add rules configurations here
+export default tseslint.config({
+    ignores: ['**/*.config.ts', 'dist/**'],
+    extends: [...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
     rules: {
-        'import/no-default-export': 'off',
-        'unicorn/filename-case': 'off',
-        'react-hooks/exhaustive-deps': 'error',
-        'react/function-component-definition': [
-            'error',
-            {
-                namedComponents: 'arrow-function',
-                unnamedComponents: 'arrow-function',
-            },
-        ],
-        'prefer-arrow-callback': ['error', { allowNamedFunctions: true }],
-        'func-style': ['error', 'expression', { allowArrowFunctions: true }],
+        '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
+        'no-console': ['error', { allow: ['error'] }],
+        'eslint-comments/no-unused-disable': 'off',
+        '@typescript-eslint/no-unused-vars': [
+            'error',
+            { argsIgnorePattern: '^_' },
+        ],
     },
-};
+});

@@ -42,7 +42,6 @@ export const useVechainDomain = ({
             getDomain({ address: addressOrDomain, connex })
                 .then(setDomain)
                 .catch((err) => {
-                    // eslint-disable-next-line no-console
                     console.error('Error getting domain: ', err);
                     setDomain(null);
                 })
@@ -61,7 +60,6 @@ export const useVechainDomain = ({
                 setAddress(domainAddress);
             })
             .catch((err) => {
-                // eslint-disable-next-line no-console
                 console.error('Error getting address: ', err);
                 setAddress(null);
                 setDomain(null);

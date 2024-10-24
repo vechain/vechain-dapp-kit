@@ -1,29 +1,17 @@
-import { resolve } from 'node:path';
+import tseslint from 'typescript-eslint';
 
-const project = resolve(process.cwd(), 'tsconfig.json');
-
-export default {
-    extends: [
-        '@vercel/style-guide/eslint/node',
-        '@vercel/style-guide/eslint/typescript',
-    ],
-    parserOptions: {
-        project,
-    },
-    globals: {
-        React: true,
-        JSX: true,
-    },
-    settings: {
-        'import/resolver': {
-            typescript: {
-                project,
-            },
-        },
-    },
-    ignorePatterns: ['node_modules/', 'dist/'],
+export default tseslint.config({
+    ignores: ['**/*.config.ts', 'dist/**'],
+    extends: [...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
     rules: {
-        'prefer-arrow-callback': ['error', { allowNamedFunctions: true }],
-        'func-style': ['error', 'expression', { allowArrowFunctions: true }],
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
+        'no-console': ['error', { allow: ['error'] }],
+        'eslint-comments/no-unused-disable': 'off',
+        '@typescript-eslint/no-unused-vars': [
+            'error',
+            { argsIgnorePattern: '^_' },
+        ],
     },
-};
+});

@@ -1,17 +1,17 @@
-import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import pluginReact from 'eslint-plugin-react';
 
-export default [
-    { languageOptions: { globals: globals.browser } },
-    ...tseslint.configs.recommended,
-    pluginReact.configs.flat.recommended,
-    {
-        rules: {
-            'react/react-in-jsx-scope': 'off',
-            '@typescript-eslint/ban-ts-comment': 'off',
-            '@typescript-eslint/no-explicit-any': 'off',
-            'import/no-default-export': 'off',
-        },
+export default tseslint.config({
+    ignores: ['**/*.config.ts', 'dist/**'],
+    extends: [...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
+    rules: {
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
+        'no-console': ['error', { allow: ['error'] }],
+        'eslint-comments/no-unused-disable': 'off',
+        '@typescript-eslint/no-unused-vars': [
+            'error',
+            { argsIgnorePattern: '^_' },
+        ],
     },
-];
+});

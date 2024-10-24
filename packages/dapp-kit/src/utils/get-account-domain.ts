@@ -55,6 +55,5 @@ export const getAccountDomain = async ({
         decoded: { names },
     } = res;
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     return (names?.[0] as string) || null;
 };

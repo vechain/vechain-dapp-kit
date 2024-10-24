@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable no-undef */
 import { DAppKitUI, friendlyAddress } from './dist';
 
 const walletConnectOptions = {
