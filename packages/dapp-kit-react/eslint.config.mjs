@@ -1,7 +1,7 @@
 import { resolve } from 'node:path';
 
 const project = resolve(process.cwd(), 'tsconfig.json');
-// eslint-disable-next-line import/no-default-export
+
 export default {
     extends: [
         '@vercel/style-guide/eslint/browser',
@@ -46,5 +46,6 @@ export default {
         ],
         'prefer-arrow-callback': ['error', { allowNamedFunctions: true }],
         'func-style': ['error', 'expression', { allowArrowFunctions: true }],
+        '@typescript-eslint/ban-ts-comment': 'off',
     },
 };
