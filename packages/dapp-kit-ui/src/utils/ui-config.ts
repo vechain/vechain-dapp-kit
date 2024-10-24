@@ -1,6 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-
 import { type DAppKitUIOptions } from '../client';
 import {
     Colors,
@@ -88,7 +85,6 @@ export const initButton = (options: DAppKitUIOptions): void => {
     buttons.forEach((button) => {
         for (const [key, value] of Object.entries(initOptions)) {
             if (value) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (button as any)[key] = value;
             }
         }
@@ -103,7 +99,6 @@ export const initModal = (options: DAppKitUIOptions): void => {
     }
     for (const [key, value] of Object.entries(initOptions)) {
         if (value) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (modal as any)[key] = value;
         }
     }

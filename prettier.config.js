@@ -1,3 +1,6 @@
-const Config = require('@vechain/repo-config');
-
-module.exports = Config.Prettier;
+module.exports = {
+    $schema: 'http://json.schemastore.org/prettierrc',
+    singleQuote: true,
+    trailingComma: 'all',
+    tabWidth: 4,
+};

@@ -63,7 +63,7 @@ class DAppKit {
 
         const driver = createThorDriver(nodeUrl, genesisBlock);
 
-        const walletManager = new WalletManager(options);
+        const walletManager = new WalletManager(options, driver);
 
         driver.signTx = walletManager.signTx.bind(walletManager);
         driver.signCert = walletManager.signCert.bind(walletManager);

@@ -3,30 +3,26 @@ import {
     useWallet,
     useWalletModal,
 } from '@vechain/dapp-kit-react';
+import { friendlyAddress } from '@vechain/dapp-kit-ui';
 import { useEffect, useState } from 'react';
 
 function App() {
-    const { account } = useWallet();
-    const { open, onConnectionStatusChange } = useWalletModal();
+    const { account, accountDomain, isAccountDomainLoading } = useWallet();
+
+    const { open } = useWalletModal();
     const [buttonText, setButtonText] = useState('Connect Custom Button');
 
     useEffect(() => {
-        const handleConnected = (address: string | null) => {
-            if (address) {
-                const formattedAddress = `${address.slice(
-                    0,
-                    6,
-                )}...${address.slice(-4)}`;
-                setButtonText(`Disconnect from ${formattedAddress}`);
-            } else {
-                setButtonText('Connect Custom Button');
-            }
-        };
-
-        handleConnected(account);
-
-        onConnectionStatusChange(handleConnected);
-    }, [account, onConnectionStatusChange]);
+        if (account) {
+            const addressOrDomain =
+                accountDomain && !isAccountDomainLoading
+                    ? accountDomain
+                    : friendlyAddress(account || '');
+            setButtonText(`Disconnect from ${addressOrDomain}`);
+        } else {
+            setButtonText('Connect Custom Button');
+        }
+    }, [account, accountDomain, isAccountDomainLoading]);
 
     return (
         <div className="container">

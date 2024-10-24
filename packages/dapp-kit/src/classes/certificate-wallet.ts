@@ -44,6 +44,7 @@ class CertificateBasedWallet implements ConnexWallet {
                 connectionCertificate,
             };
         } catch (e) {
+            console.error('Failed to verify connection certificate', e);
             return {
                 account: signer,
                 verified: false,

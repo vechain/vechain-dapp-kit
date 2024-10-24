@@ -41,6 +41,10 @@ export class Modal extends LitElement {
 
     private setAddressFromState(): void {
         this.address = DAppKitUI.wallet.state.address ?? '';
+        this.accountDomain = DAppKitUI.wallet.state.accountDomain ?? '';
+        this.isAccountDomainLoading = Boolean(
+            DAppKitUI.wallet.state.isAccountDomainLoading,
+        );
         this.requestUpdate();
     }
 
@@ -52,10 +56,32 @@ export class Modal extends LitElement {
                 this.requestUpdate();
             },
         );
+        DAppKitUI.wallet.subscribeToKey(
+            'accountDomain',
+            (_accountDomain: string | null) => {
+                this.accountDomain = _accountDomain ?? '';
+                this.requestUpdate();
+            },
+        );
+        DAppKitUI.wallet.subscribeToKey(
+            'isAccountDomainLoading',
+            (_isAccountDomainLoading: boolean) => {
+                this.isAccountDomainLoading = _isAccountDomainLoading;
+                this.requestUpdate();
+            },
+        );
     }
 
     @property()
     address = DAppKitUI.wallet.state.address ?? '';
+
+    @property()
+    accountDomain = DAppKitUI.wallet.state.accountDomain ?? '';
+
+    @property()
+    isAccountDomainLoading = Boolean(
+        DAppKitUI.wallet.state.isAccountDomainLoading,
+    );
 
     @property()
     mode: ThemeMode = 'LIGHT';
@@ -87,6 +113,8 @@ export class Modal extends LitElement {
                           .i18n=${this.i18n}
                           .language=${this.language}
                           .address=${this.address}
+                          .accountDomain=${this.accountDomain}
+                          .isAccountDomainLoading=${this.isAccountDomainLoading}
                           .onDisconnectClick=${this.onDisconnectClick}
                       ></vdk-address-modal>`
                     : html` <vdk-connect-modal

@@ -73,6 +73,8 @@ interface ConnectResponse {
 interface WalletManagerState {
     source: WalletSource | null;
     address: string | null;
+    accountDomain: string | null;
+    isAccountDomainLoading: boolean;
     availableSources: WalletSource[];
     connectionCertificate: Certificate | null;
 }

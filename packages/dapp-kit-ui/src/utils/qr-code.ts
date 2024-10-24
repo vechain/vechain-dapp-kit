@@ -1,10 +1,3 @@
-/* eslint-disable eslint-comments/disable-enable-pair */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable func-style */
-
 // this is a file to generate wc taken from wc repo
 // https://github.com/WalletConnect/web3modal/blob/3b849aa884ef43626aaba14826ad39972974ce70/packages/ui/src/utils/QrCode.ts#L11
 
@@ -31,13 +24,11 @@ function isAdjecentDots(
     return diff <= cellSize + CONNECTING_ERROR_MARGIN;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getMatrix(
     value: string,
     errorCorrectionLevel: QRCodeUtil.QRCodeErrorCorrectionLevel,
 ) {
     const arr = Array.prototype.slice.call(
-        // eslint-disable-next-line import/no-named-as-default-member
         QRCodeUtil.create(value, { errorCorrectionLevel }).modules.data,
         0,
     );
@@ -138,7 +129,6 @@ export const QrCodeUtil = {
 
         // Mapping all dots circles on the same x axis
         circles.forEach(([cx, cy]) => {
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (circlesToConnect[cx]) {
                 circlesToConnect[cx].push(cy);
             } else {
