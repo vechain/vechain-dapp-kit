@@ -1,5 +1,9 @@
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
+import { certificate } from '@vechain/sdk-core';
+import { type ethers } from 'ethers';
+import { type DriverNoVendor } from '@vechain/connex-driver';
+import { type SignTypedDataOptions } from '../types/types';
 import type {
     ConnectResponse,
     ConnexWallet,
@@ -9,15 +13,16 @@ import type {
 } from '../types';
 import { DAppKitLogger, Storage, createWallet } from '../utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
-import { certificate } from '@vechain/sdk-core';
-import { ethers } from 'ethers';
-import { SignTypedDataOptions } from '../types/types';
+import { getAccountDomain } from '../utils/get-account-domain';
 
 class WalletManager {
     public readonly state: WalletManagerState;
     private wallets: Record<string, ConnexWallet | undefined> = {};
 
-    constructor(private readonly options: DAppKitOptions) {
+    constructor(
+        private readonly options: DAppKitOptions,
+        private readonly driver: DriverNoVendor,
+    ) {
         this.state = this.initState(options.usePersistence ?? false);
         this.initPersistence(options.usePersistence ?? false);
         DAppKitLogger.debug('WalletManager', 'constructor', this.state);
@@ -70,7 +75,50 @@ class WalletManager {
         return wallet;
     }
 
-    // this is needed for wallet connect connections when a connection certificate is required
+    /**
+     * Set the account domain
+     */
+    setAccountDomain = (address: string | null): void => {
+        if (address) {
+            this.state.isAccountDomainLoading = true;
+
+            getAccountDomain({ address, driver: this.driver })
+                .then((domain) => {
+                    this.state.accountDomain = domain;
+                })
+                .catch((e) => {
+                    // eslint-disable-next-line no-console
+                    console.error('Error getting account domain', e);
+                    this.state.accountDomain = null;
+                })
+                .finally(() => {
+                    this.state.isAccountDomainLoading = false;
+                });
+        } else {
+            this.state.accountDomain = null;
+            this.state.isAccountDomainLoading = false;
+        }
+    };
+
+    /**
+     * Set the address
+     */
+    setAddress = (address: string | null): void => {
+        this.state.address = address;
+    };
+
+    /**
+     * Set the address and check for the vechain domain, if present set it as well
+     */
+    setAddressAndDomain = (address: string | null): void => {
+        this.setAddress(address);
+        this.setAccountDomain(address);
+    };
+
+    /**
+     * Sign a connection certificate
+     * this is needed for wallet connect connections when a connection certificate is required
+     */
     signConnectionCertificate = async (): Promise<ConnectResponse> => {
         const certificateMessage =
             this.options.connectionCertificate?.message ||
@@ -92,7 +140,7 @@ class WalletManager {
 
         try {
             certificate.verify(connectionCertificate);
-            this.state.address = signer;
+            this.setAddressAndDomain(signer);
             this.state.connectionCertificate = connectionCertificate;
             return {
                 account: signer,
@@ -121,7 +169,7 @@ class WalletManager {
                 ) {
                     this.options.walletConnectOptions.modal.askForConnectionCertificate();
                 } else {
-                    this.state.address = res.account;
+                    this.setAddressAndDomain(res.account);
                     this.state.connectionCertificate =
                         res.connectionCertificate ?? null;
                 }
@@ -135,7 +183,7 @@ class WalletManager {
     disconnect = (remote = false): void => {
         if (!this.state.source) {
             this.state.source = null;
-            this.state.address = null;
+            this.setAddressAndDomain(null);
             this.state.connectionCertificate = null;
             return;
         }
@@ -160,7 +208,7 @@ class WalletManager {
         }
 
         this.state.source = null;
-        this.state.address = null;
+        this.setAddressAndDomain(null);
         this.state.connectionCertificate = null;
     };
 
@@ -168,33 +216,19 @@ class WalletManager {
         msg: Connex.Vendor.TxMessage,
         options: Connex.Signer.TxOptions,
     ): Promise<Connex.Vendor.TxResponse> =>
-        this.wallet
-            .signTx(msg, options)
-            .then((res) => {
-                // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
-                this.state.address = res.signer;
-                return res;
-            })
-            .catch((e) => {
-                DAppKitLogger.error('WalletManager', 'signTx', e);
-                throw e;
-            });
+        this.wallet.signTx(msg, options).catch((e) => {
+            DAppKitLogger.error('WalletManager', 'signTx', e);
+            throw e;
+        });
 
     signCert = (
         msg: Connex.Vendor.CertMessage,
         options: Connex.Signer.CertOptions,
     ): Promise<Connex.Vendor.CertResponse> =>
-        this.wallet
-            .signCert(msg, options)
-            .then((res) => {
-                // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
-                this.state.address = res.annex.signer;
-                return res;
-            })
-            .catch((e) => {
-                DAppKitLogger.error('WalletManager', 'signCert', e);
-                throw e;
-            });
+        this.wallet.signCert(msg, options).catch((e) => {
+            DAppKitLogger.error('WalletManager', 'signCert', e);
+            throw e;
+        });
 
     signTypedData = (
         domain: ethers.TypedDataDomain,
@@ -258,18 +292,23 @@ class WalletManager {
             return proxy({
                 source: null,
                 address: null,
+                accountDomain: null,
+                isAccountDomainLoading: false,
                 availableSources,
                 connectionCertificate: null,
             });
         }
 
         const address = Storage.getAccount();
+        const accountDomain = Storage.getAccountDomain();
         const source = Storage.getSource();
         const connectionCertificate = Storage.getConnectionCertificate();
 
         return proxy({
             source,
             address,
+            accountDomain,
+            isAccountDomainLoading: false,
             availableSources,
             connectionCertificate,
         });
@@ -280,6 +319,7 @@ class WalletManager {
             return;
         }
         this.subscribeToKey('address', Storage.setAccount);
+        this.subscribeToKey('accountDomain', Storage.setAccountDomain);
         this.subscribeToKey('source', Storage.setSource);
         this.subscribeToKey(
             'connectionCertificate',

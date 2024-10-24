@@ -114,6 +114,12 @@ export class AddressModal extends LitElement {
     @property({ type: String })
     address = '';
 
+    @property()
+    accountDomain = '';
+
+    @property()
+    isAccountDomainLoading = false;
+
     @property({ type: Function })
     onDisconnectClick?: () => void = undefined;
 
@@ -165,6 +171,10 @@ export class AddressModal extends LitElement {
         if (this.showCopiedIcon) {
             copyIcon = CheckSvg;
         }
+        const addressOrDomain =
+            this.accountDomain && !this.isAccountDomainLoading
+                ? this.accountDomain
+                : friendlyAddress(this.address || '');
         return html`
         <vdk-fonts></vdk-fonts>
         <vdk-base-modal
@@ -189,11 +199,11 @@ export class AddressModal extends LitElement {
                             src=${getPicassoImage(this.address)}
                     />
                     <span class="address">
-                            ${friendlyAddress(this.address)}
+                            ${addressOrDomain}
                             <div class="copy-icon" @click=${
                                 this.onCopy
                             }>${copyIcon}</div>
-                        </span>
+                    </span>
 
                 </div>
                 <div class="modal-footer">
@@ -217,7 +227,8 @@ export class AddressModal extends LitElement {
     }
 
     private onCopy = async (): Promise<void> => {
-        await navigator.clipboard.writeText(this.address);
+        const text = this.accountDomain ? this.accountDomain : this.address;
+        await navigator.clipboard.writeText(text);
         this.showCopiedIcon = true;
         setTimeout(() => {
             this.showCopiedIcon = false;

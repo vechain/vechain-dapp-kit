@@ -50,6 +50,12 @@ export class AddressButton extends LitElement {
     address?: string;
 
     @property()
+    accountDomain = '';
+
+    @property()
+    isAccountDomainLoading = false;
+
+    @property()
     mode: ThemeMode = 'LIGHT';
 
     @property()
@@ -77,6 +83,11 @@ export class AddressButton extends LitElement {
                     />
                 </button>`;
         }
+
+        const addressOrDomain =
+            this.accountDomain && !this.isAccountDomainLoading
+                ? this.accountDomain
+                : friendlyAddress(this.address ?? '');
         return html` <vdk-fonts></vdk-fonts>
             <button
                 class="wallet-button ${this.mode}"
@@ -87,9 +98,7 @@ export class AddressButton extends LitElement {
                     class="address-icon"
                     src=${getPicassoImage(this.address ?? '')}
                 />
-                <span class="wallet-address"
-                    >${friendlyAddress(this.address ?? '')}</span
-                >
+                <span class="wallet-address">${addressOrDomain}</span>
             </button>`;
     }
 }
