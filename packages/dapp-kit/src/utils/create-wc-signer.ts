@@ -159,6 +159,7 @@ export const createWcSigner = ({
                     });
             });
         } catch (e) {
+            console.error('wc connect failed', e);
             throw new Error(`wc connect failed`);
         }
     };
@@ -236,6 +237,7 @@ export const createWcSigner = ({
                 reason: getSdkError('USER_DISCONNECTED'),
             });
         } catch (e) {
+            console.error('SignClient.disconnect failed', e);
             throw new Error(`SignClient.disconnect failed`);
         }
     };
@@ -247,7 +249,6 @@ export const createWcSigner = ({
 
         const vechainNamespace = session.namespaces.vechain;
 
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!vechainNamespace) {
             throw new Error(
                 'Failed to create a vechain session with wallet connect',
@@ -259,6 +260,7 @@ export const createWcSigner = ({
         try {
             return firstAccount.split(':')[2];
         } catch (e) {
+            console.error('Failed to get account from session', e);
             throw new Error('Failed to get account from session');
         }
     };

@@ -6,6 +6,7 @@ const STORAGE_PREFIX = 'dappkit@vechain';
 const WALLET_SOURCE_KEY = `${STORAGE_PREFIX}/source`;
 const ACCOUNT_KEY = `${STORAGE_PREFIX}/account`;
 const CERTIFICATE_KEY = `${STORAGE_PREFIX}/connectionCertificate`;
+const ACCOUNT_DOMAIN_KEY = `${STORAGE_PREFIX}/accountDomain`;
 
 const setSource = (source: WalletSource | null): void => {
     DAppKitLogger.debug('LocalStorage', 'setSource', source);
@@ -23,6 +24,15 @@ const setAccount = (account: string | null): void => {
         localStorage.removeItem(ACCOUNT_KEY);
     } else {
         localStorage.setItem(ACCOUNT_KEY, account);
+    }
+};
+
+const setAccountDomain = (domain: string | null): void => {
+    DAppKitLogger.debug('LocalStorage', 'setAccountDomain', domain);
+    if (!domain) {
+        localStorage.removeItem(ACCOUNT_DOMAIN_KEY);
+    } else {
+        localStorage.setItem(ACCOUNT_DOMAIN_KEY, domain);
     }
 };
 
@@ -59,6 +69,15 @@ const getAccount = (): string | null => {
     return account;
 };
 
+const getAccountDomain = (): string | null => {
+    const accountDomain = localStorage.getItem(ACCOUNT_DOMAIN_KEY);
+    if (!accountDomain) {
+        return null;
+    }
+
+    return accountDomain;
+};
+
 const getConnectionCertificate = (): Certificate | null => {
     const connectionCertificate = localStorage.getItem(CERTIFICATE_KEY);
 
@@ -73,6 +92,8 @@ export const Storage = {
     setAccount,
     setSource,
     setConnectionCertificate,
+    setAccountDomain,
+    getAccountDomain,
     getAccount,
     getSource,
     getConnectionCertificate,
