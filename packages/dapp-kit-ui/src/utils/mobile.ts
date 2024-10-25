@@ -1,8 +1,3 @@
-/* eslint-disable eslint-comments/disable-enable-pair */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable prefer-named-capture-group */
-/* eslint-disable no-useless-escape */
-
 // this is a function found here:
 // stackoverflow.com/questions/11381673/detecting-a-mobile-browser
 // but the source is this one http://detectmobilebrowsers.com/

@@ -3,5 +3,4 @@ import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, {
     providers: [],
-    // eslint-disable-next-line no-console
 }).catch((err) => console.error(err));

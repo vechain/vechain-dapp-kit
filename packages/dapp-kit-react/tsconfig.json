@@ -19,5 +19,5 @@
         // React
         "jsx": "react-jsx"
     },
-    "include": ["src/**/*.ts", "test/**/*.test.ts"]
+    "include": ["src/**/*.ts", "test/**/*.test.ts", "eslint.config.mjs"]
 }
