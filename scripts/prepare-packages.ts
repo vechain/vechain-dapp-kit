@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import util from 'util';
 import * as child_process from 'child_process';
 import * as fs from 'fs';
@@ -7,8 +8,6 @@ const exec = util.promisify(child_process.exec);
 
 // variable packages should be all the child folders in the packages folder
 const packages = fs.readdirSync(path.resolve(__dirname, '../packages'));
-
-console.log('packages', packages);
 
 const updatePackageVersions = (version: string) => {
     const packageNames = [];
@@ -20,48 +19,6 @@ const updatePackageVersions = (version: string) => {
         pkgJson.version = version;
         packageNames.push(pkgJson.name);
         fs.writeFileSync(pkgJsonPath, JSON.stringify(pkgJson, null, 2));
-    }
-
-    // if a package json contains a dependency on another package in this repo, update it to the new version
-    for (const pkg of packages) {
-        const pkgPath = path.resolve(__dirname, `../packages/${pkg}`);
-        const pkgJsonPath = path.resolve(pkgPath, './package.json');
-        const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
-
-        for (const dep of Object.keys(pkgJson.dependencies)) {
-            if (packageNames.includes(dep)) {
-                pkgJson.dependencies[dep] = version;
-            }
-        }
-
-        fs.writeFileSync(pkgJsonPath, JSON.stringify(pkgJson, null, 2));
-    }
-
-    // Update versions in the examples directory
-    const examplesPath = path.resolve(__dirname, '../examples');
-
-    const examplePackages = fs.readdirSync(examplesPath);
-
-    for (const example of examplePackages) {
-        const examplePath = path.resolve(examplesPath, example);
-        const examplePackageJsonPath = path.resolve(
-            examplePath,
-            './package.json',
-        );
-        const examplePackageJson = JSON.parse(
-            fs.readFileSync(examplePackageJsonPath, 'utf8'),
-        );
-
-        for (const dep of Object.keys(examplePackageJson.dependencies)) {
-            if (packageNames.includes(dep)) {
-                examplePackageJson.dependencies[dep] = version;
-            }
-        }
-
-        fs.writeFileSync(
-            examplePackageJsonPath,
-            JSON.stringify(examplePackageJson, null, 2),
-        );
     }
 };
 
@@ -79,13 +36,17 @@ const preparePackages = async () => {
     console.log(`   🚀🚀🚀 Preparing ${version} for release  🚀🚀🚀`);
     console.log('\n______________________________________________________\n\n');
 
+    console.log(' Checkout the release branch:');
+    await exec('git checkout -b vX.Y.Z');
+    console.log('       - ✅  Checked out!');
+
     console.log(' Clean:');
     console.log('       - 🚮 Removing existing packages & builds...');
     await exec('yarn purge');
     console.log('       - ✅  Removed!');
 
     console.log(' Build:');
-    console.log('       - 📦 Building packages...');
+    console.log('       - 📦 Install dependencies and build packages...');
     await exec('yarn install:all');
     console.log('       - ✅  Built!');
 
@@ -97,13 +58,25 @@ const preparePackages = async () => {
     console.log(' Version:');
     console.log(`       - 🏷 Updating package versions to ${version}...`);
     updatePackageVersions(version);
-    await exec(`yarn format`);
     console.log('       - ✅  Updated!');
 
+    console.log(' Commit:');
+    console.log(`       - 📦 Committing changes...`);
+    await exec(`git commit -am "chore(release): v${version}"`);
+    console.log('       - ✅  Committed!');
+
+    console.log(' Push:');
+    console.log(`       - 📦 Pushing changes...`);
+    await exec(`git push --set-upstream origin v${version}`);
+    console.log('       - ✅  Pushed!');
+
     console.log('\n______________________________________________________\n\n');
-    console.log(' Publish:');
     console.log(
-        `       - Run 'yarn changeset publish' to publish the packages`,
+        `       - 🚀🚀🚀 Release branch is ready to be merged 🚀🚀🚀`,
+        `       - 📝 Create the PR for the release branch v${version}`,
+        `       - 🔖 When the PR is merged, create the release on github called ${version}`,
+        `       - 📝 Then pull the tag and checkout the release branch`,
+        `       - 📝 Then run 'yarn changeset publish' to publish the packages`,
     );
     console.log('\n______________________________________________________\n\n');
 };
