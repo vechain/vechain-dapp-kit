@@ -72,11 +72,11 @@ const preparePackages = async () => {
 
     console.log('\n______________________________________________________\n\n');
     console.log(
-        `       - 🚀🚀🚀 Release branch is ready to be merged 🚀🚀🚀`,
-        `       - 📝 Create the PR for the release branch v${version}`,
-        `       - 🔖 When the PR is merged, create the release on github called ${version}`,
-        `       - 📝 Then pull the tag and checkout the release branch`,
-        `       - 📝 Then run 'yarn changeset publish' to publish the packages`,
+        `       - 🚀🚀🚀 Release branch is ready to be merged 🚀🚀🚀\n\n`,
+        `       - 📝 Create the PR for the release branch v${version}\n`,
+        `       - 🔖 When the PR is merged, create the release on github called ${version}\n`,
+        `       - 📝 Then pull the tag and checkout the release branch\n`,
+        `       - 📝 Then run 'yarn changeset publish' to publish the packages\n`,
     );
     console.log('\n______________________________________________________\n\n');
 };
