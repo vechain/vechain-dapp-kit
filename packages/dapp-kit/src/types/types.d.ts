@@ -51,6 +51,7 @@ interface DAppKitOptions {
         message?: Connex.Vendor.CertMessage;
         options?: Connex.Signer.CertOptions;
     };
+    customNet?: Net;
 }
 
 type BaseWallet = ExpandedConnexSigner & {
