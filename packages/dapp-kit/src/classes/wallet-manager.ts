@@ -328,17 +328,27 @@ class WalletManager {
     };
 
     private getAvailableSources = (): WalletSource[] => {
+        const defaultAllowedSources = WalletSources;
+        const allowedSources =
+            this.options.allowedWallets ?? defaultAllowedSources;
         const wallets: WalletSource[] = [];
 
-        wallets.push('veworld');
+        if (allowedSources.includes('veworld')) {
+            wallets.push('veworld');
+        }
 
-        if (this.options.walletConnectOptions) {
+        if (
+            this.options.walletConnectOptions &&
+            allowedSources.includes('wallet-connect')
+        ) {
             wallets.push('wallet-connect');
         }
 
-        wallets.push('sync2');
+        if (allowedSources.includes('sync2')) {
+            wallets.push('sync2');
+        }
 
-        if (window.connex) {
+        if (window.connex && allowedSources.includes('sync')) {
             wallets.push('sync');
         }
 
