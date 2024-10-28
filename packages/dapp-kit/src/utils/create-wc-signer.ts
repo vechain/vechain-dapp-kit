@@ -8,6 +8,8 @@ import type { SignClient } from '@walletconnect/sign-client/dist/types/client';
 import type { WCSigner, WCSignerOptions } from '../types';
 import { DefaultMethods } from '../constants';
 import { DAppKitLogger } from './logger';
+import { ethers } from 'ethers';
+import { SignTypedDataOptions } from '../types/types';
 
 interface SessionAccount {
     networkIdentifier: string;
@@ -171,6 +173,7 @@ export const createWcSigner = ({
                     });
             });
         } catch (e) {
+            console.error('wc connect failed', e);
             throw new Error(`wc connect failed`);
         }
     };
@@ -222,6 +225,18 @@ export const createWcSigner = ({
         });
     };
 
+    const signTypedData = async (
+        domain: ethers.TypedDataDomain,
+        types: Record<string, ethers.TypedDataField[]>,
+        value: Record<string, unknown>,
+        options?: SignTypedDataOptions,
+    ): Promise<string> => {
+        return makeRequest<string>({
+            method: DefaultMethods.SignTypedData,
+            params: [{ domain, types, value, options }],
+        });
+    };
+
     const disconnect = async (): Promise<void> => {
         if (!session) return;
 
@@ -236,6 +251,7 @@ export const createWcSigner = ({
                 reason: getSdkError('USER_DISCONNECTED'),
             });
         } catch (e) {
+            console.error('SignClient.disconnect failed', e);
             throw new Error(`SignClient.disconnect failed`);
         }
     };
@@ -247,7 +263,6 @@ export const createWcSigner = ({
 
         const vechainNamespace = session.namespaces.vechain;
 
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!vechainNamespace) {
             throw new Error(
                 'Failed to create a vechain session with wallet connect',
@@ -259,6 +274,7 @@ export const createWcSigner = ({
         try {
             return firstAccount.split(':')[2];
         } catch (e) {
+            console.error('Failed to get account from session', e);
             throw new Error('Failed to get account from session');
         }
     };
@@ -266,6 +282,7 @@ export const createWcSigner = ({
     return {
         signTx,
         signCert,
+        signTypedData,
         disconnect,
         genesisId,
         connect: connectAccount,

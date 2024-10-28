@@ -5,11 +5,20 @@ import type { LogLevel } from '../utils';
 declare global {
     interface Window {
         vechain?: {
-            newConnexSigner: (genesisId: string) => Connex.Signer;
+            newConnexSigner: (genesisId: string) => ExpandedConnexSigner;
             isInAppBrowser?: boolean;
         };
         connex?: unknown;
     }
+}
+
+interface ExpandedConnexSigner extends Connex.Signer {
+    signTypedData: (
+        _domain: ethers.TypedDataDomain,
+        _types: Record<string, ethers.TypedDataField[]>,
+        _value: Record<string, unknown>,
+        _options?: SignTypedDataOptions,
+    ) => Promise<string>;
 }
 
 type WalletSource = 'wallet-connect' | 'veworld' | 'sync2' | 'sync';
@@ -44,7 +53,7 @@ interface DAppKitOptions {
     };
 }
 
-type BaseWallet = Connex.Signer & {
+type BaseWallet = ExpandedConnexSigner & {
     disconnect?: () => Promise<void> | void;
 };
 
@@ -64,8 +73,14 @@ interface ConnectResponse {
 interface WalletManagerState {
     source: WalletSource | null;
     address: string | null;
+    accountDomain: string | null;
+    isAccountDomainLoading: boolean;
     availableSources: WalletSource[];
     connectionCertificate: Certificate | null;
+}
+
+interface SignTypedDataOptions {
+    signer?: string;
 }
 
 export type {
@@ -77,4 +92,7 @@ export type {
     WalletManagerState,
     ConnectResponse,
     Genesis,
+    SignTypedDataOptions,
+    ExpandedConnexSigner,
+    DriverSignedTypedData,
 };

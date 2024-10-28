@@ -2,24 +2,22 @@ import { describe, expect, it, vi } from 'vitest';
 import type { WalletConnectOptions } from '../src';
 import { WalletManager } from '../src';
 import { mockedConnexSigner } from './helpers/mocked-signer';
+import { typedData } from './fixture';
 
 const newWalletManager = (wcOptions?: WalletConnectOptions): WalletManager => {
-    return new WalletManager({
-        nodeUrl: 'https://testnet.veblocks.net/',
-        walletConnectOptions: wcOptions,
-        genesis: 'main',
-    });
+    return new WalletManager(
+        {
+            nodeUrl: 'https://testnet.veblocks.net/',
+            walletConnectOptions: wcOptions,
+            genesis: 'main',
+        },
+        {} as any,
+    );
 };
 
 window.vechain = {
     newConnexSigner: () => mockedConnexSigner,
 };
-
-const eventNames = (walletManager: WalletManager): string[] =>
-    //@ts-ignore
-    walletManager.eventEmitter.eventNames();
-
-const listener = () => {};
 
 describe('WalletManager', () => {
     describe('setSource', () => {
@@ -64,6 +62,20 @@ describe('WalletManager', () => {
             );
 
             expect(res.signature).toBeDefined();
+        });
+    });
+
+    describe('signTypedData', () => {
+        it('should sign the typedData', async () => {
+            const walletManager = newWalletManager();
+            walletManager.setSource('veworld');
+            const res = await walletManager.signTypedData(
+                typedData.domain,
+                typedData.types,
+                typedData.value,
+            );
+
+            expect(res).toBeDefined();
         });
     });
 
