@@ -135,6 +135,7 @@ export const DAppKitProvider = ({
     modalParent,
     onSourceClick,
     connectionCertificate: connectionCertificateData,
+    allowedWallets,
 }: DAppKitProviderOptions): React.ReactElement | null => {
     const [connex, setConnex] = useState<DAppKit | null>(null);
     useEffect(() => {
@@ -153,6 +154,7 @@ export const DAppKitProvider = ({
                 modalParent,
                 onSourceClick,
                 connectionCertificate: connectionCertificateData,
+                allowedWallets,
             }),
         );
     }, [
@@ -169,6 +171,7 @@ export const DAppKitProvider = ({
         modalParent,
         onSourceClick,
         connectionCertificateData,
+        allowedWallets,
     ]);
     if (!connex) {
         return null;
