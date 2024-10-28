@@ -36,8 +36,8 @@ const preparePackages = async () => {
     console.log(`   🚀🚀🚀 Preparing ${version} for release  🚀🚀🚀`);
     console.log('\n______________________________________________________\n\n');
 
-    console.log(' Checkout the release branch:');
-    await exec('git checkout -b vX.Y.Z');
+    console.log(` Checkout the release branch:`);
+    await exec(`git checkout -b v${version}`);
     console.log('       - ✅  Checked out!');
 
     console.log(' Clean:');
