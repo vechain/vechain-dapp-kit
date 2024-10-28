@@ -41,6 +41,20 @@ export const createWcSigner = ({
             throw new Error(`Failed to get the wallet connect sign client`);
         });
 
+    /**
+     * Ping the session when the window is focused
+     * if (window) to prevent SSR errors
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (window) {
+        window.onfocus = async (): Promise<void> => {
+            if (session) {
+                const signClient = await wcClient.get();
+                await signClient.ping({ topic: session.topic });
+            }
+        };
+    }
+
     // listen for session updates
     const listenToEvents = (_client: SignClient): void => {
         _client.on('session_update', ({ topic, params }): void => {
