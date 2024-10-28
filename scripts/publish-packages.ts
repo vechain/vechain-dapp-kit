@@ -18,6 +18,10 @@ const publishPackages = async () => {
     console.log(`   🚀🚀🚀 Publishing ${version}  🚀🚀🚀`);
     console.log('\n______________________________________________________\n\n');
 
+    console.log(' Checkout to main:');
+    await exec('git checkout main');
+    console.log('       - ✅  Checked out!');
+
     console.log(' Pull the tag:');
     await exec('git pull');
     console.log('       - ✅  Pulled!');
@@ -39,12 +43,32 @@ const publishPackages = async () => {
     console.log(' Test:');
     console.log('       - 🧪 Testing packages...');
     await exec('yarn test');
-    console.log('       - ✅  Success!');
+    console.log('       - ✅  Tested!');
 
     console.log(' Publish:');
     console.log('       - 📦 Publishing packages...');
-    await exec('yarn changeset publish');
-    console.log('       - ✅  Published!');
+    await new Promise((resolve, reject) => {
+        const publishProcess = child_process.spawn(
+            'yarn',
+            ['changeset', 'publish'],
+            {
+                stdio: 'inherit', // This allows interaction with the process's stdio
+                shell: true, // Enables shell features if needed
+            },
+        );
+
+        publishProcess.on('close', (code) => {
+            if (code === 0) {
+                resolve(null);
+            } else {
+                reject(new Error(`Publish process exited with code ${code}`));
+            }
+        });
+
+        publishProcess.on('error', (err) => {
+            reject(err);
+        });
+    });
 
     console.log('\n______________________________________________________\n\n');
     console.log(`       - 🎉🎉🎉 Packages published successfully 🎉🎉🎉`);
