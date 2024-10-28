@@ -5,22 +5,19 @@ import { mockedConnexSigner } from './helpers/mocked-signer';
 import { typedData } from './fixture';
 
 const newWalletManager = (wcOptions?: WalletConnectOptions): WalletManager => {
-    return new WalletManager({
-        nodeUrl: 'https://testnet.veblocks.net/',
-        walletConnectOptions: wcOptions,
-        genesis: 'main',
-    });
+    return new WalletManager(
+        {
+            nodeUrl: 'https://testnet.veblocks.net/',
+            walletConnectOptions: wcOptions,
+            genesis: 'main',
+        },
+        {} as any,
+    );
 };
 
 window.vechain = {
     newConnexSigner: () => mockedConnexSigner,
 };
-
-const eventNames = (walletManager: WalletManager): string[] =>
-    //@ts-ignore
-    walletManager.eventEmitter.eventNames();
-
-const listener = () => {};
 
 describe('WalletManager', () => {
     describe('setSource', () => {

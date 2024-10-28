@@ -1,6 +1,0 @@
-node_modules/*
-dist/*
-web-dev-server.config.js
-tsup.config.ts
-test
-vite.config.ts

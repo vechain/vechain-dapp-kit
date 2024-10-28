@@ -41,6 +41,8 @@ export interface DAppKitContext {
         disconnect: () => void;
         connect: () => Promise<ConnectResponse>;
         account: string | null;
+        accountDomain: string | null;
+        isAccountDomainLoading: boolean;
         source: WalletSource | null;
         connectionCertificate: Certificate | null;
         signTypedData: WalletManager['signTypedData'];

@@ -31,6 +31,7 @@ const createNewSignClient = (): WCSigner =>
         genesisId: normalizeGenesisId('main'),
         wcClient: createWcClient({ projectId, metadata }),
         onDisconnected: () => {
+            // eslint-disable-next-line no-console
             console.log('disconnected');
         },
         web3Modal: customModal,

@@ -62,7 +62,6 @@ export class SignConnectionCertificate extends LitElement {
     @property()
     waitingForTheSignature = false;
     @property()
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     setWaitingForTheSignature: (v: boolean) => void = () => {};
     @property()
     submitButtonWidth = 0;

@@ -4,6 +4,7 @@ import { Font, type ThemeMode } from '../../constants';
 import { friendlyAddress, getPicassoImage } from '../../utils/account';
 import { buttonStyle } from '../../assets/styles';
 import { DAppKitUI } from '../../client';
+import { shortenedDomain } from '@vechain/dapp-kit';
 
 @customElement('vdk-address-button')
 export class AddressButton extends LitElement {
@@ -50,6 +51,12 @@ export class AddressButton extends LitElement {
     address?: string;
 
     @property()
+    accountDomain = '';
+
+    @property()
+    isAccountDomainLoading = false;
+
+    @property()
     mode: ThemeMode = 'LIGHT';
 
     @property()
@@ -77,6 +84,11 @@ export class AddressButton extends LitElement {
                     />
                 </button>`;
         }
+
+        const addressOrDomain =
+            this.accountDomain && !this.isAccountDomainLoading
+                ? shortenedDomain(this.accountDomain, 7)
+                : friendlyAddress(this.address ?? '');
         return html` <vdk-fonts></vdk-fonts>
             <button
                 class="wallet-button ${this.mode}"
@@ -87,9 +99,7 @@ export class AddressButton extends LitElement {
                     class="address-icon"
                     src=${getPicassoImage(this.address ?? '')}
                 />
-                <span class="wallet-address"
-                    >${friendlyAddress(this.address ?? '')}</span
-                >
+                <span class="wallet-address">${addressOrDomain}</span>
             </button>`;
     }
 }

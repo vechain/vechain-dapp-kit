@@ -66,7 +66,7 @@ class DAppKit {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const driver = createThorDriver(nodeUrl, genesisBlock, net);
 
-        const walletManager = new WalletManager(options);
+        const walletManager = new WalletManager(options, driver);
 
         driver.signTx = walletManager.signTx.bind(walletManager);
         driver.signCert = walletManager.signCert.bind(walletManager);

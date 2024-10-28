@@ -21,6 +21,7 @@ import {
     LightDisconnectSvg,
 } from '../../assets/icons';
 import { DAppKitUI } from '../../client';
+import { shortenedDomain } from '@vechain/dapp-kit';
 
 let openWalletModalListener: () => void;
 let closeWalletModalListener: () => void;
@@ -87,7 +88,7 @@ export class AddressModal extends LitElement {
                 );
             }
 
-            .address {
+            .address-domain {
                 font-size: var(--vdk-font-size-large, ${Font.Size.Large});
                 font-family: var(--vdk-font-family, ${Font.Family});
                 font-weight: var(
@@ -99,11 +100,38 @@ export class AddressModal extends LitElement {
                 justify-content: center;
             }
 
+            .secondary-address {
+                font-size: var(--vdk-font-size-small, ${Font.Size.Small});
+                font-family: var(--vdk-font-family, ${Font.Family});
+                font-weight: var(
+                    --vdk-font-weight-regular,
+                    ${Font.Weight.Regular}
+                );
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            .address-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+            }
+
             .copy-icon {
                 cursor: pointer;
                 width: 20px;
                 height: 20px;
                 margin-left: 10px;
+            }
+
+            .copy-icon-secondary {
+                cursor: pointer;
+                width: 15px;
+                height: 15px;
+                margin-left: 8px;
             }
         `,
     ];
@@ -113,6 +141,12 @@ export class AddressModal extends LitElement {
 
     @property({ type: String })
     address = '';
+
+    @property()
+    accountDomain = '';
+
+    @property()
+    isAccountDomainLoading = false;
 
     @property({ type: Function })
     onDisconnectClick?: () => void = undefined;
@@ -130,7 +164,10 @@ export class AddressModal extends LitElement {
     walletConnectQRcode?: string = undefined;
 
     @property()
-    showCopiedIcon = false;
+    showCopiedMainIcon = false;
+
+    @property()
+    showCopiedSecondaryIcon = false;
 
     constructor() {
         super();
@@ -161,10 +198,19 @@ export class AddressModal extends LitElement {
 
     override render(): TemplateResult {
         const translate = useTranslate(this.i18n, this.language);
-        let copyIcon = this.mode === 'LIGHT' ? LightCopySvg : DarkCopySvg;
-        if (this.showCopiedIcon) {
-            copyIcon = CheckSvg;
+        let copyMainIcon = this.mode === 'LIGHT' ? LightCopySvg : DarkCopySvg;
+        if (this.showCopiedMainIcon) {
+            copyMainIcon = CheckSvg;
         }
+        let copySecondaryIcon =
+            this.mode === 'LIGHT' ? LightCopySvg : DarkCopySvg;
+        if (this.showCopiedSecondaryIcon) {
+            copySecondaryIcon = CheckSvg;
+        }
+        const addressOrDomain =
+            this.accountDomain && !this.isAccountDomainLoading
+                ? shortenedDomain(this.accountDomain, 18)
+                : friendlyAddress(this.address || '');
         return html`
         <vdk-fonts></vdk-fonts>
         <vdk-base-modal
@@ -188,13 +234,27 @@ export class AddressModal extends LitElement {
                             class="address-icon"
                             src=${getPicassoImage(this.address)}
                     />
-                    <span class="address">
-                            ${friendlyAddress(this.address)}
+                    <div class="address-container">
+                    <span class="address-domain">
+                            ${addressOrDomain}
                             <div class="copy-icon" @click=${
-                                this.onCopy
-                            }>${copyIcon}</div>
-                        </span>
-
+                                this.onCopyMainLabel
+                            }>${copyMainIcon}</div>
+                    </span>
+                    ${
+                        this.accountDomain
+                            ? html` <span class="secondary-address">
+                                  (${friendlyAddress(this.address, 8, 7)})
+                                  <div
+                                      class="copy-icon-secondary"
+                                      @click=${this.onCopySecondaryLabel}
+                                  >
+                                      ${copySecondaryIcon}
+                                  </div>
+                              </span>`
+                            : nothing
+                    }
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button
@@ -216,11 +276,20 @@ export class AddressModal extends LitElement {
     `;
     }
 
-    private onCopy = async (): Promise<void> => {
-        await navigator.clipboard.writeText(this.address);
-        this.showCopiedIcon = true;
+    private onCopyMainLabel = async (): Promise<void> => {
+        const text = this.accountDomain ? this.accountDomain : this.address;
+        await navigator.clipboard.writeText(text);
+        this.showCopiedMainIcon = true;
         setTimeout(() => {
-            this.showCopiedIcon = false;
+            this.showCopiedMainIcon = false;
+        }, 1000);
+    };
+
+    private onCopySecondaryLabel = async (): Promise<void> => {
+        await navigator.clipboard.writeText(this.address);
+        this.showCopiedSecondaryIcon = true;
+        setTimeout(() => {
+            this.showCopiedSecondaryIcon = false;
         }, 1000);
     };
 

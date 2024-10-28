@@ -1,5 +1,4 @@
 // eslint-disable @typescript-eslint/no-unsafe-assignment
-// eslint-disable @typescript-eslint/no-unsafe-member-access
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
@@ -18,7 +17,6 @@ const baseUrl = scheme + host + port + path;
 
 export const environment = {
     production: false,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     version: packageInfo.version,
     appName: 'EasyAngular',
     envName: 'local',

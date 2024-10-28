@@ -36,6 +36,10 @@ export class Button extends LitElement {
 
     private setAddressFromState(): void {
         this.address = DAppKitUI.wallet.state.address ?? '';
+        this.accountDomain = DAppKitUI.wallet.state.accountDomain ?? '';
+        this.isAccountDomainLoading = Boolean(
+            DAppKitUI.wallet.state.isAccountDomainLoading,
+        );
         this.requestUpdate();
     }
 
@@ -44,6 +48,11 @@ export class Button extends LitElement {
         this.i18n = DAppKitUI.configuration?.i18n ?? defaultI18n;
         this.language = DAppKitUI.configuration?.language ?? 'en';
         this.address = DAppKitUI.wallet.state.address ?? '';
+        this.accountDomain = DAppKitUI.wallet.state.accountDomain ?? '';
+        this.isAccountDomainLoading = Boolean(
+            DAppKitUI.wallet.state.isAccountDomainLoading,
+        );
+
         this.requestUpdate();
     }
 
@@ -52,6 +61,20 @@ export class Button extends LitElement {
             'address',
             (_address: string | null) => {
                 this.address = _address ?? '';
+                this.requestUpdate();
+            },
+        );
+        DAppKitUI.wallet.subscribeToKey(
+            'accountDomain',
+            (_accountDomain: string | null) => {
+                this.accountDomain = _accountDomain ?? '';
+                this.requestUpdate();
+            },
+        );
+        DAppKitUI.wallet.subscribeToKey(
+            'isAccountDomainLoading',
+            (_isAccountDomainLoading: boolean) => {
+                this.isAccountDomainLoading = _isAccountDomainLoading;
                 this.requestUpdate();
             },
         );
@@ -70,6 +93,12 @@ export class Button extends LitElement {
     address = '';
 
     @property()
+    accountDomain = '';
+
+    @property()
+    isAccountDomainLoading = false;
+
+    @property()
     disabled = false;
 
     @property()
@@ -80,6 +109,8 @@ export class Button extends LitElement {
             ? html`<vdk-address-button
                   .mode=${this.mode}
                   .address=${this.address}
+                  .accountDomain=${this.accountDomain}
+                  .isAccountDomainLoading=${this.isAccountDomainLoading}
                   .disabled=${this.disabled}
                   .mobile=${this.mobile}
               ></vdk-address-button>`

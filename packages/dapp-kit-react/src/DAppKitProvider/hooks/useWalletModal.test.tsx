@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
-import { useWalletModal } from '../src';
-import { wrapper } from './helpers/react-test-helpers';
+import { useWalletModal } from '../..';
+import { wrapper } from '../../../test/helpers/react-test-helpers';
 
 describe('useWalletModal', () => {
     it('should be able to open the modal', async () => {
@@ -26,5 +26,10 @@ describe('useWalletModal', () => {
         );
 
         result.current.close();
+    });
+    it('should throw an error when used outside of DAppKitProvider', () => {
+        expect(() => renderHook(() => useWalletModal())).toThrow(
+            '"useWalletModal" must be used within a ConnexProvider',
+        );
     });
 });

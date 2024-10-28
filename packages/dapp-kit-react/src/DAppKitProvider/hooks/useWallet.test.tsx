@@ -1,9 +1,9 @@
-import { describe, it, vi } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { mockedConnexSigner } from '@vechain/dapp-kit/test/helpers/mocked-signer';
 import { Connex } from '@vechain/connex';
-import { useWallet } from '../src';
-import { wrapper } from './helpers/react-test-helpers';
+import { useWallet } from '../..';
+import { wrapper } from '../../../test/helpers/react-test-helpers';
 
 vi.mock('@vechain/connex');
 
@@ -48,9 +48,7 @@ describe('useWallet', () => {
         expect(result.current).toBeDefined();
 
         result.current.setSource('sync2');
-        result.current.connect().catch(() => {
-            // ignore
-        });
+        await result.current.connect();
 
         await waitFor(() => {
             expect(result.current.source).toBe('sync2');
@@ -65,5 +63,11 @@ describe('useWallet', () => {
             expect(result.current.source).toBe(null);
             expect(result.current.account).toBeNull();
         });
+    });
+
+    it('should throw an error when used outside of DAppKitProvider', () => {
+        expect(() => renderHook(() => useWallet())).toThrow(
+            '"useWallet" must be used within a ConnexProvider',
+        );
     });
 });

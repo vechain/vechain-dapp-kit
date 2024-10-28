@@ -12,7 +12,6 @@ const walletConnectOptions = {
 
 const vechainDAppKitOptions = {
     nodeUrl: 'https://testnet.vechain.org/',
-    genesis: 'test',
     walletConnectOptions,
     usePersistence: true,
 };
