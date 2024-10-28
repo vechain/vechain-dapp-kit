@@ -27,8 +27,8 @@
         "@lit/react": "^1.0.1",
         "@vechain/connex": "2.1.0",
         "@vechain/connex-framework": "2.1.0",
-        "@vechain/dapp-kit": "1.0.16",
-        "@vechain/dapp-kit-ui": "1.0.16",
+        "@vechain/dapp-kit": "*",
+        "@vechain/dapp-kit-ui": "*",
         "@vechain/sdk-core": "1.0.0-beta.24",
         "valtio": "1.11.2"
     },
