@@ -38,6 +38,10 @@ type Genesis = 'main' | 'test' | Connex.Thor.Block;
  * @param usePersistence - Optional. Whether to persist the wallet source/ account
  * @param useFirstDetectedSource - Optional. Whether to use the first detected wallet source. Defaults to false
  * @param logLevel - Optional. The log level to use for the DAppKitUI logger
+ * @param requireCertificate - Optional. Whether to require a connection certificate. Defaults to true
+ * @param connectionCertificate - Optional. Options for the connection certificate
+ * @param customNet - Optional. A custom network to use. Defaults to the mainnet
+ * @param allowedWallets - Optional. An array of wallet sources to allow. Defaults to all sources
  */
 interface DAppKitOptions {
     nodeUrl: string;
@@ -52,6 +56,7 @@ interface DAppKitOptions {
         options?: Connex.Signer.CertOptions;
     };
     customNet?: Net;
+    allowedWallets?: WalletSource[];
 }
 
 type BaseWallet = ExpandedConnexSigner & {
