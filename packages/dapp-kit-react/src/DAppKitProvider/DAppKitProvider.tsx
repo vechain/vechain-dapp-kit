@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { DAppKit, WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import { subscribeKey } from 'valtio/vanilla/utils';
-import { type Certificate } from '@vechain/sdk-core';
+import { CertificateData } from '@vechain/sdk-core';
 import type { DAppKitProviderOptions, DAppKitContext } from '../types';
 import { Context } from './context';
 
@@ -26,7 +26,9 @@ export const DAppKitProviderData = ({
         connex.wallet.state.source,
     );
     const [connectionCertificate, setConnectionCertificate] =
-        useState<Certificate | null>(connex.wallet.state.connectionCertificate);
+        useState<CertificateData | null>(
+            connex.wallet.state.connectionCertificate,
+        );
 
     useEffect(() => {
         const addressSub = subscribeKey(connex.wallet.state, 'address', (v) => {

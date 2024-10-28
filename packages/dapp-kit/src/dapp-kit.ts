@@ -39,7 +39,9 @@ const createThorDriver = (
     );
 
     // Get the key (the hash of the certificate) without 0x prefix
-    const key: string = Hex.canon(blake2b256(encodedCertificateToHash, 'hex'));
+    const key: string = Hex.of(
+        blake2b256(encodedCertificateToHash, 'hex'),
+    ).digits;
 
     let driver = cache[key];
     if (!driver) {

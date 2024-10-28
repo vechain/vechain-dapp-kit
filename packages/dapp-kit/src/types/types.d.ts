@@ -1,5 +1,5 @@
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
-import { type Certificate } from '@vechain/sdk-core';
+import { CertificateData } from '@vechain/sdk-core';
 import type { LogLevel } from '../utils';
 
 declare global {
@@ -68,7 +68,7 @@ type ConnexWallet = BaseWallet & {
 interface ConnectResponse {
     account: string;
     verified: boolean;
-    connectionCertificate?: Certificate;
+    connectionCertificate?: CertificateData;
 }
 
 interface WalletManagerState {
@@ -77,7 +77,7 @@ interface WalletManagerState {
     accountDomain: string | null;
     isAccountDomainLoading: boolean;
     availableSources: WalletSource[];
-    connectionCertificate: Certificate | null;
+    connectionCertificate: CertificateData | null;
 }
 
 interface SignTypedDataOptions {

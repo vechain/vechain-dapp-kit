@@ -1,6 +1,6 @@
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
-import { certificate } from '@vechain/sdk-core';
+import { Certificate } from '@vechain/sdk-core';
 import { type ethers } from 'ethers';
 import { type DriverNoVendor } from '@vechain/connex-driver';
 import { type SignTypedDataOptions } from '../types/types';
@@ -138,7 +138,7 @@ class WalletManager {
         };
 
         try {
-            certificate.verify(connectionCertificate);
+            Certificate.of(connectionCertificate).verify();
             this.setAddressAndDomain(signer);
             this.state.connectionCertificate = connectionCertificate;
             return {
