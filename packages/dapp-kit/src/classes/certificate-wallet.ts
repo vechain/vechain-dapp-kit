@@ -1,4 +1,4 @@
-import { certificate } from '@vechain/sdk-core';
+import { Certificate } from '@vechain/sdk-core';
 import type { BaseWallet, ConnectResponse, ConnexWallet } from '../types';
 import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
 import { ethers } from 'ethers';
@@ -36,7 +36,7 @@ class CertificateBasedWallet implements ConnexWallet {
         };
 
         try {
-            certificate.verify(connectionCertificate);
+            Certificate.of(connectionCertificate).verify();
 
             return {
                 account: signer,
