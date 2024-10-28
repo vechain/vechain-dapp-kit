@@ -1,5 +1,8 @@
 import type { Net } from '@vechain/connex-driver';
-import { DriverNoVendor, SimpleNet } from '@vechain/connex-driver';
+import {
+    DriverNoVendor,
+    SimpleNet,
+} from '@vechain/connex-driver/dist/index.js';
 import { Framework } from '@vechain/connex-framework';
 import { blake2b256, Hex } from '@vechain/sdk-core';
 import { WalletManager } from './classes';
@@ -61,9 +64,7 @@ class DAppKit {
 
         const genesisBlock = normalizeGenesisBlock(genesis);
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const net = options.customNet || new SimpleNet(nodeUrl);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const driver = createThorDriver(nodeUrl, genesisBlock, net);
 
         const walletManager = new WalletManager(options, driver);
