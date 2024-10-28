@@ -4,7 +4,7 @@ import * as child_process from 'child_process';
 
 const exec = util.promisify(child_process.exec);
 
-const preparePackages = async () => {
+const publishPackages = async () => {
     const version = process.argv[2];
 
     if (!version || !version.match(/^\d+\.\d+\.\d+$/)) {
@@ -51,7 +51,7 @@ const preparePackages = async () => {
     console.log('\n______________________________________________________\n\n');
 };
 
-preparePackages().catch((e) => {
+publishPackages().catch((e) => {
     console.error(e);
     process.exit(1);
 });
