@@ -9,15 +9,15 @@
         "tests/*"
     ],
     "scripts": {
+        "install:all": "yarn && yarn run build:deps",
         "build": "turbo run build",
         "build-react-kit": "turbo run build  --filter='@vechain/dapp-kit-react'",
         "build:deps": "turbo build --no-daemon --filter='@vechain/*'",
-        "build:release": "ts-node scripts/prepare-packages.ts",
+        "prepare:release": "ts-node scripts/prepare-packages.ts",
+        "publish:release": "ts-node scripts/publish-packages.ts",
         "clean": "rm -rf .turbo .parcel-cache .reports build && npx turbo@latest run clean",
         "dev": "turbo run dev --filter='@vechain/*'",
-        "format": "prettier --write \"**/*.{ts,tsx,md,json,js,jsx}\"",
         "gh-pages-build": "turbo run gh-pages-build",
-        "install:all": "yarn && yarn run build:deps",
         "lint": "turbo run lint",
         "prepare": "husky install",
         "preview": "turbo run preview",
