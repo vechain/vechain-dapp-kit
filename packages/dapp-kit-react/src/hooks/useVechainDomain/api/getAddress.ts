@@ -31,8 +31,8 @@ export const getAddress = async ({
 }: {
     domain: string | null;
     connex: DAppKitContext['connex'];
-}): Promise<string | null> => {
-    if (!domain) return null;
+}): Promise<string | undefined> => {
+    if (!domain) return undefined;
 
     const resolver =
         connex.thor.genesis.id === genesisBlocks.test.id
@@ -48,5 +48,5 @@ export const getAddress = async ({
         decoded: { addresses },
     } = res;
 
-    return (addresses?.[0] as string) || null;
+    return (addresses?.[0] as string) || undefined;
 };

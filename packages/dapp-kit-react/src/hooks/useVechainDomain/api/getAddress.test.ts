@@ -17,7 +17,7 @@ describe('getAddress', () => {
 
     it('should return null if domain is null', async () => {
         const result = await getAddress({ domain: null, connex: mockConnex });
-        expect(result).toBeNull();
+        expect(result).toBeUndefined();
     });
 
     it('should use main resolver for mainnet', async () => {
@@ -70,6 +70,6 @@ describe('getAddress', () => {
             connex: mockConnex,
         });
 
-        expect(result).toBeNull();
+        expect(result).toBeUndefined();
     });
 });
