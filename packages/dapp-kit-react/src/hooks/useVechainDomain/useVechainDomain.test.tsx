@@ -38,19 +38,20 @@ vi.mock('./api/getAddress', () => ({
 }));
 
 describe('useVechainDomain', () => {
-    it('should return initial state', () => {
+    it('should return initial state', async () => {
         const { result } = renderHook(
             () => useVechainDomain({ addressOrDomain: null }),
             {
                 wrapper,
             },
         );
-
-        expect(result.current).toEqual({
-            address: undefined,
-            domain: undefined,
-            isLoading: false,
-            isValidAddressOrDomain: false,
+        await waitFor(() => {
+            expect(result.current).toEqual({
+                address: undefined,
+                domain: undefined,
+                isLoading: false,
+                isValidAddressOrDomain: false,
+            });
         });
     });
 
