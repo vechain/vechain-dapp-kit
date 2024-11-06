@@ -10,7 +10,7 @@ export default defineConfig({
             'test/**/*.test.ts',
             'test/**/*.test.tsx',
         ],
-        environment: 'happy-dom',
+        environment: 'jsdom',
         reporters: 'dot',
         setupFiles: [resolve(__dirname, 'test/setup/setup.ts')],
         coverage: {
