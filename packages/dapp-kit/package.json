@@ -1,6 +1,6 @@
 {
     "name": "@vechain/dapp-kit",
-    "version": "1.0.14",
+    "version": "1.1.1",
     "private": false,
     "homepage": "https://github.com/vechain/vechain-dapp-kit",
     "repository": "github:vechain/vechain-dapp-kit",
@@ -17,7 +17,7 @@
     "scripts": {
         "build": "tsup",
         "clean": "rm -rf dist .turbo",
-        "lint": "tsc --noEmit && eslint src --ext .js,.jsx,.ts,.tsx",
+        "lint": "eslint",
         "purge": "yarn clean && rm -rf node_modules",
         "test": "vitest run --coverage",
         "watch": "yarn build --watch"
@@ -27,21 +27,19 @@
         "@vechain/connex-driver": "2.1.0",
         "@vechain/connex-framework": "2.1.0",
         "@vechain/connex-types": "^2.1.0",
-        "@vechain/sdk-core": "1.0.0-beta.24",
+        "@vechain/sdk-core": "1.0.0-beta.32",
         "@walletconnect/modal": "2.6.2",
-        "@walletconnect/sign-client": "2.10.2",
-        "@walletconnect/utils": "2.10.2",
-        "ethers": "^6.13.3",
+        "@walletconnect/sign-client": "2.11.3",
+        "@walletconnect/utils": "2.11.3",
         "events": "^3.3.0",
         "valtio": "1.11.2"
     },
     "devDependencies": {
         "@types/react": "^18.2.28",
         "@types/react-dom": "^18.2.13",
-        "@vechain/repo-config": "https://github.com/vechain/repo-config#v0.0.1",
         "@vitest/coverage-v8": "^0.34.6",
-        "@walletconnect/types": "2.10.2",
-        "eslint": "^8.15.0",
+        "@walletconnect/types": "2.11.3",
+        "eslint": "^9.12.0",
         "happy-dom": "^14.12.3",
         "lokijs": "^1.5.12",
         "tsup": "*",

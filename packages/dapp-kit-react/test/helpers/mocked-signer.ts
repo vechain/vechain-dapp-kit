@@ -1,18 +1,15 @@
 /// <reference types="@vechain/connex" />
 import {
-    addressUtils,
-    blake2b256,
     Certificate,
-    HDNode,
-    secp256k1,
-    certificate,
-    Hex0x,
+    addressUtils,
+    CertificateData,
+    HDKey,
 } from '@vechain/sdk-core';
 
 const mnemonicWords =
     'denial kitchen pet squirrel other broom bar gas better priority spoil cross';
 
-const hdNode = HDNode.fromMnemonic(mnemonicWords.split(' '));
+const hdNode = HDKey.fromMnemonic(mnemonicWords.split(' '));
 
 const firstAccount = hdNode.deriveChild(0);
 
@@ -25,7 +22,7 @@ const mockedConnexSigner: Connex.Signer = {
     },
 
     signCert(msg) {
-        const newCertificate: Certificate = {
+        const newCertificate: CertificateData = {
             domain: ' localhost:3000',
             timestamp: 12341234,
             signer: address,
@@ -33,10 +30,8 @@ const mockedConnexSigner: Connex.Signer = {
             purpose: msg.purpose,
         };
 
-        const signature = secp256k1.sign(
-            blake2b256(certificate.encode(newCertificate)),
-            privateKey,
-        );
+        const signedCertificate =
+            Certificate.of(newCertificate).sign(privateKey);
 
         return Promise.resolve({
             annex: {
@@ -44,7 +39,7 @@ const mockedConnexSigner: Connex.Signer = {
                 timestamp: newCertificate.timestamp,
                 signer: newCertificate.signer,
             },
-            signature: Hex0x.of(signature),
+            signature: signedCertificate.signature || '',
         });
     },
 };

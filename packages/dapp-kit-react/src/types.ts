@@ -6,7 +6,7 @@ import type {
     WalletSource,
 } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
-import { type Certificate } from '@vechain/sdk-core';
+import { CertificateData } from '@vechain/sdk-core';
 
 export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
 export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
@@ -41,8 +41,10 @@ export interface DAppKitContext {
         disconnect: () => void;
         connect: () => Promise<ConnectResponse>;
         account: string | null;
+        accountDomain: string | null;
+        isAccountDomainLoading: boolean;
         source: WalletSource | null;
-        connectionCertificate: Certificate | null;
+        connectionCertificate: CertificateData | null;
         signTypedData: WalletManager['signTypedData'];
     };
     modal: {

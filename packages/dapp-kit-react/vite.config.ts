@@ -4,8 +4,13 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
     test: {
-        include: ['test/**/*.test.ts', 'test/**/*.test.tsx'],
-        environment: 'jsdom',
+        include: [
+            'src/**/*.test.ts',
+            'src/**/*.test.tsx',
+            'test/**/*.test.ts',
+            'test/**/*.test.tsx',
+        ],
+        environment: 'happy-dom',
         reporters: 'dot',
         setupFiles: [resolve(__dirname, 'test/setup/setup.ts')],
         coverage: {
@@ -18,10 +23,10 @@ export default defineConfig({
                 'text-summary',
                 'text',
             ],
-            lines: 90,
-            statements: 90,
-            functions: 90,
-            branches: 80,
+            statements: 99,
+            branches: 100,
+            functions: 100,
+            lines: 99,
         },
         globals: true,
     },

@@ -1,3 +1,4 @@
+import type { Net } from '@vechain/connex-driver';
 import {
     DriverNoVendor,
     SimpleNet,
@@ -19,10 +20,12 @@ const cache: Record<string, DriverNoVendor | undefined> = {};
  *
  * @param node - The node URL
  * @param genesis - The genesis block
+ * @param net - The network
  */
 const createThorDriver = (
     node: string,
     genesis: Connex.Thor.Block,
+    net: Net,
 ): DriverNoVendor => {
     // Stringify the certificate to hash
     const certificateToHash = JSON.stringify({
@@ -36,11 +39,13 @@ const createThorDriver = (
     );
 
     // Get the key (the hash of the certificate) without 0x prefix
-    const key: string = Hex.canon(blake2b256(encodedCertificateToHash, 'hex'));
+    const key: string = Hex.of(
+        blake2b256(encodedCertificateToHash, 'hex'),
+    ).digits;
 
     let driver = cache[key];
     if (!driver) {
-        driver = new DriverNoVendor(new SimpleNet(node), genesis);
+        driver = new DriverNoVendor(net, genesis);
         cache[key] = driver;
     }
     return driver;
@@ -61,9 +66,10 @@ class DAppKit {
 
         const genesisBlock = normalizeGenesisBlock(genesis);
 
-        const driver = createThorDriver(nodeUrl, genesisBlock);
+        const net = options.customNet || new SimpleNet(nodeUrl);
+        const driver = createThorDriver(nodeUrl, genesisBlock, net);
 
-        const walletManager = new WalletManager(options);
+        const walletManager = new WalletManager(options, driver);
 
         driver.signTx = walletManager.signTx.bind(walletManager);
         driver.signCert = walletManager.signCert.bind(walletManager);

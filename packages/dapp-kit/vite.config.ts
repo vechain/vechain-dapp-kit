@@ -1,12 +1,16 @@
 /// <reference types="vitest" />
 import { resolve } from 'node:path';
-import { defineConfig } from 'vitest/config'; // eslint-disable-next-line import/no-default-export
+import { defineConfig } from 'vitest/config';
 
-// eslint-disable-next-line import/no-default-export
 export default defineConfig({
     test: {
-        include: ['test/**/*.test.ts'],
-        environment: 'jsdom',
+        include: [
+            'src/**/*.test.ts',
+            'src/**/*.test.tsx',
+            'test/**/*.test.ts',
+            'test/**/*.test.tsx',
+        ],
+        environment: 'happy-dom',
         setupFiles: [resolve(__dirname, 'test/setup/setup.ts')],
         reporters: 'dot',
         coverage: {
@@ -19,10 +23,10 @@ export default defineConfig({
                 'text-summary',
                 'text',
             ],
-            lines: 78,
-            statements: 78,
-            functions: 78,
-            branches: 78,
+            statements: 85,
+            branches: 80,
+            functions: 85,
+            lines: 85,
         },
         globals: true,
     },

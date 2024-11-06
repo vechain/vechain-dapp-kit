@@ -32,6 +32,10 @@ export const createWcClient = ({
             try {
                 return await _signClient;
             } catch (e) {
+                console.error(
+                    'Failed to initialise the wallet connect sign client',
+                    e,
+                );
                 throw new Error(
                     `Failed to initialise the wallet connect sign client`,
                 );

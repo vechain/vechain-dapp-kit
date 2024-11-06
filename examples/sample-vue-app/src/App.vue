@@ -13,7 +13,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
-import { Genesis } from '@vechain/dapp-kit';
 
 const walletConnectOptions = {
     projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
@@ -27,7 +26,6 @@ const walletConnectOptions = {
 
 const vechainDAppKitOptions = {
     nodeUrl: 'https://testnet.vechain.org/',
-    genesis: 'test' as Genesis,
     walletConnectOptions,
     usePersistence: true,
 };

@@ -1,4 +1,4 @@
-import { type Certificate } from '@vechain/sdk-core';
+import { CertificateData } from '@vechain/sdk-core';
 import type { WalletSource } from '../types';
 import { DAppKitLogger } from './logger';
 
@@ -6,6 +6,7 @@ const STORAGE_PREFIX = 'dappkit@vechain';
 const WALLET_SOURCE_KEY = `${STORAGE_PREFIX}/source`;
 const ACCOUNT_KEY = `${STORAGE_PREFIX}/account`;
 const CERTIFICATE_KEY = `${STORAGE_PREFIX}/connectionCertificate`;
+const ACCOUNT_DOMAIN_KEY = `${STORAGE_PREFIX}/accountDomain`;
 
 const setSource = (source: WalletSource | null): void => {
     DAppKitLogger.debug('LocalStorage', 'setSource', source);
@@ -26,7 +27,18 @@ const setAccount = (account: string | null): void => {
     }
 };
 
-const setConnectionCertificate = (certificate: Certificate | null): void => {
+const setAccountDomain = (domain: string | null): void => {
+    DAppKitLogger.debug('LocalStorage', 'setAccountDomain', domain);
+    if (!domain) {
+        localStorage.removeItem(ACCOUNT_DOMAIN_KEY);
+    } else {
+        localStorage.setItem(ACCOUNT_DOMAIN_KEY, domain);
+    }
+};
+
+const setConnectionCertificate = (
+    certificate: CertificateData | null,
+): void => {
     DAppKitLogger.debug(
         'LocalStorage',
         'setConnectionCertificate',
@@ -59,20 +71,31 @@ const getAccount = (): string | null => {
     return account;
 };
 
-const getConnectionCertificate = (): Certificate | null => {
+const getAccountDomain = (): string | null => {
+    const accountDomain = localStorage.getItem(ACCOUNT_DOMAIN_KEY);
+    if (!accountDomain) {
+        return null;
+    }
+
+    return accountDomain;
+};
+
+const getConnectionCertificate = (): CertificateData | null => {
     const connectionCertificate = localStorage.getItem(CERTIFICATE_KEY);
 
     if (!connectionCertificate) {
         return null;
     }
 
-    return JSON.parse(connectionCertificate) as Certificate;
+    return JSON.parse(connectionCertificate) as CertificateData;
 };
 
 export const Storage = {
     setAccount,
     setSource,
     setConnectionCertificate,
+    setAccountDomain,
+    getAccountDomain,
     getAccount,
     getSource,
     getConnectionCertificate,

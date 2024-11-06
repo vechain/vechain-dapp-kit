@@ -173,13 +173,16 @@ yarn test:e2e:headless
 
 ## Publishing
 
-Before publishing create the release on github called `X.Y.Z` and then `git pull` the tag.
+```bash
+# prepare the release, this will check out the release branch, install dependencies, build packages, test and update the package versions
+yarn prepare:release X.Y.Z
+```
+
+Create the PR for the release branch `vX.Y.Z`.
+
+When the PR is merged, create the release on github called `X.Y.Z`, it will automatically tag the commit with the version `X.Y.Z`.
 
 ```bash
-git clone git@github.com:vechainfoundation/vechain-dapp-kit.git
-cd vechain-dapp-kit
-git checkout X.Y.Z
-yarn install:all
-yarn build:release X.Y.Z
-yarn changeset publish
+# publish the release
+yarn publish:release X.Y.Z
 ```

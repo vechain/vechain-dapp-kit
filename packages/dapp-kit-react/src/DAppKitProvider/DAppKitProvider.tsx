@@ -1,23 +1,12 @@
-import React, {
-    createContext,
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { DAppKit, WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import { subscribeKey } from 'valtio/vanilla/utils';
-import { type Certificate } from '@vechain/sdk-core';
-import type { DAppKitProviderOptions, DAppKitContext } from './types';
+import { CertificateData } from '@vechain/sdk-core';
+import type { DAppKitProviderOptions, DAppKitContext } from '../types';
+import { Context } from './context';
 
-/**
- * Context
- */
-const Context = createContext<DAppKitContext | undefined>(undefined);
-
-export const DAppKitDataProvider = ({
+export const DAppKitProviderData = ({
     children,
     connex,
 }: {
@@ -27,16 +16,38 @@ export const DAppKitDataProvider = ({
     const [account, setAccount] = useState<string | null>(
         connex.wallet.state.address,
     );
+    const [accountDomain, setAccountDomain] = useState<string | null>(
+        connex.wallet.state.accountDomain,
+    );
+    const [isAccountDomainLoading, setIsAccountDomainLoading] = useState(
+        connex.wallet.state.isAccountDomainLoading,
+    );
     const [source, setSource] = useState<WalletSource | null>(
         connex.wallet.state.source,
     );
     const [connectionCertificate, setConnectionCertificate] =
-        useState<Certificate | null>(connex.wallet.state.connectionCertificate);
+        useState<CertificateData | null>(
+            connex.wallet.state.connectionCertificate,
+        );
 
     useEffect(() => {
         const addressSub = subscribeKey(connex.wallet.state, 'address', (v) => {
             setAccount(v);
         });
+        const domainSub = subscribeKey(
+            connex.wallet.state,
+            'accountDomain',
+            (v) => {
+                setAccountDomain(v);
+            },
+        );
+        const isAccountDomainLoadingSub = subscribeKey(
+            connex.wallet.state,
+            'isAccountDomainLoading',
+            (v) => {
+                setIsAccountDomainLoading(v);
+            },
+        );
         const sourceSub = subscribeKey(connex.wallet.state, 'source', (v) => {
             setSource(v);
         });
@@ -50,6 +61,8 @@ export const DAppKitDataProvider = ({
 
         return () => {
             addressSub();
+            domainSub();
+            isAccountDomainLoadingSub();
             sourceSub();
             certificateSub();
         };
@@ -80,6 +93,8 @@ export const DAppKitDataProvider = ({
                 connect: connex.wallet.connect,
                 availableWallets: connex.wallet.state.availableSources,
                 account,
+                accountDomain,
+                isAccountDomainLoading,
                 source,
                 connectionCertificate,
                 signTypedData: connex.wallet.signTypedData,
@@ -93,11 +108,13 @@ export const DAppKitDataProvider = ({
     }, [
         connex,
         account,
+        accountDomain,
+        isAccountDomainLoading,
         source,
-        closeModal,
-        openModal,
-        onModalConnected,
         connectionCertificate,
+        openModal,
+        closeModal,
+        onModalConnected,
     ]);
 
     return <Context.Provider value={context}>{children}</Context.Provider>;
@@ -118,6 +135,7 @@ export const DAppKitProvider = ({
     modalParent,
     onSourceClick,
     connectionCertificate: connectionCertificateData,
+    allowedWallets,
 }: DAppKitProviderOptions): React.ReactElement | null => {
     const [connex, setConnex] = useState<DAppKit | null>(null);
     useEffect(() => {
@@ -136,6 +154,7 @@ export const DAppKitProvider = ({
                 modalParent,
                 onSourceClick,
                 connectionCertificate: connectionCertificateData,
+                allowedWallets,
             }),
         );
     }, [
@@ -152,42 +171,12 @@ export const DAppKitProvider = ({
         modalParent,
         onSourceClick,
         connectionCertificateData,
+        allowedWallets,
     ]);
     if (!connex) {
         return null;
     }
     return (
-        <DAppKitDataProvider connex={connex}>{children}</DAppKitDataProvider>
+        <DAppKitProviderData connex={connex}>{children}</DAppKitProviderData>
     );
-};
-
-export const useConnex = (): DAppKitContext['connex'] => {
-    const context = useContext(Context);
-
-    if (!context) {
-        throw new Error('"useConnex" must be used within a ConnexProvider');
-    }
-
-    return context.connex;
-};
-
-export const useWallet = (): DAppKitContext['wallet'] => {
-    const context = useContext(Context);
-
-    if (!context) {
-        throw new Error('"useWallet" must be used within a ConnexProvider');
-    }
-
-    return context.wallet;
-};
-
-export const useWalletModal = (): DAppKitContext['modal'] => {
-    const context = useContext(Context);
-
-    if (!context) {
-        throw new Error(
-            '"useWalletModal" must be used within a ConnexProvider',
-        );
-    }
-    return context.modal;
 };
