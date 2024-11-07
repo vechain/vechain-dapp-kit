@@ -1,5 +1,5 @@
 // Angular modules
-import { CUSTOM_ELEMENTS_SCHEMA, Component, type OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, type OnInit } from '@angular/core';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 
 @Component({
@@ -24,13 +24,12 @@ export class AppComponent implements OnInit {
             },
         };
 
-        const vechainDAppKitOptions = {
+        DAppKitUI.configure({
             nodeUrl: 'https://testnet.vechain.org/',
             genesis: 'test',
             walletConnectOptions,
             usePersistence: true,
-        };
-        DAppKitUI.configure(vechainDAppKitOptions);
+        });
 
         // custom button configuration
         const customButton = document.getElementById('custom-button');
