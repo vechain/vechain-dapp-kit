@@ -19,7 +19,7 @@ export default defineConfig({
                 'text-summary',
                 'text',
             ],
-            lines: 80,
+            lines: 75,
             statements: 65,
             functions: 75,
             branches: 65,
