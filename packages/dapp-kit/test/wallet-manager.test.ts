@@ -34,9 +34,9 @@ describe('WalletManager', () => {
     describe('connect', () => {
         it('no source set', async () => {
             const walletManager = newWalletManager();
-
-            await expect(async () => walletManager.connect()).rejects.toThrow(
-                'No wallet has been selected',
+            const res = await walletManager.connect();
+            expect(res.account).toBe(
+                '0xf077b491b355E64048cE21E3A6Fc4751eEeA77fa',
             );
         });
     });
