@@ -36,7 +36,7 @@ class WalletManager {
     }
 
     private get wallet(): VechainWallet {
-        const source = this.state.source;
+        let source = this.state.source;
 
         DAppKitLogger.debug(
             'WalletManager',
@@ -46,7 +46,10 @@ class WalletManager {
         );
 
         if (!source) {
-            throw new Error('No wallet has been selected');
+            if (this.state.availableSources.length > 1) {
+                throw new Error('No wallet selected');
+            }
+            source = this.state.availableSources[0];
         }
 
         let wallet = this.wallets[source];
