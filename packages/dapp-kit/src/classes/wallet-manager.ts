@@ -1,6 +1,7 @@
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import { Certificate } from '@vechain/sdk-core';
+import type { ThorClient } from '@vechain/sdk-network';
 import type {
     ConnectResponse,
     DAppKitOptions,
@@ -23,7 +24,10 @@ class WalletManager {
     public readonly state: WalletManagerState;
     private wallets: Record<string, VechainWallet | undefined> = {};
 
-    constructor(private readonly options: DAppKitOptions) {
+    constructor(
+        private readonly options: DAppKitOptions,
+        private readonly thor: ThorClient,
+    ) {
         this.state = this.initState(options.usePersistence ?? false);
         this.initPersistence(options.usePersistence ?? false);
         DAppKitLogger.debug('WalletManager', 'constructor', this.state);
@@ -36,7 +40,7 @@ class WalletManager {
     }
 
     private get wallet(): VechainWallet {
-        let source = this.state.source;
+        const source = this.state.source;
 
         DAppKitLogger.debug(
             'WalletManager',
@@ -46,10 +50,7 @@ class WalletManager {
         );
 
         if (!source) {
-            if (this.state.availableSources.length > 1) {
-                throw new Error('No wallet selected');
-            }
-            source = this.state.availableSources[0];
+            throw new Error('No wallet selected');
         }
 
         let wallet = this.wallets[source];
@@ -70,6 +71,7 @@ class WalletManager {
                 ...this.options,
                 source,
                 onDisconnected: () => this.disconnect(true),
+                thor: this.thor,
             };
             wallet = createWallet(opts);
 
@@ -286,6 +288,12 @@ class WalletManager {
 
         if (this.options.walletConnectOptions) {
             wallets.push('wallet-connect');
+        }
+
+        wallets.push('sync2');
+
+        if (window.connex) {
+            wallets.push('sync');
         }
 
         return wallets;

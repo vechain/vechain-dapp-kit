@@ -15,12 +15,11 @@ class DAppKit {
         }
 
         const { nodeUrl } = options;
-        const walletManager = new WalletManager(options);
 
         this.thor = ThorClient.fromUrl(nodeUrl);
-        this.wallet = walletManager;
+        this.wallet = new WalletManager(options, this.thor);
         this.signer = new VeChainSignerDAppKit(
-            walletManager,
+            this.wallet,
             new VeChainProvider(this.thor),
         );
     }

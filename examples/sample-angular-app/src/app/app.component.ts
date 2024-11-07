@@ -26,7 +26,6 @@ export class AppComponent implements OnInit {
 
         DAppKitUI.configure({
             nodeUrl: 'https://testnet.vechain.org/',
-            genesis: 'test',
             walletConnectOptions,
             usePersistence: true,
         });

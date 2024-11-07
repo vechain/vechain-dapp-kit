@@ -1,5 +1,5 @@
 import { Certificate } from '@vechain/sdk-core';
-import type { BaseWallet, ConnectResponse, VechainWallet } from '../types';
+import type { ConnectResponse, VechainWallet } from '../types';
 import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
 import type {
     CertificateMessage,
@@ -9,13 +9,14 @@ import type {
     TransactionOptions,
     TransactionResponse,
 } from '../types/requests';
+import type { WalletSigner } from '../types/types';
 
 /**
  * A `VechainWallet` for wallet's that use a certificate connection
  */
 class CertificateBasedWallet implements VechainWallet {
     constructor(
-        private readonly wallet: BaseWallet,
+        private readonly wallet: Promise<WalletSigner>,
         private readonly connectionCertificateData?: {
             message?: CertificateMessage;
             options?: CertificateOptions;
@@ -60,14 +61,16 @@ class CertificateBasedWallet implements VechainWallet {
     signCert = (
         msg: CertificateMessage,
         options: CertificateOptions,
-    ): Promise<CertificateResponse> => this.wallet.signCert(msg, options);
+    ): Promise<CertificateResponse> =>
+        this.wallet.then((w) => w.signCert(msg, options));
 
     signTx = (
         msg: TransactionMessage[],
         options: TransactionOptions,
-    ): Promise<TransactionResponse> => this.wallet.signTx(msg, options);
+    ): Promise<TransactionResponse> =>
+        this.wallet.then((w) => w.signTx(msg, options));
 
-    disconnect = async (): Promise<void> => this.wallet.disconnect?.();
+    disconnect = () => Promise.resolve();
 }
 
 export { CertificateBasedWallet };

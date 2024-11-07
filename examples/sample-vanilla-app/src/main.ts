@@ -22,7 +22,6 @@ const walletConnectOptions = {
 
 DAppKitUI.configure({
     nodeUrl: 'https://testnet.vechain.org/',
-    genesis: 'test',
     walletConnectOptions,
     usePersistence: true,
 });

@@ -11,28 +11,21 @@ import type {
     TransactionResponse,
 } from './requests';
 
-interface WalletSigner {
-    signTx: (
-        msg: TransactionMessage[],
-        options: TransactionOptions,
-    ) => Promise<TransactionResponse>;
-    signCert: (
-        msg: CertificateMessage,
-        options: CertificateOptions,
-    ) => Promise<CertificateResponse>;
-}
-
 declare global {
     interface Window {
         vechain?: {
             newConnexSigner: (genesisId: string) => WalletSigner;
             isInAppBrowser?: boolean;
         };
-        connex?: unknown;
+        connex?: {
+            vendor: {
+                sign: (type: string) => any;
+            };
+        };
     }
 }
 
-type WalletSource = 'wallet-connect' | 'veworld';
+type WalletSource = 'wallet-connect' | 'veworld' | 'sync' | 'sync2';
 
 interface WalletConfig {
     requiresCertificate: boolean;
@@ -52,7 +45,6 @@ type Genesis = 'main' | 'test' | CompressedBlockDetail;
  */
 interface DAppKitOptions {
     nodeUrl: string;
-    genesis?: Genesis;
     walletConnectOptions?: WalletConnectOptions;
     usePersistence?: boolean;
     useFirstDetectedSource?: boolean;
@@ -62,6 +54,17 @@ interface DAppKitOptions {
         message?: CertificateMessage;
         options?: CertificateOptions;
     };
+}
+
+interface WalletSigner {
+    signTx: (
+        msg: TransactionMessage[],
+        options: TransactionOptions,
+    ) => Promise<TransactionResponse>;
+    signCert: (
+        msg: CertificateMessage,
+        options: CertificateOptions,
+    ) => Promise<CertificateResponse>;
 }
 
 type BaseWallet = WalletSigner & {

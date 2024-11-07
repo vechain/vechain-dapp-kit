@@ -6,11 +6,14 @@ import type {
     WalletSource,
 } from '../src';
 import { WalletSigner } from '../src/types/types';
+import { ThorClient } from '@vechain/sdk-network';
 
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
     onDisconnected: () => void;
+    thor: ThorClient;
 };
+
 const createOptions = (
     source: WalletSource,
     wcOptions?: WalletConnectOptions,
@@ -19,8 +22,8 @@ const createOptions = (
         nodeUrl: 'https://testnet.veblocks.net/',
         source,
         walletConnectOptions: wcOptions,
-        genesis: 'main',
         onDisconnected: () => {},
+        thor: ThorClient.fromUrl('https://testnet.vechain.org'),
     };
 };
 

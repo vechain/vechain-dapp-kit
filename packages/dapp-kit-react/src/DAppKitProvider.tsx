@@ -20,7 +20,6 @@ const Context = createContext<DAppKitContext | undefined>(undefined);
 export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     children,
     nodeUrl,
-    genesis,
     walletConnectOptions,
     usePersistence = false,
     logLevel,
@@ -37,7 +36,6 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
         () =>
             DAppKitUI.configure({
                 nodeUrl,
-                genesis,
                 walletConnectOptions,
                 usePersistence,
                 logLevel,
@@ -52,7 +50,6 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
             }),
         [
             nodeUrl,
-            genesis,
             walletConnectOptions,
             usePersistence,
             logLevel,
