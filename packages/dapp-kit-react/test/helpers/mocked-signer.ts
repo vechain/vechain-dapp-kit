@@ -1,42 +1,37 @@
-/// <reference types="@vechain/connex" />
 import {
-    addressUtils,
-    blake2b256,
+    Address,
     Certificate,
-    HDNode,
-    secp256k1,
-    certificate,
-    Hex0x,
+    CertificateData,
+    HDKey,
+    Hex,
 } from '@vechain/sdk-core';
 
 const mnemonicWords =
     'denial kitchen pet squirrel other broom bar gas better priority spoil cross';
 
-const hdNode = HDNode.fromMnemonic(mnemonicWords.split(' '));
+const hdNode = HDKey.fromMnemonic(mnemonicWords.split(' '));
 
 const firstAccount = hdNode.deriveChild(0);
 
 const privateKey = firstAccount.privateKey!;
-const address = addressUtils.fromPrivateKey(privateKey);
+const address = Address.ofPrivateKey(privateKey);
 
-const mockedConnexSigner: Connex.Signer = {
+const mockedConnexSigner = {
     signTx() {
-        return Promise.resolve({ txid: '0x1234', signer: address });
+        return Promise.resolve({ txid: '0x1234', signer: address.toString() });
     },
 
-    signCert(msg) {
-        const newCertificate: Certificate = {
+    signCert(msg: any) {
+        const newCertificate: CertificateData = {
             domain: ' localhost:3000',
             timestamp: 12341234,
-            signer: address,
+            signer: address.toString(),
             payload: msg.payload,
             purpose: msg.purpose,
         };
 
-        const signature = secp256k1.sign(
-            blake2b256(certificate.encode(newCertificate)),
-            privateKey,
-        );
+        const signature =
+            Certificate.of(newCertificate).sign(privateKey).signature;
 
         return Promise.resolve({
             annex: {
@@ -44,7 +39,7 @@ const mockedConnexSigner: Connex.Signer = {
                 timestamp: newCertificate.timestamp,
                 signer: newCertificate.signer,
             },
-            signature: Hex0x.of(signature),
+            signature: Hex.of(signature!),
         });
     },
 };

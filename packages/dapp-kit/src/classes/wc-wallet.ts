@@ -1,4 +1,12 @@
 import type { ConnectResponse, VechainWallet, WCSigner } from '../types';
+import type {
+    CertificateMessage,
+    CertificateOptions,
+    CertificateResponse,
+    TransactionMessage,
+    TransactionOptions,
+    TransactionResponse,
+} from '../types/requests';
 
 class WCWallet implements VechainWallet {
     constructor(private readonly signer: WCSigner) {}
@@ -13,15 +21,14 @@ class WCWallet implements VechainWallet {
     };
 
     signCert = (
-        msg: Connex.Vendor.CertMessage,
-        options: Connex.Signer.CertOptions,
-    ): Promise<Connex.Vendor.CertResponse> =>
-        this.signer.signCert(msg, options);
+        msg: CertificateMessage,
+        options: CertificateOptions,
+    ): Promise<CertificateResponse> => this.signer.signCert(msg, options);
 
     signTx = (
-        msg: Connex.Vendor.TxMessage,
-        options: Connex.Signer.TxOptions,
-    ): Promise<Connex.Vendor.TxResponse> => this.signer.signTx(msg, options);
+        msg: TransactionMessage[],
+        options: TransactionOptions,
+    ): Promise<TransactionResponse> => this.signer.signTx(msg, options);
 
     disconnect = (): Promise<void> => this.signer.disconnect();
 }

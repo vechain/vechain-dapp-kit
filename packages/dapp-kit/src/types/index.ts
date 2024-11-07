@@ -19,3 +19,5 @@ export type {
     OpenOptions,
     SubscribeModalState,
 } from './wc-types';
+
+export * from './requests';

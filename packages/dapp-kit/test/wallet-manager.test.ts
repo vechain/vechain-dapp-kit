@@ -12,7 +12,7 @@ const newWalletManager = (wcOptions?: WalletConnectOptions): WalletManager => {
 };
 
 window.vechain = {
-    newConnexSigner: () => mockedConnexSigner,
+    newConnexSigner: () => mockedConnexSigner as any,
 };
 
 const eventNames = (walletManager: WalletManager): string[] =>

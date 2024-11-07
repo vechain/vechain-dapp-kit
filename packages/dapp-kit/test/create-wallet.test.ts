@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
-import type { Connex1 } from '@vechain/connex/esm/signer';
 import { createWallet } from '../src/utils';
 import type {
     DAppKitOptions,
     WalletConnectOptions,
     WalletSource,
 } from '../src';
+import { WalletSigner } from '../src/types/types';
 
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
@@ -27,24 +27,6 @@ const createOptions = (
 vi.mock('@walletconnect/modal');
 
 describe('createWallet', () => {
-    describe('sync', () => {
-        it('is NOT in sync browser', () => {
-            window.connex = undefined;
-
-            expect(() => {
-                createWallet(createOptions('sync'));
-            }).toThrowError('User is not in a Sync wallet');
-        });
-
-        it('is in sync2 browser', () => {
-            window.connex = {} as Connex1;
-
-            const wallet = createWallet(createOptions('sync2'));
-
-            expect(wallet).toBeDefined();
-        });
-    });
-
     describe('veworld', () => {
         it('is not installed', () => {
             window.vechain = undefined;
@@ -56,7 +38,7 @@ describe('createWallet', () => {
 
         it('is installed', () => {
             window.vechain = {
-                newConnexSigner: () => ({} as Connex.Signer),
+                newConnexSigner: () => ({} as WalletSigner),
             };
 
             const wallet = createWallet(createOptions('veworld'));

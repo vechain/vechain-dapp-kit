@@ -6,7 +6,7 @@ describe('veworld', () => {
     describe('is in veworld browser', () => {
         beforeEach(() => {
             window.vechain = {
-                newConnexSigner: (): Connex.Signer => mockedConnexSigner,
+                newConnexSigner: () => mockedConnexSigner as any,
             };
         });
 

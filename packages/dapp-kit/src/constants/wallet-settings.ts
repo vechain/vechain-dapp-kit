@@ -13,8 +13,6 @@ const WalletMapping: Record<WalletSource, WalletConfig> = {
         requiresCertificate: false,
     },
     veworld: DEFAULT_CONFIG,
-    sync2: DEFAULT_CONFIG,
-    sync: DEFAULT_CONFIG,
 };
 
 const WalletSources = Object.keys(WalletMapping) as WalletSource[];

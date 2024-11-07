@@ -1,4 +1,4 @@
-import { type Certificate } from '@vechain/sdk-core';
+import { type CertificateData } from '@vechain/sdk-core';
 import type { WalletSource } from '../types';
 import { DAppKitLogger } from './logger';
 
@@ -26,7 +26,9 @@ const setAccount = (account: string | null): void => {
     }
 };
 
-const setConnectionCertificate = (certificate: Certificate | null): void => {
+const setConnectionCertificate = (
+    certificate: CertificateData | null,
+): void => {
     DAppKitLogger.debug(
         'LocalStorage',
         'setConnectionCertificate',
@@ -59,14 +61,14 @@ const getAccount = (): string | null => {
     return account;
 };
 
-const getConnectionCertificate = (): Certificate | null => {
+const getConnectionCertificate = (): CertificateData | null => {
     const connectionCertificate = localStorage.getItem(CERTIFICATE_KEY);
 
     if (!connectionCertificate) {
         return null;
     }
 
-    return JSON.parse(connectionCertificate) as Certificate;
+    return JSON.parse(connectionCertificate) as CertificateData;
 };
 
 export const Storage = {

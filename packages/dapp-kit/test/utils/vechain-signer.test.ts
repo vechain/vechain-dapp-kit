@@ -1,17 +1,18 @@
-import { describe, it, expect, vi } from 'vitest';
-import { JSONRPCInvalidParams } from '@vechain/sdk-errors';
+import { describe, expect, it, vi } from 'vitest';
 import {
     AvailableVeChainProviders,
     TransactionRequestInput,
 } from '@vechain/sdk-network';
-import { VechainWallet } from '../../src';
-import { VeChainSignerDAppKit } from '../../src/classes/vechain-signer';
+import { VeChainSignerDAppKit, WalletManager } from '../../src';
 import { TransactionBody } from '@vechain/sdk-core';
 
 describe('VeChainSignerDAppKit', () => {
     const mockWallet = {
         signTx: vi.fn().mockResolvedValue({ txid: '0x123' }),
-    } as unknown as VechainWallet;
+        state: {
+            address: '0x456',
+        },
+    } as unknown as WalletManager;
 
     const mockProvider = {
         wallet: {
@@ -25,42 +26,19 @@ describe('VeChainSignerDAppKit', () => {
     const address = '0x456';
 
     it('should instantiate with the provided wallet, address, and provider', () => {
-        const signer = new VeChainSignerDAppKit(
-            mockWallet,
-            address,
-            mockProvider,
-        );
-        expect(signer.wallet).toBe(mockWallet);
+        const signer = new VeChainSignerDAppKit(mockWallet, mockProvider);
         expect(signer.address).toBe(address);
         expect(signer.provider).toBe(mockProvider);
     });
 
     it('should return the address when getAddress is called', async () => {
-        const signer = new VeChainSignerDAppKit(
-            mockWallet,
-            address,
-            mockProvider,
-        );
+        const signer = new VeChainSignerDAppKit(mockWallet, mockProvider);
         const result = await signer.getAddress();
         expect(result).toBe(address);
     });
 
-    it('should throw an error if provider is null in signTransaction', async () => {
-        const signer = new VeChainSignerDAppKit(mockWallet, address, null);
-
-        const transactionToSign = {} as TransactionRequestInput;
-
-        await expect(signer.signTransaction(transactionToSign)).rejects.toThrow(
-            JSONRPCInvalidParams,
-        );
-    });
-
     it('should mock populateTransaction inside signTransaction', async () => {
-        const signer = new VeChainSignerDAppKit(
-            mockWallet,
-            address,
-            mockProvider,
-        );
+        const signer = new VeChainSignerDAppKit(mockWallet, mockProvider);
 
         const transactionToSign = {} as TransactionRequestInput;
 
@@ -85,22 +63,8 @@ describe('VeChainSignerDAppKit', () => {
         expect(result).toBe('0x123');
     });
 
-    it('should throw an error if provider is null in sendTransaction', async () => {
-        const signer = new VeChainSignerDAppKit(mockWallet, address, null);
-
-        const transactionToSend = {} as TransactionRequestInput;
-
-        await expect(signer.sendTransaction(transactionToSend)).rejects.toThrow(
-            JSONRPCInvalidParams,
-        );
-    });
-
     it('should call signTransaction in sendTransaction', async () => {
-        const signer = new VeChainSignerDAppKit(
-            mockWallet,
-            address,
-            mockProvider,
-        );
+        const signer = new VeChainSignerDAppKit(mockWallet, mockProvider);
 
         const transactionToSend = {} as TransactionRequestInput;
 
@@ -115,11 +79,7 @@ describe('VeChainSignerDAppKit', () => {
     });
 
     it('should reject signMessage with "Method not implemented." error', async () => {
-        const signer = new VeChainSignerDAppKit(
-            mockWallet,
-            address,
-            mockProvider,
-        );
+        const signer = new VeChainSignerDAppKit(mockWallet, mockProvider);
 
         await expect(signer.signMessage('message')).rejects.toThrow(
             'Method not implemented.',
@@ -127,11 +87,7 @@ describe('VeChainSignerDAppKit', () => {
     });
 
     it('should reject signTypedData with "Method not implemented." error', async () => {
-        const signer = new VeChainSignerDAppKit(
-            mockWallet,
-            address,
-            mockProvider,
-        );
+        const signer = new VeChainSignerDAppKit(mockWallet, mockProvider);
 
         await expect(signer.signTypedData({}, {}, {})).rejects.toThrow(
             'Method not implemented.',

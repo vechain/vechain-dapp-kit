@@ -8,9 +8,9 @@ import React, {
 } from 'react';
 import type { WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
-import { type Certificate } from '@vechain/sdk-core';
+import type { CertificateData } from '@vechain/sdk-core';
 import { subscribeKey } from 'valtio/vanilla/utils';
-import type { DAppKitProviderOptions, DAppKitContext } from './types';
+import type { DAppKitContext, DAppKitProviderOptions } from './types';
 
 /**
  * Context
@@ -74,7 +74,7 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
         dAppKit.wallet.state.source,
     );
     const [connectionCertificate, setConnectionCertificate] =
-        useState<Certificate | null>(
+        useState<CertificateData | null>(
             dAppKit.wallet.state.connectionCertificate,
         );
 
@@ -119,14 +119,12 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
 
     const context: DAppKitContext = useMemo(() => {
         return {
-            sdk: {
-                thor: dAppKit.thor,
-            },
+            thor: dAppKit.thor,
             wallet: {
                 setSource: dAppKit.wallet.setSource,
                 disconnect: dAppKit.wallet.disconnect,
                 connect: dAppKit.wallet.connect,
-                signer: dAppKit.wallet.signer,
+                signer: dAppKit.signer,
                 availableWallets: dAppKit.wallet.state.availableSources,
                 account,
                 source,
@@ -151,14 +149,14 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     return <Context.Provider value={context}>{children}</Context.Provider>;
 };
 
-export const useSDK = (): DAppKitContext['sdk'] => {
+export const useThor = (): DAppKitContext['thor'] => {
     const context = useContext(Context);
 
     if (!context) {
-        throw new Error('"useSDK" must be used within a ConnexProvider');
+        throw new Error('"useThor" must be used within a ConnexProvider');
     }
 
-    return context.sdk;
+    return context.thor;
 };
 
 export const useWallet = (): DAppKitContext['wallet'] => {

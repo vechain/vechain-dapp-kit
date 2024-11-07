@@ -1,7 +1,6 @@
-import * as ConnexLib from '@vechain/connex';
 import type {
-    VechainWallet,
     DAppKitOptions,
+    VechainWallet,
     WalletSource,
     WCClient,
     WCModal,
@@ -11,7 +10,6 @@ import { WCWallet } from '../classes/wc-wallet';
 import { createWcClient } from './create-wc-client';
 import { createWcModal } from './create-wc-modal';
 import { createWcSigner } from './create-wc-signer';
-import { convertVendorToSigner } from './convert-vendor-to-signer';
 import { normalizeGenesisId } from './genesis';
 import { DAppKitLogger } from './logger';
 
@@ -32,26 +30,6 @@ export const createWallet = ({
     DAppKitLogger.debug('createWallet', source);
 
     switch (source) {
-        case 'sync': {
-            if (!window.connex) {
-                throw new Error('User is not in a Sync wallet');
-            }
-
-            const vendor = new ConnexLib.Connex.Vendor(genesisId, 'sync');
-
-            return new CertificateBasedWallet(
-                convertVendorToSigner(vendor),
-                connectionCertificate,
-            );
-        }
-        case 'sync2': {
-            const vendor = new ConnexLib.Connex.Vendor(genesisId, 'sync2');
-
-            return new CertificateBasedWallet(
-                convertVendorToSigner(vendor),
-                connectionCertificate,
-            );
-        }
         case 'veworld': {
             if (!window.vechain) {
                 throw new Error('VeWorld Extension is not installed');

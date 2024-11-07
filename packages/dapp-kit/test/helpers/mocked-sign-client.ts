@@ -4,7 +4,11 @@ import type {
     IEngine,
 } from '@walletconnect/types/dist/types/sign-client/engine';
 import type { SessionTypes } from '@walletconnect/types';
-import type { ResolvedSignClient } from '../../src';
+import type {
+    CertificateResponse,
+    ResolvedSignClient,
+    TransactionResponse,
+} from '../../src';
 import { DefaultMethods } from '../../src';
 import { wcSessionStruct } from './wc-fixtures';
 import { address, mockedConnexSigner } from './mocked-signer';
@@ -25,11 +29,11 @@ const defaultMockConnectHandler = (): ReturnType<IEngine['connect']> => {
 
 const defaultMockRequestHandler = (
     params: EngineTypes.RequestParams,
-): Promise<Connex.Vendor.CertResponse | Connex.Vendor.TxResponse> => {
+): Promise<CertificateResponse | TransactionResponse> => {
     if (params.request.method === DefaultMethods.RequestTransaction) {
         return Promise.resolve({
             txid: '0x123',
-            signer: address,
+            signer: address.toString(),
         });
     } else if (params.request.method === DefaultMethods.SignCertificate) {
         return Promise.resolve(

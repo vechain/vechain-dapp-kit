@@ -7,6 +7,14 @@ import { getSdkError } from '@walletconnect/utils';
 import type { SignClient } from '@walletconnect/sign-client/dist/types/client';
 import type { WCSigner, WCSignerOptions } from '../types';
 import { DefaultMethods } from '../constants';
+import type {
+    CertificateMessage,
+    CertificateOptions,
+    CertificateResponse,
+    TransactionMessage,
+    TransactionOptions,
+    TransactionResponse,
+} from '../types/requests';
 import { DAppKitLogger } from './logger';
 
 interface SessionAccount {
@@ -189,20 +197,20 @@ export const createWcSigner = ({
     };
 
     const signTx = async (
-        message: Connex.Vendor.TxMessage,
-        options: Connex.Signer.TxOptions,
-    ): Promise<Connex.Vendor.TxResponse> => {
-        return makeRequest<Connex.Vendor.TxResponse>({
+        message: TransactionMessage[],
+        options: TransactionOptions,
+    ): Promise<TransactionResponse> => {
+        return makeRequest<TransactionResponse>({
             method: DefaultMethods.RequestTransaction,
             params: [{ message, options }],
         });
     };
 
     const signCert = async (
-        message: Connex.Vendor.CertMessage,
-        options: Connex.Signer.CertOptions,
-    ): Promise<Connex.Vendor.CertResponse> => {
-        return makeRequest<Connex.Vendor.CertResponse>({
+        message: CertificateMessage,
+        options: CertificateOptions,
+    ): Promise<CertificateResponse> => {
+        return makeRequest<CertificateResponse>({
             method: DefaultMethods.SignCertificate,
             params: [{ message, options }],
         });
