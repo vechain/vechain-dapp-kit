@@ -25,7 +25,7 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
         this.walletManager = walletManager;
     }
 
-    get address() {
+    get address(): string | null {
         return this.walletManager.state.address;
     }
 

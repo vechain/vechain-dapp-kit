@@ -6,7 +6,7 @@ import Locators from '../selenium/Locators';
 import NavigationUtils from '../utils/NavigationUtils';
 
 const isActive = async () => {
-    const locator = Locators.byId('yourBalanceTitle');
+    const locator = Locators.byDataTestId('accountFiatBalance');
     return ScreenUtils.isActive([locator], ROUTES.DASHBOARD);
 };
 
@@ -78,7 +78,7 @@ const checkTokenBalance = async (token: string) => {
 
 const countTransactionsByToken = async (token: string) => {
     await extension.driver.sleep(1000);
-    await extension.driver.waitAndClick(Locators.byId('token-' + token));
+    await extension.driver.waitAndClick(Locators.byId(`token-${token}`));
     await extension.driver.sleep(2000);
     const transactionsCount = await extension.driver.findElements(
         Locators.byDataTestId('ft-activity'),

@@ -55,8 +55,9 @@
         "lint-staged": "^15.0.2",
         "prettier": "^2.5.1",
         "punycode": "^1.4.1",
+        "ts-node": "^10.9.2",
         "turbo": "latest",
         "typescript": "5.3.3"
     },
-    "packageManager": "yarn@1.22.19"
+    "packageManager": "yarn@4.5.1"
 }
