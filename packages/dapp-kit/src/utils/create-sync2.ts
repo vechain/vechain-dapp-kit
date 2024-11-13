@@ -23,7 +23,7 @@ const cache: Record<string, Promise<unknown> | undefined> = {};
 const loadLibrary = <T>(src: string, libName: string): Promise<T> => {
     if (!cache[src]) {
         const script = document.createElement('script');
-        lib = new Promise((resolve, reject) => {
+        const lib = new Promise((resolve, reject) => {
             script.onload = () => resolve((window as never)[libName]);
             script.onerror = (err) => reject(new Error(err.toString()));
         });
@@ -37,14 +37,21 @@ const loadLibrary = <T>(src: string, libName: string): Promise<T> => {
 export const createSync2: NewSignerFunc = async (genesisID) => {
     const genesis = await genesisID;
     return loadLibrary(BUDDY_SRC, BUDDY_LIB_NAME).then((lib: any) => {
-        return lib.create(
-            genesis,
+        const randomBytes = () =>
             Buffer.from(Secp256k1.randomBytes(16))
                 .toString('hex')
-                .replace('0x', ''),
-            (val: string | Uint8Array) =>
-                Blake2b256.of(val).toString().replace('0x', ''),
-        );
+                .replace('0x', '');
+        const encoder = new TextEncoder();
+        const hashFunc = (val: string | Uint8Array) => {
+            let data: Uint8Array;
+            if (typeof val === 'string') {
+                data = encoder.encode(val);
+            } else {
+                data = val;
+            }
+            return Blake2b256.of(data).toString().replace('0x', '');
+        };
+        return lib.create(genesis, randomBytes, hashFunc);
     });
 };
 
