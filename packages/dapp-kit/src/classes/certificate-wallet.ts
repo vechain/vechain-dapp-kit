@@ -68,7 +68,25 @@ class CertificateBasedWallet implements VechainWallet {
         msg: TransactionMessage[],
         options: TransactionOptions,
     ): Promise<TransactionResponse> =>
-        this.wallet.then((w) => w.signTx(msg, options));
+        this.wallet.then((w) => {
+            if (options.delegator?.url === '') {
+                options.delegator = undefined;
+            }
+
+            if (options.gas === 0) {
+                options.gas = undefined;
+            }
+
+            if (options.comment === '') {
+                options.comment = undefined;
+            }
+
+            if (options.dependsOn === '') {
+                options.dependsOn = undefined;
+            }
+
+            return w.signTx(msg, options);
+        });
 
     disconnect = () => Promise.resolve();
 }
