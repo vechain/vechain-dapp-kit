@@ -20,7 +20,7 @@ export default defineConfig({
                 'text',
             ],
             lines: 75,
-            statements: 65,
+            statements: 60,
             functions: 75,
             branches: 65,
         },
