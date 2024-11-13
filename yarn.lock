@@ -2512,7 +2512,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cucumber/cucumber@npm:*, @cucumber/cucumber@npm:^10.3.1":
+"@cucumber/cucumber@npm:*":
   version: 10.9.0
   resolution: "@cucumber/cucumber@npm:10.9.0"
   dependencies:
@@ -2561,6 +2561,58 @@ __metadata:
   bin:
     cucumber-js: bin/cucumber.js
   checksum: 10c0/7e1b5566cfa627d5bdab6b1639bf9b2c6ced498307b045963d4b3ef3ed3108e033f2dc30c0c222a3fc199d75e3dc7efce0777adc3df93263246279d6dea8d44c
+  languageName: node
+  linkType: hard
+
+"@cucumber/cucumber@npm:^11.0.1":
+  version: 11.0.1
+  resolution: "@cucumber/cucumber@npm:11.0.1"
+  dependencies:
+    "@cucumber/ci-environment": "npm:10.0.1"
+    "@cucumber/cucumber-expressions": "npm:17.1.0"
+    "@cucumber/gherkin": "npm:28.0.0"
+    "@cucumber/gherkin-streams": "npm:5.0.1"
+    "@cucumber/gherkin-utils": "npm:9.0.0"
+    "@cucumber/html-formatter": "npm:21.6.0"
+    "@cucumber/message-streams": "npm:4.0.1"
+    "@cucumber/messages": "npm:24.1.0"
+    "@cucumber/tag-expressions": "npm:6.1.0"
+    assertion-error-formatter: "npm:^3.0.0"
+    capital-case: "npm:^1.0.4"
+    chalk: "npm:^4.1.2"
+    cli-table3: "npm:0.6.3"
+    commander: "npm:^10.0.0"
+    debug: "npm:^4.3.4"
+    error-stack-parser: "npm:^2.1.4"
+    figures: "npm:^3.2.0"
+    glob: "npm:^10.3.10"
+    has-ansi: "npm:^4.0.1"
+    indent-string: "npm:^4.0.0"
+    is-installed-globally: "npm:^0.4.0"
+    is-stream: "npm:^2.0.0"
+    knuth-shuffle-seeded: "npm:^1.0.6"
+    lodash.merge: "npm:^4.6.2"
+    lodash.mergewith: "npm:^4.6.2"
+    luxon: "npm:3.2.1"
+    mime: "npm:^3.0.0"
+    mkdirp: "npm:^2.1.5"
+    mz: "npm:^2.7.0"
+    progress: "npm:^2.0.3"
+    read-pkg-up: "npm:^7.0.1"
+    resolve-pkg: "npm:^2.0.0"
+    semver: "npm:7.5.3"
+    string-argv: "npm:0.3.1"
+    strip-ansi: "npm:6.0.1"
+    supports-color: "npm:^8.1.1"
+    tmp: "npm:0.2.3"
+    type-fest: "npm:^4.8.3"
+    util-arity: "npm:^1.1.0"
+    xmlbuilder: "npm:^15.1.1"
+    yaml: "npm:^2.2.2"
+    yup: "npm:1.2.0"
+  bin:
+    cucumber-js: bin/cucumber.js
+  checksum: 10c0/ae415f6fc0f2ab9b96907bbb7ddbab9c4fc2cd0a16dd027ba50d39de4679004dcc7e54c171c56e4e561d935f89be07877819e52e58e8c1ebc1881198eb8eea38
   languageName: node
   linkType: hard
 
@@ -12855,7 +12907,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "e2e@workspace:tests/e2e"
   dependencies:
-    "@cucumber/cucumber": "npm:^10.3.1"
+    "@cucumber/cucumber": "npm:^11.0.1"
     "@serenity-js/console-reporter": "npm:^3.4.1"
     "@serenity-js/cucumber": "npm:^3.4.1"
     "@serenity-js/serenity-bdd": "npm:^3.4.1"

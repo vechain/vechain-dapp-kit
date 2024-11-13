@@ -11,7 +11,7 @@
         "test:e2e:headless": "SELENIUM_HEADLESS=true cucumber-js"
     },
     "devDependencies": {
-        "@cucumber/cucumber": "^10.3.1",
+        "@cucumber/cucumber": "^11.0.1",
         "@serenity-js/console-reporter": "^3.4.1",
         "@serenity-js/cucumber": "^3.4.1",
         "@serenity-js/serenity-bdd": "^3.4.1",
