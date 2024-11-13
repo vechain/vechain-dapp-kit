@@ -21,8 +21,7 @@ const BUDDY_LIB_NAME = 'ConnexWalletBuddy';
 const cache: Record<string, Promise<unknown> | undefined> = {};
 
 const loadLibrary = <T>(src: string, libName: string): Promise<T> => {
-    let lib = cache[src] as Promise<T> | undefined;
-    if (!lib) {
+    if (!cache[src]) {
         const script = document.createElement('script');
         lib = new Promise((resolve, reject) => {
             script.onload = () => resolve((window as never)[libName]);
@@ -32,7 +31,7 @@ const loadLibrary = <T>(src: string, libName: string): Promise<T> => {
         script.src = src;
         document.body.appendChild(script);
     }
-    return lib;
+    return cache[src] as Promise<T>;
 };
 
 export const createSync2: NewSignerFunc = async (genesisID) => {
