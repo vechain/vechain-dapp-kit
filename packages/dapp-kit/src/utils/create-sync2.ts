@@ -18,7 +18,7 @@ export type NewSignerFunc = (
 const BUDDY_SRC = 'https://unpkg.com/@vechain/connex-wallet-buddy@0.1';
 const BUDDY_LIB_NAME = 'ConnexWalletBuddy';
 
-const cache: Record<string, Promise<unknown>> = {};
+const cache: Record<string, Promise<unknown> | undefined> = {};
 
 const loadLibrary = <T>(src: string, libName: string): Promise<T> => {
     let lib = cache[src] as Promise<T> | undefined;
