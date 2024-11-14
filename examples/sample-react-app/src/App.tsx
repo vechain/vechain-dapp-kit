@@ -23,7 +23,9 @@ function App() {
 
     useEffect(() => {
         const loadCounter = async () => {
-            const counter = await counterContract.read.counter();
+            const counter = await counterContract.read.counter({
+                revision: {},
+            });
             setCount(counter[0]);
         };
 

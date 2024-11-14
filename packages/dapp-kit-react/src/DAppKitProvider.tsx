@@ -150,7 +150,7 @@ export const useThor = (): DAppKitContext['thor'] => {
     const context = useContext(Context);
 
     if (!context) {
-        throw new Error('"useThor" must be used within a ConnexProvider');
+        throw new Error('"useThor" must be used within a DAppKitProvider');
     }
 
     return context.thor;
@@ -160,7 +160,7 @@ export const useWallet = (): DAppKitContext['wallet'] => {
     const context = useContext(Context);
 
     if (!context) {
-        throw new Error('"useWallet" must be used within a ConnexProvider');
+        throw new Error('"useWallet" must be used within a DAppKitProvider');
     }
 
     return context.wallet;
@@ -171,7 +171,7 @@ export const useWalletModal = (): DAppKitContext['modal'] => {
 
     if (!context) {
         throw new Error(
-            '"useWalletModal" must be used within a ConnexProvider',
+            '"useWalletModal" must be used within a DAppKitProvider',
         );
     }
     return context.modal;

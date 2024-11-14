@@ -17,7 +17,7 @@ export interface AccountState {
 }
 
 /**
- * Connex Provider Options
+ * DAppKit Provider Options
  * @param children - React children
  */
 export type DAppKitProviderOptions = DAppKitUIOptions & {
@@ -25,8 +25,8 @@ export type DAppKitProviderOptions = DAppKitUIOptions & {
 };
 
 /**
- * Connex Context
- * This context is used to provide the Connex instance and the Connex Vendor instance
+ * DAppKit Context
+ * This context is used to provide the Wallet and Thor instances
  * to the application.
  */
 

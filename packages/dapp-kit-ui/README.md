@@ -1,6 +1,7 @@
 # `@vechain/dapp-kit-ui`
 
-The Vechain DApp Kit serves as a sophisticated layer built upon @vechain/connex, providing a simplified and efficient
+The Vechain DApp Kit serves as a sophisticated layer built upon @vechain/sdk-network, providing a simplified and
+efficient
 avenue for engaging with a multitude of Vechain wallets. This innovative toolkit enhances the ease of interaction,
 offering developers a seamless bridge to connect with diverse Vechain wallet functionalities. For more information,
 please refer to the official [Vechain Docs](https://docs.vechain.org/developer-resources/sdks-and-providers/dapp-kit)
