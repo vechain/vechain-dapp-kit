@@ -39,7 +39,7 @@ const mockedConnexSigner = {
                 timestamp: newCertificate.timestamp,
                 signer: newCertificate.signer,
             },
-            signature: Hex.of(signature!),
+            signature: Hex.of(signature!).toString(),
         });
     },
 };

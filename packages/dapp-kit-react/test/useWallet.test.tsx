@@ -5,7 +5,9 @@ import { wrapper } from './helpers/react-test-helpers';
 import { mockedConnexSigner } from './helpers/mocked-signer';
 
 window.vechain = {} as any;
-window.vechain.newConnexSigner = () => mockedConnexSigner;
+window.vechain = {
+    newConnexSigner: () => mockedConnexSigner,
+};
 
 describe('useWallet', () => {
     it('should be able to set the source', async () => {
