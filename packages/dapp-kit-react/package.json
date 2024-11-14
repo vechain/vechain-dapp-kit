@@ -5,6 +5,7 @@
     "repository": "github:vechain/vechain-dapp-kit",
     "license": "MIT",
     "sideEffects": false,
+    "type": "module",
     "exports": {
         ".": {
             "import": "./dist/index.mjs",

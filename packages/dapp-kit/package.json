@@ -4,6 +4,7 @@
     "homepage": "https://github.com/vechain/vechain-dapp-kit",
     "repository": "github:vechain/vechain-dapp-kit",
     "license": "MIT",
+    "type": "module",
     "exports": {
         ".": {
             "import": "./dist/index.mjs",

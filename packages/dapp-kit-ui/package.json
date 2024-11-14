@@ -12,6 +12,7 @@
     "repository": "github:vechain/vechain-dapp-kit",
     "license": "MIT",
     "author": "Davide Carpini",
+    "type": "module",
     "exports": {
         ".": {
             "import": "./dist/index.mjs",
