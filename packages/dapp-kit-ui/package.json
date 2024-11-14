@@ -12,8 +12,8 @@
     "repository": "github:vechain/vechain-dapp-kit",
     "license": "MIT",
     "author": "Davide Carpini",
-    "type": "module",
-    "main": "dist/index.js",
+    "main": "dist/index.cjs",
+    "module": "dist/index.mjs",
     "types": "dist/index.d.ts",
     "files": [
         "dist",
