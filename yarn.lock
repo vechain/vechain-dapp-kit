@@ -7832,7 +7832,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:^22.5.5":
+"@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:^22.5.5, @types/node@npm:^22.9.0":
   version: 22.9.0
   resolution: "@types/node@npm:22.9.0"
   dependencies:
@@ -7864,7 +7864,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^12.11.1, @types/node@npm:^12.7.1":
+"@types/node@npm:^12.7.1":
   version: 12.20.55
   resolution: "@types/node@npm:12.20.55"
   checksum: 10c0/3b190bb0410047d489c49bbaab592d2e6630de6a50f00ba3d7d513d59401d279972a8f5a598b5bb8ddc1702f8a2f4ec57a65d93852f9c329639738e7053637d1
@@ -13091,7 +13091,7 @@ __metadata:
     "@ngx-translate/http-loader": "npm:^8.0.0"
     "@popperjs/core": "npm:^2.11.8"
     "@types/jasmine": "npm:~3.10.0"
-    "@types/node": "npm:^12.11.1"
+    "@types/node": "npm:^22.9.0"
     "@vechain/dapp-kit": "workspace:^"
     "@vechain/dapp-kit-ui": "workspace:^"
     "@vechain/repo-config": "https://github.com/vechain/repo-config#v0.0.1"

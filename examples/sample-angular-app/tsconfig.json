@@ -21,7 +21,7 @@
         "target": "ES2022",
         "module": "es2020",
         "lib": ["es2020", "dom", "ES2021.String"],
-        "typeRoots": ["node_modules/@types"],
+        "typeRoots": ["node_modules/@types", "../../node_modules/@types"],
         "paths": {
             "crypto": ["../../node_modules/crypto-browserify"],
             "buffer": ["../../node_modules/buffer"],
