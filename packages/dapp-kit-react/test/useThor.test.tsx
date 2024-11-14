@@ -1,4 +1,4 @@
-import { describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { wrapper } from './helpers/react-test-helpers';
 import { useThor } from '../src';

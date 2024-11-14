@@ -1,4 +1,4 @@
-import { it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { useWallet } from '../src';
 import { wrapper } from './helpers/react-test-helpers';
