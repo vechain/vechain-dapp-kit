@@ -17,7 +17,8 @@
         "skipLibCheck": true,
         "strict": true,
         // React
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        "typeRoots": ["node_modules/@types"]
     },
     "include": ["src/**/*.ts", "test/**/*.test.ts"]
 }
