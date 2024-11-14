@@ -1,13 +1,12 @@
 import type { ThorClient } from '@vechain/sdk-network';
 import type {
     DAppKitOptions,
-    VechainWallet,
+    VeChainWallet,
     WalletSource,
     WCClient,
     WCModal,
 } from '../types';
 import { CertificateBasedWallet } from '../classes/certificate-wallet';
-import type { WalletSigner } from '../types/types';
 import { createWcClient } from './create-wc-client';
 import { createWcModal } from './create-wc-modal';
 import { createWcSigner } from './create-wc-signer';
@@ -26,7 +25,7 @@ export const createWallet = ({
     walletConnectOptions,
     onDisconnected,
     connectionCertificate,
-}: ICreateWallet): VechainWallet => {
+}: ICreateWallet): VeChainWallet => {
     DAppKitLogger.debug('createWallet', source);
 
     const genesisId = thor.blocks.getGenesisBlock().then((block) => {
@@ -54,13 +53,17 @@ export const createWallet = ({
                 throw new Error('VeWorld Extension is not installed');
             }
 
-            const signer: Promise<WalletSigner> = genesisId
+            const signer: Promise<VeChainWallet> = genesisId
                 .then((genesis) => {
                     if (!window.vechain) {
                         throw new Error('VeWorld Extension is not installed');
                     }
 
-                    return window.vechain.newConnexSigner(genesis);
+                    const veworld = window.vechain.newConnexSigner(genesis);
+                    return new CertificateBasedWallet(
+                        Promise.resolve(veworld),
+                        connectionCertificate,
+                    );
                 })
                 .catch((e) => {
                     DAppKitLogger.error('createWallet', 'veworld', e);

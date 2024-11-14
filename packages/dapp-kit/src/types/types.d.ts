@@ -67,15 +67,12 @@ interface WalletSigner {
     ) => Promise<CertificateResponse>;
 }
 
-type BaseWallet = WalletSigner & {
-    disconnect?: () => Promise<void> | void;
-};
-
 /**
  * Modifies the WalletSigner interface to include a disconnect method
  */
-type VechainWallet = BaseWallet & {
+type VeChainWallet = WalletSigner & {
     connect: () => Promise<ConnectResponse>;
+    disconnect?: () => void | Promise<void>;
 };
 
 interface ConnectResponse {
@@ -92,9 +89,8 @@ interface WalletManagerState {
 }
 
 export type {
-    BaseWallet,
     DAppKitOptions,
-    VechainWallet,
+    VeChainWallet,
     WalletConfig,
     WalletSource,
     WalletManagerState,

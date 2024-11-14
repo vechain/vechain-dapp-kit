@@ -5,7 +5,7 @@ import type { ThorClient } from '@vechain/sdk-network';
 import type {
     ConnectResponse,
     DAppKitOptions,
-    VechainWallet,
+    VeChainWallet,
     WalletManagerState,
     WalletSource,
 } from '../types';
@@ -22,7 +22,7 @@ import type {
 
 class WalletManager {
     public readonly state: WalletManagerState;
-    private wallets: Record<string, VechainWallet | undefined> = {};
+    private wallets: Record<string, VeChainWallet | undefined> = {};
 
     constructor(
         private readonly options: DAppKitOptions,
@@ -39,7 +39,7 @@ class WalletManager {
         }
     }
 
-    private get wallet(): VechainWallet {
+    private get wallet(): VeChainWallet {
         const source = this.state.source;
 
         DAppKitLogger.debug(
@@ -177,7 +177,7 @@ class WalletManager {
 
     signTx = (
         msg: TransactionMessage[],
-        options: TransactionOptions,
+        options: TransactionOptions = {},
     ): Promise<TransactionResponse> =>
         this.wallet
             .signTx(msg, options)
@@ -193,7 +193,7 @@ class WalletManager {
 
     signCert = (
         msg: CertificateMessage,
-        options: CertificateOptions,
+        options: CertificateOptions = {},
     ): Promise<CertificateResponse> =>
         this.wallet
             .signCert(msg, options)

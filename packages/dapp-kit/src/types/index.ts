@@ -1,10 +1,9 @@
 export type {
     DAppKitOptions,
-    VechainWallet,
+    VeChainWallet,
     WalletSource,
     ConnectResponse,
     WalletConfig,
-    BaseWallet,
     WalletManagerState,
     Genesis,
 } from './types';

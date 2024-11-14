@@ -19,7 +19,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@adraffy/ens-normalize@npm:1.11.0":
+"@adraffy/ens-normalize@npm:1.11.0, @adraffy/ens-normalize@npm:^1.10.1":
   version: 1.11.0
   resolution: "@adraffy/ens-normalize@npm:1.11.0"
   checksum: 10c0/5111d0f1a273468cb5661ed3cf46ee58de8f32f84e2ebc2365652e66c1ead82649df94c736804e2b9cfa831d30ef24e1cc3575d970dbda583416d3a98d8870a6
@@ -4810,7 +4810,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noble/curves@npm:1.6.0, @noble/curves@npm:~1.6.0":
+"@noble/curves@npm:1.6.0, @noble/curves@npm:^1.6.0, @noble/curves@npm:~1.6.0":
   version: 1.6.0
   resolution: "@noble/curves@npm:1.6.0"
   dependencies:
@@ -4842,7 +4842,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noble/hashes@npm:1.5.0, @noble/hashes@npm:~1.5.0":
+"@noble/hashes@npm:1.5.0, @noble/hashes@npm:^1.5.0, @noble/hashes@npm:~1.5.0":
   version: 1.5.0
   resolution: "@noble/hashes@npm:1.5.0"
   checksum: 10c0/1b46539695fbfe4477c0822d90c881a04d4fa2921c08c552375b444a48cac9930cb1ee68de0a3c7859e676554d0f3771999716606dc4d8f826e414c11692cdd9
@@ -6547,7 +6547,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scure/bip32@npm:1.5.0":
+"@scure/bip32@npm:1.5.0, @scure/bip32@npm:^1.5.0":
   version: 1.5.0
   resolution: "@scure/bip32@npm:1.5.0"
   dependencies:
@@ -8314,7 +8314,37 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vechain/dapp-kit-react@npm:*, @vechain/dapp-kit-react@workspace:packages/dapp-kit-react":
+"@vechain/dapp-kit-react@npm:*":
+  version: 1.1.1
+  resolution: "@vechain/dapp-kit-react@npm:1.1.1"
+  dependencies:
+    "@lit/react": "npm:^1.0.1"
+    "@vechain/connex": "npm:2.1.0"
+    "@vechain/connex-framework": "npm:2.1.0"
+    "@vechain/dapp-kit": "npm:*"
+    "@vechain/dapp-kit-ui": "npm:*"
+    "@vechain/sdk-core": "npm:1.0.0-beta.32"
+    valtio: "npm:1.11.2"
+  checksum: 10c0/5e046a8d366b4f16e83349ea0f5dc3fc8536c8be6c27b45f6e025f63176fa975d3b409f34fe679364df7531dcf52b99ecac9d3322f3f73371306889c567b0020
+  languageName: node
+  linkType: hard
+
+"@vechain/dapp-kit-react@npm:^1.0.12":
+  version: 1.0.13
+  resolution: "@vechain/dapp-kit-react@npm:1.0.13"
+  dependencies:
+    "@lit/react": "npm:^1.0.1"
+    "@vechain/connex": "npm:2.1.0"
+    "@vechain/connex-framework": "npm:2.1.0"
+    "@vechain/dapp-kit": "npm:1.0.13"
+    "@vechain/dapp-kit-ui": "npm:1.0.13"
+    "@vechain/sdk-core": "npm:1.0.0-beta.24"
+    valtio: "npm:1.11.2"
+  checksum: 10c0/fafd503ae8ebbe36ecee17958bd48c4edb8ad1d9d1277225efd67ea07a709b6727ccd62f26f073a4ad7287ecd2ae95be9599759cdc668b85fc096f4b32544042
+  languageName: node
+  linkType: hard
+
+"@vechain/dapp-kit-react@workspace:packages/dapp-kit-react":
   version: 0.0.0-use.local
   resolution: "@vechain/dapp-kit-react@workspace:packages/dapp-kit-react"
   dependencies:
@@ -8337,22 +8367,43 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@vechain/dapp-kit-react@npm:^1.0.12":
-  version: 1.0.13
-  resolution: "@vechain/dapp-kit-react@npm:1.0.13"
+"@vechain/dapp-kit-ui@npm:*":
+  version: 1.1.1
+  resolution: "@vechain/dapp-kit-ui@npm:1.1.1"
   dependencies:
-    "@lit/react": "npm:^1.0.1"
     "@vechain/connex": "npm:2.1.0"
-    "@vechain/connex-framework": "npm:2.1.0"
-    "@vechain/dapp-kit": "npm:1.0.13"
-    "@vechain/dapp-kit-ui": "npm:1.0.13"
-    "@vechain/sdk-core": "npm:1.0.0-beta.24"
+    "@vechain/dapp-kit": "npm:*"
+    "@vechain/picasso": "npm:2.1.1"
+    "@wagmi/core": "npm:^1.4.5"
+    "@web3modal/ethereum": "npm:^2.7.1"
+    "@web3modal/html": "npm:^2.7.1"
+    lit: "npm:^3.0.0"
+    qrcode: "npm:1.5.3"
     valtio: "npm:1.11.2"
-  checksum: 10c0/fafd503ae8ebbe36ecee17958bd48c4edb8ad1d9d1277225efd67ea07a709b6727ccd62f26f073a4ad7287ecd2ae95be9599759cdc668b85fc096f4b32544042
+    viem: "npm:^1.18.4"
+  checksum: 10c0/4d89669774c90aec3bbc87ce7607ffe93ffbd92e79b9e4c9262ddeb4c2f0593c3c3443455175ef0745d06c888a67fbb6a44c68b88041990fae052026515b6cb8
   languageName: node
   linkType: hard
 
-"@vechain/dapp-kit-ui@npm:*, @vechain/dapp-kit-ui@workspace:packages/dapp-kit-ui":
+"@vechain/dapp-kit-ui@npm:1.0.13":
+  version: 1.0.13
+  resolution: "@vechain/dapp-kit-ui@npm:1.0.13"
+  dependencies:
+    "@vechain/connex": "npm:2.1.0"
+    "@vechain/dapp-kit": "npm:1.0.13"
+    "@vechain/picasso": "npm:2.1.1"
+    "@wagmi/core": "npm:^1.4.5"
+    "@web3modal/ethereum": "npm:^2.7.1"
+    "@web3modal/html": "npm:^2.7.1"
+    lit: "npm:^3.0.0"
+    qrcode: "npm:1.5.3"
+    valtio: "npm:1.11.2"
+    viem: "npm:^1.18.4"
+  checksum: 10c0/bc1f45a0164879d3ed457fa3f9e383b674964059580db814c11de721acc6349b035d08970f237af6d3b0ca6ca24f66358a3c40ddb44026f290f8b269468ac0b5
+  languageName: node
+  linkType: hard
+
+"@vechain/dapp-kit-ui@workspace:packages/dapp-kit-ui":
   version: 0.0.0-use.local
   resolution: "@vechain/dapp-kit-ui@workspace:packages/dapp-kit-ui"
   dependencies:
@@ -8384,25 +8435,43 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@vechain/dapp-kit-ui@npm:1.0.13":
-  version: 1.0.13
-  resolution: "@vechain/dapp-kit-ui@npm:1.0.13"
+"@vechain/dapp-kit@npm:*":
+  version: 1.1.1
+  resolution: "@vechain/dapp-kit@npm:1.1.1"
   dependencies:
     "@vechain/connex": "npm:2.1.0"
-    "@vechain/dapp-kit": "npm:1.0.13"
-    "@vechain/picasso": "npm:2.1.1"
-    "@wagmi/core": "npm:^1.4.5"
-    "@web3modal/ethereum": "npm:^2.7.1"
-    "@web3modal/html": "npm:^2.7.1"
-    lit: "npm:^3.0.0"
-    qrcode: "npm:1.5.3"
+    "@vechain/connex-driver": "npm:2.1.0"
+    "@vechain/connex-framework": "npm:2.1.0"
+    "@vechain/connex-types": "npm:^2.1.0"
+    "@vechain/sdk-core": "npm:1.0.0-beta.32"
+    "@walletconnect/modal": "npm:2.6.2"
+    "@walletconnect/sign-client": "npm:2.11.3"
+    "@walletconnect/utils": "npm:2.11.3"
+    events: "npm:^3.3.0"
     valtio: "npm:1.11.2"
-    viem: "npm:^1.18.4"
-  checksum: 10c0/bc1f45a0164879d3ed457fa3f9e383b674964059580db814c11de721acc6349b035d08970f237af6d3b0ca6ca24f66358a3c40ddb44026f290f8b269468ac0b5
+  checksum: 10c0/abc0aaf844e3251ae64fffff4ba80bb0513ddf947e2644c1feb4721cb38f54870111d4f61eda89891ffbac23175caabaf436985bf2b33fdc725616ebef4f3605
   languageName: node
   linkType: hard
 
-"@vechain/dapp-kit@npm:*, @vechain/dapp-kit@workspace:packages/dapp-kit":
+"@vechain/dapp-kit@npm:1.0.13":
+  version: 1.0.13
+  resolution: "@vechain/dapp-kit@npm:1.0.13"
+  dependencies:
+    "@vechain/connex": "npm:2.1.0"
+    "@vechain/connex-driver": "npm:2.1.0"
+    "@vechain/connex-framework": "npm:2.1.0"
+    "@vechain/connex-types": "npm:^2.1.0"
+    "@vechain/sdk-core": "npm:1.0.0-beta.24"
+    "@walletconnect/modal": "npm:2.6.2"
+    "@walletconnect/sign-client": "npm:2.10.2"
+    "@walletconnect/utils": "npm:2.10.2"
+    events: "npm:^3.3.0"
+    valtio: "npm:1.11.2"
+  checksum: 10c0/1b3b574940d649099c533e6e78e76cefb6a444d94860b82b456111c934611cec8774f443858e6428799ae770b1ff0325c1c7bbd5c979780de4b880e99a0ff154
+  languageName: node
+  linkType: hard
+
+"@vechain/dapp-kit@workspace:packages/dapp-kit":
   version: 0.0.0-use.local
   resolution: "@vechain/dapp-kit@workspace:packages/dapp-kit"
   dependencies:
@@ -8426,24 +8495,6 @@ __metadata:
     vitest: "npm:^0.34.6"
   languageName: unknown
   linkType: soft
-
-"@vechain/dapp-kit@npm:1.0.13":
-  version: 1.0.13
-  resolution: "@vechain/dapp-kit@npm:1.0.13"
-  dependencies:
-    "@vechain/connex": "npm:2.1.0"
-    "@vechain/connex-driver": "npm:2.1.0"
-    "@vechain/connex-framework": "npm:2.1.0"
-    "@vechain/connex-types": "npm:^2.1.0"
-    "@vechain/sdk-core": "npm:1.0.0-beta.24"
-    "@walletconnect/modal": "npm:2.6.2"
-    "@walletconnect/sign-client": "npm:2.10.2"
-    "@walletconnect/utils": "npm:2.10.2"
-    events: "npm:^3.3.0"
-    valtio: "npm:1.11.2"
-  checksum: 10c0/1b3b574940d649099c533e6e78e76cefb6a444d94860b82b456111c934611cec8774f443858e6428799ae770b1ff0325c1c7bbd5c979780de4b880e99a0ff154
-  languageName: node
-  linkType: hard
 
 "@vechain/ethers@npm:^4.0.27-5":
   version: 4.0.27-5
@@ -8514,6 +8565,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vechain/sdk-core@npm:1.0.0-beta.32":
+  version: 1.0.0-beta.32
+  resolution: "@vechain/sdk-core@npm:1.0.0-beta.32"
+  dependencies:
+    "@ethereumjs/rlp": "npm:^5.0.2"
+    "@noble/ciphers": "npm:^1.0.0"
+    "@scure/bip32": "npm:^1.4.0"
+    "@scure/bip39": "npm:^1.4.0"
+    "@types/elliptic": "npm:^6.4.18"
+    "@vechain/sdk-errors": "npm:1.0.0-beta.32"
+    "@vechain/sdk-logging": "npm:1.0.0-beta.32"
+    bignumber.js: "npm:^9.1.2"
+    blakejs: "npm:^1.2.1"
+    ethers: "npm:6.13.2"
+    fast-json-stable-stringify: "npm:^2.1.0"
+    viem: "npm:^2.21.14"
+  checksum: 10c0/8e0940e4212c506244937300f2ee5217e00e396727634335944722e0be75df6911ce8f9a8c4c551578668891cb6617de626ce3a9aa910ca183bf6f5b70943fe4
+  languageName: node
+  linkType: hard
+
 "@vechain/sdk-core@npm:1.0.0-rc.1":
   version: 1.0.0-rc.1
   resolution: "@vechain/sdk-core@npm:1.0.0-rc.1"
@@ -8538,6 +8609,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vechain/sdk-errors@npm:1.0.0-beta.32":
+  version: 1.0.0-beta.32
+  resolution: "@vechain/sdk-errors@npm:1.0.0-beta.32"
+  checksum: 10c0/1e3cc505b9fa3038be6f228c7ff143d84afd0966e79a26abf98ae80b7ff9953c00bf6e531cee410657e65c64c68534dc42f72d43dab759ff5db67743d473856b
+  languageName: node
+  linkType: hard
+
 "@vechain/sdk-errors@npm:1.0.0-rc.1":
   version: 1.0.0-rc.1
   resolution: "@vechain/sdk-errors@npm:1.0.0-rc.1"
@@ -8551,6 +8629,15 @@ __metadata:
   dependencies:
     "@vechain/sdk-errors": "npm:1.0.0-beta.24"
   checksum: 10c0/bd9f45359db5fb7b825e8a06e6a779fefef7a1c898f5a5874d5f9aa38f2be8e0b74af2f2a8f3ebaa71729712bf5cb21a97e4baa985aeb3dbae841760bd8af0e8
+  languageName: node
+  linkType: hard
+
+"@vechain/sdk-logging@npm:1.0.0-beta.32":
+  version: 1.0.0-beta.32
+  resolution: "@vechain/sdk-logging@npm:1.0.0-beta.32"
+  dependencies:
+    "@vechain/sdk-errors": "npm:1.0.0-beta.32"
+  checksum: 10c0/6e28e60e3cc3c062b55190e712ec0d965ca5b68850e88c6ae5890a7f38c68668f4e20c40ec85494e43ae9ed5c61045a8f3261f8aa95ec83e501cc8c8450ea6b9
   languageName: node
   linkType: hard
 
@@ -9041,6 +9128,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@walletconnect/core@npm:2.11.3":
+  version: 2.11.3
+  resolution: "@walletconnect/core@npm:2.11.3"
+  dependencies:
+    "@walletconnect/heartbeat": "npm:1.2.1"
+    "@walletconnect/jsonrpc-provider": "npm:1.0.13"
+    "@walletconnect/jsonrpc-types": "npm:1.0.3"
+    "@walletconnect/jsonrpc-utils": "npm:1.0.8"
+    "@walletconnect/jsonrpc-ws-connection": "npm:1.0.14"
+    "@walletconnect/keyvaluestorage": "npm:^1.1.1"
+    "@walletconnect/logger": "npm:^2.0.1"
+    "@walletconnect/relay-api": "npm:^1.0.9"
+    "@walletconnect/relay-auth": "npm:^1.0.4"
+    "@walletconnect/safe-json": "npm:^1.0.2"
+    "@walletconnect/time": "npm:^1.0.2"
+    "@walletconnect/types": "npm:2.11.3"
+    "@walletconnect/utils": "npm:2.11.3"
+    events: "npm:^3.3.0"
+    isomorphic-unfetch: "npm:3.1.0"
+    lodash.isequal: "npm:4.5.0"
+    uint8arrays: "npm:^3.1.0"
+  checksum: 10c0/364a793f35f758d5fa2be32b9456d6c4fcc7bf980db5d67bd5547a44f86ff8d1cb83a06dffee316a7d0b218cf08814bcdf59140e3d0c83b3608b4dcd71c881fd
+  languageName: node
+  linkType: hard
+
 "@walletconnect/crypto@npm:^1.0.3":
   version: 1.0.3
   resolution: "@walletconnect/crypto@npm:1.0.3"
@@ -9409,6 +9521,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@walletconnect/sign-client@npm:2.11.3":
+  version: 2.11.3
+  resolution: "@walletconnect/sign-client@npm:2.11.3"
+  dependencies:
+    "@walletconnect/core": "npm:2.11.3"
+    "@walletconnect/events": "npm:^1.0.1"
+    "@walletconnect/heartbeat": "npm:1.2.1"
+    "@walletconnect/jsonrpc-utils": "npm:1.0.8"
+    "@walletconnect/logger": "npm:^2.0.1"
+    "@walletconnect/time": "npm:^1.0.2"
+    "@walletconnect/types": "npm:2.11.3"
+    "@walletconnect/utils": "npm:2.11.3"
+    events: "npm:^3.3.0"
+  checksum: 10c0/6d8c24d7c75d0664fcb7b536f61d75c5ec041fee16fb0a7ea02b2ae920ae4e3dab2d207948b436d2e2b3c5487791d3664046e356994dea095181a7b9a9b319e3
+  languageName: node
+  linkType: hard
+
 "@walletconnect/time@npm:^1.0.2":
   version: 1.0.2
   resolution: "@walletconnect/time@npm:1.0.2"
@@ -9443,6 +9572,20 @@ __metadata:
     "@walletconnect/logger": "npm:^2.0.1"
     events: "npm:^3.3.0"
   checksum: 10c0/7fa2493d8a9c938821f5234b4d2a087f903359875925a7abea3a0640aa765886c01b4846bbe5e39923b48883f7fd92c3f4ff8e643c4c894c50e9f715b3a881d8
+  languageName: node
+  linkType: hard
+
+"@walletconnect/types@npm:2.11.3":
+  version: 2.11.3
+  resolution: "@walletconnect/types@npm:2.11.3"
+  dependencies:
+    "@walletconnect/events": "npm:^1.0.1"
+    "@walletconnect/heartbeat": "npm:1.2.1"
+    "@walletconnect/jsonrpc-types": "npm:1.0.3"
+    "@walletconnect/keyvaluestorage": "npm:^1.1.1"
+    "@walletconnect/logger": "npm:^2.0.1"
+    events: "npm:^3.3.0"
+  checksum: 10c0/3e53ea10e9da801a9062be214c1ad3c927cceb5a80b2dc045685c75f091a6ce6fdb38554d16f09178731180a17818960f8706ffbecb6747dd6068264a3ea1409
   languageName: node
   linkType: hard
 
@@ -9504,6 +9647,28 @@ __metadata:
     query-string: "npm:7.1.3"
     uint8arrays: "npm:^3.1.0"
   checksum: 10c0/2219408f2a9bbca8d263a89dd54ae3e466f6d4b32b6b25f253d7f84f7e58c5836f4a08ab287c2d9ab5446c727624821597fa16d64d8c5ca748f8e1cba729a929
+  languageName: node
+  linkType: hard
+
+"@walletconnect/utils@npm:2.11.3":
+  version: 2.11.3
+  resolution: "@walletconnect/utils@npm:2.11.3"
+  dependencies:
+    "@stablelib/chacha20poly1305": "npm:1.0.1"
+    "@stablelib/hkdf": "npm:1.0.1"
+    "@stablelib/random": "npm:^1.0.2"
+    "@stablelib/sha256": "npm:1.0.1"
+    "@stablelib/x25519": "npm:^1.0.3"
+    "@walletconnect/relay-api": "npm:^1.0.9"
+    "@walletconnect/safe-json": "npm:^1.0.2"
+    "@walletconnect/time": "npm:^1.0.2"
+    "@walletconnect/types": "npm:2.11.3"
+    "@walletconnect/window-getters": "npm:^1.0.1"
+    "@walletconnect/window-metadata": "npm:^1.0.1"
+    detect-browser: "npm:5.3.0"
+    query-string: "npm:7.1.3"
+    uint8arrays: "npm:^3.1.0"
+  checksum: 10c0/0050c38bbb47b267fe79f5b60052e7053796f997a50d4adc609d0bb0d67adb1e2525ba96ddfacdfe7573746d8f265c7a3cfeb87a1112b97d16ecde839b9dbf8e
   languageName: node
   linkType: hard
 
@@ -14911,17 +15076,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eventemitter3@npm:5.0.1, eventemitter3@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "eventemitter3@npm:5.0.1"
+  checksum: 10c0/4ba5c00c506e6c786b4d6262cfbce90ddc14c10d4667e5c83ae993c9de88aa856033994dd2b35b83e8dc1170e224e66a319fa80adc4c32adcd2379bbc75da814
+  languageName: node
+  linkType: hard
+
 "eventemitter3@npm:^4.0.0, eventemitter3@npm:^4.0.7":
   version: 4.0.7
   resolution: "eventemitter3@npm:4.0.7"
   checksum: 10c0/5f6d97cbcbac47be798e6355e3a7639a84ee1f7d9b199a07017f1d2f1e2fe236004d14fa5dfaeba661f94ea57805385e326236a6debbc7145c8877fbc0297c6b
-  languageName: node
-  linkType: hard
-
-"eventemitter3@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "eventemitter3@npm:5.0.1"
-  checksum: 10c0/4ba5c00c506e6c786b4d6262cfbce90ddc14c10d4667e5c83ae993c9de88aa856033994dd2b35b83e8dc1170e224e66a319fa80adc4c32adcd2379bbc75da814
   languageName: node
   linkType: hard
 
@@ -20569,6 +20734,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ox@npm:0.1.2":
+  version: 0.1.2
+  resolution: "ox@npm:0.1.2"
+  dependencies:
+    "@adraffy/ens-normalize": "npm:^1.10.1"
+    "@noble/curves": "npm:^1.6.0"
+    "@noble/hashes": "npm:^1.5.0"
+    "@scure/bip32": "npm:^1.5.0"
+    "@scure/bip39": "npm:^1.4.0"
+    abitype: "npm:^1.0.6"
+    eventemitter3: "npm:5.0.1"
+  peerDependencies:
+    typescript: ">=5.4.0"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/9d0615e9a95c316063587fe08dc268476e67429eea897598b2f69cb1509ac66739f888b0b9bc1cfd0b4bd2f1a3fd0af4d3e81d40ba0bf3abd53e36a6f5b21323
+  languageName: node
+  linkType: hard
+
 "p-filter@npm:^2.1.0":
   version: 2.1.0
   resolution: "p-filter@npm:2.1.0"
@@ -26163,6 +26348,28 @@ __metadata:
     typescript:
       optional: true
   checksum: 10c0/abc3de07ccccf50948a04c5924d3cd0ab30c4d7f47ef797669e2977d802c7b99ff090f4544e5acb2eeb6e1773976396142514b8ece5b04436adf6683ee5b2a57
+  languageName: node
+  linkType: hard
+
+"viem@npm:^2.21.14":
+  version: 2.21.45
+  resolution: "viem@npm:2.21.45"
+  dependencies:
+    "@noble/curves": "npm:1.6.0"
+    "@noble/hashes": "npm:1.5.0"
+    "@scure/bip32": "npm:1.5.0"
+    "@scure/bip39": "npm:1.4.0"
+    abitype: "npm:1.0.6"
+    isows: "npm:1.0.6"
+    ox: "npm:0.1.2"
+    webauthn-p256: "npm:0.0.10"
+    ws: "npm:8.18.0"
+  peerDependencies:
+    typescript: ">=5.0.4"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/3ed93c58dc125c97f35970b17d3dca6dfe6a8811d45fed84dc5bdd4a57860c880ae5a41a45cb8caa500925450b52d3a225d8def8422e7dd7ecead3bcc3921ec8
   languageName: node
   linkType: hard
 
