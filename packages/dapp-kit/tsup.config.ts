@@ -4,7 +4,7 @@ import { defineConfig } from 'tsup'; // eslint-disable-next-line import/no-defau
 export default defineConfig({
     entry: ['src/index.ts'],
     outDir: 'dist',
-    format: ['cjs', 'esm'],
+    format: ['esm'],
     minify: true,
     sourcemap: true,
     dts: true,

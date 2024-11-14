@@ -36,7 +36,6 @@ import { DAppKit } from '@vechain/dapp-kit';
 
 const { thor, vendor, wallet } = new DAppKit({
     nodeUrl: 'https://sync-testnet.vechain.org/', //Required
-    genesis: 'main', //Optional - "main" | "test" | Connex.Thor.Block
     walletConnectOptions, //Optional
 });
 ```
@@ -61,11 +60,11 @@ wallet.setSource('veworld');
 const {account, verified} = await wallet.connect();
 
 const tx = await thor.account("0x...123")
-    .method(...)
-    .transact()
-    .wallet(account)
-    .request();
+  .method(...)
+  .transact()
+  .wallet(account)
+  .request();
 
 const certRes = await vendor.sign("cert", {...})
-    .requset();
+  .requset();
 ```
