@@ -1,6 +1,7 @@
 # `@vechain/dapp-kit`
 
-The Vechain DApp Kit serves as a sophisticated layer built upon @vechain/connex, providing a simplified and efficient
+The Vechain DApp Kit serves as a sophisticated layer built upon @vechain/sdk-network, providing a simplified and
+efficient
 avenue for engaging with a multitude of Vechain wallets. This innovative toolkit enhances the ease of interaction,
 offering developers a seamless bridge to connect with diverse Vechain wallet functionalities. For more information,
 please refer to the official [Vechain Docs](https://docs.vechain.org/developer-resources/sdks-and-providers/dapp-kit)
@@ -36,13 +37,12 @@ import { DAppKit } from '@vechain/dapp-kit';
 
 const { thor, vendor, wallet } = new DAppKit({
     nodeUrl: 'https://sync-testnet.vechain.org/', //Required
-    genesis: 'main', //Optional - "main" | "test" | Connex.Thor.Block
     walletConnectOptions, //Optional
 });
 ```
 
 -   You can set the wallet source when the user selects a wallet, or if you want to default to a specific wallet.
--   Connex is ready to use as normal
+-   Thor and the Wallet instances are ready to use
 
 ```typescript
 import type { WalletSource } from '@vechain/dapp-kit';
@@ -61,11 +61,11 @@ wallet.setSource('veworld');
 const {account, verified} = await wallet.connect();
 
 const tx = await thor.account("0x...123")
-    .method(...)
-    .transact()
-    .wallet(account)
-    .request();
+  .method(...)
+  .transact()
+  .wallet(account)
+  .request();
 
 const certRes = await vendor.sign("cert", {...})
-    .requset();
+  .requset();
 ```

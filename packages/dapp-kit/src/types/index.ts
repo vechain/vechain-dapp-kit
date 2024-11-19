@@ -1,10 +1,9 @@
 export type {
     DAppKitOptions,
-    VechainWallet,
+    VeChainWallet,
     WalletSource,
     ConnectResponse,
     WalletConfig,
-    BaseWallet,
     WalletManagerState,
     Genesis,
 } from './types';
@@ -19,3 +18,5 @@ export type {
     OpenOptions,
     SubscribeModalState,
 } from './wc-types';
+
+export * from './requests';

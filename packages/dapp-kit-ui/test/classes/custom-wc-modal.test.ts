@@ -1,4 +1,4 @@
-import { describe } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { CustomWalletConnectModal } from '../../src';
 
 describe('CustomWalletConnectModal', () => {

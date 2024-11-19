@@ -25,8 +25,8 @@
         "paths": {
             "~/*": ["./app/*"]
         },
-
         // Vite takes care of building everything, not tsc.
-        "noEmit": true
+        "noEmit": true,
+        "typeRoots": ["node_modules/@types"]
     }
 }

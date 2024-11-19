@@ -1,40 +1,48 @@
-import { vechain_sdk_core_ethers as ethers } from '@vechain/sdk-core';
+import type { vechain_sdk_core_ethers as ethers } from '@vechain/sdk-core';
 import { JSONRPCInvalidParams } from '@vechain/sdk-errors';
-import {
+import type {
     AvailableVeChainProviders,
-    DelegationHandler,
     SignTransactionOptions,
     TransactionRequestInput,
-    VeChainAbstractSigner,
 } from '@vechain/sdk-network';
-import { VechainWallet } from '../types';
+import { DelegationHandler, VeChainAbstractSigner } from '@vechain/sdk-network';
+import type {
+    TransactionMessage,
+    TransactionOptions,
+    TransactionResponse,
+} from '../types/requests';
+import type { WalletManager } from './wallet-manager';
 
 class VeChainSignerDAppKit extends VeChainAbstractSigner {
-    wallet: VechainWallet;
-    address: string;
+    private readonly walletManager: WalletManager;
 
     constructor(
-        wallet: VechainWallet,
-        address: string,
-        provider: AvailableVeChainProviders | null,
+        walletManager: WalletManager,
+        provider: AvailableVeChainProviders,
     ) {
         // Call the parent constructor
         super(provider);
-
-        this.address = address;
-        this.wallet = wallet;
+        this.walletManager = walletManager;
     }
 
-    connect(provider: AvailableVeChainProviders | null): this {
-        return new VeChainSignerDAppKit(
-            this.wallet,
-            this.address,
-            provider,
-        ) as this;
+    get address(): string | null {
+        return this.walletManager.state.address;
+    }
+
+    connect(provider: AvailableVeChainProviders): this {
+        return new VeChainSignerDAppKit(this.walletManager, provider) as this;
     }
 
     async getAddress(): Promise<string> {
-        return Promise.resolve(this.address);
+        const addr = this.walletManager.state.address;
+        if (addr === null) {
+            throw new JSONRPCInvalidParams(
+                'VeChainPrivateKeySigner.getAddress()',
+                'No wallet is connected',
+                {},
+            );
+        }
+        return Promise.resolve(addr);
     }
 
     async signTransaction(
@@ -44,7 +52,6 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
         if (this.provider === null) {
             throw new JSONRPCInvalidParams(
                 'VeChainPrivateKeySigner.signTransaction()',
-                -32602,
                 'Thor provider is not found into the wallet. Please attach a Provider to your wallet instance.',
                 { transactionToSign },
             );
@@ -68,7 +75,6 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
         if (this.provider === null) {
             throw new JSONRPCInvalidParams(
                 'VeChainPrivateKeySigner.sendTransaction()',
-                -32602,
                 'Thor provider is not found into the wallet. Please attach a Provider to your wallet instance.',
                 { transactionToSend },
             );
@@ -93,16 +99,13 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
     async _signFlow(
         transaction: TransactionRequestInput,
         delegator: SignTransactionOptions | null,
-    ): Promise<Connex.Vendor.TxResponse> {
+    ): Promise<TransactionResponse> {
         // Populate the call, to get proper from and to address (compatible with multi-clause transactions)
         const populatedTransaction = await this.populateTransaction(
             transaction,
         );
 
-        let clauses: (Connex.VM.Clause & {
-            comment?: string;
-            abi?: object;
-        })[] = [];
+        let clauses: TransactionMessage[] = [];
 
         if (Array.isArray(transaction.clauses)) {
             clauses = populatedTransaction.clauses.map((clause) => {
@@ -116,7 +119,7 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
             });
         }
 
-        const txOptions: Connex.Signer.TxOptions = {
+        const txOptions: TransactionOptions = {
             signer: this.address,
             gas: Number(transaction.gas),
             dependsOn: populatedTransaction.dependsOn ?? '',
@@ -126,7 +129,7 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
             },
         };
 
-        return this.wallet.signTx(clauses, txOptions);
+        return this.walletManager.signTx(clauses, txOptions);
     }
 }
 

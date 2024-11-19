@@ -1,18 +1,36 @@
 import {
-    WalletButton,
-    useSDK,
+    useThor,
     useWallet,
     useWalletModal,
+    WalletButton,
 } from '@vechain/dapp-kit-react';
-import { ERC20_ABI, VTHO_ADDRESS } from '@vechain/sdk-core';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { Counter } from './counter.ts';
 
 function App() {
     const { account, signer } = useWallet();
-
-    const thor = useSDK().thor;
+    const thor = useThor();
+    const [count, setCount] = useState(BigInt(0));
+    const [error, setError] = useState<Error>();
+    const [txId, setTxId] = useState('');
+    const [loading, setLoading] = useState(false);
     const { open, onConnectionStatusChange } = useWalletModal();
     const [buttonText, setButtonText] = useState('Connect Custom Button');
+
+    const counterContract = useMemo(() => {
+        return Counter.load(thor, signer);
+    }, [thor, signer]);
+
+    useEffect(() => {
+        const loadCounter = async () => {
+            const counter = await counterContract.read.counter({
+                revision: {},
+            });
+            setCount(counter[0]);
+        };
+
+        loadCounter();
+    }, [counterContract, loading, error, txId]);
 
     useEffect(() => {
         const handleConnected = (address: string | null) => {
@@ -37,16 +55,26 @@ function App() {
     }, [signer]);
 
     const testTx = async () => {
-        const vthoContract = thor.contracts.load(
-            VTHO_ADDRESS,
-            ERC20_ABI,
-            signer,
-        );
+        setTxId('');
+        setError(undefined);
+        try {
+            setLoading(true);
 
-        vthoContract.transact.transfer(
-            '0x0000000000000000000000000000000000000000',
-            1000000000000000000n,
-        );
+            // TODO: Set the delegation URL so that transactions are free
+            const tx = await counterContract.transact.increment();
+
+            const receipt = await tx.wait();
+            if (receipt == null || receipt.reverted) {
+                setError(new Error('Transaction failed'));
+                return;
+            }
+
+            setTxId(receipt.meta.txID!);
+        } catch (e) {
+            setError(e as Error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -56,7 +84,13 @@ function App() {
             <WalletButton />
             <div className="label">custom button:</div>
             <button onClick={open}>{buttonText}</button>
-            <button onClick={testTx}>Test TX</button>
+            <br></br>
+            <div className="label">Counter</div>
+            {account && !loading && <button onClick={testTx}>Increment</button>}
+            {loading && <div>Loading...</div>}
+            {error && <div>Error: {error.message}</div>}
+            {account && txId && <div>Transaction ID: {txId}</div>}
+            <div>Counter: {count.toString()}</div>
         </div>
     );
 }

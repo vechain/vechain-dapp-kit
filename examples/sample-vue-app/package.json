@@ -10,8 +10,8 @@
         "preview": "vite preview --mode=development"
     },
     "dependencies": {
-        "@vechain/dapp-kit": "*",
-        "@vechain/dapp-kit-ui": "*",
+        "@vechain/dapp-kit": "workspace:^",
+        "@vechain/dapp-kit-ui": "workspace:^",
         "vue": "^3.4.21"
     },
     "devDependencies": {
