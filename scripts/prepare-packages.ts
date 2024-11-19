@@ -68,7 +68,11 @@ const updatePackageVersions = (version: string) => {
 const preparePackages = async () => {
     const version = process.argv[2];
 
-    if (!version || !version.match(/^\d+\.\d+\.\d+$/)) {
+    if (
+        !version ||
+        (!version.match(/^\d+\.\d+\.\d+$/) &&
+            !version.match(/^\d+\.\d+\.\d+(-rc\.\d+)?$/))
+    ) {
         console.error(
             `🚨 You must specify a semantic version as the first argument  🚨`,
         );
@@ -86,7 +90,7 @@ const preparePackages = async () => {
 
     console.log(' Build:');
     console.log('       - 📦 Building packages...');
-    await exec('yarn install:all');
+    await exec('yarn install && yarn install:all');
     console.log('       - ✅  Built!');
 
     console.log(' Test:');

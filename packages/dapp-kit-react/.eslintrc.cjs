@@ -7,4 +7,8 @@ module.exports = {
         '*.test.ts',
         'test/**',
     ],
+    rules: {
+        ...Config.EslintReact.rules,
+        'import/no-extraneous-dependencies': 'error',
+    },
 };

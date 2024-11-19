@@ -1,33 +1,13 @@
-import { describe, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
-import { mockedConnexSigner } from '@vechain/dapp-kit/test/helpers/mocked-signer';
-import { Connex } from '@vechain/connex';
 import { useWallet } from '../src';
 import { wrapper } from './helpers/react-test-helpers';
+import { mockedConnexSigner } from './helpers/mocked-signer';
 
-vi.mock('@vechain/connex');
-
-vi.mocked(Connex.Vendor).mockImplementation((): Connex.Vendor => {
-    return {
-        // @ts-ignore
-        sign: (type, msg) => {
-            if (type === 'tx') {
-                return {
-                    request: () => {
-                        // @ts-ignore
-                        return mockedConnexSigner.signTx(msg, {});
-                    },
-                };
-            }
-            return {
-                request: () => {
-                    // @ts-ignore
-                    return mockedConnexSigner.signCert(msg, {});
-                },
-            };
-        },
-    };
-});
+window.vechain = {} as any;
+window.vechain = {
+    newConnexSigner: () => mockedConnexSigner,
+};
 
 describe('useWallet', () => {
     it('should be able to set the source', async () => {
@@ -35,10 +15,10 @@ describe('useWallet', () => {
 
         expect(result.current).toBeDefined();
 
-        result.current.setSource('sync2');
+        result.current.setSource('veworld');
 
         await waitFor(() => {
-            expect(result.current.source).toBe('sync2');
+            expect(result.current.source).toBe('veworld');
         });
     });
 
@@ -47,13 +27,13 @@ describe('useWallet', () => {
 
         expect(result.current).toBeDefined();
 
-        result.current.setSource('sync2');
+        result.current.setSource('veworld');
         result.current.connect().catch(() => {
             // ignore
         });
 
         await waitFor(() => {
-            expect(result.current.source).toBe('sync2');
+            expect(result.current.source).toBe('veworld');
             expect(result.current.account).toBe(
                 '0xf077b491b355E64048cE21E3A6Fc4751eEeA77fa',
             );

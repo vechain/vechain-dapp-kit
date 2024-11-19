@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { addResizeListeners } from '../../src/utils/listeners';
 
 describe('addResizeListeners', () => {

@@ -20,5 +20,5 @@ BeforeAll(async function () {
         '..',
         'veworld-dist.zip',
     );
-    await asyncExec(`unzip ${zipPath} -d ${distPath}`);
+    await asyncExec(`unzip -o ${zipPath}`);
 });

@@ -1,4 +1,6 @@
-export const certMessage: Connex.Vendor.CertMessage = {
+import { CertificateMessage } from '../../src';
+
+export const certMessage: CertificateMessage = {
     purpose: 'identification',
     payload: {
         type: 'text',

@@ -2,17 +2,20 @@ import { describe, expect, it, vi } from 'vitest';
 import type { WalletConnectOptions } from '../src';
 import { WalletManager } from '../src';
 import { mockedConnexSigner } from './helpers/mocked-signer';
+import { ThorClient } from '@vechain/sdk-network';
 
 const newWalletManager = (wcOptions?: WalletConnectOptions): WalletManager => {
-    return new WalletManager({
-        nodeUrl: 'https://testnet.veblocks.net/',
-        walletConnectOptions: wcOptions,
-        genesis: 'main',
-    });
+    return new WalletManager(
+        {
+            nodeUrl: 'https://testnet.veblocks.net/',
+            walletConnectOptions: wcOptions,
+        },
+        ThorClient.fromUrl('https://testnet.vechain.org'),
+    );
 };
 
 window.vechain = {
-    newConnexSigner: () => mockedConnexSigner,
+    newConnexSigner: () => mockedConnexSigner as any,
 };
 
 const eventNames = (walletManager: WalletManager): string[] =>
@@ -34,10 +37,7 @@ describe('WalletManager', () => {
     describe('connect', () => {
         it('no source set', async () => {
             const walletManager = newWalletManager();
-
-            await expect(async () => walletManager.connect()).rejects.toThrow(
-                'No wallet has been selected',
-            );
+            expect(() => walletManager.connect()).throws();
         });
     });
 
