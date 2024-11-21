@@ -18,7 +18,8 @@
     "scripts": {
         "build": "tsup",
         "clean": "rm -rf dist .turbo",
-        "lint": "eslint"
+        "lint": "eslint",
+        "purge": "yarn clean && rm -rf node_modules"
     },
     "dependencies": {
         "@privy-io/react-auth": "1.83.1"
@@ -29,6 +30,7 @@
         "eslint": "^9.12.0",
         "react": "^18.2.0",
         "tsup": "*",
-        "typescript": "*"
+        "typescript": "*",
+        "vite": "^4.5.5"
     }
 }
