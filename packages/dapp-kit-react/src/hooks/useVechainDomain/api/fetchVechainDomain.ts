@@ -1,4 +1,4 @@
-import { addressUtils } from '@vechain/sdk-core';
+import { Address } from '@vechain/sdk-core';
 import type { DAppKitContext } from '../../../types';
 import { getDomain } from './getDomain';
 import { getAddress } from './getAddress';
@@ -27,7 +27,7 @@ export const fetchVechainDomain = async ({
         };
     }
 
-    const isValidAddress = addressUtils.isAddress(addressOrDomain);
+    const isValidAddress = Address.isValid(addressOrDomain);
 
     if (isValidAddress) {
         try {

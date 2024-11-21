@@ -1,21 +1,17 @@
 /// <reference types="@vechain/connex" />
 import {
+    Address,
     Certificate,
-    addressUtils,
     CertificateData,
-    HDKey,
+    Mnemonic,
 } from '@vechain/sdk-core';
 import { ExpandedConnexSigner } from '../../src/types/types';
 
 const mnemonicWords =
     'denial kitchen pet squirrel other broom bar gas better priority spoil cross';
 
-const hdNode = HDKey.fromMnemonic(mnemonicWords.split(' '));
-
-const firstAccount = hdNode.deriveChild(0);
-
-const privateKey = firstAccount.privateKey!;
-const address = addressUtils.fromPrivateKey(privateKey);
+const privateKey = Mnemonic.toPrivateKey(mnemonicWords.split(' '));
+const address = Address.ofPrivateKey(privateKey).toString();
 
 const mockedConnexSigner: ExpandedConnexSigner = {
     signTx() {
@@ -50,4 +46,4 @@ const mockedConnexSigner: ExpandedConnexSigner = {
     },
 };
 
-export { mockedConnexSigner, hdNode, mnemonicWords, privateKey, address };
+export { address, mnemonicWords, mockedConnexSigner, privateKey };
