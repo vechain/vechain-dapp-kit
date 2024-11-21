@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { PrivyProvider as BasePrivyProvider } from "@privy-io/react-auth";
+import { DAppKitProvider } from "@vechain/dapp-kit-react";
 
 type Props = {
   children: ReactNode;
@@ -59,6 +60,7 @@ export const DAppKitPrivyProvider = ({
   loginMethods,
   appearance,
   embeddedWallets,
+  dappKitConfig
 }: Props) => {
     return (
       <BasePrivyProvider  
@@ -72,7 +74,15 @@ export const DAppKitPrivyProvider = ({
           },
         }}
       >
-        {children}
+        <DAppKitProvider
+          nodeUrl={dappKitConfig.nodeUrl}
+          genesis={dappKitConfig.genesis}
+          usePersistence
+          walletConnectOptions={dappKitConfig.walletConnectOptions}
+          themeMode={dappKitConfig.colorMode}
+          themeVariables={{}}>
+          {children}
+        </DAppKitProvider>
       </BasePrivyProvider>
     );
 };

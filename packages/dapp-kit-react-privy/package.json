@@ -22,6 +22,7 @@
         "purge": "yarn clean && rm -rf node_modules"
     },
     "dependencies": {
+        "@vechain/dapp-kit-react": "*",
         "@privy-io/react-auth": "1.83.1"
     },
     "devDependencies": {
