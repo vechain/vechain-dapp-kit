@@ -5,7 +5,7 @@ import { useDisclosure, Button } from "@chakra-ui/react";
 import {
     useWalletAdapter,
     // dappKitModal,
-    // ConnectModal,
+    ConnectModal,
 } from "@vechain/dapp-kit-react-privy";
 
 const HomePage = (): ReactElement => {
@@ -13,7 +13,7 @@ const HomePage = (): ReactElement => {
         useWalletAdapter();
 
     const {
-        //isOpen: isLoginOpen,
+        isOpen: isLoginOpen,
         onOpen: onLoginOpen,
         onClose: onLoginClose,
     } = useDisclosure();
@@ -27,11 +27,11 @@ const HomePage = (): ReactElement => {
                 <Button onClick={onLoginOpen}>Connect</Button>
             )}
 
-            {/*<ConnectModal
+            <ConnectModal
                 isOpen={isLoginOpen}
                 onClose={onLoginClose}
                 logo={"https://cleanify.vet/logo/cleanify_green.png"}
-            />*/}
+            />
         </div>
     );
 };
