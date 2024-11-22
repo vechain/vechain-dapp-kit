@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { PrivyProvider as BasePrivyProvider } from "@privy-io/react-auth";
 import { DAppKitProvider } from "@vechain/dapp-kit-react";
+import { SmartAccountProvider } from "./hooks";
 
 type Props = {
   children: ReactNode;
@@ -60,19 +61,25 @@ export const DAppKitPrivyProvider = ({
   loginMethods,
   appearance,
   embeddedWallets,
+  smartAccountConfig,
   dappKitConfig
 }: Props) => {
-    return (
-      <BasePrivyProvider  
-        appId={appId}
-        clientId={clientId}
-        config={{
-          loginMethods: loginMethods,
-          appearance: appearance,
-          embeddedWallets: {
-            createOnLogin: embeddedWallets.createOnLogin,
-          },
-        }}
+  return (
+    <BasePrivyProvider
+      appId={appId}
+      clientId={clientId}
+      config={{
+        loginMethods: loginMethods,
+        appearance: appearance,
+        embeddedWallets: {
+          createOnLogin: embeddedWallets.createOnLogin,
+        },
+      }}
+    >
+      <SmartAccountProvider
+        nodeUrl={smartAccountConfig.nodeUrl}
+        delegatorUrl={smartAccountConfig.delegatorUrl}
+        accountFactory={smartAccountConfig.accountFactoryAddress}
       >
         <DAppKitProvider
           nodeUrl={dappKitConfig.nodeUrl}
@@ -83,6 +90,7 @@ export const DAppKitPrivyProvider = ({
           themeVariables={{}}>
           {children}
         </DAppKitProvider>
-      </BasePrivyProvider>
-    );
+      </SmartAccountProvider>
+    </BasePrivyProvider>
+  );
 };
