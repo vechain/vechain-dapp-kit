@@ -51,7 +51,7 @@ export type TransactionData = {
 
 type UseSendAbstractedTransactionProps = {
   onTxConfirmed?: () => void | Promise<void>;
-  showErrorToast?: boolean;
+  // showErrorToast?: boolean;
 };
 
 /**
@@ -87,7 +87,7 @@ export type UseSendTransactionReturnValue = {
  */
 export const useSendAccountAbstractedTransaction = ({
   onTxConfirmed,
-  showErrorToast = true,
+  // showErrorToast = true,
 }: UseSendAbstractedTransactionProps): UseSendTransactionReturnValue => {
   const { thor } = useConnex();
   const account = useSmartAccount();
