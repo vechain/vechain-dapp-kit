@@ -9,7 +9,7 @@ import {
 } from "@vechain/dapp-kit-react-privy";
 
 const HomePage = (): ReactElement => {
-    const { isConnected, connectedAddress, isPrivyLoading, logout } =
+    const { isConnected, connectedAddress, logout } =
         useWalletAdapter();
 
     const {
@@ -25,6 +25,12 @@ const HomePage = (): ReactElement => {
                 <Button onClick={logout}>Disconnect</Button>
             ) : (
                 <Button onClick={onLoginOpen}>Connect</Button>
+            )}
+
+            {isConnected && (
+                <div>
+                    <p>Connected Address: {connectedAddress}</p>
+                </div>
             )}
 
             <ConnectModal
