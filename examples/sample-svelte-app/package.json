@@ -20,7 +20,7 @@
         "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
         "@sveltejs/adapter-auto": "^2.0.0",
         "@sveltejs/adapter-static": "^2.0.3",
-        "@sveltejs/kit": "^1.27.4",
+        "@sveltejs/kit": "^2.8.3",
         "@typescript-eslint/eslint-plugin": "^6.0.0",
         "@typescript-eslint/parser": "^6.0.0",
         "eslint": "^9.12.0",
