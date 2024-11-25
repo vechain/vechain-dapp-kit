@@ -9,7 +9,7 @@ import {
 } from "@vechain/dapp-kit-react-privy";
 
 const HomePage = (): ReactElement => {
-    const { isConnected, connectedAddress, logout } =
+    const { isConnected, isConnectedWithPrivy, isConnectedWithDappKit, connectedAddress, abstractedAccount, logout } =
         useWalletAdapter();
 
     const {
@@ -20,7 +20,7 @@ const HomePage = (): ReactElement => {
     //const isInAppBrowser = window.vechain && window.vechain.isInAppBrowser;
 
     return (
-        <div>
+        <div className="container">
             {isConnected ? (
                 <Button onClick={logout}>Disconnect</Button>
             ) : (
@@ -29,6 +29,9 @@ const HomePage = (): ReactElement => {
 
             {isConnected && (
                 <div>
+                    <p>Connected with Privy: {isConnectedWithPrivy.toString()}</p>
+                    <p>Connected with DappKit: {isConnectedWithDappKit.toString()}</p>
+                    <p>Abstracted Account: {abstractedAccount.embeddedWallet?.address}</p>
                     <p>Connected Address: {connectedAddress}</p>
                 </div>
             )}
