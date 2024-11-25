@@ -30,9 +30,9 @@ export const useWalletAdapter = () => {
 
   // const dappKitModal = useWalletModal();
 
-  const isConenctedWithDappKit = !!account;
+  const isConnectedWithDappKit = !!account;
   const isConnectedWithPrivy = authenticated && !!user;
-  const isConnected = isConenctedWithDappKit || isConnectedWithPrivy;
+  const isConnected = isConnectedWithDappKit || isConnectedWithPrivy;
 
   // a wallet is in this array if it is connected to Privy
   const amountOfSocialsConnectedToPrivy =
@@ -52,7 +52,7 @@ export const useWalletAdapter = () => {
   const logoutAndDisconnect = async () => {
     // setUser(undefined);
 
-    if (isConenctedWithDappKit) {
+    if (isConnectedWithDappKit) {
       disconnect();
     } else {
       logout();
@@ -62,7 +62,7 @@ export const useWalletAdapter = () => {
   return {
     isConnected,
     isConnectedWithPrivy,
-    isConenctedWithDappKit,
+    isConnectedWithDappKit,
     username,
     connectedAddress, // This is the connected address.
     abstractedAccount,
