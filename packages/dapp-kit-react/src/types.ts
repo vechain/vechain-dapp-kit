@@ -38,7 +38,7 @@ export interface DAppKitContext {
         disconnect: () => void;
         connect: () => Promise<ConnectResponse>;
         account: string | null;
-        signer: VeChainSignerDAppKit | undefined;
+        signer: VeChainSignerDAppKit;
         source: WalletSource | null;
         connectionCertificate: CertificateData | null;
     };
