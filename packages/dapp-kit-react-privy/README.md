@@ -7,3 +7,7 @@ The `@vechain/dapp-kit-react-privy` package simplifies the development of decent
 ```bash
 yarn add @vechain/dapp-kit-react-privy
 ```
+
+## How to use - temporary
+
+When modifying this package, build and do `yarn pack`. You can then share the package with people who want to test it. Just do `yarn install vechain-dapp-kit-react-privy-v1.1.1.tgz` to use it.
