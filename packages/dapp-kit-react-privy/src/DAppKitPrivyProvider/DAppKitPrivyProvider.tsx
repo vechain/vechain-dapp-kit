@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { PrivyProvider as BasePrivyProvider } from '@privy-io/react-auth';
-import { DAppKitProvider } from '@vechain/dapp-kit-react';
+import { DAppKitProvider, DAppKitUIOptions } from '@vechain/dapp-kit-react';
 import { SmartAccountProvider } from './hooks';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -40,21 +40,7 @@ type Props = {
         delegatorUrl: string;
         accountFactoryAddress: string;
     };
-    dappKitConfig: {
-        nodeUrl: string;
-        genesis: Connex.Thor.Block;
-        projectId: string;
-        colorMode: 'DARK' | 'LIGHT';
-        walletConnectOptions: {
-            projectId: string;
-            metadata: {
-                name: string;
-                description: string;
-                url: string;
-                icons: string[];
-            };
-        };
-    };
+    dappKitConfig: DAppKitUIOptions;
 };
 
 const queryClient = new QueryClient({
@@ -105,7 +91,7 @@ export const DAppKitPrivyProvider = ({
                         walletConnectOptions={
                             dappKitConfig.walletConnectOptions
                         }
-                        themeMode={dappKitConfig.colorMode}
+                        themeMode={dappKitConfig.themeMode}
                         themeVariables={{}}
                     >
                         {children}

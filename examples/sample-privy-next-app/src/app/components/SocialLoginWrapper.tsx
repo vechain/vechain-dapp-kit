@@ -61,8 +61,7 @@ export function SocialLoginWrapper({ children }: Props) {
                     isTrunk: true,
                     transactions: [],
                 },
-                colorMode: 'LIGHT',
-                projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
+                themeMode: 'LIGHT',
                 walletConnectOptions: {
                     projectId:
                         process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
