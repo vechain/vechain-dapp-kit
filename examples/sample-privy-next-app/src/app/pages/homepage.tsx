@@ -3,10 +3,9 @@
 import { type ReactElement } from 'react';
 import { useDisclosure, Button } from '@chakra-ui/react';
 import {
-    useWalletAdapter,
+    useWallet,
     useVOT3Balance,
     useB3TRBalance,
-    // dappKitModal,
     ConnectModal,
 } from '@vechain/dapp-kit-react-privy';
 
@@ -16,36 +15,36 @@ const HomePage = (): ReactElement => {
         isConnectedWithPrivy,
         isConnectedWithDappKit,
         connectedAddress,
-        abstractedAccount,
-        logout,
-    } = useWalletAdapter();
+        smartAccount,
+        logoutAndDisconnect,
+    } = useWallet();
     const b3trBalanceQuery = isConnected
         ? useB3TRBalance({ address: connectedAddress ?? '' })
         : useB3TRBalance({
-              address: abstractedAccount.embeddedWallet?.address ?? '',
+              address: smartAccount.address ?? '',
           });
     const vot3BalanceQuery = isConnected
         ? useVOT3Balance({ address: connectedAddress ?? '' })
         : useVOT3Balance({
-              address: abstractedAccount.embeddedWallet?.address ?? '',
+              address: smartAccount.address ?? '',
           });
     const {
         isOpen: isLoginOpen,
         onOpen: onLoginOpen,
         onClose: onLoginClose,
     } = useDisclosure();
-    //const isInAppBrowser = window.vechain && window.vechain.isInAppBrowser;
 
     return (
         <div className="container">
             {isConnected ? (
-                <Button onClick={logout}>Disconnect</Button>
+                <Button onClick={logoutAndDisconnect}>Disconnect</Button>
             ) : (
                 <Button onClick={onLoginOpen}>Connect</Button>
             )}
 
             {isConnected && (
                 <div>
+                    <p>Connected Address: {connectedAddress}</p>
                     <p>
                         Connected with Privy: {isConnectedWithPrivy.toString()}
                     </p>
@@ -53,11 +52,11 @@ const HomePage = (): ReactElement => {
                         Connected with DappKit:{' '}
                         {isConnectedWithDappKit.toString()}
                     </p>
+                    <p>Smart Account: {smartAccount.address}</p>
                     <p>
-                        Abstracted Account:{' '}
-                        {abstractedAccount.embeddedWallet?.address}
+                        Smart Account Deployed:{' '}
+                        {smartAccount.isDeployed.toString()}
                     </p>
-                    <p>Connected Address: {connectedAddress}</p>
                     <p>
                         B3TR Balance:{' '}
                         {b3trBalanceQuery.isLoading

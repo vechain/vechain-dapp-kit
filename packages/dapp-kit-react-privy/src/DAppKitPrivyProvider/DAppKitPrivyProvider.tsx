@@ -35,7 +35,7 @@ type Props = {
             | 'telegram'
         )[];
     };
-    smartAccountConfig: {
+    smartAccountConfig?: {
         nodeUrl: string;
         delegatorUrl: string;
         accountFactoryAddress: string;
@@ -80,9 +80,11 @@ export const DAppKitPrivyProvider = ({
                 }}
             >
                 <SmartAccountProvider
-                    nodeUrl={smartAccountConfig.nodeUrl}
-                    delegatorUrl={smartAccountConfig.delegatorUrl}
-                    accountFactory={smartAccountConfig.accountFactoryAddress}
+                    nodeUrl={smartAccountConfig?.nodeUrl ?? ''}
+                    delegatorUrl={smartAccountConfig?.delegatorUrl ?? ''}
+                    accountFactory={
+                        smartAccountConfig?.accountFactoryAddress ?? ''
+                    }
                 >
                     <DAppKitProvider
                         nodeUrl={dappKitConfig.nodeUrl}

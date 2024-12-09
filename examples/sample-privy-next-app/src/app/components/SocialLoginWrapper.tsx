@@ -35,7 +35,7 @@ export function SocialLoginWrapper({ children }: Props) {
                 nodeUrl: 'https://node.vechain.energy',
                 delegatorUrl: 'https://delegator.vechain.energy',
                 accountFactoryAddress:
-                    '0x0000000000000000000000000000000000000000',
+                    '0xC06Ad8573022e2BE416CA89DA47E8c592971679A',
             }}
             dappKitConfig={{
                 nodeUrl: 'https://node.vechain.energy',
