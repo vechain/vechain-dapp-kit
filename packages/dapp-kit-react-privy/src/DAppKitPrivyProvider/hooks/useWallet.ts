@@ -4,15 +4,14 @@ import { usePrivy } from '@privy-io/react-auth';
 import {
     useWallet as useDappKitWallet,
     useVechainDomain,
-    useConnex,
-    useWalletModal,
 } from '@vechain/dapp-kit-react';
 import { useSmartAccount } from './useSmartAccount';
 
-export const useWallet = (): {
+type UseWalletReturnType = {
     isConnected: boolean;
     isConnectedWithPrivy: boolean;
     isConnectedWithDappKit: boolean;
+    isLoadingConnection: boolean;
     connectedAddress: string | undefined;
     smartAccount: {
         address: string | undefined;
@@ -20,11 +19,10 @@ export const useWallet = (): {
     };
     logoutAndDisconnect: () => Promise<void>;
     vetDomain: string | undefined;
-    usePrivy: typeof usePrivy;
-    useConnex: typeof useConnex;
-    useDappKitWalletModal: typeof useWalletModal;
-} => {
-    const { user, authenticated, logout } = usePrivy();
+};
+
+export const useWallet = (): UseWalletReturnType => {
+    const { user, authenticated, logout, ready } = usePrivy();
 
     const { account: dappKitAccount, disconnect: dappKitDisconnect } =
         useDappKitWallet();
@@ -51,6 +49,7 @@ export const useWallet = (): {
         isConnected,
         isConnectedWithPrivy,
         isConnectedWithDappKit,
+        isLoadingConnection: !ready,
         connectedAddress,
         smartAccount: {
             address: abstractedAccount.address,
@@ -58,8 +57,5 @@ export const useWallet = (): {
         },
         logoutAndDisconnect,
         vetDomain: vetDomain.domain,
-        usePrivy: usePrivy,
-        useConnex: useConnex,
-        useDappKitWalletModal: useWalletModal,
     };
 };

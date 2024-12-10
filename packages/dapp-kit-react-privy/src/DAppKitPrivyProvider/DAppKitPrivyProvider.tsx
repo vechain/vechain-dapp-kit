@@ -1,8 +1,7 @@
-import { ReactNode } from 'react';
+import { createContext, ReactNode, useContext } from 'react';
 import { PrivyProvider as BasePrivyProvider } from '@privy-io/react-auth';
 import { DAppKitProvider, DAppKitUIOptions } from '@vechain/dapp-kit-react';
 import { SmartAccountProvider } from './hooks';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 type Props = {
     children: ReactNode;
@@ -43,21 +42,35 @@ type Props = {
     dappKitConfig: DAppKitUIOptions;
 };
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: 0,
-            staleTime: 30000,
-            refetchOnWindowFocus: true,
-            refetchOnMount: true,
-            refetchOnReconnect: true,
-            refetchInterval: false,
-            refetchIntervalInBackground: false,
-            gcTime: 1000 * 60 * 60 * 24, // 24 hours
-        },
-    },
-});
+type DAppKitPrivyConfig = {
+    privyConfig: Props['privyConfig'];
+    smartAccountConfig?: Props['smartAccountConfig'];
+    dappKitConfig: Props['dappKitConfig'];
+};
 
+/**
+ * Context to store the Privy and DAppKit configs so that they can be used by the hooks/components
+ */
+export const DAppKitPrivyContext = createContext<DAppKitPrivyConfig | null>(
+    null,
+);
+
+/**
+ * Hook to get the Privy and DAppKit configs
+ */
+export const useDAppKitPrivyConfig = () => {
+    const context = useContext(DAppKitPrivyContext);
+    if (!context) {
+        throw new Error(
+            'useDAppKitPrivyConfig must be used within DAppKitPrivyProvider',
+        );
+    }
+    return context;
+};
+
+/**
+ * Provider to wrap the application with Privy and DAppKit
+ */
 export const DAppKitPrivyProvider = ({
     children,
     privyConfig,
@@ -65,7 +78,9 @@ export const DAppKitPrivyProvider = ({
     dappKitConfig,
 }: Props) => {
     return (
-        <QueryClientProvider client={queryClient}>
+        <DAppKitPrivyContext.Provider
+            value={{ privyConfig, smartAccountConfig, dappKitConfig }}
+        >
             <BasePrivyProvider
                 appId={privyConfig.appId}
                 clientId={privyConfig.clientId}
@@ -100,6 +115,6 @@ export const DAppKitPrivyProvider = ({
                     </DAppKitProvider>
                 </SmartAccountProvider>
             </BasePrivyProvider>
-        </QueryClientProvider>
+        </DAppKitPrivyContext.Provider>
     );
 };

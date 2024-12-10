@@ -13,6 +13,7 @@ type Props = {
 
 export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
     const { login } = usePrivy();
+
     const { open } = useWalletModal();
 
     return isOpen ? (

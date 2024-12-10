@@ -1,141 +1,275 @@
 'use client';
 
 import { useTxReceipt } from './useTxReceipt';
-import { UseMutateFunction, useMutation } from '@tanstack/react-query';
-import { useConnex } from '@vechain/dapp-kit-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { Abi } from 'viem';
+import { useConnex } from '@vechain/dapp-kit-react';
+import { Transaction } from 'thor-devkit';
+import { useDAppKitPrivyConfig } from '../DAppKitPrivyProvider';
+import { useWallet } from './useWallet';
 import { useSmartAccount } from './useSmartAccount';
+import {
+    EnhancedClause,
+    TransactionStatus,
+    TransactionStatusErrorType,
+} from '../utils';
 
-/**
- * ready: the user has not clicked on the button yet
- * pending: the user has clicked on the button and we're waiting for the transaction to be sent
- * waitingConfirmation: the transaction has been sent and we're waiting for the transaction to be confirmed by the chain
- * success: the transaction has been confirmed by the chain
- * error: the transaction has failed
- */
-export type TransactionStatus =
-    | 'ready'
-    | 'pending'
-    | 'waitingConfirmation'
-    | 'success'
-    | 'error';
+const estimateTxGasWithNext = async (
+    clauses: Connex.VM.Clause[],
+    caller: string,
+    buffer = 1.25,
+    nodeUrl: string,
+) => {
+    type InspectClausesResponse = {
+        data: string;
+        gasUsed: number;
+        reverted: boolean;
+        vmError: string;
+        events: Connex.VM.Event[];
+        transfers: Connex.VM.Transfer[];
+    }[];
 
-export type TransactionStatusErrorType = {
-    type: 'SendTransactionError' | 'TxReceiptError' | 'RevertReasonError';
-    reason?: string;
+    // Send tx details to the node to get the gas estimate
+    const response = await fetch(`${nodeUrl}/accounts/*?revision=next`, {
+        method: 'POST',
+        body: JSON.stringify({
+            clauses: clauses.map((clause) => ({
+                to: clause.to,
+                value: clause.value || '0x0',
+                data: clause.data,
+            })),
+            caller,
+        }),
+    });
+
+    if (!response.ok) throw new Error('Failed to estimate gas');
+
+    const outputs = (await response.json()) as InspectClausesResponse;
+
+    const execGas = outputs.reduce((sum, out) => sum + out.gasUsed, 0);
+
+    // Calculate the intrinsic gas (transaction fee) cast is needed as data could be undefinedin Connex.Vm.Clause
+    const intrinsicGas = Transaction.intrinsicGas(
+        clauses as Transaction.Clause[],
+    );
+
+    // 15000 is the fee for invoking the VM
+    // Gas estimate is the sum of intrinsic gas and execution gas
+    const gasEstimate = intrinsicGas + (execGas ? execGas + 15000 : 0);
+
+    // Add a % buffer to the gas estimate
+    return Math.round(gasEstimate * buffer);
 };
 
 /**
- * An enhanced clause with a comment and an abi
- * @param comment a comment to add to the clause
- * @param abi the abi of the contract to call
+ * Props for the {@link useSendTransaction} hook
+ * @param signerAccount the signer account to use
+ * @param clauses clauses to send in the transaction
+ * @param onTxConfirmed callback to run when the tx is confirmed
+ * @param onTxFailedOrCancelled callback to run when the tx fails or is cancelled
+ * @param suggestedMaxGas the suggested max gas for the transaction
  */
-export type EnhancedClause = Connex.VM.Clause & {
-    comment?: string;
-    abi?: object;
-};
-
-export type TransactionData = {
-    to: string;
-    value: string | number | bigint;
-    data:
-        | string
-        | {
-              abi: Abi[] | readonly unknown[];
-              functionName: string;
-
-              args: any[];
-          };
-};
-
-type UseSendAbstractedTransactionProps = {
+type UseSendTransactionProps = {
+    signerAccount?: string | null;
+    clauses?:
+        | EnhancedClause[]
+        | (() => EnhancedClause[])
+        | (() => Promise<EnhancedClause[]>);
     onTxConfirmed?: () => void | Promise<void>;
-    // showErrorToast?: boolean;
+    onTxFailedOrCancelled?: () => void | Promise<void>;
+    suggestedMaxGas?: number;
+    privyUIOptions?: {
+        title?: string;
+        description?: string;
+        buttonText?: string;
+    };
 };
 
 /**
  * Return value of the {@link useSendTransaction} hook
  * @param sendTransaction function to trigger the transaction
- * @param sendTransactionPending boolean indicating if the transaction is waiting for the wallet to sign it
- * @param sendTransactionError error that occurred while signing the transaction
- * @param isTxReceiptLoading boolean indicating if the transaction receipt is loading from the chain
- * @param txReceiptError error that occurred while fetching the transaction receipt
+ * @param isTransactionPending boolean indicating if the transaction is waiting for the wallet to sign it
  * @param txReceipt the transaction receipt
  * @param status the status of the transaction (see {@link TransactionStatus})
  * @param resetStatus function to reset the status to "ready"
- * @param error general error that is set when
+ * @param error error that occurred while sending the transaction
  */
 export type UseSendTransactionReturnValue = {
-    sendTransaction: UseMutateFunction<
-        string,
-        Error,
-        TransactionData[],
-        unknown
-    >;
-    sendTransactionTx: string | undefined;
-    sendTransactionPending: boolean;
-    sendTransactionError: Error | null;
-    isTxReceiptLoading: boolean;
-    txReceiptError: Error | null;
-    txReceipt: Connex.Thor.Transaction.Receipt | null | undefined;
+    sendTransaction: (clauses?: EnhancedClause[]) => Promise<void>;
+    isTransactionPending: boolean;
+    txReceipt: Connex.Thor.Transaction.Receipt | null;
     status: TransactionStatus;
     resetStatus: () => void;
     error?: TransactionStatusErrorType;
 };
 
 /**
- * Generic hook to send a transaction and wait for the txReceipt
+ * Generic hook to send a transaction using connex.
+ * This hook supports both Privy and Vechain wallets.
+ *
+ * It returns a function to send the transaction and a status to indicate the state
+ * of the transaction (together with the transaction id).
+ *
+ * @param signerAccount the signer account to use
  * @param clauses clauses to send in the transaction
  * @param onTxConfirmed callback to run when the tx is confirmed
+ * @param onTxFailedOrCancelled callback to run when the tx fails or is cancelled
+ * @param suggestedMaxGas the suggested max gas for the transaction
+ * @param privyUIOptions options to pass to the Privy UI
  * @returns see {@link UseSendTransactionReturnValue}
  */
-export const useSendAccountAbstractedTransaction = ({
+export const useSendTransaction = ({
+    signerAccount,
+    clauses,
     onTxConfirmed,
-}: // showErrorToast = true,
-UseSendAbstractedTransactionProps): UseSendTransactionReturnValue => {
-    const { thor } = useConnex();
-    const account = useSmartAccount();
+    onTxFailedOrCancelled,
+    suggestedMaxGas,
+    privyUIOptions,
+}: UseSendTransactionProps): UseSendTransactionReturnValue => {
+    const { vendor, thor } = useConnex();
+    const { dappKitConfig } = useDAppKitPrivyConfig();
+    const nodeUrl = dappKitConfig.nodeUrl;
 
-    // è aa? è un normale account?
+    const { isConnectedWithPrivy } = useWallet();
+    const smartAccount = useSmartAccount();
 
-    const sendTransaction = useCallback(
-        async (data: TransactionData[]) => {
-            return account.sendTransaction({
-                txClauses: data,
+    /**
+     * Convert the clauses to the format expected by the vendor
+     * If the clauses are a function, it will be executed and the result will be used
+     * If the clauses are an array, it will be used directly
+     * If the the wallet is connected with Privy, the clauses will be converted to the format expected by the vendor
+     * @param clauses the clauses to convert
+     * @returns the converted clauses
+     */
+    async function convertClauses(
+        clauses:
+            | EnhancedClause[]
+            | (() => EnhancedClause[])
+            | (() => Promise<EnhancedClause[]>),
+    ) {
+        let parsedClauses;
+
+        if (typeof clauses === 'function') {
+            parsedClauses = await clauses();
+        } else {
+            parsedClauses = clauses;
+        }
+
+        if (isConnectedWithPrivy) {
+            return parsedClauses.map((clause) => {
+                return {
+                    to: clause.to ?? '',
+                    value: clause.value,
+                    data: clause.data ?? '',
+                };
             });
+        }
+
+        return parsedClauses;
+    }
+
+    /**
+     * Send a transaction with the given clauses (in case you need to pass data to build the clauses to mutate directly)
+     * If the wallet is connected with Privy, the smart account provider will be used to send the transaction
+     * @returns see {@link UseSendTransactionReturnValue}
+     */
+    const sendTransaction = useCallback(
+        async (clauses: EnhancedClause[]) => {
+            if (isConnectedWithPrivy) {
+                return await smartAccount.sendTransaction({
+                    txClauses: clauses,
+                    ...privyUIOptions,
+                });
+            }
+
+            const transaction = vendor.sign('tx', clauses);
+            if (signerAccount) {
+                let gasLimitNext;
+                try {
+                    gasLimitNext = await estimateTxGasWithNext(
+                        [...clauses],
+                        signerAccount,
+                        undefined,
+                        nodeUrl,
+                    );
+                } catch (e) {
+                    console.error('Gas estimation failed', e);
+                }
+
+                const parsedGasLimit = Math.max(
+                    gasLimitNext ?? 0,
+                    suggestedMaxGas ?? 0,
+                );
+                // specify gasLimit if we have a suggested or an estimation
+                if (parsedGasLimit > 0)
+                    return transaction
+                        .signer(signerAccount)
+                        .gas(parseInt(parsedGasLimit.toString()))
+                        .request();
+                else return transaction.signer(signerAccount).request();
+            }
+            return transaction.request();
         },
-        [account],
+        [vendor, signerAccount, suggestedMaxGas, nodeUrl, smartAccount],
     );
+
+    /**
+     * Adapter to send the transaction with the clauses passed to the hook or the ones passed to the function,
+     * and to store the transaction id and the status of the transaction (pending, success, error).
+     */
+    const [sendTransactionTx, setSendTransactionTx] = useState<string | null>(
+        null,
+    );
+    const [sendTransactionPending, setSendTransactionPending] = useState(false);
+    const [sendTransactionError, setSendTransactionError] = useState<
+        string | null
+    >(null);
 
     const sendTransactionAdapter = useCallback(
-        async (data: TransactionData[]) => {
-            return sendTransaction(data);
+        async (_clauses?: EnhancedClause[]): Promise<void> => {
+            if (!_clauses && !clauses) throw new Error('clauses are required');
+            try {
+                setSendTransactionTx(null);
+                setSendTransactionPending(true);
+                setSendTransactionError(null);
+                const response = await sendTransaction(
+                    await convertClauses(_clauses ?? []),
+                );
+                // If we send the transaction with the smart account, we get the txid as a string
+                if (typeof response === 'string') {
+                    setSendTransactionTx(response);
+                } else if (typeof response === 'object') {
+                    // If we send the transaction with the vendor, we get the txid from TxResponse
+                    const responseCopy = response as Connex.Vendor.TxResponse;
+                    setSendTransactionTx(responseCopy?.txid);
+                }
+            } catch (error) {
+                setSendTransactionError(
+                    error instanceof Error ? error.message : String(error),
+                );
+                console.error(error);
+                onTxFailedOrCancelled?.();
+                throw error;
+            } finally {
+                setSendTransactionPending(false);
+            }
         },
-        [sendTransaction],
+        [sendTransaction, clauses, convertClauses],
     );
-    const {
-        mutate: runSendTransaction,
-        data: sendTransactionTx,
-        isPending: sendTransactionPending,
-        error: sendTransactionError,
-        reset: resetSendTransaction,
-    } = useMutation({
-        mutationFn: sendTransactionAdapter,
-        onError: (error) => {
-            setError({
-                type: 'SendTransactionError',
-                reason: error.message,
-            });
-        },
-    });
 
+    /**
+     * Fetch the transaction receipt once the transaction is broadcasted
+     */
     const {
         data: txReceipt,
-        isFetching: isTxReceiptLoading,
+        isLoading: isTxReceiptLoading,
         error: txReceiptError,
-    } = useTxReceipt(sendTransactionTx);
+    } = useTxReceipt(sendTransactionTx ?? '');
 
+    /**
+     * Explain the revert reason of the transaction
+     * @param txReceipt the transaction receipt
+     * @returns the revert reason
+     */
     const explainTxRevertReason = useCallback(
         async (txReceipt: Connex.Thor.Transaction.Receipt) => {
             if (!txReceipt.reverted) return;
@@ -161,6 +295,9 @@ UseSendAbstractedTransactionProps): UseSendTransactionReturnValue => {
      */
     const [error, setError] = useState<TransactionStatusErrorType>();
 
+    /**
+     * The status of the transaction
+     */
     const status = useMemo(() => {
         if (sendTransactionPending) return 'pending';
 
@@ -191,67 +328,60 @@ UseSendAbstractedTransactionProps): UseSendTransactionReturnValue => {
         txReceiptError,
     ]);
 
+    /**
+     * If the transaction is successful or in error, explain the revert reason
+     */
     useEffect(() => {
-        if (sendTransactionError) {
-            setError({
-                type: 'SendTransactionError',
-                reason: sendTransactionError.message,
-            });
-        }
-
-        if (sendTransactionTx) {
-            if (txReceiptError) {
-                setError({
-                    type: 'TxReceiptError',
-                    reason: txReceiptError.message,
-                });
-                return;
-            }
-
+        if (status === 'success' || status === 'error') {
             if (txReceipt) {
                 if (txReceipt.reverted) {
-                    (async () => {
-                        const revertReason = await explainTxRevertReason(
-                            txReceipt,
-                        );
-                        setError({
-                            type: 'RevertReasonError',
-                            reason:
-                                revertReason?.[0]?.revertReason ??
-                                'Transaction reverted',
-                        });
-                    })();
-
+                    if (!error?.type) {
+                        (async () => {
+                            const revertReason = await explainTxRevertReason(
+                                txReceipt,
+                            );
+                            setError({
+                                type: 'RevertReasonError',
+                                reason:
+                                    revertReason?.[0]?.revertReason ??
+                                    'Transaction reverted',
+                            });
+                        })();
+                    }
                     return;
                 }
                 onTxConfirmed?.();
                 return;
             }
         }
-    }, [
-        sendTransactionPending,
-        isTxReceiptLoading,
-        sendTransactionError,
-        txReceiptError,
-        txReceipt,
-        onTxConfirmed,
-        explainTxRevertReason,
-        sendTransactionTx,
-    ]);
+    }, [status, txReceipt, onTxConfirmed, explainTxRevertReason, error]);
 
+    /**
+     * Reset the status of the transaction
+     */
     const resetStatus = useCallback(() => {
-        resetSendTransaction();
+        setSendTransactionTx(null);
+        setSendTransactionPending(false);
+        setSendTransactionError(null);
         setError(undefined);
-    }, [resetSendTransaction]);
+    }, []);
+
+    /**
+     * Check if the transaction is pending
+     */
+    const isTransactionPending = useMemo(() => {
+        return (
+            sendTransactionPending ||
+            isTxReceiptLoading ||
+            status === 'pending' ||
+            status === 'waitingConfirmation'
+        );
+    }, [sendTransactionPending, isTxReceiptLoading, status]);
 
     return {
-        sendTransaction: runSendTransaction,
-        sendTransactionPending,
-        sendTransactionError,
-        isTxReceiptLoading,
-        sendTransactionTx,
-        txReceiptError,
-        txReceipt,
+        sendTransaction: sendTransactionAdapter,
+        isTransactionPending,
+        txReceipt: txReceipt ?? null,
         status,
         resetStatus,
         error,

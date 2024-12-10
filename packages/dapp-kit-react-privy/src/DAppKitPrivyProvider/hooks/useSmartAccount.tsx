@@ -6,7 +6,7 @@ import {
     useWallets,
     type ConnectedWallet,
 } from '@privy-io/react-auth';
-import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
+import { randomTransactionUser } from '../utils';
 import { encodeFunctionData } from 'viem';
 import { ABIContract, Address, Clause } from '@vechain/sdk-core';
 import {
@@ -15,15 +15,15 @@ import {
     ProviderInternalBaseWallet,
     signerUtils,
 } from '@vechain/sdk-network';
-import { TransactionData } from './useSendTransaction';
 import { SimpleAccountABI, SimpleAccountFactoryABI } from '../assets/abi';
+import { ExecuteWithAuthorizationSignData } from '../utils';
 
 export interface SmartAccountContextType {
     address: string | undefined;
     embeddedWallet: ConnectedWallet | undefined;
     isDeployed: boolean;
     sendTransaction: (tx: {
-        txClauses: TransactionData[];
+        txClauses: Connex.VM.Clause[];
         title?: string;
         description?: string;
         buttonText?: string;
@@ -35,43 +35,23 @@ export interface SmartAccountContextType {
     accountFactory: string;
 }
 
-type SignData = {
-    domain: {
-        name: string;
-        version: string;
-        chainId: number;
-        verifyingContract: string;
-    };
-    types: {
-        ExecuteWithAuthorization: {
-            name: string;
-            type: string;
-        }[];
-    };
-    primaryType: string;
-    message: {
-        validAfter: number;
-        validBefore: number;
-        to: string | undefined;
-        value: string;
-        data: string;
-    };
-};
-
-const randomTransactionUser = (() => {
-    const privateKey = generatePrivateKey();
-    const account = privateKeyToAccount(privateKey);
-    return {
-        privateKey,
-        account,
-        address: account.address,
-    };
-})();
-
 const VechainAccountContext = createContext<SmartAccountContextType | null>(
     null,
 );
 
+/**
+ * This provider is responsible for retrieving the smart account address
+ * of a Privy wallet and providing the necessary context for the smart account.
+ * Upon initialization this provider will execute a few useEffect hooks to:
+ * - retrieve the smart account address of the embedded wallet
+ * - retrieve the chain id
+ * - check if the smart account is deployed
+ *
+ * It also provides a function to send transactions on vechain by asking the privy wallet
+ * to sign the transaction and then forwarding the transaction to the node api.
+ * When sending a transaction this provider will check if the smart account is deployed and if not,
+ * it will deploy it.
+ */
 export const SmartAccountProvider = ({
     children,
     nodeUrl,
@@ -88,17 +68,21 @@ export const SmartAccountProvider = ({
     const embeddedWallet = wallets.find(
         (wallet) => wallet.walletClientType === 'privy',
     );
-    const [address, setAddress] = useState<string | undefined>();
+    const [smartAccountAddress, setSmartAccountAddress] = useState<
+        string | undefined
+    >();
     const [chainId, setChainId] = useState('');
     const thor = ThorClient.fromUrl(nodeUrl);
     const [isDeployed, setIsDeployed] = useState(false);
 
     /**
-     * load the address of the account abstraction wallet identified by the embedded wallets address
-     * it is the origin for on-chain-interaction with other parties
-     * */
+     * Load the smartAccountAddress of the account abstraction wallet identified by
+     * the embedded wallet of Privy.
+     */
     useEffect(() => {
         if (!embeddedWallet || !accountFactory || !nodeUrl || !delegatorUrl) {
+            setSmartAccountAddress(undefined);
+            setIsDeployed(false);
             return;
         }
 
@@ -110,80 +94,107 @@ export const SmartAccountProvider = ({
                 ),
                 [embeddedWallet.address],
             )
-            .then((accountAddress) =>
-                setAddress(String(accountAddress.result.plain)),
-            )
-            .catch(() => {
+            .then((accountAddress) => {
+                setSmartAccountAddress(String(accountAddress.result.plain));
+            })
+            .catch((e) => {
+                console.error('error', e);
                 /* ignore */
             });
-    }, [embeddedWallet, thor, accountFactory]);
+    }, [embeddedWallet, thor, accountFactory, nodeUrl, delegatorUrl]);
 
     /**
-     * identify the current chain from its genesis block
+     * Identify the current chain id from its genesis block
      */
     useEffect(() => {
         thor.blocks
             .getGenesisBlock()
-            .then(
-                (genesis) =>
-                    genesis?.id && setChainId(BigInt(genesis.id).toString()),
-            )
-            .catch(() => {
-                /* ignore */
+            .then((genesis) => {
+                if (genesis?.id) {
+                    const chainIdValue = BigInt(genesis.id).toString();
+                    setChainId(chainIdValue);
+                }
+            })
+            .catch((error) => {
+                console.error('Failed to get genesis block:', error);
             });
     }, [thor]);
 
-    // reset address when embedded wallet vanishes
+    /**
+     * Reset smartAccountAddress when embedded wallet vanishes
+     */
     useEffect(() => {
         if (!embeddedWallet) {
-            setAddress(undefined);
+            setSmartAccountAddress(undefined);
         }
     }, [embeddedWallet]);
 
+    /**
+     * Check if the smart account is deployed
+     */
+    useEffect(() => {
+        if (!smartAccountAddress) {
+            return;
+        }
+
+        thor.accounts
+            .getAccount(Address.of(smartAccountAddress))
+            .then((account) => {
+                setIsDeployed(account.hasCode);
+            });
+    }, [smartAccountAddress, thor]);
+
+    /**
+     * Send a transaction on vechain by asking the privy wallet to sign a typed data content
+     * that will allow us the execute the action with his smart account trough the executeWithAuthorization
+     * function of the smart account.
+     */
     const sendTransaction = async ({
         txClauses = [],
         title = 'Sign Transaction',
         description,
         buttonText = 'Sign',
     }: {
-        txClauses: TransactionData[];
+        txClauses: Connex.VM.Clause[];
         title?: string;
         description?: string;
         buttonText?: string;
     }): Promise<string> => {
-        if (!address || !embeddedWallet) {
+        if (!smartAccountAddress || !embeddedWallet) {
             throw new Error('Address or embedded wallet is missing');
         }
 
         // build the object to be signed, containing all information & instructions
-        const dataToSign: SignData[] = txClauses.map((txData) => ({
-            domain: {
-                name: 'Wallet',
-                version: '1',
-                chainId: chainId as unknown as number, // work around the viem limitation that chainId must be a number but its too big to be handled as such
-                verifyingContract: address,
-            },
-            types: {
-                ExecuteWithAuthorization: [
-                    { name: 'to', type: 'address' },
-                    { name: 'value', type: 'uint256' },
-                    { name: 'data', type: 'bytes' },
-                    { name: 'validAfter', type: 'uint256' },
-                    { name: 'validBefore', type: 'uint256' },
-                ],
-            },
-            primaryType: 'ExecuteWithAuthorization',
-            message: {
-                validAfter: 0,
-                validBefore: Math.floor(Date.now() / 1000) + 3600,
-                to: txData.to,
-                value: String(txData.value),
-                data:
-                    typeof txData.data === 'object' && 'abi' in txData.data
-                        ? encodeFunctionData(txData.data)
-                        : txData.data,
-            },
-        }));
+        const dataToSign: ExecuteWithAuthorizationSignData[] = txClauses.map(
+            (txData) => ({
+                domain: {
+                    name: 'Wallet',
+                    version: '1',
+                    chainId: chainId as unknown as number, // convert chainId to a number
+                    verifyingContract: smartAccountAddress,
+                },
+                types: {
+                    ExecuteWithAuthorization: [
+                        { name: 'to', type: 'address' },
+                        { name: 'value', type: 'uint256' },
+                        { name: 'data', type: 'bytes' },
+                        { name: 'validAfter', type: 'uint256' },
+                        { name: 'validBefore', type: 'uint256' },
+                    ],
+                },
+                primaryType: 'ExecuteWithAuthorization',
+                message: {
+                    validAfter: 0,
+                    validBefore: Math.floor(Date.now() / 1000) + 3600,
+                    to: txData.to,
+                    value: String(txData.value),
+                    data:
+                        (typeof txData.data === 'object' && 'abi' in txData.data
+                            ? encodeFunctionData(txData.data)
+                            : txData.data) || '0x',
+                },
+            }),
+        );
 
         // request signatures using privy
         const signatures: string[] = await Promise.all(
@@ -201,9 +212,11 @@ export const SmartAccountProvider = ({
                     description:
                         description ??
                         (typeof funcData === 'object' &&
+                        funcData !== null &&
                         'functionName' in funcData
-                            ? funcData.functionName
-                            : 'Transaction'),
+                            ? (funcData as { functionName: string })
+                                  .functionName
+                            : ' '),
                     buttonText,
                 });
             }),
@@ -212,9 +225,9 @@ export const SmartAccountProvider = ({
         // start building the clauses for the transaction
         const clauses = [];
 
-        // if the account address has no code yet, it's not been deployed/created yet
+        // if the account smartAccountAddress has no code yet, it's not been deployed/created yet
         const { hasCode: isDeployed } = await thor.accounts.getAccount(
-            Address.of(address),
+            Address.of(smartAccountAddress),
         );
         setIsDeployed(isDeployed);
         if (!isDeployed) {
@@ -223,8 +236,8 @@ export const SmartAccountProvider = ({
                     Address.of(accountFactory),
                     ABIContract.ofAbi(SimpleAccountFactoryABI).getFunction(
                         'createAccount',
-                    ), //inser ABI
-                    [embeddedWallet.address],
+                    ),
+                    [embeddedWallet.address], // set the Privy wallet address as the owner of the smart account
                 ),
             );
         }
@@ -232,7 +245,7 @@ export const SmartAccountProvider = ({
         dataToSign.forEach((data, index) => {
             clauses.push(
                 Clause.callFunction(
-                    Address.of(address),
+                    Address.of(smartAccountAddress),
                     ABIContract.ofAbi(SimpleAccountABI).getFunction(
                         'executeWithAuthorization',
                     ),
@@ -308,7 +321,7 @@ export const SmartAccountProvider = ({
     return (
         <VechainAccountContext.Provider
             value={{
-                address,
+                address: smartAccountAddress,
                 accountFactory,
                 nodeUrl,
                 delegatorUrl,

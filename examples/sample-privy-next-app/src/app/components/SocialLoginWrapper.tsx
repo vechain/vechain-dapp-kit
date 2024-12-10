@@ -33,7 +33,7 @@ export function SocialLoginWrapper({ children }: Props) {
             }}
             smartAccountConfig={{
                 nodeUrl: 'https://node.vechain.energy',
-                delegatorUrl: 'https://delegator.vechain.energy',
+                delegatorUrl: 'https://sponsor.vechain.energy/by/749',
                 accountFactoryAddress:
                     '0xC06Ad8573022e2BE416CA89DA47E8c592971679A',
             }}
