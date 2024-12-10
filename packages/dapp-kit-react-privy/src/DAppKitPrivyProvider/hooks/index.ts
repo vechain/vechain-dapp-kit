@@ -1,6 +1,7 @@
-export * from "./useB3TRBalance";
-export * from "./useWalletAdapter";
-export * from "./useTxReceipt";
-export * from "./useVOT3Balance";
-export * from "./useSendAccountAbstractedTransaction";
-export * from "./useSmartAccount";
+export * from './useWallet';
+export * from './useTxReceipt';
+export * from './useSendTransaction';
+export * from './useSmartAccount';
+export { usePrivy } from '@privy-io/react-auth';
+export { useConnex } from '@vechain/dapp-kit-react';
+export { useWalletModal } from '@vechain/dapp-kit-react';

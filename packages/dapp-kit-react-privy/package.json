@@ -17,13 +17,13 @@
     ],
     "scripts": {
         "build": "tsup",
+        "watch": "tsup --watch",
         "clean": "rm -rf dist .turbo",
         "lint": "eslint",
         "purge": "yarn clean && rm -rf node_modules"
     },
     "dependencies": {
         "@privy-io/react-auth": "1.83.1",
-        "@tanstack/react-query": "^5.61.0",
         "@vechain/dapp-kit-react": "*",
         "@vechain/sdk-core": "^1.0.0-rc.3",
         "@vechain/sdk-network": "^1.0.0-rc.3",
