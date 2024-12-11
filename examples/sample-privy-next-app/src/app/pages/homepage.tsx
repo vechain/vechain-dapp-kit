@@ -18,6 +18,7 @@ const HomePage = (): ReactElement => {
         smartAccount,
         logoutAndDisconnect,
         isLoadingConnection,
+        isCrossAppPrivyAccount,
     } = useWallet();
 
     const {
@@ -85,6 +86,12 @@ const HomePage = (): ReactElement => {
                                 Connected with Privy:{' '}
                                 {isConnectedWithPrivy.toString()}
                             </p>
+                            {isConnectedWithPrivy && (
+                                <p>
+                                    Cross App Connection:{' '}
+                                    {isCrossAppPrivyAccount.toString()}
+                                </p>
+                            )}
                             <p>
                                 Connected with DappKit:{' '}
                                 {isConnectedWithDappKit.toString()}

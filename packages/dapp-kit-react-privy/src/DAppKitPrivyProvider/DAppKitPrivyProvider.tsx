@@ -33,6 +33,7 @@ type Props = {
             | 'farcaster'
             | 'telegram'
         )[];
+        ecosystemAppsID?: string[];
     };
     smartAccountConfig?: {
         nodeUrl: string;
@@ -77,6 +78,12 @@ export const DAppKitPrivyProvider = ({
     smartAccountConfig,
     dappKitConfig,
 }: Props) => {
+    // Join login methods and ecosystemAppsID, but ecosystemAppsID needs to be written as "privy:appID"
+    const loginMethods = [
+        ...privyConfig.loginMethods,
+        ...(privyConfig.ecosystemAppsID ?? []).map((appID) => `privy:${appID}`),
+    ];
+
     return (
         <DAppKitPrivyContext.Provider
             value={{ privyConfig, smartAccountConfig, dappKitConfig }}
@@ -85,7 +92,11 @@ export const DAppKitPrivyProvider = ({
                 appId={privyConfig.appId}
                 clientId={privyConfig.clientId}
                 config={{
-                    loginMethods: privyConfig.loginMethods,
+                    loginMethodsAndOrder: {
+                        // @ts-ignore
+                        primary: loginMethods,
+                    },
+                    // loginMethods: privyConfig.loginMethods,
                     appearance: privyConfig.appearance,
                     embeddedWallets: {
                         createOnLogin:

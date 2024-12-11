@@ -12,7 +12,10 @@ type UseWalletReturnType = {
     isConnectedWithPrivy: boolean;
     isConnectedWithDappKit: boolean;
     isLoadingConnection: boolean;
+    isCrossAppPrivyAccount: boolean;
     connectedAddress: string | undefined;
+    crossAppAccount: string | undefined;
+    privyEmbeddedWallet: string | undefined;
     smartAccount: {
         address: string | undefined;
         isDeployed: boolean;
@@ -33,7 +36,20 @@ export const useWallet = (): UseWalletReturnType => {
     const isConnectedWithPrivy = authenticated && !!user;
     const isConnected = isConnectedWithDappKit || isConnectedWithPrivy;
 
-    const connectedAddress = dappKitAccount ?? user?.wallet?.address;
+    const isCrossAppPrivyAccount = Boolean(
+        user?.linkedAccounts?.some((account) => account.type === 'cross_app'),
+    );
+
+    const crossAppAccount = user?.linkedAccounts.find(
+        (account) => account.type === 'cross_app',
+    );
+
+    const privyEmbeddedWallet = user?.wallet?.address;
+
+    const connectedAddress =
+        dappKitAccount ??
+        crossAppAccount?.embeddedWallets?.[0]?.address ??
+        privyEmbeddedWallet;
 
     const vetDomain = useVechainDomain({ addressOrDomain: dappKitAccount });
 
@@ -50,7 +66,10 @@ export const useWallet = (): UseWalletReturnType => {
         isConnectedWithPrivy,
         isConnectedWithDappKit,
         isLoadingConnection: !ready,
+        isCrossAppPrivyAccount,
         connectedAddress,
+        crossAppAccount: crossAppAccount?.embeddedWallets?.[0]?.address,
+        privyEmbeddedWallet,
         smartAccount: {
             address: abstractedAccount.address,
             isDeployed: abstractedAccount.isDeployed,

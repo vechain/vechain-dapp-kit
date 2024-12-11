@@ -1,10 +1,12 @@
 'use client';
 
-import { usePrivy } from '@privy-io/react-auth';
+import { useCrossAppAccounts, usePrivy } from '@privy-io/react-auth';
 import { useWalletModal } from '@vechain/dapp-kit-react';
 import { TwitterLogo } from '../TwitterLogo';
 import { GoogleLogo } from '../GoogleLogo';
-
+import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
+import { useEffect, useState } from 'react';
+import { useWallet } from '../../hooks';
 type Props = {
     isOpen: boolean;
     onClose: () => void;
@@ -12,9 +14,32 @@ type Props = {
 };
 
 export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
-    const { login } = usePrivy();
-
+    const { login, authenticated } = usePrivy();
     const { open } = useWalletModal();
+    const { privyConfig } = useDAppKitPrivyConfig();
+    const { loginWithCrossAppAccount, linkCrossAppAccount } =
+        useCrossAppAccounts();
+    const { isCrossAppPrivyAccount } = useWallet();
+    const [crossAppLogin, setCrossAppLogin] = useState(false);
+
+    const connectWithVebetterDaoApps = async () => {
+        setCrossAppLogin(true);
+        await loginWithCrossAppAccount({
+            appId: `${privyConfig?.ecosystemAppsID?.[0]}`,
+        });
+    };
+
+    /**
+     * After the user logs in we check if the user logged in with a cross app account.
+     * If he did, and the account is not linked to, we link it.
+     */
+    useEffect(() => {
+        if (!isCrossAppPrivyAccount && crossAppLogin && authenticated) {
+            linkCrossAppAccount({
+                appId: `${privyConfig?.ecosystemAppsID?.[0]}`,
+            });
+        }
+    }, [isCrossAppPrivyAccount, crossAppLogin, authenticated]);
 
     return isOpen ? (
         <div
@@ -125,6 +150,30 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
                         </div>
                         <span>Continue with Social</span>
                     </button>
+                    {privyConfig?.ecosystemAppsID &&
+                        privyConfig?.ecosystemAppsID?.length > 0 && (
+                            <button
+                                className="connect-modal-vebetterdao"
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: '100%',
+                                    padding: '10px',
+                                    marginBottom: '10px',
+                                    border: '1px solid #ccc',
+                                    borderRadius: '6px',
+                                    backgroundColor: 'white',
+                                    cursor: 'pointer',
+                                }}
+                                onClick={() => {
+                                    onClose();
+                                    connectWithVebetterDaoApps();
+                                }}
+                            >
+                                <span>Connect through Vebetterdao Apps</span>
+                            </button>
+                        )}
                     <button
                         className="connect-modal-wallet"
                         style={{
