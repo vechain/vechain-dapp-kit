@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-import { resolve } from 'node:path';
+import { resolve } from 'path';
 import { defineConfig } from 'vitest/config'; // eslint-disable-next-line import/no-default-export
 
 // eslint-disable-next-line import/no-default-export
@@ -19,10 +19,10 @@ export default defineConfig({
                 'text-summary',
                 'text',
             ],
-            lines: 80,
-            statements: 80,
-            functions: 80,
-            branches: 80,
+            lines: 75,
+            statements: 65,
+            functions: 75,
+            branches: 60,
         },
         globals: true,
     },

@@ -1,21 +1,33 @@
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
-import { certificate } from '@vechain/sdk-core';
+import { Certificate } from '@vechain/sdk-core';
+import type { ThorClient } from '@vechain/sdk-network';
 import type {
     ConnectResponse,
-    ConnexWallet,
     DAppKitOptions,
+    VeChainWallet,
     WalletManagerState,
     WalletSource,
 } from '../types';
 import { createWallet, DAppKitLogger, Storage } from '../utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
+import type {
+    CertificateMessage,
+    CertificateOptions,
+    CertificateResponse,
+    TransactionMessage,
+    TransactionOptions,
+    TransactionResponse,
+} from '../types/requests';
 
 class WalletManager {
     public readonly state: WalletManagerState;
-    private wallets: Record<string, ConnexWallet | undefined> = {};
+    private wallets: Record<string, VeChainWallet | undefined> = {};
 
-    constructor(private readonly options: DAppKitOptions) {
+    constructor(
+        private readonly options: DAppKitOptions,
+        private readonly thor: ThorClient,
+    ) {
         this.state = this.initState(options.usePersistence ?? false);
         this.initPersistence(options.usePersistence ?? false);
         DAppKitLogger.debug('WalletManager', 'constructor', this.state);
@@ -27,7 +39,7 @@ class WalletManager {
         }
     }
 
-    private get wallet(): ConnexWallet {
+    private get wallet(): VeChainWallet {
         const source = this.state.source;
 
         DAppKitLogger.debug(
@@ -38,7 +50,7 @@ class WalletManager {
         );
 
         if (!source) {
-            throw new Error('No wallet has been selected');
+            throw new Error('No wallet selected');
         }
 
         let wallet = this.wallets[source];
@@ -59,6 +71,7 @@ class WalletManager {
                 ...this.options,
                 source,
                 onDisconnected: () => this.disconnect(true),
+                thor: this.thor,
             };
             wallet = createWallet(opts);
 
@@ -89,7 +102,7 @@ class WalletManager {
         };
 
         try {
-            certificate.verify(connectionCertificate);
+            Certificate.of(connectionCertificate).verify();
             this.state.address = signer;
             this.state.connectionCertificate = connectionCertificate;
             return {
@@ -163,9 +176,9 @@ class WalletManager {
     };
 
     signTx = (
-        msg: Connex.Vendor.TxMessage,
-        options: Connex.Signer.TxOptions,
-    ): Promise<Connex.Vendor.TxResponse> =>
+        msg: TransactionMessage[],
+        options: TransactionOptions = {},
+    ): Promise<TransactionResponse> =>
         this.wallet
             .signTx(msg, options)
             .then((res) => {
@@ -179,9 +192,9 @@ class WalletManager {
             });
 
     signCert = (
-        msg: Connex.Vendor.CertMessage,
-        options: Connex.Signer.CertOptions,
-    ): Promise<Connex.Vendor.CertResponse> =>
+        msg: CertificateMessage,
+        options: CertificateOptions = {},
+    ): Promise<CertificateResponse> =>
         this.wallet
             .signCert(msg, options)
             .then((res) => {
@@ -209,10 +222,6 @@ class WalletManager {
 
         if (src === 'veworld' && !window.vechain) {
             throw new Error('VeWorld Extension is not installed');
-        }
-
-        if (src === 'sync' && !window.connex) {
-            throw new Error('User is not in a Sync wallet');
         }
 
         DAppKitLogger.debug('WalletManager', 'setSource', src);
@@ -275,9 +284,7 @@ class WalletManager {
     };
 
     private getAvailableSources = (): WalletSource[] => {
-        const wallets: WalletSource[] = [];
-
-        wallets.push('veworld');
+        const wallets: WalletSource[] = ['veworld'];
 
         if (this.options.walletConnectOptions) {
             wallets.push('wallet-connect');
@@ -297,10 +304,6 @@ class WalletManager {
             this.setSource('veworld');
         } else if (this.options.walletConnectOptions) {
             this.setSource('wallet-connect');
-        } else if (window.connex) {
-            this.setSource('sync');
-        } else {
-            this.setSource('sync2');
         }
     };
 }

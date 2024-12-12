@@ -13,7 +13,7 @@
         "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
-        "@vechain/dapp-kit-ui": "*"
+        "@vechain/dapp-kit-ui": "workspace:^"
     },
     "devDependencies": {
         "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
@@ -32,7 +32,7 @@
         "svelte": "^4.0.5",
         "svelte-check": "^3.6.0",
         "tslib": "^2.4.1",
-        "typescript": "^5.0.0",
+        "typescript": "5.3.3",
         "vite": "^4.5.2",
         "vite-plugin-node-polyfills": "^0.16.0"
     }

@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DAppKitLogger } from '../../src';
 
 describe('DAppKitLogger', function () {

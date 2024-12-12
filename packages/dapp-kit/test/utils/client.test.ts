@@ -1,4 +1,4 @@
-import { describe, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { SignClientTypes } from '@walletconnect/types';
 import { SignClient } from '@walletconnect/sign-client';
 import { createWcClient } from '../../src';

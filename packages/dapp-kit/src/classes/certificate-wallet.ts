@@ -1,16 +1,25 @@
-import { certificate } from '@vechain/sdk-core';
-import type { BaseWallet, ConnectResponse, ConnexWallet } from '../types';
+import { Certificate } from '@vechain/sdk-core';
+import type { ConnectResponse, VeChainWallet } from '../types';
 import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
+import type {
+    CertificateMessage,
+    CertificateOptions,
+    CertificateResponse,
+    TransactionMessage,
+    TransactionOptions,
+    TransactionResponse,
+} from '../types/requests';
+import type { WalletSigner } from '../types/types';
 
 /**
- * A `ConnexWallet` for wallet's that use a certificate connection
+ * A `VechainWallet` for wallet's that use a certificate connection
  */
-class CertificateBasedWallet implements ConnexWallet {
+class CertificateBasedWallet implements VeChainWallet {
     constructor(
-        private readonly wallet: BaseWallet,
+        private readonly wallet: Promise<WalletSigner>,
         private readonly connectionCertificateData?: {
-            message?: Connex.Vendor.CertMessage;
-            options?: Connex.Signer.CertOptions;
+            message?: CertificateMessage;
+            options?: CertificateOptions;
         },
     ) {}
 
@@ -34,7 +43,7 @@ class CertificateBasedWallet implements ConnexWallet {
         };
 
         try {
-            certificate.verify(connectionCertificate);
+            Certificate.of(connectionCertificate).verify();
 
             return {
                 account: signer,
@@ -50,17 +59,36 @@ class CertificateBasedWallet implements ConnexWallet {
     };
 
     signCert = (
-        msg: Connex.Vendor.CertMessage,
-        options: Connex.Signer.CertOptions,
-    ): Promise<Connex.Vendor.CertResponse> =>
-        this.wallet.signCert(msg, options);
+        msg: CertificateMessage,
+        options: CertificateOptions,
+    ): Promise<CertificateResponse> =>
+        this.wallet.then((w) => w.signCert(msg, options));
 
     signTx = (
-        msg: Connex.Vendor.TxMessage,
-        options: Connex.Signer.TxOptions,
-    ): Promise<Connex.Vendor.TxResponse> => this.wallet.signTx(msg, options);
+        msg: TransactionMessage[],
+        options: TransactionOptions,
+    ): Promise<TransactionResponse> =>
+        this.wallet.then((w) => {
+            if (options.delegator?.url === '') {
+                options.delegator = undefined;
+            }
 
-    disconnect = async (): Promise<void> => this.wallet.disconnect?.();
+            if (options.gas === 0) {
+                options.gas = undefined;
+            }
+
+            if (options.comment === '') {
+                options.comment = undefined;
+            }
+
+            if (options.dependsOn === '') {
+                options.dependsOn = undefined;
+            }
+
+            return w.signTx(msg, options);
+        });
+
+    disconnect = () => Promise.resolve();
 }
 
 export { CertificateBasedWallet };
