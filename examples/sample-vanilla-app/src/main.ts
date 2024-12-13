@@ -1,13 +1,13 @@
-import { DAppKitUI } from '@vechain/dapp-kit-ui';
+import { DAppKitUI, friendlyAddress } from '@vechain/dapp-kit-ui';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div class="container">
-            <h2>Vanilla JS</h2>
-            <div class="label">kit button:</div>
-            <vdk-button></vdk-button>
-            <div class="label">custom button:</div>
-            <button id="custom-button">Connect Custom Button</button>
-        </div>
+    <div class="container">
+    <h2>Vanilla JS</h2>
+    <div class="label">kit button:</div>
+    <vdk-button></vdk-button>
+    <div class="label">custom button:</div>
+    <button id="custom-button">Connect Custom Button</button>
+    </div>
 `;
 
 const walletConnectOptions = {
@@ -21,7 +21,7 @@ const walletConnectOptions = {
 };
 
 DAppKitUI.configure({
-    nodeUrl: 'https://testnet.vechain.org/',
+    nodeUrl: 'https://mainnet.vechain.org/',
     walletConnectOptions,
     usePersistence: true,
 });
@@ -35,18 +35,28 @@ if (customButton) {
         DAppKitUI.modal.open();
     });
 
-    const handleConnected = (address: string | null) => {
+    const render = () => {
+        const address = DAppKitUI.wallet.state.address;
+        const accountDomain = DAppKitUI.wallet.state.accountDomain;
+        const isAccountDomainLoading =
+            DAppKitUI.wallet.state.isAccountDomainLoading;
+
+        const addressOrDomain =
+            accountDomain && !isAccountDomainLoading
+                ? accountDomain
+                : friendlyAddress(address || '');
+
         if (address) {
-            const formattedAddress = `${address.slice(0, 6)}...${address.slice(
-                -4,
-            )}`;
-            customButton.innerText = `Disconnect from ${formattedAddress}`;
+            customButton.innerText = `Disconnect from ${addressOrDomain}`;
         } else {
             customButton.innerText = 'Connect Custom Button';
         }
     };
 
-    handleConnected(DAppKitUI.wallet.state.address);
+    render();
 
-    DAppKitUI.modal.onConnectionStatusChange(handleConnected);
+    DAppKitUI.modal.onConnectionStatusChange(render);
+    DAppKitUI.wallet.subscribeToKey('address', render);
+    DAppKitUI.wallet.subscribeToKey('accountDomain', render);
+    DAppKitUI.wallet.subscribeToKey('isAccountDomainLoading', render);
 }

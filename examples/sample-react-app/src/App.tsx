@@ -6,15 +6,17 @@ import {
 } from '@vechain/dapp-kit-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Counter } from './counter.ts';
+import { friendlyAddress } from '@vechain/dapp-kit-ui';
 
 function App() {
-    const { account, signer } = useWallet();
     const thor = useThor();
     const [count, setCount] = useState(BigInt(0));
     const [error, setError] = useState<Error>();
     const [txId, setTxId] = useState('');
     const [loading, setLoading] = useState(false);
-    const { open, onConnectionStatusChange } = useWalletModal();
+    const { account, accountDomain, isAccountDomainLoading, signer } = useWallet();
+
+    const { open } = useWalletModal();
     const [buttonText, setButtonText] = useState('Connect Custom Button');
 
     const counterContract = useMemo(() => {
@@ -33,22 +35,16 @@ function App() {
     }, [counterContract, loading, error, txId]);
 
     useEffect(() => {
-        const handleConnected = (address: string | null) => {
-            if (address) {
-                const formattedAddress = `${address.slice(
-                    0,
-                    6,
-                )}...${address.slice(-4)}`;
-                setButtonText(`Disconnect from ${formattedAddress}`);
-            } else {
-                setButtonText('Connect Custom Button');
-            }
-        };
-
-        handleConnected(account);
-
-        onConnectionStatusChange(handleConnected);
-    }, [account, onConnectionStatusChange]);
+        if (account) {
+            const addressOrDomain =
+                accountDomain && !isAccountDomainLoading
+                    ? accountDomain
+                    : friendlyAddress(account || '');
+            setButtonText(`Disconnect from ${addressOrDomain}`);
+        } else {
+            setButtonText('Connect Custom Button');
+        }
+    }, [account, accountDomain, isAccountDomainLoading]);
 
     useEffect(() => {
         console.log('signer', signer);

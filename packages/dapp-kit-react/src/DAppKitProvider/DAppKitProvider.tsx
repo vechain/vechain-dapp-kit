@@ -1,23 +1,11 @@
-import React, {
-    createContext,
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react';
-import type { WalletSource } from '@vechain/dapp-kit';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import type { DAppKit, WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import type { CertificateData } from '@vechain/sdk-core';
 import { subscribeKey } from 'valtio/vanilla/utils';
-import type { DAppKitContext, DAppKitProviderOptions } from './types';
+import type { DAppKitContext } from './types';
 
-/**
- * Context
- */
-const Context = createContext<DAppKitContext | undefined>(undefined);
-
-export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
+export const DAppKitProviderData = ({
     children,
     nodeUrl,
     walletConnectOptions,
@@ -67,6 +55,12 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     const [account, setAccount] = useState<string | null>(
         dAppKit.wallet.state.address,
     );
+    const [accountDomain, setAccountDomain] = useState<string | null>(
+        connex.wallet.state.accountDomain,
+    );
+    const [isAccountDomainLoading, setIsAccountDomainLoading] = useState(
+        connex.wallet.state.isAccountDomainLoading,
+    );
     const [source, setSource] = useState<WalletSource | null>(
         dAppKit.wallet.state.source,
     );
@@ -96,6 +90,8 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
 
         return () => {
             addressSub();
+            domainSub();
+            isAccountDomainLoadingSub();
             sourceSub();
             certificateSub();
         };
@@ -124,8 +120,11 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
                 signer: dAppKit.signer,
                 availableWallets: dAppKit.wallet.state.availableSources,
                 account,
+                accountDomain,
+                isAccountDomainLoading,
                 source,
                 connectionCertificate,
+                signTypedData: connex.wallet.signTypedData,
             },
             modal: {
                 open: openModal,
@@ -136,11 +135,13 @@ export const DAppKitProvider: React.FC<DAppKitProviderOptions> = ({
     }, [
         dAppKit,
         account,
+        accountDomain,
+        isAccountDomainLoading,
         source,
-        closeModal,
-        openModal,
-        onModalConnected,
         connectionCertificate,
+        openModal,
+        closeModal,
+        onModalConnected,
     ]);
 
     return <Context.Provider value={context}>{children}</Context.Provider>;
@@ -173,6 +174,26 @@ export const useWalletModal = (): DAppKitContext['modal'] => {
         throw new Error(
             '"useWalletModal" must be used within a DAppKitProvider',
         );
+    }, [
+        nodeUrl,
+        genesis,
+        walletConnectOptions,
+        usePersistence,
+        logLevel,
+        requireCertificate,
+        themeVariables,
+        themeMode,
+        i18n,
+        language,
+        modalParent,
+        onSourceClick,
+        connectionCertificateData,
+        allowedWallets,
+    ]);
+    if (!connex) {
+        return null;
     }
-    return context.modal;
+    return (
+        <DAppKitProviderData connex={connex}>{children}</DAppKitProviderData>
+    );
 };

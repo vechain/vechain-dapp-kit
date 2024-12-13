@@ -18,5 +18,5 @@
         "strict": true,
         "typeRoots": ["node_modules/@types"]
     },
-    "include": ["src/**/*.ts", "test/**/*.test.ts"]
+    "include": ["src/**/*.ts", "test/**/*.test.ts", "eslint.config.mjs"]
 }

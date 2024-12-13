@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.
@@ -55,6 +53,7 @@ import 'zone.js'; // Included with Angular CLI.
 
 import '@angular/localize/init';
 (window as any).global = window;
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 global.Buffer = global.Buffer || require('buffer').Buffer;
 (window as any).process = {
     env: { DEBUG: undefined },

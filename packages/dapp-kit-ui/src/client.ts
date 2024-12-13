@@ -74,7 +74,6 @@ export const DAppKitUI = {
 
     get(): DAppKit {
         if (!dappKit) {
-            // eslint-disable-next-line no-console
             console.error('🚨🚨🚨 DAppKitUI not configured 🚨🚨🚨');
             throw new Error('DAppKitUI not configured');
         }

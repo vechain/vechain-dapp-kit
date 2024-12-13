@@ -54,6 +54,20 @@ export const createWcSigner = ({
             throw new Error(`Failed to get the wallet connect sign client`);
         });
 
+    /**
+     * Ping the session when the window is focused
+     * if (window) to prevent SSR errors
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (window) {
+        window.onfocus = async (): Promise<void> => {
+            if (session) {
+                const signClient = await wcClient.get();
+                await signClient.ping({ topic: session.topic });
+            }
+        };
+    }
+
     // listen for session updates
     const listenToEvents = (_client: SignClient): void => {
         _client.on('session_update', ({ topic, params }): void => {
@@ -174,6 +188,7 @@ export const createWcSigner = ({
                     });
             });
         } catch (e) {
+            console.error('wc connect failed', e);
             throw new Error(`wc connect failed`);
         }
     };
@@ -239,6 +254,7 @@ export const createWcSigner = ({
                 reason: getSdkError('USER_DISCONNECTED'),
             });
         } catch (e) {
+            console.error('SignClient.disconnect failed', e);
             throw new Error(`SignClient.disconnect failed`);
         }
     };
@@ -250,7 +266,6 @@ export const createWcSigner = ({
 
         const vechainNamespace = session.namespaces.vechain;
 
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!vechainNamespace) {
             throw new Error(
                 'Failed to create a vechain session with wallet connect',
@@ -265,9 +280,8 @@ export const createWcSigner = ({
                 verified: false,
             };
         } catch (e) {
-            throw new Error(
-                'Failed to get account from wallet connect session',
-            );
+            console.error('Failed to get account from session', e);
+            throw new Error('Failed to get account from session');
         }
     };
 

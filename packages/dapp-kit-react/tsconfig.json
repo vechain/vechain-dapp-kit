@@ -17,8 +17,7 @@
         "skipLibCheck": true,
         "strict": true,
         // React
-        "jsx": "react-jsx",
-        "typeRoots": ["node_modules/@types"]
+        "jsx": "react-jsx"
     },
-    "include": ["src/**/*.ts*", "test/**/*.test.ts*"]
+    "include": ["src/**/*.ts", "test/**/*.test.ts", "eslint.config.mjs"]
 }

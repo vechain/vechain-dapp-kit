@@ -1,10 +1,31 @@
 {
-    "extends": "@vechain/repo-config/src/tsconfig/react.json",
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "display": "React App",
     "compilerOptions": {
+        "composite": false,
+        "declaration": true,
+        "declarationMap": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "inlineSources": false,
+        "isolatedModules": true,
+        "moduleResolution": "node",
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "preserveWatchOutput": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "allowJs": true,
+        "incremental": true,
+        "jsx": "preserve",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "module": "commonjs",
+        "noEmit": true,
+        "resolveJsonModule": true,
+        "target": "ES6",
         "noImplicitAny": false,
         "noImplicitThis": false,
-        "baseUrl": "src",
-        "esModuleInterop": true
+        "baseUrl": "src"
     },
     "include": ["src"]
 }

@@ -5,6 +5,7 @@ import type { WCModal, WCSigner } from '../../src';
 import { createWcClient, createWcSigner } from '../../src';
 import { mockedSignClient } from '../helpers/mocked-sign-client';
 import { address } from '../helpers/mocked-signer';
+import { typedData } from '../fixture';
 
 vi.spyOn(SignClient, 'init').mockResolvedValue(mockedSignClient);
 
@@ -29,6 +30,7 @@ const createNewSignClient = (): WCSigner =>
         genesisId: Promise.resolve('main'),
         wcClient: createWcClient({ projectId, metadata }),
         onDisconnected: () => {
+            // eslint-disable-next-line no-console
             console.log('disconnected');
         },
         web3Modal: customModal,
@@ -65,6 +67,18 @@ describe('createWcSigner', () => {
         );
 
         expect(certRes).toBeDefined();
+    });
+
+    it('can sign typed data', async () => {
+        const signer = createNewSignClient();
+
+        const signedData = await signer.signTypedData(
+            typedData.domain,
+            typedData.types,
+            typedData.value,
+        );
+
+        expect(signedData).toBeDefined();
     });
 
     it('can disconnect', async () => {

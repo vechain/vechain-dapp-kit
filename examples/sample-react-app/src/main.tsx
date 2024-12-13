@@ -19,7 +19,7 @@ const walletConnectOptions: WalletConnectOptions = {
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <DAppKitProvider
-            nodeUrl={'https://testnet.vechain.org/'}
+            nodeUrl={'https://mainnet.vechain.org'}
             usePersistence
             walletConnectOptions={walletConnectOptions}
             logLevel={'DEBUG'}

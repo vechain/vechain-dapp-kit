@@ -1,6 +1,7 @@
 {
     "name": "e2e",
     "version": "1.0.0",
+    "private": true,
     "description": "",
     "license": "ISC",
     "author": "",
@@ -21,7 +22,6 @@
         "@types/jest": "^29.5.12",
         "@types/node": "^16.11.11",
         "@types/selenium-webdriver": "^4.1.13",
-        "@vechain/repo-config": "https://github.com/vechain/repo-config",
         "async-mutex": "^0.2.6",
         "selenium-webdriver": "4.8.2",
         "testcontainers": "^10.7.2",

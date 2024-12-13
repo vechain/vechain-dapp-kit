@@ -44,6 +44,10 @@ const mockedConnexSigner = {
             signature: Hex.of(signature!).toString(),
         });
     },
+
+    signTypedData() {
+        return Promise.resolve('0x1234');
+    },
 };
 
 export { mockedConnexSigner, hdNode, mnemonicWords, privateKey, address };

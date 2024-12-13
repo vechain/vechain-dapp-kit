@@ -1,7 +1,4 @@
-const Config = require('@vechain/repo-config');
-
 module.exports = {
-    ...Config.EslintLibrary,
     rules: {
         'func-style': 'off',
         'func-names': 'off',

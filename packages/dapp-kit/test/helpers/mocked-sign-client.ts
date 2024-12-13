@@ -42,6 +42,14 @@ const defaultMockRequestHandler = (
                 params.request.params[0].options,
             ),
         );
+    } else if (params.request.method === DefaultMethods.SignTypedData) {
+        return Promise.resolve(
+            mockedConnexSigner.signTypedData(
+                params.request.params[0].domain,
+                params.request.params[0].types,
+                params.request.params[0].value,
+            ),
+        );
     }
     throw new Error('Invalid method');
 };
