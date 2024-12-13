@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
-import { wrapper } from './helpers/react-test-helpers';
-import { mockedConnexSigner } from './helpers/mocked-signer';
-import { useWallet } from '../DAppKitProvider';
+import { mockedConnexSigner, wrapper } from '../../../test';
+import { useWallet } from './useWallet';
 
 window.vechain = {} as any;
 window.vechain = {
@@ -49,7 +48,7 @@ describe('useWallet', () => {
 
     it('should throw an error when used outside of DAppKitProvider', () => {
         expect(() => renderHook(() => useWallet())).toThrow(
-            '"useWallet" must be used within a ConnexProvider',
+            '"useWallet" must be used within a DAppKitProvider',
         );
     });
 });
