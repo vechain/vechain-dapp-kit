@@ -1,4 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return */
 import { Blake2b256, Secp256k1 } from '@vechain/sdk-core';
 import type {
@@ -66,11 +65,11 @@ export const createSync: NewSignerFunc = async () => {
             options: TransactionOptions = {},
         ): Promise<TransactionResponse> => {
             const s1 = v1.sign('tx');
-            options.signer && s1.signer(options.signer);
+            /*options.signer && s1.signer(options.signer);
             options.gas && s1.gas(options.gas);
             options.dependsOn && s1.dependsOn(options.dependsOn);
             options.link && s1.link(options.link);
-            options.comment && s1.link(options.comment);
+            options.comment && s1.link(options.comment);*/
             if (options.delegator) {
                 const url = options.delegator.url;
                 s1.delegate(async (unsignedTx: any) => {
@@ -94,8 +93,8 @@ export const createSync: NewSignerFunc = async () => {
             options: CertificateOptions = {},
         ): Promise<CertificateResponse> => {
             const s1 = v1.sign('cert');
-            options.signer && s1.signer(options.signer);
-            options.link && s1.link(options.link);
+            /*options.signer && s1.signer(options.signer);
+            options.link && s1.link(options.link);*/
             options.onAccepted?.();
 
             return s1.request(msg);
