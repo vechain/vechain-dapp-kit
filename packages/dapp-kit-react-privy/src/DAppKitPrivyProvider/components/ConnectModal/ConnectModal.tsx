@@ -15,15 +15,15 @@ import {
     Text,
     VStack,
     useColorMode,
+    useDisclosure,
     useMediaQuery,
 } from '@chakra-ui/react';
-import { useCrossAppAccounts, usePrivy } from '@privy-io/react-auth';
+import { usePrivy } from '@privy-io/react-auth';
 import { useWalletModal } from '@vechain/dapp-kit-react';
-import { TwitterLogo } from '../TwitterLogo';
-import { GoogleLogo } from '../GoogleLogo';
+import { TwitterLogo, GoogleLogo, AppsLogo } from '../../assets/';
 import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
-import { useEffect, useState } from 'react';
-import { useWallet } from '../../hooks';
+import { EcosystemAppsModal } from './EcosystemAppsModal';
+
 type Props = {
     isOpen: boolean;
     onClose: () => void;
@@ -47,150 +47,179 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
 
-    const { login, authenticated } = usePrivy();
+    const { login } = usePrivy();
     const { open } = useWalletModal();
     const { privyConfig } = useDAppKitPrivyConfig();
-    const { loginWithCrossAppAccount, linkCrossAppAccount } =
-        useCrossAppAccounts();
-    const { isCrossAppPrivyAccount } = useWallet();
-    const [crossAppLogin, setCrossAppLogin] = useState(false);
 
-    const connectWithVebetterDaoApps = async () => {
-        setCrossAppLogin(true);
-        await loginWithCrossAppAccount({
-            appId: `${privyConfig?.ecosystemAppsID?.[0]}`,
-        });
-    };
-
-    /**
-     * After the user logs in we check if the user logged in with a cross app account.
-     * If he did, and the account is not linked to, we link it.
-     */
-    useEffect(() => {
-        if (!isCrossAppPrivyAccount && crossAppLogin && authenticated) {
-            linkCrossAppAccount({
-                appId: `${privyConfig?.ecosystemAppsID?.[0]}`,
-            });
-        }
-    }, [isCrossAppPrivyAccount, crossAppLogin, authenticated]);
+    const ecosystemModal = useDisclosure();
 
     return (
-        <Modal
-            motionPreset="slideInBottom"
-            isOpen={isOpen}
-            onClose={onClose}
-            isCentered
-            size={'sm'}
-            variant={'connectModalVariant'}
-        >
-            <ModalOverlay />
-            <ModalContent {...(_modalContentProps as ModalContentProps)}>
-                <ModalHeader
-                    fontSize={'sm'}
-                    fontWeight={'400'}
-                    textAlign={'center'}
-                    color={isDark ? '#dfdfdd' : '#4d4d4d'}
-                >
-                    {'Log in or sign up'}
-                </ModalHeader>
-                <HStack justify={'center'}>
-                    <Image
-                        src={logo || '/images/favicon.png'}
-                        maxW={'180px'}
-                        maxH={'90px'}
-                        m={10}
-                        alt="logo"
-                    />
-                </HStack>
-
-                <ModalCloseButton />
-                <ModalBody>
-                    <HStack
-                        spacing={4}
-                        w={'full'}
-                        justify={'center'}
-                        mb={'24px'}
+        <>
+            <Modal
+                motionPreset="slideInBottom"
+                isOpen={isOpen}
+                onClose={onClose}
+                isCentered
+                size={'sm'}
+                variant={'connectModalVariant'}
+            >
+                <ModalOverlay />
+                <ModalContent {...(_modalContentProps as ModalContentProps)}>
+                    <ModalHeader
+                        fontSize={'sm'}
+                        fontWeight={'400'}
+                        textAlign={'center'}
+                        color={isDark ? '#dfdfdd' : '#4d4d4d'}
                     >
-                        <Text
-                            color={isDark ? '#dfdfdd' : '#4d4d4d'}
-                            fontSize={14}
-                        >
-                            {'Select a login method'}
-                        </Text>
+                        {'Log in or sign up'}
+                    </ModalHeader>
+                    <HStack justify={'center'}>
+                        <Image
+                            src={logo || '/images/favicon.png'}
+                            maxW={'180px'}
+                            maxH={'90px'}
+                            m={10}
+                            alt="logo"
+                        />
                     </HStack>
-                    <VStack spacing={4} w={'full'}>
-                        <Button
-                            fontSize={'14px'}
-                            fontWeight={'400'}
-                            backgroundColor={isDark ? 'transparent' : '#ffffff'}
-                            border={`1px solid ${
-                                isDark ? '#ffffff29' : '#ebebeb'
-                            }`}
-                            p={6}
-                            borderRadius={16}
+
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <HStack
+                            spacing={4}
                             w={'full'}
-                            onClick={() => {
-                                onClose();
-                                login();
-                            }}
+                            justify={'center'}
+                            mb={'24px'}
                         >
-                            <HStack spacing={4} w={'full'} justify={'center'}>
-                                <HStack justify={'start'}>
-                                    <TwitterLogo isDark={isDark} />
-                                    <GoogleLogo />
+                            <Text
+                                color={isDark ? '#dfdfdd' : '#4d4d4d'}
+                                fontSize={14}
+                            >
+                                {'Select a login method'}
+                            </Text>
+                        </HStack>
+                        <VStack spacing={4} w={'full'}>
+                            <Button
+                                fontSize={'14px'}
+                                fontWeight={'400'}
+                                backgroundColor={
+                                    isDark ? 'transparent' : '#ffffff'
+                                }
+                                border={`1px solid ${
+                                    isDark ? '#ffffff29' : '#ebebeb'
+                                }`}
+                                p={6}
+                                borderRadius={16}
+                                w={'full'}
+                                onClick={() => {
+                                    onClose();
+                                    login();
+                                }}
+                            >
+                                <HStack
+                                    spacing={4}
+                                    w={'full'}
+                                    justify={'center'}
+                                >
+                                    <HStack justify={'start'}>
+                                        <TwitterLogo isDark={isDark} />
+                                        <GoogleLogo />
+                                    </HStack>
+                                    <HStack justify={'start'}>
+                                        <Text
+                                            color={
+                                                isDark ? '#dfdfdd' : '#4d4d4d'
+                                            }
+                                        >
+                                            {'Continue with Social'}
+                                        </Text>
+                                    </HStack>
                                 </HStack>
-                                <HStack justify={'start'}>
+                            </Button>
+                            {privyConfig?.ecosystemAppsID &&
+                                privyConfig?.ecosystemAppsID?.length > 0 && (
+                                    <>
+                                        <Button
+                                            fontSize={'14px'}
+                                            fontWeight={'400'}
+                                            backgroundColor={
+                                                isDark
+                                                    ? 'transparent'
+                                                    : '#ffffff'
+                                            }
+                                            border={`1px solid ${
+                                                isDark ? '#ffffff29' : '#ebebeb'
+                                            }`}
+                                            p={6}
+                                            borderRadius={16}
+                                            w={'full'}
+                                            color={
+                                                isDark ? '#dfdfdd' : '#4d4d4d'
+                                            }
+                                            onClick={() => {
+                                                onClose();
+                                                ecosystemModal.onOpen();
+                                            }}
+                                        >
+                                            <HStack
+                                                spacing={4}
+                                                w={'full'}
+                                                justify={'center'}
+                                            >
+                                                <HStack justify={'start'}>
+                                                    <AppsLogo
+                                                        boxSize={'70px'}
+                                                    />
+                                                </HStack>
+                                                <HStack justify={'start'}>
+                                                    <Text
+                                                        color={
+                                                            isDark
+                                                                ? '#dfdfdd'
+                                                                : '#4d4d4d'
+                                                        }
+                                                    >
+                                                        {
+                                                            'Continue with VeChain Apps'
+                                                        }
+                                                    </Text>
+                                                </HStack>
+                                            </HStack>
+                                        </Button>
+                                    </>
+                                )}
+                            <Button
+                                fontSize={'14px'}
+                                fontWeight={'400'}
+                                variant={'link'}
+                                w={'full'}
+                                onClick={() => {
+                                    onClose();
+                                    open();
+                                }}
+                            >
+                                <HStack
+                                    spacing={4}
+                                    w={'full'}
+                                    justify={'center'}
+                                >
                                     <Text
-                                        color={isDark ? '#dfdfdd' : '#4d4d4d'}
+                                        color={isDark ? '#dfdfdd' : '#4d4d4dab'}
                                     >
-                                        {'Continue with Social'}
+                                        {'or with Crypto Wallet'}
                                     </Text>
                                 </HStack>
-                            </HStack>
-                        </Button>
-                        {privyConfig?.ecosystemAppsID &&
-                            privyConfig?.ecosystemAppsID?.length > 0 && (
-                                <Button
-                                    fontSize={'14px'}
-                                    fontWeight={'400'}
-                                    backgroundColor={
-                                        isDark ? 'transparent' : '#ffffff'
-                                    }
-                                    border={`1px solid ${
-                                        isDark ? '#ffffff29' : '#ebebeb'
-                                    }`}
-                                    p={6}
-                                    borderRadius={16}
-                                    w={'full'}
-                                    color={isDark ? '#dfdfdd' : '#4d4d4d'}
-                                    onClick={() => {
-                                        onClose();
-                                        connectWithVebetterDaoApps();
-                                    }}
-                                >
-                                    <span>Continue with VeChain apps</span>
-                                </Button>
-                            )}
-                        <Button
-                            fontSize={'14px'}
-                            fontWeight={'400'}
-                            variant={'link'}
-                            w={'full'}
-                            onClick={() => {
-                                onClose();
-                                open();
-                            }}
-                        >
-                            <HStack spacing={4} w={'full'} justify={'center'}>
-                                <Text color={isDark ? '#dfdfdd' : '#4d4d4dab'}>
-                                    {'or with Crypto Wallet'}
-                                </Text>
-                            </HStack>
-                        </Button>
-                    </VStack>
-                </ModalBody>
-                <ModalFooter />
-            </ModalContent>
-        </Modal>
+                            </Button>
+                        </VStack>
+                    </ModalBody>
+                    <ModalFooter />
+                </ModalContent>
+            </Modal>
+
+            <EcosystemAppsModal
+                isOpen={ecosystemModal.isOpen}
+                onClose={ecosystemModal.onClose}
+            />
+        </>
     );
 };

@@ -1,12 +1,12 @@
-import { Box, BoxProps } from "@chakra-ui/react";
-import React from "react";
-import { googleSvg } from "../../assets/svg";
+import { Box, BoxProps } from '@chakra-ui/react';
+import React from 'react';
+import { googleSvg } from '../../svg';
 
 type Props = {
     boxSize?: string | number;
-} & Omit<BoxProps, "dangerouslySetInnerHTML">;
+} & Omit<BoxProps, 'dangerouslySetInnerHTML'>;
 
-export const GoogleLogo: React.FC<Props> = ({ boxSize = "20px", ...props }) => {
+export const GoogleLogo: React.FC<Props> = ({ boxSize = '20px', ...props }) => {
     return (
         <Box
             as="span"
