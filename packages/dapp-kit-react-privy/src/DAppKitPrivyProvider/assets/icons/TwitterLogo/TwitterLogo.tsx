@@ -1,15 +1,15 @@
-import { Box, BoxProps } from "@chakra-ui/react";
-import React from "react";
-import { twitterSvg } from "../../assets/svg";
+import { Box, BoxProps } from '@chakra-ui/react';
+import React from 'react';
+import { twitterSvg } from '../../svg';
 
 type Props = {
     isDark?: boolean;
     boxSize?: string | number;
-} & Omit<BoxProps, "dangerouslySetInnerHTML">;
+} & Omit<BoxProps, 'dangerouslySetInnerHTML'>;
 
 export const TwitterLogo: React.FC<Props> = ({
     isDark,
-    boxSize = "20px",
+    boxSize = '20px',
     ...props
 }) => {
     return (

@@ -1,3 +1,3 @@
-export * from "./ConnectModal";
-export * from "./TwitterLogo";
-export * from "./GoogleLogo";
+export * from './ConnectModal';
+export * from '../assets/icons/TwitterLogo';
+export * from '../assets/icons/GoogleLogo';

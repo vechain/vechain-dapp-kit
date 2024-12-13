@@ -30,6 +30,10 @@ export function SocialLoginWrapper({ children }: Props) {
                 embeddedWallets: {
                     createOnLogin: 'all-users',
                 },
+                ecosystemAppsID: [
+                    'clxdoatq601h35inz6qykgmai',
+                    'clz41gcg00e4ay75dmq3uzzgr',
+                ],
             }}
             smartAccountConfig={{
                 nodeUrl: 'https://node.vechain.energy',
