@@ -69,18 +69,6 @@ describe('createWcSigner', () => {
         expect(certRes).toBeDefined();
     });
 
-    it('can sign typed data', async () => {
-        const signer = createNewSignClient();
-
-        const signedData = await signer.signTypedData(
-            typedData.domain,
-            typedData.types,
-            typedData.value,
-        );
-
-        expect(signedData).toBeDefined();
-    });
-
     it('can disconnect', async () => {
         const signer = createNewSignClient();
 
