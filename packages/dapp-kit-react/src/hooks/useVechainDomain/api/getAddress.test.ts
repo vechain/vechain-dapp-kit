@@ -2,72 +2,81 @@ import { describe, it, expect, vi } from 'vitest';
 import { getAddress } from './getAddress';
 import { genesisBlocks } from '@vechain/dapp-kit';
 import { VNS_RESOLVER } from '../constants';
+import { ABIContract } from '@vechain/sdk-core';
 
 describe('getAddress', () => {
-    const mockConnex = {
+    const mockThorClient = {
         thor: {
-            genesis: {
-                id: genesisBlocks.main.id,
+            blocks: {
+                getGenesisBlock: vi.fn(),
             },
-            account: vi.fn().mockReturnThis(),
-            method: vi.fn().mockReturnThis(),
-            call: vi.fn(),
+            contracts: {
+                executeCall: vi.fn(),
+            },
         },
     } as any;
 
     it('should return null if domain is null', async () => {
-        const result = await getAddress({ domain: null, connex: mockConnex });
+        const result = await getAddress({ domain: null, thor: mockThorClient });
         expect(result).toBeUndefined();
     });
 
     it('should use main resolver for mainnet', async () => {
-        mockConnex.thor.call.mockResolvedValue({
-            decoded: {
-                addresses: ['0x1234567890123456789012345678901234567890'],
+        mockThorClient.thor.blocks.getGenesisBlock.mockResolvedValue({ id: genesisBlocks.main.id });
+        mockThorClient.thor.contracts.executeCall.mockResolvedValue({
+            result: {
+                array: ['0x1234567890123456789012345678901234567890']
             },
         });
 
-        await getAddress({ domain: 'example.vet', connex: mockConnex });
+        const result = await getAddress({ domain: 'example.vet', thor: mockThorClient.thor });
 
-        expect(mockConnex.thor.account).toHaveBeenCalledWith(VNS_RESOLVER.main);
+        expect(mockThorClient.thor.contracts.executeCall).toHaveBeenCalledWith(VNS_RESOLVER.main, ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getAddresses'), ['example.vet']);
+
+        expect(result).toBe('0x1234567890123456789012345678901234567890');
     });
 
     it('should use test resolver for testnet', async () => {
-        const testConnex = {
-            ...mockConnex,
-            thor: {
-                ...mockConnex.thor,
-                genesis: { id: genesisBlocks.test.id },
+        mockThorClient.thor.blocks.getGenesisBlock.mockResolvedValue({ id: genesisBlocks.test.id });
+        mockThorClient.thor.contracts.executeCall.mockResolvedValue({
+            result: {
+                array: ['0x1234567890123456789012345678901234567890']
             },
-        };
+        });
 
-        await getAddress({ domain: 'example.vet', connex: testConnex });
+        const result = await getAddress({ domain: 'example.vet', thor: mockThorClient.thor });
 
-        expect(testConnex.thor.account).toHaveBeenCalledWith(VNS_RESOLVER.test);
+        expect(mockThorClient.thor.contracts.executeCall).toHaveBeenCalledWith(VNS_RESOLVER.test, ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getAddresses'), ['example.vet']);
+
+        expect(result).toBe('0x1234567890123456789012345678901234567890');
     });
 
     it('should return the first address from the resolved addresses', async () => {
         const expectedAddress = '0x1234567890123456789012345678901234567890';
-        mockConnex.thor.call.mockResolvedValue({
-            decoded: { addresses: [expectedAddress] },
+        mockThorClient.thor.contracts.executeCall.mockResolvedValue({
+            result: {
+                array: [expectedAddress]
+            },
         });
 
         const result = await getAddress({
             domain: 'example.vet',
-            connex: mockConnex,
+            thor: mockThorClient.thor,
         });
 
         expect(result).toBe(expectedAddress);
     });
 
     it('should return null if no addresses are resolved', async () => {
-        mockConnex.thor.call.mockResolvedValue({
-            decoded: { addresses: [] },
+        mockThorClient.thor.contracts.executeCall.mockResolvedValue({
+            result: {
+                array: []
+            },
         });
 
         const result = await getAddress({
             domain: 'example.vet',
-            connex: mockConnex,
+            thor: mockThorClient.thor,
         });
 
         expect(result).toBeUndefined();
