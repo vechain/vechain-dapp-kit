@@ -19,6 +19,7 @@ import type {
     TransactionOptions,
     TransactionResponse,
 } from '../types/requests';
+import { getAccountDomain } from '../utils/get-account-domain';
 
 class WalletManager {
     public readonly state: WalletManagerState;
@@ -88,7 +89,7 @@ class WalletManager {
         if (address) {
             this.state.isAccountDomainLoading = true;
 
-            getAccountDomain({ address, driver: this.driver })
+            getAccountDomain({ address, thor: this.thor })
                 .then((domain) => {
                     this.state.accountDomain = domain;
                 })
@@ -333,7 +334,14 @@ class WalletManager {
     };
 
     private getAvailableSources = (): WalletSource[] => {
-        const wallets: WalletSource[] = ['veworld'];
+        const defaultAllowedSources = WalletSources;
+        const allowedSources =
+            this.options.allowedWallets ?? defaultAllowedSources;
+        const wallets: WalletSource[] = [];
+
+        if (allowedSources.includes('veworld')) {
+            wallets.push('veworld');
+        }
 
         if (
             this.options.walletConnectOptions &&

@@ -71,6 +71,15 @@ const getAccount = (): string | null => {
     return account;
 };
 
+const getAccountDomain = (): string | null => {
+    const accountDomain = localStorage.getItem(ACCOUNT_DOMAIN_KEY);
+    if (!accountDomain) {
+        return null;
+    }
+
+    return accountDomain;
+};
+
 const getConnectionCertificate = (): CertificateData | null => {
     const connectionCertificate = localStorage.getItem(CERTIFICATE_KEY);
 
@@ -86,6 +95,7 @@ export const Storage = {
     setSource,
     setConnectionCertificate,
     setAccountDomain,
+    getAccountDomain,
     getAccount,
     getSource,
     getConnectionCertificate,

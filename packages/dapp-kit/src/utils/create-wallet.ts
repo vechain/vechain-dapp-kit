@@ -70,10 +70,7 @@ export const createWallet = ({
                     throw e;
                 });
 
-            return new CertificateBasedWallet(
-                signer as BaseWallet,
-                connectionCertificate,
-            );
+            return new CertificateBasedWallet(signer, connectionCertificate);
         }
         case 'wallet-connect': {
             if (!walletConnectOptions) {
