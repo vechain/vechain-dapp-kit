@@ -9,7 +9,7 @@ export const useWallet = (): DAppKitContext['wallet'] => {
     const context = useContext(Context);
 
     if (!context) {
-        throw new Error('"useWallet" must be used within a ConnexProvider');
+        throw new Error('"useWallet" must be used within a DAppKitProvider');
     }
 
     return context.wallet;

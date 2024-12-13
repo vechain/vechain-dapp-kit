@@ -44,7 +44,6 @@ export interface DAppKitContext {
         signer: VeChainSignerDAppKit | undefined;
         source: WalletSource | null;
         connectionCertificate: CertificateData | null;
-        signTypedData: WalletManager['signTypedData'];
     };
     modal: {
         open: () => void;
