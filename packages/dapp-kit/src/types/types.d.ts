@@ -49,6 +49,7 @@ type Genesis = 'main' | 'test' | CompressedBlockDetail;
  */
 interface DAppKitOptions {
     nodeUrl: string;
+    genesis?: Genesis;
     walletConnectOptions?: WalletConnectOptions;
     usePersistence?: boolean;
     useFirstDetectedSource?: boolean;
