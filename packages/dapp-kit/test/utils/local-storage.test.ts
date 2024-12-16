@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { Storage } from '../../src/utils/local-storage';
+import { HexUInt, Txt } from '@vechain/sdk-core';
 
 describe('Storage', () => {
     const mockLocalStorage = {
@@ -72,9 +73,10 @@ describe('Storage', () => {
 
         it('should set the connection certificate', () => {
             Storage.setConnectionCertificate(testCertificate);
+            const bytecode = HexUInt.of(Txt.of(JSON.stringify(testCertificate)).bytes);
             expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
                 'dappkit@vechain/connectionCertificate',
-                JSON.stringify(testCertificate),
+                bytecode.toString(),
             );
         });
 
@@ -126,8 +128,9 @@ describe('Storage', () => {
         const testCertificate = { some: 'data' } as any;
 
         it('should return the connection certificate', () => {
+            const hexUInt = HexUInt.of(Txt.of(JSON.stringify(testCertificate)).bytes);
             mockLocalStorage.getItem.mockReturnValue(
-                JSON.stringify(testCertificate),
+                hexUInt.toString()
             );
             expect(Storage.getConnectionCertificate()).toEqual(testCertificate);
         });

@@ -1,4 +1,4 @@
-import { type CertificateData } from '@vechain/sdk-core';
+import { HexUInt, Txt, type CertificateData } from '@vechain/sdk-core';
 import type { WalletSource } from '../types';
 import { DAppKitLogger } from './logger';
 
@@ -47,7 +47,8 @@ const setConnectionCertificate = (
     if (!certificate) {
         localStorage.removeItem(CERTIFICATE_KEY);
     } else {
-        localStorage.setItem(CERTIFICATE_KEY, JSON.stringify(certificate));
+        const bytecode = HexUInt.of(Txt.of(JSON.stringify(certificate)).bytes);
+        localStorage.setItem(CERTIFICATE_KEY, bytecode.toString());
     }
 };
 
@@ -87,7 +88,8 @@ const getConnectionCertificate = (): CertificateData | null => {
         return null;
     }
 
-    return JSON.parse(connectionCertificate) as CertificateData;
+    const json = Txt.of(HexUInt.of(connectionCertificate).bytes);
+    return JSON.parse(json.toString()) as CertificateData;
 };
 
 export const Storage = {
