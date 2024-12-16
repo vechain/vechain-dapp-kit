@@ -1,5 +1,6 @@
 import type { ThorClient } from '@vechain/sdk-network';
 import type {
+    BaseWallet,
     DAppKitOptions,
     VeChainWallet,
     WalletSource,
