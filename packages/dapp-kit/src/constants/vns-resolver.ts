@@ -1,5 +1,5 @@
 /**
- * The VNS resolver addresses
+ * The VNS resolver addresses and ABI
  */
 export const VNS_RESOLVER = {
     main: '0xA11413086e163e41901bb81fdc5617c975Fa5a1A',
