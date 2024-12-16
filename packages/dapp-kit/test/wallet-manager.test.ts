@@ -61,6 +61,20 @@ describe('WalletManager', () => {
         });
     });
 
+    describe('signTypedData', () => {
+        it('should sign the typedData', async () => {
+            const walletManager = newWalletManager();
+            walletManager.setSource('veworld');
+            const res = await walletManager.signTypedData(
+                typedData.domain,
+                typedData.types,
+                typedData.value,
+            );
+
+            expect(res).toBeDefined();
+        });
+    });
+
     describe('disconnect', () => {
         it('is not connected', async () => {
             const walletManager = newWalletManager();
