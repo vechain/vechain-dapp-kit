@@ -3,19 +3,20 @@ import { renderHook } from '@testing-library/react';
 import { useThor } from '../..';
 import { wrapper } from '../../../test';
 
-describe('useConnex', () => {
-    it('connex should get initialised', () => {
+describe('useThor', () => {
+    it('Thor should get initialised', async () => {
         const { result } = renderHook(() => useThor(), { wrapper });
 
         expect(result.current).toBeDefined();
-        expect(result.current.thor.genesis.id).toBe(
-            '0x00000000851caf3cfdb6e899cf5958bfb1ac3413d346d43539627e6be7ec1b4a',
+        const genesisBlock = await result.current.blocks.getGenesisBlock();
+        expect(genesisBlock?.id).toBe(
+            '0x000000000b2bce3c70bc649a02749e8687721b09ed2e15997f466536b20bb127',
         );
     });
 
     it('should throw an error when used outside of DAppKitProvider', () => {
         expect(() => renderHook(() => useThor())).toThrow(
-            '"useConnex" must be used within a ConnexProvider',
+            '"useThor" must be used within a DAppKitProvider',
         );
     });
 });
