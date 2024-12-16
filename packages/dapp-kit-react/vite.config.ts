@@ -4,7 +4,12 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
     test: {
-        include: ['test/**/*.test.ts', 'test/**/*.test.tsx'],
+        include: [
+            'src/**/*.test.ts',
+            'src/**/*.test.tsx',
+            'test/**/*.test.ts',
+            'test/**/*.test.tsx',
+        ],
         environment: 'happy-dom',
         reporters: 'dot',
         setupFiles: [resolve(__dirname, 'test/setup/setup.ts')],

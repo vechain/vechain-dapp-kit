@@ -5,7 +5,7 @@ import {
     HDKey,
     Hex,
 } from '@vechain/sdk-core';
-import { CertificateMessage, CertificateOptions } from '../../src';
+import { CertificateMessage } from '../../src';
 
 const mnemonicWords =
     'denial kitchen pet squirrel other broom bar gas better priority spoil cross';
@@ -22,7 +22,7 @@ const mockedConnexSigner = {
         return Promise.resolve({ txid: '0x1234', signer: address.toString() });
     },
 
-    signCert(msg: CertificateMessage, options: CertificateOptions) {
+    signCert(msg: CertificateMessage) {
         // Init the certificate object
         const newCertificate: CertificateData = {
             domain: ' localhost:3000',
@@ -43,6 +43,10 @@ const mockedConnexSigner = {
             },
             signature: Hex.of(signature!).toString(),
         });
+    },
+
+    signTypedData() {
+        return Promise.resolve('0x1234');
     },
 };
 

@@ -18,12 +18,6 @@ window.vechain = {
     newConnexSigner: () => mockedConnexSigner as any,
 };
 
-const eventNames = (walletManager: WalletManager): string[] =>
-    //@ts-ignore
-    walletManager.eventEmitter.eventNames();
-
-const listener = () => {};
-
 describe('WalletManager', () => {
     describe('setSource', () => {
         it('no wc options provided', () => {

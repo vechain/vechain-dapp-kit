@@ -38,14 +38,5 @@ yarn-error.log*
 .vscode
 .parcel-cache
 
+veworld-dist
 .reports
-
-packages/**/dist
-packages/**/.turbo
-packages/**/node_modules
-apps/**/dist
-apps/**/.turbo
-apps/**/node_modules
-docs/**/dist
-
-coverageUnit

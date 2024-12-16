@@ -6,4 +6,5 @@
 export enum DefaultMethods {
     RequestTransaction = 'thor_sendTransaction',
     SignCertificate = 'thor_signCertificate',
+    SignTypedData = 'thor_signTypedData',
 }

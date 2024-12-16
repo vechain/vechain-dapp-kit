@@ -51,6 +51,7 @@ class CertificateBasedWallet implements VeChainWallet {
                 connectionCertificate,
             };
         } catch (e) {
+            console.error('Failed to verify connection certificate', e);
             return {
                 account: signer,
                 verified: false,

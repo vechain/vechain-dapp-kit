@@ -42,9 +42,14 @@ type Genesis = 'main' | 'test' | CompressedBlockDetail;
  * @param usePersistence - Optional. Whether to persist the wallet source/ account
  * @param useFirstDetectedSource - Optional. Whether to use the first detected wallet source. Defaults to false
  * @param logLevel - Optional. The log level to use for the DAppKitUI logger
+ * @param requireCertificate - Optional. Whether to require a connection certificate. Defaults to true
+ * @param connectionCertificate - Optional. Options for the connection certificate
+ * @param customNet - Optional. A custom network to use. Defaults to the mainnet
+ * @param allowedWallets - Optional. An array of wallet sources to allow. Defaults to all sources
  */
 interface DAppKitOptions {
     nodeUrl: string;
+    genesis?: Genesis;
     walletConnectOptions?: WalletConnectOptions;
     usePersistence?: boolean;
     useFirstDetectedSource?: boolean;
@@ -54,6 +59,8 @@ interface DAppKitOptions {
         message?: CertificateMessage;
         options?: CertificateOptions;
     };
+    customNet?: Net;
+    allowedWallets?: WalletSource[];
 }
 
 interface WalletSigner {
@@ -84,6 +91,8 @@ interface ConnectResponse {
 interface WalletManagerState {
     source: WalletSource | null;
     address: string | null;
+    accountDomain: string | null;
+    isAccountDomainLoading: boolean;
     availableSources: WalletSource[];
     connectionCertificate: CertificateData | null;
 }

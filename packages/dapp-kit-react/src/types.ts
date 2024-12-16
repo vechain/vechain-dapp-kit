@@ -2,7 +2,7 @@ import type React from 'react';
 import type {
     ConnectResponse,
     VeChainSignerDAppKit,
-    WalletSource,
+    WalletSource
 } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 import type { CertificateData } from '@vechain/sdk-core';
@@ -38,6 +38,8 @@ export interface DAppKitContext {
         disconnect: () => void;
         connect: () => Promise<ConnectResponse>;
         account: string | null;
+        accountDomain: string | null;
+        isAccountDomainLoading: boolean;
         signer: VeChainSignerDAppKit | undefined;
         source: WalletSource | null;
         connectionCertificate: CertificateData | null;

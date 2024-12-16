@@ -19,6 +19,7 @@ import type {
     TransactionOptions,
     TransactionResponse,
 } from '../types/requests';
+import { getAccountDomain } from '../utils/get-account-domain';
 
 class WalletManager {
     public readonly state: WalletManagerState;
@@ -81,7 +82,49 @@ class WalletManager {
         return wallet;
     }
 
-    // this is needed for wallet connect connections when a connection certificate is required
+    /**
+     * Set the account domain
+     */
+    setAccountDomain = (address: string | null): void => {
+        if (address) {
+            this.state.isAccountDomainLoading = true;
+
+            getAccountDomain({ address, thor: this.thor })
+                .then((domain) => {
+                    this.state.accountDomain = domain;
+                })
+                .catch((e) => {
+                    console.error('Error getting account domain', e);
+                    this.state.accountDomain = null;
+                })
+                .finally(() => {
+                    this.state.isAccountDomainLoading = false;
+                });
+        } else {
+            this.state.accountDomain = null;
+            this.state.isAccountDomainLoading = false;
+        }
+    };
+
+    /**
+     * Set the address
+     */
+    setAddress = (address: string | null): void => {
+        this.state.address = address;
+    };
+
+    /**
+     * Set the address and check for the vechain domain, if present set it as well
+     */
+    setAddressAndDomain = (address: string | null): void => {
+        this.setAddress(address);
+        this.setAccountDomain(address);
+    };
+
+    /**
+     * Sign a connection certificate
+     * this is needed for wallet connect connections when a connection certificate is required
+     */
     signConnectionCertificate = async (): Promise<ConnectResponse> => {
         const certificateMessage =
             this.options.connectionCertificate?.message ||
@@ -111,6 +154,7 @@ class WalletManager {
                 connectionCertificate,
             };
         } catch (e) {
+            console.error('Failed to sign connection certificate', e);
             return {
                 account: signer,
                 verified: false,
@@ -132,7 +176,7 @@ class WalletManager {
                 ) {
                     this.options.walletConnectOptions.modal.askForConnectionCertificate();
                 } else {
-                    this.state.address = res.account;
+                    this.setAddressAndDomain(res.account);
                     this.state.connectionCertificate =
                         res.connectionCertificate ?? null;
                 }
@@ -146,7 +190,7 @@ class WalletManager {
     disconnect = (remote = false): void => {
         if (!this.state.source) {
             this.state.source = null;
-            this.state.address = null;
+            this.setAddressAndDomain(null);
             this.state.connectionCertificate = null;
             return;
         }
@@ -171,7 +215,7 @@ class WalletManager {
         }
 
         this.state.source = null;
-        this.state.address = null;
+        this.setAddressAndDomain(null);
         this.state.connectionCertificate = null;
     };
 
@@ -254,18 +298,23 @@ class WalletManager {
             return proxy({
                 source: null,
                 address: null,
+                accountDomain: null,
+                isAccountDomainLoading: false,
                 availableSources,
                 connectionCertificate: null,
             });
         }
 
         const address = Storage.getAccount();
+        const accountDomain = Storage.getAccountDomain();
         const source = Storage.getSource();
         const connectionCertificate = Storage.getConnectionCertificate();
 
         return proxy({
             source,
             address,
+            accountDomain,
+            isAccountDomainLoading: false,
             availableSources,
             connectionCertificate,
         });
@@ -276,6 +325,7 @@ class WalletManager {
             return;
         }
         this.subscribeToKey('address', Storage.setAccount);
+        this.subscribeToKey('accountDomain', Storage.setAccountDomain);
         this.subscribeToKey('source', Storage.setSource);
         this.subscribeToKey(
             'connectionCertificate',
@@ -284,15 +334,27 @@ class WalletManager {
     };
 
     private getAvailableSources = (): WalletSource[] => {
-        const wallets: WalletSource[] = ['veworld'];
+        const defaultAllowedSources = WalletSources;
+        const allowedSources =
+            this.options.allowedWallets ?? defaultAllowedSources;
+        const wallets: WalletSource[] = [];
 
-        if (this.options.walletConnectOptions) {
+        if (allowedSources.includes('veworld')) {
+            wallets.push('veworld');
+        }
+
+        if (
+            this.options.walletConnectOptions &&
+            allowedSources.includes('wallet-connect')
+        ) {
             wallets.push('wallet-connect');
         }
 
-        wallets.push('sync2');
+        if (allowedSources.includes('sync2')) {
+            wallets.push('sync2');
+        }
 
-        if (window.connex) {
+        if (window.connex && allowedSources.includes('sync')) {
             wallets.push('sync');
         }
 
