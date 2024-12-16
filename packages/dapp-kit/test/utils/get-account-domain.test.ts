@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
-import { getAccountDomain, VNS_RESOLVER } from '../../src/utils/get-account-domain';
+import { getAccountDomain } from '../../src/utils/get-account-domain';
 import { ABIContract } from '@vechain/sdk-core';
+import { VNS_RESOLVER } from '../../src';
 
 vi.mock('@vechain/connex-framework');
 
