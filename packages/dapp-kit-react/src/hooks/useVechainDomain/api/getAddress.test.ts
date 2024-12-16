@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { getAddress } from './getAddress';
-import { genesisBlocks } from '@vechain/dapp-kit';
-import { VNS_RESOLVER } from '../constants';
+import { genesisBlocks, VNS_RESOLVER } from '@vechain/dapp-kit';
 import { ABIContract } from '@vechain/sdk-core';
 
 describe('getAddress', () => {
