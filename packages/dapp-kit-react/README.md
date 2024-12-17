@@ -56,7 +56,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 -   Use the hooks provided by the `DAppKitProvider`
 
 ```typescript jsx
-import { useWallet, useConnex } from '@vechain/dapp-kit-react';
+import { useWallet, useThor } from '@vechain/dapp-kit-react';
 import type { WalletSource } from '@vechain/dapp-kit';
 
 // type WalletSource = 'wallet-connect' | 'veworld' | 'sync2' | 'sync';
@@ -68,8 +68,8 @@ setSource(mySource);
 
 const { account } = await connect();
 
-//Start using Connex thor/ vendor
-const { vendor, thor } = useConnex();
+//Start using Thor vendor
+const thor = useThor();
 ```
 
 ### UI Option 1: Modal + Button
