@@ -1,1 +1,2 @@
-export * from "./ConnectModal";
+export * from './ConnectModal';
+export * from './ConnectButton';

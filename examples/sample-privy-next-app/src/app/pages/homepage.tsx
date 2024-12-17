@@ -1,11 +1,11 @@
 'use client';
 
 import { type ReactElement, useMemo, useCallback } from 'react';
-import { useDisclosure, Button } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import {
     useWallet,
-    ConnectModal,
     useSendTransaction,
+    ConnectButton,
 } from '@vechain/dapp-kit-react-privy';
 import { b3trAbi, b3trMainnetAddress } from '../constants';
 
@@ -14,19 +14,14 @@ const HomePage = (): ReactElement => {
         isConnected,
         connectedAccount,
         smartAccount,
-        logoutAndDisconnect,
         isLoadingConnection,
         connectionType,
     } = useWallet();
 
-    const {
-        isOpen: isLoginOpen,
-        onOpen: onLoginOpen,
-        onClose: onLoginClose,
-    } = useDisclosure();
-
     // A dummy tx sending 0 b3tr tokens
     const clauses = useMemo(() => {
+        if (!connectedAccount) return [];
+
         const clausesArray: any[] = [];
         clausesArray.push({
             to: b3trMainnetAddress,
@@ -63,16 +58,11 @@ const HomePage = (): ReactElement => {
 
     return (
         <div className="container">
+            <ConnectButton />
             {isLoadingConnection ? (
                 <p>Loading...</p>
             ) : (
                 <>
-                    {isConnected ? (
-                        <Button onClick={logoutAndDisconnect}>Logout</Button>
-                    ) : (
-                        <Button onClick={onLoginOpen}>Login</Button>
-                    )}
-
                     {isConnected && (
                         <div>
                             <h1>
@@ -117,12 +107,6 @@ const HomePage = (): ReactElement => {
                             )}
                         </div>
                     )}
-
-                    <ConnectModal
-                        isOpen={isLoginOpen}
-                        onClose={onLoginClose}
-                        logo={'https://i.ibb.co/ZHGmq3y/image-21.png'}
-                    />
                 </>
             )}
         </div>
