@@ -3,6 +3,7 @@
 import {
     Button,
     HStack,
+    Image,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -10,6 +11,7 @@ import {
     ModalContentProps,
     ModalHeader,
     ModalOverlay,
+    Text,
     VStack,
     useColorMode,
     useMediaQuery,
@@ -19,6 +21,7 @@ import { useWallet } from '../../hooks';
 import { useEffect, useState } from 'react';
 import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
 import { AppsLogo } from '../../assets';
+import { useFetchAppInfo } from '../../hooks/useFetchAppInfo';
 
 type Props = {
     isOpen: boolean;
@@ -42,9 +45,12 @@ export const EcosystemAppsModal = ({ isOpen, onClose }: Props) => {
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
 
-    const { authenticated } = usePrivy();
     const { privyConfig } = useDAppKitPrivyConfig();
-    const ecosystemAppsID = privyConfig?.ecosystemAppsID;
+    const { data: appsInfo, isLoading } = useFetchAppInfo(
+        privyConfig?.ecosystemAppsID || [],
+    );
+
+    const { authenticated } = usePrivy();
 
     const { loginWithCrossAppAccount, linkCrossAppAccount } =
         useCrossAppAccounts();
@@ -86,7 +92,7 @@ export const EcosystemAppsModal = ({ isOpen, onClose }: Props) => {
                     justifyContent={'center'}
                     alignItems={'center'}
                 >
-                    Select VeChain App
+                    Select a VeChain App
                 </ModalHeader>
                 <HStack justify={'center'} my={10}>
                     <AppsLogo boxSize={'100px'} />
@@ -94,8 +100,8 @@ export const EcosystemAppsModal = ({ isOpen, onClose }: Props) => {
                 <ModalCloseButton />
                 <ModalBody>
                     <VStack spacing={4} w={'full'} pb={6}>
-                        {ecosystemAppsID &&
-                            ecosystemAppsID.map((appId) => (
+                        {appsInfo &&
+                            Object.entries(appsInfo).map(([appId, appInfo]) => (
                                 <Button
                                     key={appId}
                                     fontSize={'14px'}
@@ -114,8 +120,15 @@ export const EcosystemAppsModal = ({ isOpen, onClose }: Props) => {
                                         connectWithVebetterDaoApps(appId);
                                         onClose();
                                     }}
+                                    isDisabled={isLoading}
+                                    isLoading={isLoading}
                                 >
-                                    {appId}
+                                    <Image
+                                        src={appInfo.logo_url}
+                                        alt={appInfo.name}
+                                        w={'30px'}
+                                    />
+                                    <Text ml={2}>{appInfo.name}</Text>
                                 </Button>
                             ))}
                     </VStack>
