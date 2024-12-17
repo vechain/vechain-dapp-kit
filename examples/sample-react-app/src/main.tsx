@@ -22,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             nodeUrl={'https://mainnet.vechain.org'}
             usePersistence
             walletConnectOptions={walletConnectOptions}
+            logLevel={'DEBUG'}
         >
             <App />
         </DAppKitProvider>

@@ -1,3 +1,4 @@
+import type { CompressedBlockDetail } from '@vechain/sdk-network';
 import { genesisBlocks } from '../constants';
 import type { Genesis } from '../types';
 
@@ -10,7 +11,7 @@ const normalizeGenesisId = (genesis?: Genesis): string => {
     return genesis.id;
 };
 
-const normalizeGenesisBlock = (genesis?: Genesis): Connex.Thor.Block => {
+const normalizeGenesisBlock = (genesis?: Genesis): CompressedBlockDetail => {
     if (!genesis) return genesisBlocks.main;
 
     if (genesis === 'main' || genesis === 'test') return genesisBlocks[genesis];

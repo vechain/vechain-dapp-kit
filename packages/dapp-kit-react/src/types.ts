@@ -1,15 +1,14 @@
-/// <reference types="@vechain/connex" />
 import type React from 'react';
 import type {
     ConnectResponse,
-    WalletManager,
-    WalletSource,
+    VeChainSignerDAppKit,
+    WalletSource
 } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
-import { CertificateData } from '@vechain/sdk-core';
+import type { CertificateData } from '@vechain/sdk-core';
+import type { ThorClient } from '@vechain/sdk-network';
 
 export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
-export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 
 export interface AccountState {
     address: string | null;
@@ -17,7 +16,7 @@ export interface AccountState {
 }
 
 /**
- * Connex Provider Options
+ * DAppKit Provider Options
  * @param children - React children
  */
 export type DAppKitProviderOptions = DAppKitUIOptions & {
@@ -25,16 +24,13 @@ export type DAppKitProviderOptions = DAppKitUIOptions & {
 };
 
 /**
- * Connex Context
- * This context is used to provide the Connex instance and the Connex Vendor instance
+ * DAppKit Context
+ * This context is used to provide the Wallet and Thor instances
  * to the application.
  */
 
 export interface DAppKitContext {
-    connex: {
-        thor: Connex.Thor;
-        vendor: Connex.Vendor;
-    };
+    thor: ThorClient;
     wallet: {
         setSource: (source: WalletSource) => void;
         availableWallets: WalletSource[];
@@ -43,9 +39,9 @@ export interface DAppKitContext {
         account: string | null;
         accountDomain: string | null;
         isAccountDomainLoading: boolean;
+        signer: VeChainSignerDAppKit | undefined;
         source: WalletSource | null;
         connectionCertificate: CertificateData | null;
-        signTypedData: WalletManager['signTypedData'];
     };
     modal: {
         open: () => void;

@@ -1,9 +1,9 @@
-/// <reference types="@vechain/connex" />
 import {
+    Address,
     Certificate,
-    addressUtils,
     CertificateData,
     HDKey,
+    Hex,
 } from '@vechain/sdk-core';
 
 const mnemonicWords =
@@ -14,24 +14,24 @@ const hdNode = HDKey.fromMnemonic(mnemonicWords.split(' '));
 const firstAccount = hdNode.deriveChild(0);
 
 const privateKey = firstAccount.privateKey!;
-const address = addressUtils.fromPrivateKey(privateKey);
+const address = Address.ofPrivateKey(privateKey);
 
-const mockedConnexSigner: Connex.Signer = {
+const mockedConnexSigner = {
     signTx() {
-        return Promise.resolve({ txid: '0x1234', signer: address });
+        return Promise.resolve({ txid: '0x1234', signer: address.toString() });
     },
 
-    signCert(msg) {
+    signCert(msg: any) {
         const newCertificate: CertificateData = {
             domain: ' localhost:3000',
             timestamp: 12341234,
-            signer: address,
+            signer: address.toString(),
             payload: msg.payload,
             purpose: msg.purpose,
         };
 
-        const signedCertificate =
-            Certificate.of(newCertificate).sign(privateKey);
+        const signature =
+            Certificate.of(newCertificate).sign(privateKey).signature;
 
         return Promise.resolve({
             annex: {
@@ -39,7 +39,7 @@ const mockedConnexSigner: Connex.Signer = {
                 timestamp: newCertificate.timestamp,
                 signer: newCertificate.signer,
             },
-            signature: signedCertificate.signature || '',
+            signature: Hex.of(signature!).toString(),
         });
     },
 };

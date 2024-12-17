@@ -1,3 +1,3 @@
-export * from './useConnex';
+export * from './useThor';
 export * from './useWallet';
 export * from './useWalletModal';
