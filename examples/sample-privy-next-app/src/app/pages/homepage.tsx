@@ -28,13 +28,13 @@ const HomePage = (): ReactElement => {
             value: '0x0',
             data: b3trAbi.encodeFunctionData('transfer', [
                 connectedAccount,
-                '1000000000000000000', // 1 B3TR (in wei)
+                '0', // 1 B3TR (in wei)
             ]),
             comment: `Transfer ${1} B3TR to `,
             abi: b3trAbi.getFunction('transfer'),
         });
         return clausesArray;
-    }, []);
+    }, [connectedAccount]);
 
     const {
         sendTransaction,
