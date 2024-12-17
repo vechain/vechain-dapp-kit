@@ -56,169 +56,185 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
     return (
         <>
             <Modal
-                motionPreset="slideInBottom"
+                motionPreset={isDesktop ? 'none' : 'slideInBottom'}
                 isOpen={isOpen}
                 onClose={onClose}
                 isCentered
                 size={'sm'}
-                variant={'connectModalVariant'}
             >
                 <ModalOverlay />
-                <ModalContent {...(_modalContentProps as ModalContentProps)}>
-                    <ModalHeader
-                        fontSize={'sm'}
-                        fontWeight={'400'}
-                        textAlign={'center'}
-                        color={isDark ? '#dfdfdd' : '#4d4d4d'}
+                {!ecosystemModal.isOpen && (
+                    <ModalContent
+                        {...(_modalContentProps as ModalContentProps)}
                     >
-                        {'Log in or sign up'}
-                    </ModalHeader>
-                    <HStack justify={'center'}>
-                        <Image
-                            src={logo || '/images/favicon.png'}
-                            maxW={'180px'}
-                            maxH={'90px'}
-                            m={10}
-                            alt="logo"
-                        />
-                    </HStack>
-
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <HStack
-                            spacing={4}
-                            w={'full'}
-                            justify={'center'}
-                            mb={'24px'}
+                        <ModalHeader
+                            fontSize={'sm'}
+                            fontWeight={'400'}
+                            textAlign={'center'}
+                            color={isDark ? '#dfdfdd' : '#4d4d4d'}
                         >
-                            <Text
-                                color={isDark ? '#dfdfdd' : '#4d4d4d'}
-                                fontSize={14}
-                            >
-                                {'Select a login method'}
-                            </Text>
+                            {'Log in or sign up'}
+                        </ModalHeader>
+                        <HStack justify={'center'}>
+                            <Image
+                                src={logo || '/images/favicon.png'}
+                                maxW={'180px'}
+                                maxH={'90px'}
+                                m={10}
+                                alt="logo"
+                            />
                         </HStack>
-                        <VStack spacing={4} w={'full'}>
-                            <Button
-                                fontSize={'14px'}
-                                fontWeight={'400'}
-                                backgroundColor={
-                                    isDark ? 'transparent' : '#ffffff'
-                                }
-                                border={`1px solid ${
-                                    isDark ? '#ffffff29' : '#ebebeb'
-                                }`}
-                                p={6}
-                                borderRadius={16}
+
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <HStack
+                                spacing={4}
                                 w={'full'}
-                                onClick={() => {
-                                    onClose();
-                                    login();
-                                }}
+                                justify={'center'}
+                                mb={'24px'}
                             >
-                                <HStack
-                                    spacing={4}
-                                    w={'full'}
-                                    justify={'center'}
+                                <Text
+                                    color={isDark ? '#dfdfdd' : '#4d4d4d'}
+                                    fontSize={14}
                                 >
-                                    <HStack justify={'start'}>
-                                        <TwitterLogo isDark={isDark} />
-                                        <GoogleLogo />
+                                    {'Select a login method'}
+                                </Text>
+                            </HStack>
+                            <VStack spacing={4} w={'full'}>
+                                <Button
+                                    fontSize={'14px'}
+                                    fontWeight={'400'}
+                                    backgroundColor={
+                                        isDark ? 'transparent' : '#ffffff'
+                                    }
+                                    border={`1px solid ${
+                                        isDark ? '#ffffff29' : '#ebebeb'
+                                    }`}
+                                    p={6}
+                                    borderRadius={16}
+                                    w={'full'}
+                                    onClick={() => {
+                                        onClose();
+                                        login();
+                                    }}
+                                >
+                                    <HStack
+                                        spacing={4}
+                                        w={'full'}
+                                        justify={'center'}
+                                    >
+                                        <HStack justify={'start'}>
+                                            <TwitterLogo isDark={isDark} />
+                                            <GoogleLogo />
+                                        </HStack>
+                                        <HStack justify={'start'}>
+                                            <Text
+                                                color={
+                                                    isDark
+                                                        ? '#dfdfdd'
+                                                        : '#4d4d4d'
+                                                }
+                                            >
+                                                {'Continue with Social'}
+                                            </Text>
+                                        </HStack>
                                     </HStack>
-                                    <HStack justify={'start'}>
+                                </Button>
+                                {privyConfig?.ecosystemAppsID &&
+                                    privyConfig?.ecosystemAppsID?.length >
+                                        0 && (
+                                        <>
+                                            <Button
+                                                fontSize={'14px'}
+                                                fontWeight={'400'}
+                                                backgroundColor={
+                                                    isDark
+                                                        ? 'transparent'
+                                                        : '#ffffff'
+                                                }
+                                                border={`1px solid ${
+                                                    isDark
+                                                        ? '#ffffff29'
+                                                        : '#ebebeb'
+                                                }`}
+                                                p={6}
+                                                borderRadius={16}
+                                                w={'full'}
+                                                color={
+                                                    isDark
+                                                        ? '#dfdfdd'
+                                                        : '#4d4d4d'
+                                                }
+                                                onClick={() => {
+                                                    ecosystemModal.onOpen();
+                                                }}
+                                            >
+                                                <HStack
+                                                    spacing={4}
+                                                    w={'full'}
+                                                    justify={'center'}
+                                                >
+                                                    <HStack justify={'start'}>
+                                                        <AppsLogo
+                                                            boxSize={'70px'}
+                                                        />
+                                                    </HStack>
+                                                    <HStack justify={'start'}>
+                                                        <Text
+                                                            color={
+                                                                isDark
+                                                                    ? '#dfdfdd'
+                                                                    : '#4d4d4d'
+                                                            }
+                                                        >
+                                                            {
+                                                                'Continue with VeChain Apps'
+                                                            }
+                                                        </Text>
+                                                    </HStack>
+                                                </HStack>
+                                            </Button>
+                                        </>
+                                    )}
+                                <Button
+                                    fontSize={'14px'}
+                                    fontWeight={'400'}
+                                    variant={'link'}
+                                    w={'full'}
+                                    onClick={() => {
+                                        onClose();
+                                        open();
+                                    }}
+                                >
+                                    <HStack
+                                        spacing={4}
+                                        w={'full'}
+                                        justify={'center'}
+                                    >
                                         <Text
                                             color={
-                                                isDark ? '#dfdfdd' : '#4d4d4d'
+                                                isDark ? '#dfdfdd' : '#4d4d4dab'
                                             }
                                         >
-                                            {'Continue with Social'}
+                                            {'or continue with Crypto Wallet'}
                                         </Text>
                                     </HStack>
-                                </HStack>
-                            </Button>
-                            {privyConfig?.ecosystemAppsID &&
-                                privyConfig?.ecosystemAppsID?.length > 0 && (
-                                    <>
-                                        <Button
-                                            fontSize={'14px'}
-                                            fontWeight={'400'}
-                                            backgroundColor={
-                                                isDark
-                                                    ? 'transparent'
-                                                    : '#ffffff'
-                                            }
-                                            border={`1px solid ${
-                                                isDark ? '#ffffff29' : '#ebebeb'
-                                            }`}
-                                            p={6}
-                                            borderRadius={16}
-                                            w={'full'}
-                                            color={
-                                                isDark ? '#dfdfdd' : '#4d4d4d'
-                                            }
-                                            onClick={() => {
-                                                onClose();
-                                                ecosystemModal.onOpen();
-                                            }}
-                                        >
-                                            <HStack
-                                                spacing={4}
-                                                w={'full'}
-                                                justify={'center'}
-                                            >
-                                                <HStack justify={'start'}>
-                                                    <AppsLogo
-                                                        boxSize={'70px'}
-                                                    />
-                                                </HStack>
-                                                <HStack justify={'start'}>
-                                                    <Text
-                                                        color={
-                                                            isDark
-                                                                ? '#dfdfdd'
-                                                                : '#4d4d4d'
-                                                        }
-                                                    >
-                                                        {
-                                                            'Continue with VeChain Apps'
-                                                        }
-                                                    </Text>
-                                                </HStack>
-                                            </HStack>
-                                        </Button>
-                                    </>
-                                )}
-                            <Button
-                                fontSize={'14px'}
-                                fontWeight={'400'}
-                                variant={'link'}
-                                w={'full'}
-                                onClick={() => {
-                                    onClose();
-                                    open();
-                                }}
-                            >
-                                <HStack
-                                    spacing={4}
-                                    w={'full'}
-                                    justify={'center'}
-                                >
-                                    <Text
-                                        color={isDark ? '#dfdfdd' : '#4d4d4dab'}
-                                    >
-                                        {'or continue with Crypto Wallet'}
-                                    </Text>
-                                </HStack>
-                            </Button>
-                        </VStack>
-                    </ModalBody>
-                    <ModalFooter />
-                </ModalContent>
+                                </Button>
+                            </VStack>
+                        </ModalBody>
+                        <ModalFooter />
+                    </ModalContent>
+                )}
             </Modal>
 
             <EcosystemAppsModal
                 isOpen={ecosystemModal.isOpen}
                 onClose={ecosystemModal.onClose}
+                onBack={() => {
+                    ecosystemModal.onClose();
+                    // Instead of closing the connect modal, we just close the ecosystem modal
+                    // which will show the connect modal again
+                }}
             />
         </>
     );

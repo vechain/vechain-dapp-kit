@@ -10,7 +10,6 @@ import {
     ModalContent,
     ModalContentProps,
     ModalHeader,
-    ModalOverlay,
     Text,
     VStack,
     useColorMode,
@@ -26,9 +25,10 @@ import { useFetchAppInfo } from '../../hooks/useFetchAppInfo';
 type Props = {
     isOpen: boolean;
     onClose: () => void;
+    onBack: () => void;
 };
 
-export const EcosystemAppsModal = ({ isOpen, onClose }: Props) => {
+export const EcosystemAppsModal = ({ isOpen, onClose, onBack }: Props) => {
     const [isDesktop] = useMediaQuery('(min-width: 768px)');
     const _modalContentProps = isDesktop
         ? {
@@ -76,14 +76,21 @@ export const EcosystemAppsModal = ({ isOpen, onClose }: Props) => {
 
     return (
         <Modal
-            motionPreset="slideInBottom"
+            motionPreset={isDesktop ? 'none' : 'slideInBottom'}
             isOpen={isOpen}
             onClose={onClose}
             isCentered
             size={'sm'}
+            blockScrollOnMount={false}
+            preserveScrollBarGap={true}
         >
-            <ModalOverlay />
-            <ModalContent {...(_modalContentProps as ModalContentProps)}>
+            <ModalContent
+                {...(_modalContentProps as ModalContentProps)}
+                style={{
+                    transition:
+                        'transform 0.2s ease-in-out, opacity 0.2s ease-in-out',
+                }}
+            >
                 <ModalHeader
                     fontSize={'sm'}
                     fontWeight={'400'}
@@ -92,14 +99,20 @@ export const EcosystemAppsModal = ({ isOpen, onClose }: Props) => {
                     justifyContent={'center'}
                     alignItems={'center'}
                 >
-                    Select a VeChain App
+                    Log in or sign up
                 </ModalHeader>
-                <HStack justify={'center'} my={10}>
-                    <AppsLogo boxSize={'100px'} />
+                <HStack justify={'center'}>
+                    <AppsLogo maxW={'180px'} maxH={'90px'} m={10} />
                 </HStack>
-                <ModalCloseButton />
+                <ModalCloseButton onClick={onBack} />
                 <ModalBody>
                     <VStack spacing={4} w={'full'} pb={6}>
+                        <Text
+                            color={isDark ? '#dfdfdd' : '#4d4d4d'}
+                            fontSize={14}
+                        >
+                            Select a VeChain App
+                        </Text>
                         {appsInfo &&
                             Object.entries(appsInfo).map(([appId, appInfo]) => (
                                 <Button
@@ -115,6 +128,7 @@ export const EcosystemAppsModal = ({ isOpen, onClose }: Props) => {
                                     p={6}
                                     borderRadius={16}
                                     w={'full'}
+                                    justifyContent={'flex-start'}
                                     color={isDark ? '#dfdfdd' : '#4d4d4d'}
                                     onClick={() => {
                                         connectWithVebetterDaoApps(appId);
