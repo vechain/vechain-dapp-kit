@@ -2,10 +2,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config({
     ignores: ['**/*.config.ts', 'dist/**'],
-    extends: [
-        ...tseslint.configs.recommended,
-        'plugin:react-hooks/recommended',
-    ],
+    extends: [...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
     rules: {
         '@typescript-eslint/no-explicit-any': 'off',
@@ -16,6 +13,5 @@ export default tseslint.config({
             'error',
             { argsIgnorePattern: '^_' },
         ],
-        'react-hooks/exhaustive-deps': 'error',
     },
 });
