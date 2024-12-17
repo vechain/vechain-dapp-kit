@@ -135,11 +135,11 @@ class AbstractAccountSigner extends VeChainAbstractSigner {
      * @returns The signature
      * @throws {Error} Method not implemented
      */
-    /* eslint-disable-next-line @typescript-eslint/require-await */
     async signTypedData(
         _domain: TypedDataDomain,
         _types: Record<string, TypedDataField[]>,
-        _value: Record<string, unknown>,
+        _primaryType: string,
+        _message: Record<string, unknown>,
     ): Promise<string> {
         throw new Error('Method not implemented.');
     }
