@@ -1,11 +1,12 @@
 'use client';
 
 import { type ReactElement, useMemo, useCallback } from 'react';
-import { Button, Text } from '@chakra-ui/react';
+import { Button, Text, useDisclosure } from '@chakra-ui/react';
 import {
     useWallet,
     useSendTransaction,
     ConnectButton,
+    TransactionModal,
 } from '@vechain/dapp-kit-react-privy';
 import { b3trAbi, b3trMainnetAddress } from '../constants';
 
@@ -42,6 +43,7 @@ const HomePage = (): ReactElement => {
         txReceipt,
         resetStatus,
         isTransactionPending,
+        error,
     } = useSendTransaction({
         signerAccount: smartAccount.address,
         privyUIOptions: {
@@ -52,7 +54,10 @@ const HomePage = (): ReactElement => {
         },
     });
 
+    const transactionModal = useDisclosure();
+
     const handleTransaction = useCallback(async () => {
+        transactionModal.onOpen();
         await sendTransaction(clauses);
     }, [sendTransaction, clauses]);
 
@@ -117,6 +122,16 @@ const HomePage = (): ReactElement => {
                     )}
                 </>
             )}
+
+            <TransactionModal
+                isOpen={transactionModal.isOpen}
+                onClose={transactionModal.onClose}
+                status={status}
+                txId={txReceipt?.meta.txID}
+                errorDescription={error?.reason ?? 'Unknown error'}
+                showSocialButtons={true}
+                showExplorerButton={true}
+            />
         </div>
     );
 };

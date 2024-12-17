@@ -253,9 +253,8 @@ export const useSendTransaction = ({
                 setSendTransactionError(
                     error instanceof Error ? error.message : String(error),
                 );
-                console.error(error);
                 onTxFailedOrCancelled?.();
-                throw error;
+                // throw error;
             } finally {
                 setSendTransactionPending(false);
             }
@@ -340,28 +339,38 @@ export const useSendTransaction = ({
      */
     useEffect(() => {
         if (status === 'success' || status === 'error') {
-            if (txReceipt) {
-                if (txReceipt.reverted) {
-                    if (!error?.type) {
-                        (async () => {
-                            const revertReason = await explainTxRevertReason(
-                                txReceipt,
-                            );
-                            setError({
-                                type: 'RevertReasonError',
-                                reason:
-                                    revertReason?.[0]?.revertReason ??
-                                    'Transaction reverted',
-                            });
-                        })();
-                    }
-                    return;
-                }
-                onTxConfirmed?.();
+            if (sendTransactionError && !error) {
+                setError({
+                    type: 'UserRejectedError',
+                    reason: sendTransactionError,
+                });
                 return;
             }
+
+            if (txReceipt?.reverted && !error?.type) {
+                (async () => {
+                    const revertReason = await explainTxRevertReason(txReceipt);
+                    setError({
+                        type: 'RevertReasonError',
+                        reason:
+                            revertReason?.[0]?.revertReason ??
+                            'Transaction reverted',
+                    });
+                })();
+                return;
+            }
+
+            if (txReceipt && !txReceipt.reverted) {
+                onTxConfirmed?.();
+            }
         }
-    }, [status, txReceipt, onTxConfirmed, explainTxRevertReason, error]);
+    }, [
+        status,
+        txReceipt,
+        onTxConfirmed,
+        explainTxRevertReason,
+        sendTransactionError,
+    ]);
 
     /**
      * Reset the status of the transaction

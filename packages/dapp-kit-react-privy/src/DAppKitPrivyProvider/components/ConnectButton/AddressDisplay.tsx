@@ -24,7 +24,7 @@ export const AddressDisplay = ({ address, label, domain }: Props) => {
 
     return (
         <VStack w={'full'} justifyContent={'center'}>
-            <HStack>
+            <VStack>
                 {label && (
                     <Text fontSize={'sm'} opacity={0.7}>
                         {label}
@@ -62,7 +62,7 @@ export const AddressDisplay = ({ address, label, domain }: Props) => {
                         />
                     </HStack>
                 )}
-            </HStack>
+            </VStack>
         </VStack>
     );
 };

@@ -36,6 +36,7 @@ export interface SmartAccountContextType {
     delegatorUrl: string;
     accountFactory: string;
     delegateAllTransactions: boolean;
+    chainId: string;
 }
 
 const VechainAccountContext = createContext<SmartAccountContextType | null>(
@@ -378,6 +379,7 @@ export const SmartAccountProvider = ({
                 thor,
                 isDeployed,
                 delegateAllTransactions,
+                chainId,
             }}
         >
             {children}
