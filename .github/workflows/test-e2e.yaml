@@ -2,8 +2,9 @@ name: E2E Tests
 
 on:
   push:
-    branches: [ main-v2 ]
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 concurrency:
   group: ${{ github.head_ref || github.ref_name }}-e2e-test

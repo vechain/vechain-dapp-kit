@@ -2,8 +2,9 @@ name: Lint, Build & Test
 
 on:
   push:
-    branches: [ main-v2 ]
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 concurrency:
   group: ${{ github.head_ref || github.ref_name }}-build-test-scan
