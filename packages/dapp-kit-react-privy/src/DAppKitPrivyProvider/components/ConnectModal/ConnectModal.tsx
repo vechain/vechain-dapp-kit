@@ -231,13 +231,13 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
                 isOpen={ecosystemModal.isOpen}
                 onClose={() => {
                     ecosystemModal.onClose();
-                    onClose();
                 }}
                 onBack={() => {
                     ecosystemModal.onClose();
                     // Instead of closing the connect modal, we just close the ecosystem modal
                     // which will show the connect modal again
                 }}
+                onConnectionSuccess={onClose}
             />
         </>
     );

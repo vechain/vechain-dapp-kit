@@ -14,14 +14,14 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Text,
     VStack,
     useColorMode,
     useMediaQuery,
 } from '@chakra-ui/react';
 import { useWallet } from '../../hooks';
-import { getPicassoImage, humanAddress, humanDomain } from '../../utils';
-import { useMemo } from 'react';
+import { getPicassoImage } from '../../utils';
+import { AddressDisplay } from './AddressDisplay';
+import { RxExit } from 'react-icons/rx';
 
 type Props = {
     isOpen: boolean;
@@ -53,34 +53,11 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
         vetDomain,
     } = useWallet();
 
-    const addressOrDomain = isConnectedWithPrivy
-        ? humanDomain(smartAccount.address ?? '', 4, 4)
-        : humanAddress(connectedAccount ?? '', 4, 4);
-
     const walletImage = getPicassoImage(
         isConnectedWithPrivy
             ? smartAccount.address ?? ''
             : connectedAccount ?? '',
     );
-
-    const walletCardRenderer = useMemo(() => {
-        return vetDomain ? (
-            <VStack w={'full'} justifyContent={'center'}>
-                <Text fontSize={'sm'}>{vetDomain}</Text>
-                <Text fontSize={'sm'}>
-                    {'('}
-                    {humanAddress(connectedAccount ?? '', 4, 4)}
-                    {')'}
-                </Text>
-            </VStack>
-        ) : (
-            <VStack w={'full'} justifyContent={'center'}>
-                <Text fontSize={'sm'}>
-                    {humanAddress(connectedAccount ?? '', 4, 4)}
-                </Text>
-            </VStack>
-        );
-    }, [vetDomain, connectedAccount, humanAddress]);
 
     return (
         <Modal
@@ -118,31 +95,27 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
                             <>
                                 <Card w={'full'}>
                                     <CardBody p={4} textAlign={'center'}>
-                                        <Text
-                                            fontSize={'sm'}
-                                            fontWeight={'500'}
-                                        >
-                                            Smart Account
-                                        </Text>
-                                        <Text fontSize={'sm'}>
-                                            {addressOrDomain}
-                                        </Text>
+                                        <AddressDisplay
+                                            address={smartAccount.address ?? ''}
+                                            label="Smart Account"
+                                        />
                                     </CardBody>
                                 </Card>
                                 <Card w={'full'}>
                                     <CardBody p={4} textAlign={'center'}>
-                                        <Text
-                                            fontSize={'sm'}
-                                            fontWeight={'500'}
-                                        >
-                                            Owner
-                                        </Text>
-                                        {walletCardRenderer}
+                                        <AddressDisplay
+                                            address={connectedAccount ?? ''}
+                                            label="Owner"
+                                            domain={vetDomain}
+                                        />
                                     </CardBody>
                                 </Card>
                             </>
                         ) : (
-                            walletCardRenderer
+                            <AddressDisplay
+                                address={connectedAccount ?? ''}
+                                domain={vetDomain}
+                            />
                         )}
                     </HStack>
                 </ModalBody>
@@ -153,6 +126,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
                             logoutAndDisconnect();
                             onClose();
                         }}
+                        leftIcon={<RxExit />}
                     >
                         Logout
                     </Button>

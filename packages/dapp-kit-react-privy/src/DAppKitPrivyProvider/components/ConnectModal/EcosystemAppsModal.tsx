@@ -26,9 +26,15 @@ type Props = {
     isOpen: boolean;
     onClose: () => void;
     onBack: () => void;
+    onConnectionSuccess: () => void;
 };
 
-export const EcosystemAppsModal = ({ isOpen, onClose, onBack }: Props) => {
+export const EcosystemAppsModal = ({
+    isOpen,
+    onClose,
+    onBack,
+    onConnectionSuccess,
+}: Props) => {
     const [isDesktop] = useMediaQuery('(min-width: 768px)');
     const _modalContentProps = isDesktop
         ? {
@@ -133,6 +139,7 @@ export const EcosystemAppsModal = ({ isOpen, onClose, onBack }: Props) => {
                                     onClick={() => {
                                         connectWithVebetterDaoApps(appId);
                                         onClose();
+                                        onConnectionSuccess();
                                     }}
                                     isDisabled={isLoading}
                                     isLoading={isLoading}
