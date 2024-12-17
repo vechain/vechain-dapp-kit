@@ -138,7 +138,6 @@ class AbstractAccountSigner extends VeChainAbstractSigner {
     async signTypedData(
         _domain: TypedDataDomain,
         _types: Record<string, TypedDataField[]>,
-        _primaryType: string,
         _message: Record<string, unknown>,
     ): Promise<string> {
         throw new Error('Method not implemented.');
