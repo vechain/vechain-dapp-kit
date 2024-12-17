@@ -50,8 +50,8 @@ const preparePackages = async () => {
     console.log('       - ✅  Removed!');
 
     console.log(' Build:');
-    console.log('       - 📦 Building packages...');
-    await exec('yarn install && yarn install:all');
+    console.log('       - 📦 Install dependencies and build packages...');
+    await exec('yarn install:all');
     console.log('       - ✅  Built!');
 
     console.log(' Test:');

@@ -79,7 +79,6 @@ export const DAppKitProviderData = ({
     const closeModal = useCallback(() => {
         DAppKitUI.modal.close();
     }, []);
-
     const onModalConnected = useCallback(
         (callback: (address: string | null) => void) =>
             DAppKitUI.modal.onConnectionStatusChange(callback),

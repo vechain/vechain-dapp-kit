@@ -4,6 +4,7 @@ export type {
     WalletSource,
     ConnectResponse,
     WalletConfig,
+    BaseWallet,
     WalletManagerState,
     Genesis,
 } from './types';

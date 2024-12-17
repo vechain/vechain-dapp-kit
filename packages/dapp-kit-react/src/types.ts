@@ -9,7 +9,6 @@ import type { CertificateData } from '@vechain/sdk-core';
 import type { ThorClient } from '@vechain/sdk-network';
 
 export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
-export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 
 export interface AccountState {
     address: string | null;

@@ -63,6 +63,10 @@ interface DAppKitOptions {
     allowedWallets?: WalletSource[];
 }
 
+type BaseWallet = ExpandedConnexSigner & {
+    disconnect?: () => Promise<void> | void;
+};
+
 interface WalletSigner {
     signTx: (
         msg: TransactionMessage[],
@@ -98,6 +102,7 @@ interface WalletManagerState {
 }
 
 export type {
+    BaseWallet,
     DAppKitOptions,
     VeChainWallet,
     WalletConfig,

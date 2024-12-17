@@ -1,5 +1,6 @@
 import type { ThorClient } from '@vechain/sdk-network';
 import type {
+    BaseWallet,
     DAppKitOptions,
     VeChainWallet,
     WalletSource,
@@ -70,7 +71,10 @@ export const createWallet = ({
                     throw e;
                 });
 
-            return new CertificateBasedWallet(signer, connectionCertificate);
+            return new CertificateBasedWallet(
+                signer as BaseWallet,
+                connectionCertificate,
+            );
         }
         case 'wallet-connect': {
             if (!walletConnectOptions) {
