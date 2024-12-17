@@ -206,7 +206,7 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
                                     <Text
                                         color={isDark ? '#dfdfdd' : '#4d4d4dab'}
                                     >
-                                        {'or with Crypto Wallet'}
+                                        {'or continue with Crypto Wallet'}
                                     </Text>
                                 </HStack>
                             </Button>

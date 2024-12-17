@@ -7,18 +7,16 @@ import {
     ConnectModal,
     useSendTransaction,
 } from '@vechain/dapp-kit-react-privy';
-import { b3trAbi } from '../constants';
+import { b3trAbi, b3trMainnetAddress } from '../constants';
 
 const HomePage = (): ReactElement => {
     const {
         isConnected,
-        isConnectedWithPrivy,
-        isConnectedWithDappKit,
-        connectedAddress,
+        connectedAccount,
         smartAccount,
         logoutAndDisconnect,
         isLoadingConnection,
-        isCrossAppPrivyAccount,
+        connectionType,
     } = useWallet();
 
     const {
@@ -29,21 +27,19 @@ const HomePage = (): ReactElement => {
 
     // A dummy tx sending 0 b3tr tokens
     const clauses = useMemo(() => {
-        if (!connectedAddress) return [];
-
         const clausesArray: any[] = [];
         clausesArray.push({
-            to: connectedAddress,
+            to: b3trMainnetAddress,
             value: '0x0',
             data: b3trAbi.encodeFunctionData('transfer', [
-                connectedAddress,
-                String(0),
+                connectedAccount,
+                '1000000000000000000', // 1 B3TR (in wei)
             ]),
-            comment: `Transfer ${0} B3TR to staking pool`,
+            comment: `Transfer ${1} B3TR to `,
             abi: b3trAbi.getFunction('transfer'),
         });
         return clausesArray;
-    }, [connectedAddress]);
+    }, []);
 
     const {
         sendTransaction,
@@ -54,10 +50,10 @@ const HomePage = (): ReactElement => {
     } = useSendTransaction({
         signerAccount: smartAccount.address,
         privyUIOptions: {
-            title: 'Test Transaction',
+            title: 'Sign to confirm',
             description:
-                'This is a test transaction performing a transfer of 0 B3TR tokens from your smart account.',
-            buttonText: 'Sign and execute',
+                'This is a test transaction performing a transfer of 1 B3TR tokens from your smart account.',
+            buttonText: 'Sign',
         },
     });
 
@@ -72,35 +68,33 @@ const HomePage = (): ReactElement => {
             ) : (
                 <>
                     {isConnected ? (
-                        <Button onClick={logoutAndDisconnect}>
-                            Disconnect
-                        </Button>
+                        <Button onClick={logoutAndDisconnect}>Logout</Button>
                     ) : (
-                        <Button onClick={onLoginOpen}>Connect</Button>
+                        <Button onClick={onLoginOpen}>Login</Button>
                     )}
 
                     {isConnected && (
                         <div>
-                            <p>Connected Address: {connectedAddress}</p>
-                            <p>
-                                Connected with Privy:{' '}
-                                {isConnectedWithPrivy.toString()}
-                            </p>
-                            {isConnectedWithPrivy && (
-                                <p>
-                                    Cross App Connection:{' '}
-                                    {isCrossAppPrivyAccount.toString()}
-                                </p>
-                            )}
-                            <p>
-                                Connected with DappKit:{' '}
-                                {isConnectedWithDappKit.toString()}
-                            </p>
+                            <h1>
+                                <b>Wallet</b>
+                            </h1>
+                            <p>Connected Address: {connectedAccount}</p>
+                            {<p>Connection Type: {connectionType}</p>}
+                            <br />
+
+                            <h1>
+                                <b>Smart Account</b>
+                            </h1>
                             <p>Smart Account: {smartAccount.address}</p>
                             <p>
-                                Smart Account Deployed:{' '}
-                                {smartAccount.isDeployed.toString()}
+                                Deployed: {smartAccount.isDeployed.toString()}
                             </p>
+                            <br />
+                            <br />
+                            <h1>
+                                <b>Actions</b>
+                            </h1>
+                            <br />
                             <Button
                                 onClick={handleTransaction}
                                 isLoading={isTransactionPending}
@@ -112,14 +106,15 @@ const HomePage = (): ReactElement => {
                                 <>
                                     <p>Status: {status}</p>
                                     {txReceipt && (
-                                        <p>Tx id: {txReceipt.meta.txID}</p>
+                                        <>
+                                            <p>Tx id: {txReceipt.meta.txID}</p>
+                                            <Button onClick={resetStatus}>
+                                                Reset
+                                            </Button>
+                                        </>
                                     )}
                                 </>
                             )}
-                            {status === 'success' ||
-                                (status === 'error' && (
-                                    <Button onClick={resetStatus}>Reset</Button>
-                                ))}
                         </div>
                     )}
 

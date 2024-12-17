@@ -81,7 +81,7 @@ export const SmartAccountProvider = ({
         user?.linkedAccounts?.some((account) => account.type === 'cross_app'),
     );
 
-    const connectedAddress = isCrossAppPrivyAccount
+    const connectedAccount = isCrossAppPrivyAccount
         ? //@ts-ignore
           user?.linkedAccounts?.[0]?.embeddedWallets?.[0]?.address
         : //@ts-ignore
@@ -97,7 +97,7 @@ export const SmartAccountProvider = ({
             !accountFactory ||
             !nodeUrl ||
             !delegatorUrl ||
-            !connectedAddress
+            !connectedAccount
         ) {
             setSmartAccountAddress(undefined);
             setIsDeployed(false);
@@ -110,7 +110,7 @@ export const SmartAccountProvider = ({
                 ABIContract.ofAbi(SimpleAccountFactoryABI).getFunction(
                     'getAccountAddress',
                 ),
-                [connectedAddress],
+                [connectedAccount],
             )
             .then((accountAddress) => {
                 setSmartAccountAddress(String(accountAddress.result.plain));
@@ -125,7 +125,7 @@ export const SmartAccountProvider = ({
         accountFactory,
         nodeUrl,
         delegatorUrl,
-        connectedAddress,
+        connectedAccount,
     ]);
 
     /**
@@ -185,7 +185,7 @@ export const SmartAccountProvider = ({
         description?: string;
         buttonText?: string;
     }): Promise<string> => {
-        if (!smartAccountAddress || !embeddedWallet || !connectedAddress) {
+        if (!smartAccountAddress || !embeddedWallet || !connectedAccount) {
             throw new Error('Address or embedded wallet is missing');
         }
 
@@ -233,7 +233,7 @@ export const SmartAccountProvider = ({
 
                 if (isCrossAppPrivyAccount) {
                     return signTypedDataCrossApp(data, {
-                        address: connectedAddress,
+                        address: connectedAccount,
                     });
                 } else {
                     const funcData = txClause.data;
@@ -268,7 +268,7 @@ export const SmartAccountProvider = ({
                     ABIContract.ofAbi(SimpleAccountFactoryABI).getFunction(
                         'createAccount',
                     ),
-                    [connectedAddress], // set the Privy wallet address as the owner of the smart account
+                    [connectedAccount], // set the Privy wallet address as the owner of the smart account
                 ),
             );
         }
@@ -295,7 +295,7 @@ export const SmartAccountProvider = ({
         // estimate the gas fees for the transaction
         const gasResult = await thor.gas.estimateGas(
             clauses,
-            connectedAddress,
+            connectedAccount,
             {
                 gasPadding: 1,
             },

@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 
-const PrivyProvider = dynamic(
+const DAppKitPrivyProvider = dynamic(
     async () =>
         (await import('@vechain/dapp-kit-react-privy')).DAppKitPrivyProvider,
     {
@@ -16,7 +16,7 @@ interface Props {
 
 export function SocialLoginWrapper({ children }: Props) {
     return (
-        <PrivyProvider
+        <DAppKitPrivyProvider
             privyConfig={{
                 appId: process.env.NEXT_PUBLIC_PRIVY_APP_ID!,
                 clientId: process.env.NEXT_PUBLIC_PRIVY_CLIENT_ID!,
@@ -36,8 +36,10 @@ export function SocialLoginWrapper({ children }: Props) {
                 ],
             }}
             smartAccountConfig={{
-                nodeUrl: 'https://node.vechain.energy',
+                // TODO: rename to feeDelegationConfig
+                nodeUrl: 'https://node.vechain.energy', // TODO: remove
                 delegatorUrl: 'https://sponsor.vechain.energy/by/749',
+                // TODO: add parameter to select if to sponsor all transactions or only provy
                 accountFactoryAddress:
                     '0xC06Ad8573022e2BE416CA89DA47E8c592971679A',
             }}
@@ -86,6 +88,6 @@ export function SocialLoginWrapper({ children }: Props) {
             }}
         >
             {children}
-        </PrivyProvider>
+        </DAppKitPrivyProvider>
     );
 }

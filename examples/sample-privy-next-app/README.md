@@ -9,26 +9,28 @@ This example demonstrates how to integrate the `@vechain/dapp-kit-react-privy` p
 To ensure compatibility with server-side rendering, dynamically import the SocialLoginWrapper component in layout.tsx:
 
 ```typescript
-const SocialLoginWrapper = dynamic(async () => (await import('./components/SocialLoginWrapper')).SocialLoginWrapper, {
-  ssr: false
-});
+const SocialLoginWrapper = dynamic(
+    async () =>
+        (await import('./components/SocialLoginWrapper')).SocialLoginWrapper,
+    {
+        ssr: false,
+    },
+);
 
 export default function RootLayout({
     children,
-  }: Readonly<{
+}: Readonly<{
     children: React.ReactNode;
-  }>) {
+}>) {
     return (
-      <html lang="en">
-        <head>
-          <title>Privy Next JS</title>
-        </head>
-        <body>
-          <SocialLoginWrapper>
-            {children}
-          </SocialLoginWrapper>
-        </body>
-      </html>
+        <html lang="en">
+            <head>
+                <title>Privy Next JS</title>
+            </head>
+            <body>
+                <SocialLoginWrapper>{children}</SocialLoginWrapper>
+            </body>
+        </html>
     );
 }
 ```
@@ -38,11 +40,16 @@ export default function RootLayout({
 Import the necessary hooks and components from @vechain/dapp-kit-react-privy and use them to interact with the VeChain ecosystem in your application:
 
 ```typescript
-import {
-    useVOT3Balance,
-    useB3TRBalance,
-} from "@vechain/dapp-kit-react-privy";
+import { useVOT3Balance, useB3TRBalance } from '@vechain/dapp-kit-react-privy';
 
-const b3trBalanceQuery = isConnected ? useB3TRBalance({ address: connectedAddress ?? '' }) : useB3TRBalance({ address: abstractedAccount.embeddedWallet?.address ?? '' });
-    const vot3BalanceQuery = isConnected ? useVOT3Balance({ address: connectedAddress ?? '' }) : useVOT3Balance({ address: abstractedAccount.embeddedWallet?.address ?? '' });
+const b3trBalanceQuery = isConnected
+    ? useB3TRBalance({ address: connectedAccount ?? '' })
+    : useB3TRBalance({
+          address: abstractedAccount.embeddedWallet?.address ?? '',
+      });
+const vot3BalanceQuery = isConnected
+    ? useVOT3Balance({ address: connectedAccount ?? '' })
+    : useVOT3Balance({
+          address: abstractedAccount.embeddedWallet?.address ?? '',
+      });
 ```
