@@ -1,5 +1,5 @@
 export * from './AccountAbstraction';
-export * from './AbstractAccount';
+export * from '../hooks/AbstractAccount';
 export * from './Constants';
 export * from './FormattingUtils';
 export * from './Types';

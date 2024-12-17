@@ -17,7 +17,7 @@ import {
     VeChainProvider,
     type VeChainSigner,
 } from '@vechain/sdk-network';
-import { getAbstractAddress } from './AbstractAccount';
+import { getAbstractAddress } from '../hooks/AbstractAccount';
 import { DELEGATOR_URL, NETWORK_URL, THOR_CLIENT } from './Constants';
 
 /**
