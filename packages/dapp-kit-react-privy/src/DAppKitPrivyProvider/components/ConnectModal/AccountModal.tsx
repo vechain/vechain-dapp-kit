@@ -1,7 +1,6 @@
 'use client';
 
 import {
-    Box,
     Button,
     Card,
     CardBody,
@@ -22,6 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { useWallet } from '../../hooks';
 import { getPicassoImage, humanAddress, humanDomain } from '../../utils';
+import { useMemo } from 'react';
 
 type Props = {
     isOpen: boolean;
@@ -50,6 +50,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
         isConnectedWithPrivy,
         connectedAccount,
         smartAccount,
+        vetDomain,
     } = useWallet();
 
     const addressOrDomain = isConnectedWithPrivy
@@ -61,6 +62,23 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
             ? smartAccount.address ?? ''
             : connectedAccount ?? '',
     );
+
+    const walletCardRenderer = useMemo(() => {
+        return vetDomain ? (
+            <VStack w={'full'} justifyContent={'center'}>
+                <Text fontSize={'sm'}>{vetDomain}</Text>
+                <Text fontSize={'sm'}>
+                    {'('}
+                    {humanAddress(connectedAccount ?? '', 4, 4)}
+                    {')'}
+                </Text>
+            </VStack>
+        ) : (
+            <Text fontSize={'sm'}>
+                {humanAddress(connectedAccount ?? '', 4, 4)}
+            </Text>
+        );
+    }, [vetDomain, connectedAccount, humanAddress]);
 
     return (
         <Modal
@@ -97,7 +115,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
                         {isConnectedWithPrivy ? (
                             <>
                                 <Card w={'full'}>
-                                    <CardBody p={4}>
+                                    <CardBody p={4} textAlign={'center'}>
                                         <Text
                                             fontSize={'sm'}
                                             fontWeight={'500'}
@@ -110,30 +128,19 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
                                     </CardBody>
                                 </Card>
                                 <Card w={'full'}>
-                                    <CardBody p={4}>
+                                    <CardBody p={4} textAlign={'center'}>
                                         <Text
                                             fontSize={'sm'}
                                             fontWeight={'500'}
                                         >
                                             Owner
                                         </Text>
-                                        <Text fontSize={'sm'}>
-                                            {humanAddress(
-                                                connectedAccount ?? '',
-                                                4,
-                                                4,
-                                            )}
-                                        </Text>
+                                        {walletCardRenderer}
                                     </CardBody>
                                 </Card>
                             </>
                         ) : (
-                            <Box>
-                                <Text fontWeight={'500'}>Wallet</Text>
-                                <Text fontWeight={'500'}>
-                                    {addressOrDomain}
-                                </Text>
-                            </Box>
+                            walletCardRenderer
                         )}
                     </HStack>
                 </ModalBody>

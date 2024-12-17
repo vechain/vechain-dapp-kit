@@ -1,7 +1,7 @@
 'use client';
 
 import { type ReactElement, useMemo, useCallback } from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 import {
     useWallet,
     useSendTransaction,
@@ -68,19 +68,25 @@ const HomePage = (): ReactElement => {
                             <h1>
                                 <b>Wallet</b>
                             </h1>
-                            <p>Connected Address: {connectedAccount}</p>
+                            <p>Address: {connectedAccount}</p>
                             {<p>Connection Type: {connectionType}</p>}
                             <br />
 
-                            <h1>
-                                <b>Smart Account</b>
-                            </h1>
-                            <p>Smart Account: {smartAccount.address}</p>
-                            <p>
-                                Deployed: {smartAccount.isDeployed.toString()}
-                            </p>
-                            <br />
-                            <br />
+                            {smartAccount.address && (
+                                <>
+                                    <h1>
+                                        <b>Smart Account</b>
+                                    </h1>
+                                    <p>Smart Account: {smartAccount.address}</p>
+                                    <p>
+                                        Deployed:{' '}
+                                        {smartAccount.isDeployed.toString()}
+                                    </p>
+                                    <br />
+                                    <br />
+                                </>
+                            )}
+
                             <h1>
                                 <b>Actions</b>
                             </h1>
@@ -94,15 +100,18 @@ const HomePage = (): ReactElement => {
                             </Button>
                             {status !== 'ready' && (
                                 <>
-                                    <p>Status: {status}</p>
+                                    <Text>Status: {status}</Text>
                                     {txReceipt && (
-                                        <>
-                                            <p>Tx id: {txReceipt.meta.txID}</p>
-                                            <Button onClick={resetStatus}>
-                                                Reset
-                                            </Button>
-                                        </>
+                                        <Text>
+                                            Tx id: {txReceipt.meta.txID}
+                                        </Text>
                                     )}
+                                    <Button
+                                        variant={'link'}
+                                        onClick={resetStatus}
+                                    >
+                                        Reset
+                                    </Button>
                                 </>
                             )}
                         </div>
