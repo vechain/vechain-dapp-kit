@@ -6,12 +6,12 @@ import {
     useWallet,
     useSendTransaction,
     ConnectButton,
-    AbstractAccountSigner,
-    usePrivy,
+    //AbstractAccountSigner,
+    //usePrivy,
 } from '@vechain/dapp-kit-react-privy';
-import { useWallets, type ConnectedWallet } from '@privy-io/react-auth';
+//import { useWallets, type ConnectedWallet } from '@privy-io/react-auth';
 import { b3trAbi, b3trMainnetAddress } from '../constants';
-import { ThorClient, VeChainProvider } from '@vechain/sdk-network';
+//import { ThorClient, VeChainProvider } from '@vechain/sdk-network';
 
 const HomePage = (): ReactElement => {
     const {
@@ -20,6 +20,7 @@ const HomePage = (): ReactElement => {
         smartAccount,
         isLoadingConnection,
         connectionType,
+        //privyEmbeddedWallet
     } = useWallet();
 
     // A dummy tx sending 0 b3tr tokens
@@ -60,7 +61,7 @@ const HomePage = (): ReactElement => {
         await sendTransaction(clauses);
     }, [sendTransaction, clauses]);
 
-    const { signTypedData } = usePrivy();
+    /*const { signTypedData } = usePrivy();
     const { wallets } = useWallets();
 
     const embeddedWallet = useMemo<ConnectedWallet | undefined>(() => {
@@ -87,7 +88,7 @@ const HomePage = (): ReactElement => {
                 },
             ],
         });
-    };
+    };*/
 
     return (
         <div className="container">
@@ -126,7 +127,8 @@ const HomePage = (): ReactElement => {
                                 Test Tx
                             </Button>
 
-                            <Button onClick={testSigner}>Test Signer</Button>
+                            {/*<Button onClick={testSigner}>Test SDK Signer</Button>*/}
+
                             {status !== 'ready' && (
                                 <>
                                     <p>Status: {status}</p>
