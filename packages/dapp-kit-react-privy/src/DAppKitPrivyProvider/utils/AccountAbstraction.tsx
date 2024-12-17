@@ -1,10 +1,4 @@
-import {
-    ABIFunction,
-    Address,
-    Clause,
-    Hex,
-    Secp256k1,
-} from '@vechain/sdk-core';
+import { ABIFunction, Address, Clause } from '@vechain/sdk-core';
 import {
     type ConnectedWallet,
     type SignMessageModalUIOptions,
@@ -19,6 +13,7 @@ import {
 } from '@vechain/sdk-network';
 import { getAbstractAddress } from '../hooks/AbstractAccount';
 import { DELEGATOR_URL, NETWORK_URL, THOR_CLIENT } from './Constants';
+import { randomTransactionUser } from './SmartAccountTransactionForwarder';
 
 /**
  * Get the genesis block id
@@ -31,19 +26,6 @@ export async function getGenesisId(): Promise<string | null> {
         ? BigInt(genesis.id).toString()
         : null;
 }
-
-/**
- * Generate a random transaction user
- * @returns The private key and address of the random transaction user
- */
-export const randomTransactionUser = async (): Promise<{
-    privateKey: Buffer;
-    address: string;
-}> => {
-    const privateKey = Buffer.from(await Secp256k1.generatePrivateKey());
-    const address = Address.ofPrivateKey(Hex.of(privateKey).bytes);
-    return { privateKey, address: address.toString() };
-};
 
 /**
  * Send transaction to the blockchain
@@ -207,7 +189,7 @@ export async function sendTransactionFunction({
     /**
      * Create a random transaction user
      */
-    const randomUser = await randomTransactionUser();
+    const randomUser = randomTransactionUser;
 
     /**
      * sign the transaction
@@ -216,7 +198,9 @@ export async function sendTransactionFunction({
     const wallet = new ProviderInternalBaseWallet(
         [
             {
-                privateKey: randomUser.privateKey,
+                privateKey: Uint8Array.from(
+                    Buffer.from(randomUser.privateKey.slice(2), 'hex'),
+                ),
                 address: randomUser.address,
             },
         ],

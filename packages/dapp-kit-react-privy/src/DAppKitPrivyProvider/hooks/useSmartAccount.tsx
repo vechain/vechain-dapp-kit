@@ -16,18 +16,10 @@ import {
     signerUtils,
 } from '@vechain/sdk-network';
 import { SimpleAccountABI, SimpleAccountFactoryABI } from '../assets/abi';
-import { ExecuteWithAuthorizationSignData } from '../utils';
-import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
-
-const randomTransactionUser = (() => {
-    const privateKey = generatePrivateKey();
-    const account = privateKeyToAccount(privateKey);
-    return {
-        privateKey,
-        account,
-        address: account.address,
-    };
-})();
+import {
+    ExecuteWithAuthorizationSignData,
+    randomTransactionUser,
+} from '../utils';
 
 export interface SmartAccountContextType {
     address: string | undefined;
