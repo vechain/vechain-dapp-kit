@@ -36,17 +36,16 @@ type Props = {
         )[];
         ecosystemAppsID?: string[];
     };
-    smartAccountConfig?: {
-        nodeUrl: string;
+    feeDelegationConfig: {
         delegatorUrl: string;
-        accountFactoryAddress: string;
+        delegateAllTransactions: boolean;
     };
     dappKitConfig: DAppKitUIOptions;
 };
 
 type DAppKitPrivyConfig = {
     privyConfig: Props['privyConfig'];
-    smartAccountConfig?: Props['smartAccountConfig'];
+    feeDelegationConfig: Props['feeDelegationConfig'];
     dappKitConfig: Props['dappKitConfig'];
 };
 
@@ -76,7 +75,7 @@ export const useDAppKitPrivyConfig = () => {
 export const DAppKitPrivyProvider = ({
     children,
     privyConfig,
-    smartAccountConfig,
+    feeDelegationConfig,
     dappKitConfig,
 }: Props) => {
     // Join login methods and ecosystemAppsID, but ecosystemAppsID needs to be written as "privy:appID"
@@ -87,7 +86,7 @@ export const DAppKitPrivyProvider = ({
 
     return (
         <DAppKitPrivyContext.Provider
-            value={{ privyConfig, smartAccountConfig, dappKitConfig }}
+            value={{ privyConfig, feeDelegationConfig, dappKitConfig }}
         >
             <BasePrivyProvider
                 appId={privyConfig.appId}
@@ -97,7 +96,6 @@ export const DAppKitPrivyProvider = ({
                         // @ts-ignore
                         primary: loginMethods,
                     },
-                    // loginMethods: privyConfig.loginMethods,
                     appearance: privyConfig.appearance,
                     embeddedWallets: {
                         createOnLogin:
@@ -106,26 +104,24 @@ export const DAppKitPrivyProvider = ({
                     },
                 }}
             >
-                <SmartAccountProvider
-                    nodeUrl={smartAccountConfig?.nodeUrl ?? ''}
-                    delegatorUrl={smartAccountConfig?.delegatorUrl ?? ''}
-                    accountFactory={
-                        smartAccountConfig?.accountFactoryAddress ?? ''
-                    }
+                <DAppKitProvider
+                    nodeUrl={dappKitConfig.nodeUrl}
+                    genesis={dappKitConfig.genesis}
+                    usePersistence
+                    walletConnectOptions={dappKitConfig.walletConnectOptions}
+                    themeMode={dappKitConfig.themeMode}
+                    themeVariables={{}}
                 >
-                    <DAppKitProvider
+                    <SmartAccountProvider
                         nodeUrl={dappKitConfig.nodeUrl}
-                        genesis={dappKitConfig.genesis}
-                        usePersistence
-                        walletConnectOptions={
-                            dappKitConfig.walletConnectOptions
+                        delegatorUrl={feeDelegationConfig.delegatorUrl}
+                        delegateAllTransactions={
+                            feeDelegationConfig.delegateAllTransactions
                         }
-                        themeMode={dappKitConfig.themeMode}
-                        themeVariables={{}}
                     >
                         <ChakraProvider>{children}</ChakraProvider>
-                    </DAppKitProvider>
-                </SmartAccountProvider>
+                    </SmartAccountProvider>
+                </DAppKitProvider>
             </BasePrivyProvider>
         </DAppKitPrivyContext.Provider>
     );

@@ -18,6 +18,7 @@ import {
 } from '@vechain/sdk-network';
 import { SimpleAccountABI, SimpleAccountFactoryABI } from '../assets/abi';
 import { ExecuteWithAuthorizationSignData } from '../utils';
+import { ACCOUNT_FACTORY_ADDRESSES } from '../utils';
 
 export interface SmartAccountContextType {
     address: string | undefined;
@@ -34,6 +35,7 @@ export interface SmartAccountContextType {
     nodeUrl: string;
     delegatorUrl: string;
     accountFactory: string;
+    delegateAllTransactions: boolean;
 }
 
 const VechainAccountContext = createContext<SmartAccountContextType | null>(
@@ -57,12 +59,12 @@ export const SmartAccountProvider = ({
     children,
     nodeUrl,
     delegatorUrl,
-    accountFactory,
+    delegateAllTransactions,
 }: {
     children: React.ReactNode;
     nodeUrl: string;
     delegatorUrl: string;
-    accountFactory: string;
+    delegateAllTransactions: boolean;
 }) => {
     const { signTypedData, exportWallet, user } = usePrivy();
     const { signTypedData: signTypedDataCrossApp } = useCrossAppAccounts();
@@ -76,6 +78,7 @@ export const SmartAccountProvider = ({
     const [chainId, setChainId] = useState('');
     const thor = ThorClient.fromUrl(nodeUrl);
     const [isDeployed, setIsDeployed] = useState(false);
+    const [accountFactory, setAccountFactory] = useState<string>();
 
     const isCrossAppPrivyAccount = Boolean(
         user?.linkedAccounts?.some((account) => account.type === 'cross_app'),
@@ -168,6 +171,19 @@ export const SmartAccountProvider = ({
                 setIsDeployed(account.hasCode);
             });
     }, [smartAccountAddress, thor]);
+
+    /**
+     * Set the account factory address based on the chain ID
+     */
+    useEffect(() => {
+        if (!chainId) return;
+
+        setAccountFactory(
+            ACCOUNT_FACTORY_ADDRESSES[
+                chainId as keyof typeof ACCOUNT_FACTORY_ADDRESSES
+            ],
+        );
+    }, [chainId]);
 
     /**
      * Send a transaction on vechain by asking the privy wallet to sign a typed data content
@@ -264,7 +280,7 @@ export const SmartAccountProvider = ({
         if (!isDeployed) {
             clauses.push(
                 Clause.callFunction(
-                    Address.of(accountFactory),
+                    Address.of(accountFactory ?? ''),
                     ABIContract.ofAbi(SimpleAccountFactoryABI).getFunction(
                         'createAccount',
                     ),
@@ -353,7 +369,7 @@ export const SmartAccountProvider = ({
         <VechainAccountContext.Provider
             value={{
                 address: smartAccountAddress,
-                accountFactory,
+                accountFactory: accountFactory ?? '',
                 nodeUrl,
                 delegatorUrl,
                 embeddedWallet,
@@ -361,6 +377,7 @@ export const SmartAccountProvider = ({
                 exportWallet,
                 thor,
                 isDeployed,
+                delegateAllTransactions,
             }}
         >
             {children}

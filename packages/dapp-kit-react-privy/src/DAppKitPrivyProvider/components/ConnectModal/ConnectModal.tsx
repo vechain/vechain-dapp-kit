@@ -229,7 +229,10 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
 
             <EcosystemAppsModal
                 isOpen={ecosystemModal.isOpen}
-                onClose={ecosystemModal.onClose}
+                onClose={() => {
+                    ecosystemModal.onClose();
+                    onClose();
+                }}
                 onBack={() => {
                     ecosystemModal.onClose();
                     // Instead of closing the connect modal, we just close the ecosystem modal

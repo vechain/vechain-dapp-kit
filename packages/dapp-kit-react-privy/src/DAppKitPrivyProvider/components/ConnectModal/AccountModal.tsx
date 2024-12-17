@@ -74,9 +74,11 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
                 </Text>
             </VStack>
         ) : (
-            <Text fontSize={'sm'}>
-                {humanAddress(connectedAccount ?? '', 4, 4)}
-            </Text>
+            <VStack w={'full'} justifyContent={'center'}>
+                <Text fontSize={'sm'}>
+                    {humanAddress(connectedAccount ?? '', 4, 4)}
+                </Text>
+            </VStack>
         );
     }, [vetDomain, connectedAccount, humanAddress]);
 

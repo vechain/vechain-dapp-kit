@@ -37,16 +37,22 @@ export const ConnectButton = () => {
                 <>
                     {isConnected ? (
                         <Button onClick={accountModal.onOpen}>
-                            <Image
-                                className="address-icon mobile"
-                                src={walletImage}
-                                alt="wallet"
-                                width={23}
-                                height={23}
-                                borderRadius="50%"
-                                marginRight={2}
-                            />
-                            {addressOrDomain}
+                            {isLoadingConnection || !isConnected ? (
+                                'Loading...'
+                            ) : (
+                                <>
+                                    <Image
+                                        className="address-icon mobile"
+                                        src={walletImage}
+                                        alt="wallet"
+                                        width={23}
+                                        height={23}
+                                        borderRadius="50%"
+                                        marginRight={2}
+                                    />
+                                    {addressOrDomain}
+                                </>
+                            )}
                         </Button>
                     ) : (
                         <Button onClick={connectModal.onOpen}>Login</Button>

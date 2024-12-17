@@ -71,7 +71,6 @@ const HomePage = (): ReactElement => {
                             <p>Address: {connectedAccount}</p>
                             {<p>Connection Type: {connectionType}</p>}
                             <br />
-
                             {smartAccount.address && (
                                 <>
                                     <h1>
