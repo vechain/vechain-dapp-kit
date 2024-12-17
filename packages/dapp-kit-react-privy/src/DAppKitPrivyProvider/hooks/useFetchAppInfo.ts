@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 interface PrivyAppInfo {
     id: string;
@@ -35,35 +35,56 @@ export function useFetchAppInfo(appIds: string | string[]) {
     const [error, setError] = useState<Error | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    // Memoize the IDs array to prevent unnecessary re-renders
+    const normalizedIds = useMemo(() => {
+        if (!appIds) return [];
+        return Array.isArray(appIds) ? appIds : [appIds];
+    }, [appIds]);
+
     useEffect(() => {
-        if (!appIds) return;
+        if (!normalizedIds.length) return;
+
+        let isMounted = true;
 
         const fetchData = async () => {
+            if (!isMounted) return;
             setIsLoading(true);
+
             try {
-                const ids = Array.isArray(appIds) ? appIds : [appIds];
                 const results = await Promise.all(
-                    ids.map((id) => fetchPrivyAppInfo(id)),
+                    normalizedIds.map((id) => fetchPrivyAppInfo(id)),
                 );
 
+                if (!isMounted) return;
+
                 const appInfoMap = Object.fromEntries(
-                    results.map((result, index) => [ids[index], result]),
+                    results.map((result, index) => [
+                        normalizedIds[index],
+                        result,
+                    ]),
                 );
 
                 setData(appInfoMap);
                 setError(null);
             } catch (err) {
+                if (!isMounted) return;
                 setError(
                     err instanceof Error ? err : new Error('Unknown error'),
                 );
                 setData(null);
             } finally {
-                setIsLoading(false);
+                if (isMounted) {
+                    setIsLoading(false);
+                }
             }
         };
 
         fetchData();
-    }, [appIds]);
+
+        return () => {
+            isMounted = false;
+        };
+    }, [normalizedIds]); // Use memoized array as dependency
 
     return { data, error, isLoading };
 }
