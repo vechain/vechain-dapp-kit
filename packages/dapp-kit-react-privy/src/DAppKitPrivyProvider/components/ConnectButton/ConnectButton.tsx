@@ -36,7 +36,7 @@ export const ConnectButton = () => {
             ) : (
                 <>
                     {isConnected ? (
-                        <Button onClick={accountModal.onOpen}>
+                        <Button onClick={accountModal.onOpen} p={'9px 12px'}>
                             <HStack>
                                 <Image
                                     className="address-icon mobile"

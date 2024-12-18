@@ -1,16 +1,27 @@
 'use client';
 
 import { type ReactElement, useMemo, useCallback } from 'react';
-import { Button, Text, useDisclosure } from '@chakra-ui/react';
+import {
+    Button,
+    HStack,
+    Text,
+    useColorMode,
+    useDisclosure,
+} from '@chakra-ui/react';
 import {
     useWallet,
     useSendTransaction,
     ConnectButton,
     TransactionModal,
+    useDAppKitPrivyColorMode,
 } from '@vechain/dapp-kit-react-privy';
 import { b3trAbi, b3trMainnetAddress } from '../constants';
 
 const HomePage = (): ReactElement => {
+    const { toggleColorMode, colorMode } = useColorMode();
+    const { toggleColorMode: toggleDAppKitPrivyColorMode } =
+        useDAppKitPrivyColorMode();
+
     const {
         isConnected,
         connectedAccount,
@@ -95,13 +106,23 @@ const HomePage = (): ReactElement => {
                                 <b>Actions</b>
                             </h1>
                             <br />
-                            <Button
-                                onClick={handleTransaction}
-                                isLoading={isTransactionPending}
-                                isDisabled={isTransactionPending}
-                            >
-                                Test Tx
-                            </Button>
+                            <HStack>
+                                <Button
+                                    onClick={handleTransaction}
+                                    isLoading={isTransactionPending}
+                                    isDisabled={isTransactionPending}
+                                >
+                                    Test Tx
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        toggleDAppKitPrivyColorMode();
+                                        toggleColorMode();
+                                    }}
+                                >
+                                    {colorMode === 'dark' ? 'Light' : 'Dark'}
+                                </Button>
+                            </HStack>
                             {status !== 'ready' && (
                                 <>
                                     <Text>Status: {status}</Text>

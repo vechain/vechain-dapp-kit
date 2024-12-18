@@ -1,5 +1,6 @@
 'use client';
 
+import { ChakraProvider } from '@chakra-ui/react';
 import './globals.css';
 import dynamic from 'next/dynamic';
 
@@ -22,7 +23,9 @@ export default function RootLayout({
                 <title>Privy Next JS</title>
             </head>
             <body>
-                <SocialLoginWrapper>{children}</SocialLoginWrapper>
+                <ChakraProvider>
+                    <SocialLoginWrapper>{children}</SocialLoginWrapper>
+                </ChakraProvider>
             </body>
         </html>
     );

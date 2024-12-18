@@ -1,5 +1,6 @@
 'use client';
 
+import { useColorMode } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 
 const DAppKitPrivyProvider = dynamic(
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export function SocialLoginWrapper({ children }: Props) {
+    const { colorMode } = useColorMode();
     return (
         <DAppKitPrivyProvider
             privyConfig={{
@@ -22,7 +24,7 @@ export function SocialLoginWrapper({ children }: Props) {
                 clientId: process.env.NEXT_PUBLIC_PRIVY_CLIENT_ID!,
                 loginMethods: ['google', 'twitter'],
                 appearance: {
-                    theme: 'light',
+                    theme: colorMode,
                     accentColor: '#696FFD',
                     loginMessage: 'Select a social media profile',
                     logo: 'https://i.ibb.co/ZHGmq3y/image-21.png',
@@ -63,7 +65,7 @@ export function SocialLoginWrapper({ children }: Props) {
                     isTrunk: true,
                     transactions: [],
                 },
-                themeMode: 'LIGHT',
+                themeMode: colorMode === 'dark' ? 'DARK' : 'LIGHT',
                 walletConnectOptions: {
                     projectId:
                         process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,

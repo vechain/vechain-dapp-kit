@@ -71,7 +71,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
             <ModalContent {...(_modalContentProps as ModalContentProps)}>
                 <ModalHeader
                     fontSize={'md'}
-                    fontWeight={'400'}
+                    fontWeight={'500'}
                     textAlign={'center'}
                     color={isDark ? '#dfdfdd' : '#4d4d4d'}
                 >
@@ -104,7 +104,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
                                     <CardBody p={4} textAlign={'center'}>
                                         <AddressDisplay
                                             address={connectedAccount ?? ''}
-                                            label="Owner"
+                                            label="Wallet"
                                             domain={vetDomain}
                                         />
                                     </CardBody>
@@ -125,7 +125,9 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
                             logoutAndDisconnect();
                             onClose();
                         }}
-                        leftIcon={<RxExit />}
+                        fontSize={'sm'}
+                        fontWeight={'400'}
+                        leftIcon={<RxExit color="#888888" />}
                     >
                         Logout
                     </Button>
