@@ -14,7 +14,6 @@
         "@vechain/dapp-kit": "*",
         "@vechain/dapp-kit-react": "*",
         "@vechain/dapp-kit-react-privy": "*",
-        "framer-motion": "^11.11.17",
         "next": "14.2.10",
         "react": "^18",
         "react-dom": "^18"

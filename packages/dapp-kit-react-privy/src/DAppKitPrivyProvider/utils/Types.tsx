@@ -42,7 +42,11 @@ export type TransactionStatus =
     | 'unknown';
 
 export type TransactionStatusErrorType = {
-    type: 'SendTransactionError' | 'TxReceiptError' | 'RevertReasonError';
+    type:
+        | 'SendTransactionError'
+        | 'TxReceiptError'
+        | 'RevertReasonError'
+        | 'UserRejectedError';
     reason?: string;
 };
 

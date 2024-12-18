@@ -30,7 +30,9 @@
         "@vechain/picasso": "^2.1.1",
         "@vechain/sdk-core": "^1.0.0-rc.5",
         "@vechain/sdk-network": "^1.0.0-rc.5",
-        "@vechain/vebetterdao-contracts": "^4.1.0"
+        "@vechain/vebetterdao-contracts": "^4.1.0",
+        "framer-motion": "^11.15.0",
+        "react-icons": "^5.4.0"
     },
     "devDependencies": {
         "@types/react": "^18.2.28",

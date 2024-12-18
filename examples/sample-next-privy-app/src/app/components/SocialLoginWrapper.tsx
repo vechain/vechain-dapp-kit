@@ -35,13 +35,9 @@ export function SocialLoginWrapper({ children }: Props) {
                     'clz41gcg00e4ay75dmq3uzzgr',
                 ],
             }}
-            smartAccountConfig={{
-                // TODO: rename to feeDelegationConfig
-                nodeUrl: 'https://node.vechain.energy', // TODO: remove
+            feeDelegationConfig={{
                 delegatorUrl: 'https://sponsor.vechain.energy/by/749',
-                // TODO: add parameter to select if to sponsor all transactions or only provy
-                accountFactoryAddress:
-                    '0xC06Ad8573022e2BE416CA89DA47E8c592971679A',
+                delegateAllTransactions: true,
             }}
             dappKitConfig={{
                 nodeUrl: 'https://node.vechain.energy',

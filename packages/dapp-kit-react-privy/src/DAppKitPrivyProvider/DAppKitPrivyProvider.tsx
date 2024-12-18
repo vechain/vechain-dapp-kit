@@ -3,6 +3,7 @@ import { PrivyProvider as BasePrivyProvider } from '@privy-io/react-auth';
 import { DAppKitProvider, DAppKitUIOptions } from '@vechain/dapp-kit-react';
 import { SmartAccountProvider } from './hooks';
 import { ChakraProvider } from '@chakra-ui/react';
+import { Theme } from './theme';
 
 type Props = {
     children: ReactNode;
@@ -36,17 +37,16 @@ type Props = {
         )[];
         ecosystemAppsID?: string[];
     };
-    smartAccountConfig?: {
-        nodeUrl: string;
+    feeDelegationConfig: {
         delegatorUrl: string;
-        accountFactoryAddress: string;
+        delegateAllTransactions: boolean;
     };
     dappKitConfig: DAppKitUIOptions;
 };
 
 type DAppKitPrivyConfig = {
     privyConfig: Props['privyConfig'];
-    smartAccountConfig?: Props['smartAccountConfig'];
+    feeDelegationConfig: Props['feeDelegationConfig'];
     dappKitConfig: Props['dappKitConfig'];
 };
 
@@ -76,42 +76,47 @@ export const useDAppKitPrivyConfig = () => {
 export const DAppKitPrivyProvider = ({
     children,
     privyConfig,
-    smartAccountConfig,
+    feeDelegationConfig,
     dappKitConfig,
 }: Props) => {
-    // Join login methods and ecosystemAppsID, but ecosystemAppsID needs to be written as "privy:appID"
     const loginMethods = [
         ...privyConfig.loginMethods,
         ...(privyConfig.ecosystemAppsID ?? []).map((appID) => `privy:${appID}`),
     ];
 
+    // Set the color mode in localStorage to match the Privy theme
+    if (
+        !localStorage.getItem('chakra-ui-color-mode') ||
+        localStorage.getItem('chakra-ui-color-mode') !==
+            privyConfig.appearance.theme
+    ) {
+        localStorage.setItem(
+            'chakra-ui-color-mode',
+            privyConfig.appearance.theme,
+        );
+        localStorage.setItem('chakra-ui-color-mode-default', 'set');
+    }
+
     return (
         <DAppKitPrivyContext.Provider
-            value={{ privyConfig, smartAccountConfig, dappKitConfig }}
+            value={{ privyConfig, feeDelegationConfig, dappKitConfig }}
         >
-            <BasePrivyProvider
-                appId={privyConfig.appId}
-                clientId={privyConfig.clientId}
-                config={{
-                    loginMethodsAndOrder: {
-                        // @ts-ignore
-                        primary: loginMethods,
-                    },
-                    // loginMethods: privyConfig.loginMethods,
-                    appearance: privyConfig.appearance,
-                    embeddedWallets: {
-                        createOnLogin:
-                            privyConfig.embeddedWallets?.createOnLogin ??
-                            'all-users',
-                    },
-                }}
-            >
-                <SmartAccountProvider
-                    nodeUrl={smartAccountConfig?.nodeUrl ?? ''}
-                    delegatorUrl={smartAccountConfig?.delegatorUrl ?? ''}
-                    accountFactory={
-                        smartAccountConfig?.accountFactoryAddress ?? ''
-                    }
+            <ChakraProvider theme={Theme}>
+                <BasePrivyProvider
+                    appId={privyConfig.appId}
+                    clientId={privyConfig.clientId}
+                    config={{
+                        loginMethodsAndOrder: {
+                            // @ts-ignore
+                            primary: loginMethods,
+                        },
+                        appearance: privyConfig.appearance,
+                        embeddedWallets: {
+                            createOnLogin:
+                                privyConfig.embeddedWallets?.createOnLogin ??
+                                'all-users',
+                        },
+                    }}
                 >
                     <DAppKitProvider
                         nodeUrl={dappKitConfig.nodeUrl}
@@ -123,10 +128,18 @@ export const DAppKitPrivyProvider = ({
                         themeMode={dappKitConfig.themeMode}
                         themeVariables={{}}
                     >
-                        <ChakraProvider>{children}</ChakraProvider>
+                        <SmartAccountProvider
+                            nodeUrl={dappKitConfig.nodeUrl}
+                            delegatorUrl={feeDelegationConfig.delegatorUrl}
+                            delegateAllTransactions={
+                                feeDelegationConfig.delegateAllTransactions
+                            }
+                        >
+                            {children}
+                        </SmartAccountProvider>
                     </DAppKitProvider>
-                </SmartAccountProvider>
-            </BasePrivyProvider>
+                </BasePrivyProvider>
+            </ChakraProvider>
         </DAppKitPrivyContext.Provider>
     );
 };
