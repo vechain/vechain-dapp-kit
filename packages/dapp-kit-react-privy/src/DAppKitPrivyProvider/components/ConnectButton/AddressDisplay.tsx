@@ -44,14 +44,14 @@ export const AddressDisplay = ({ address, label, domain }: Props) => {
                         </HStack>
                         <Text fontSize={'sm'}>
                             {'('}
-                            {humanAddress(address, 4, 4)}
+                            {humanAddress(address, 6, 4)}
                             {')'}
                         </Text>
                     </VStack>
                 ) : (
                     <HStack>
                         <Text fontSize={'sm'}>
-                            {humanAddress(address, 4, 4)}
+                            {humanAddress(address, 6, 4)}
                         </Text>
                         <Icon
                             boxSize={3}

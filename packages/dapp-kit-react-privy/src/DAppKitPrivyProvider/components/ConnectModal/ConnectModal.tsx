@@ -102,6 +102,7 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
                             </HStack>
                             <VStack spacing={4} w={'full'}>
                                 <Button
+                                    variant={'loginIn'}
                                     fontSize={'14px'}
                                     fontWeight={'400'}
                                     backgroundColor={
@@ -145,6 +146,7 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
                                         0 && (
                                         <>
                                             <Button
+                                                variant={'loginIn'}
                                                 fontSize={'14px'}
                                                 fontWeight={'400'}
                                                 backgroundColor={

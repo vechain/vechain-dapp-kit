@@ -66,12 +66,11 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
             onClose={onClose}
             isCentered
             size={'sm'}
-            variant={'connectModalVariant'}
         >
             <ModalOverlay />
             <ModalContent {...(_modalContentProps as ModalContentProps)}>
                 <ModalHeader
-                    fontSize={'sm'}
+                    fontSize={'md'}
                     fontWeight={'400'}
                     textAlign={'center'}
                     color={isDark ? '#dfdfdd' : '#4d4d4d'}

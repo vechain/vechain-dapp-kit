@@ -1,4 +1,4 @@
-import { Button, Image, useDisclosure } from '@chakra-ui/react';
+import { Button, HStack, Image, Text, useDisclosure } from '@chakra-ui/react';
 import { useWallet } from '../../hooks';
 import { ConnectModal } from '../ConnectModal';
 import { AccountModal } from './AccountModal';
@@ -15,8 +15,8 @@ export const ConnectButton = () => {
     } = useWallet();
 
     const addressOrDomain = isConnectedWithPrivy
-        ? humanDomain(smartAccount.address ?? '', 4, 4)
-        : humanAddress(connectedAccount ?? '', 4, 4);
+        ? humanDomain(smartAccount.address ?? '', 6, 4)
+        : humanAddress(connectedAccount ?? '', 6, 4);
 
     const walletImage = getPicassoImage(
         isConnectedWithPrivy
@@ -37,22 +37,17 @@ export const ConnectButton = () => {
                 <>
                     {isConnected ? (
                         <Button onClick={accountModal.onOpen}>
-                            {isLoadingConnection || !isConnected ? (
-                                'Loading...'
-                            ) : (
-                                <>
-                                    <Image
-                                        className="address-icon mobile"
-                                        src={walletImage}
-                                        alt="wallet"
-                                        width={23}
-                                        height={23}
-                                        borderRadius="50%"
-                                        marginRight={2}
-                                    />
-                                    {addressOrDomain}
-                                </>
-                            )}
+                            <HStack>
+                                <Image
+                                    className="address-icon mobile"
+                                    src={walletImage}
+                                    alt="wallet"
+                                    width={23}
+                                    height={23}
+                                    borderRadius="50%"
+                                />
+                                <Text fontSize="sm">{addressOrDomain}</Text>
+                            </HStack>
                         </Button>
                     ) : (
                         <Button onClick={connectModal.onOpen}>Login</Button>
