@@ -3,6 +3,7 @@
 import {
     Modal,
     ModalContent,
+    ModalContentProps,
     ModalOverlay,
     useMediaQuery,
 } from '@chakra-ui/react';
@@ -19,6 +20,15 @@ type Props = {
 
 export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
     const [isDesktop] = useMediaQuery('(min-width: 768px)');
+    const _modalContentProps = isDesktop
+        ? {}
+        : {
+              position: 'fixed',
+              bottom: '0px',
+              mb: '0',
+              maxW: '2xl',
+              borderRadius: '24px 24px 0px 0px',
+          };
     const [currentContent, setCurrentContent] = useState<'main' | 'ecosystem'>(
         'main',
     );
@@ -61,7 +71,9 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
             size={'sm'}
         >
             <ModalOverlay />
-            <ModalContent>{renderContent()}</ModalContent>
+            <ModalContent {...(_modalContentProps as ModalContentProps)}>
+                {renderContent()}
+            </ModalContent>
         </Modal>
     );
 };

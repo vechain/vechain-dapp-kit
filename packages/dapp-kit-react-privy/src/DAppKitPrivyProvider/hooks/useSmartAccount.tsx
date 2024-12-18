@@ -227,7 +227,7 @@ export const SmartAccountProvider = ({
                 primaryType: 'ExecuteWithAuthorization',
                 message: {
                     validAfter: 0,
-                    validBefore: Math.floor(Date.now() / 1000) + 3600,
+                    validBefore: Math.floor(Date.now() / 1000) + 60, // 1 minute
                     to: txData.to,
                     value: String(txData.value),
                     data:

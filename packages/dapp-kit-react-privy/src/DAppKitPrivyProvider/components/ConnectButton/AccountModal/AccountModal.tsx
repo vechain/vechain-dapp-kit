@@ -1,6 +1,12 @@
 'use client';
 
-import { Modal, ModalContent, ModalOverlay } from '@chakra-ui/react';
+import {
+    Modal,
+    ModalContent,
+    ModalContentProps,
+    ModalOverlay,
+    useMediaQuery,
+} from '@chakra-ui/react';
 import { useWallet } from '../../../hooks';
 import { getPicassoImage } from '../../../utils';
 import { useState, useEffect } from 'react';
@@ -13,6 +19,17 @@ type Props = {
 };
 
 export const AccountModal = ({ isOpen, onClose }: Props) => {
+    const [isDesktop] = useMediaQuery('(min-width: 768px)');
+    const _modalContentProps = isDesktop
+        ? {}
+        : {
+              position: 'fixed',
+              bottom: '0',
+              mb: '0',
+              maxW: '2xl',
+              borderRadius: '24px 24px 0px 0px',
+          };
+
     const { isConnectedWithPrivy, connectedAccount, smartAccount } =
         useWallet();
 
@@ -61,7 +78,9 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
         >
             <ModalOverlay />
 
-            <ModalContent>{renderContent()}</ModalContent>
+            <ModalContent {...(_modalContentProps as ModalContentProps)}>
+                {renderContent()}
+            </ModalContent>
         </Modal>
     );
 };
