@@ -13,10 +13,10 @@ import { useCrossAppAccounts, usePrivy } from '@privy-io/react-auth';
 import { useWallet } from '../../hooks';
 import { useEffect, useState } from 'react';
 import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
-import { AppsLogo } from '../../assets';
 import { FadeInViewFromRight } from '../common';
 import { ModalBackButton } from '../common';
 import { PrivyAppInfo } from '../../utils';
+import { AppLogos } from '../common/AppLogos';
 
 type Props = {
     setCurrentContent: React.Dispatch<
@@ -68,7 +68,15 @@ export const EcosystemContent = ({
                 Log in or sign up
             </ModalHeader>
             <HStack justify={'center'}>
-                <AppsLogo maxW={'180px'} maxH={'90px'} m={10} />
+                {appsInfo && (
+                    <AppLogos
+                        apps={Object.values(appsInfo)}
+                        maxDisplayed={3}
+                        showText={false}
+                        size="60px"
+                        my={6}
+                    />
+                )}
             </HStack>
 
             <ModalBackButton onClick={() => setCurrentContent('main')} />

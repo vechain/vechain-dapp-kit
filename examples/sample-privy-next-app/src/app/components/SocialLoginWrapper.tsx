@@ -42,6 +42,8 @@ export function SocialLoginWrapper({ children }: Props) {
                 ecosystemAppsID: [
                     'clxdoatq601h35inz6qykgmai',
                     'clz41gcg00e4ay75dmq3uzzgr',
+                    'clpgf04wn04hnkw0fv1m11mnb',
+                    'clrtmg1n104ypl60p9w5c3v4c',
                 ],
                 allowPasskeyLinking: true,
             }}

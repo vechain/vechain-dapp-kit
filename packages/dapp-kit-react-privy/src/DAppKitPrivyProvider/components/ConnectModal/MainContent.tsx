@@ -12,10 +12,11 @@ import {
 } from '@chakra-ui/react';
 import { usePrivy } from '@privy-io/react-auth';
 import { useWalletModal } from '@vechain/dapp-kit-react';
-import { TwitterLogo, GoogleLogo, AppsLogo } from '../../assets/';
+import { TwitterLogo, GoogleLogo } from '../../assets/';
 import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
 import { FadeInViewFromBottom } from '../common';
 import { useFetchAppInfo } from '../../hooks/useFetchAppInfo';
+import { AppLogos } from '../common/AppLogos';
 
 type Props = {
     setCurrentContent: React.Dispatch<
@@ -125,18 +126,15 @@ export const MainContent = ({
                             onClick={handleEcosystemClick}
                             isLoading={isLoading}
                         >
-                            <HStack spacing={4} w={'full'} justify={'center'}>
-                                <HStack justify={'start'}>
-                                    <AppsLogo boxSize={'70px'} />
-                                </HStack>
-                                <HStack justify={'start'}>
-                                    <Text
-                                        color={isDark ? '#dfdfdd' : '#4d4d4d'}
-                                    >
-                                        {'Continue with VeChain Apps'}
-                                    </Text>
-                                </HStack>
-                            </HStack>
+                            {appsInfo && (
+                                <AppLogos
+                                    apps={Object.values(appsInfo)}
+                                    maxDisplayed={3}
+                                    showText={true}
+                                    size="40px"
+                                    textContent="Continue with VeChain Apps"
+                                />
+                            )}
                         </Button>
                     )}
                     <Button
