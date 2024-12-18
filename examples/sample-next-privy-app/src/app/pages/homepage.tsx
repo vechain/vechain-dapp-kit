@@ -6,13 +6,10 @@ import {
     useWallet,
     useSendTransaction,
     ConnectButton,
-    SmartAccountSigner,
     TransactionModal,
 } from '@vechain/dapp-kit-react-privy';
-import { usePrivy } from '@privy-io/react-auth';
-import { useWallets, type ConnectedWallet } from '@privy-io/react-auth';
 import { b3trAbi, b3trMainnetAddress } from '../constants';
-import { ThorClient, VeChainProvider } from '@vechain/sdk-network';
+import SignComponent from '../components/SignComponent';
 
 const HomePage = (): ReactElement => {
     const {
@@ -65,35 +62,6 @@ const HomePage = (): ReactElement => {
         await sendTransaction(clauses);
     }, [sendTransaction, clauses]);
 
-    const { signTypedData } = usePrivy(); //@TODO: component sign a parte
-    const { wallets } = useWallets();
-
-    const embeddedWallet = useMemo<ConnectedWallet | undefined>(() => {
-        return wallets.find((wallet) => wallet.walletClientType === 'privy');
-    }, [wallets]);
-    const THOR_CLIENT = ThorClient.at('https://mainnet.vechain.org');
-    const signer = new SmartAccountSigner(
-        signTypedData,
-        embeddedWallet!,
-        new VeChainProvider(THOR_CLIENT),
-    );
-
-    const testSigner = async () => {
-        signer.sendTransaction({
-            clauses: [
-                {
-                    to: b3trMainnetAddress,
-                    value: '0x0',
-                    data: b3trAbi.encodeFunctionData('transfer', [
-                        connectedAccount,
-                        '0', // 1 B3TR (in wei)
-                    ]),
-                    comment: `Transfer ${1} B3TR to `,
-                },
-            ],
-        });
-    };
-
     return (
         <div className="container">
             <ConnectButton />
@@ -136,9 +104,9 @@ const HomePage = (): ReactElement => {
                                 Test Tx
                             </Button>
 
-                            <Button onClick={testSigner}>
-                                Test SDK Signer
-                            </Button>
+                            <SignComponent
+                                connectedAccount={connectedAccount}
+                            />
 
                             {status !== 'ready' && (
                                 <>
