@@ -5,7 +5,7 @@ import { b3trAbi, b3trMainnetAddress } from '../constants';
 import { ThorClient, VeChainProvider } from '@vechain/sdk-network';
 import { SmartAccountSigner } from '@vechain/dapp-kit-react-privy';
 
-const SignComponent = ({
+const SignComponent = async ({
     connectedAccount,
 }: {
     connectedAccount: string | undefined;
@@ -25,22 +25,20 @@ const SignComponent = ({
     );
 
     const testSigner = async () => {
-        signer.sendTransaction({
-            clauses: [
-                {
-                    to: b3trMainnetAddress,
-                    value: '0x0',
-                    data: b3trAbi.encodeFunctionData('transfer', [
-                        connectedAccount,
-                        '0', // 1 B3TR (in wei)
-                    ]),
-                    comment: `Transfer ${1} B3TR to `,
-                },
-            ],
-        });
+        const thorClient = ThorClient.at('https://mainnet.vechain.org');
+        const b3trContract = thorClient.contracts.load(
+            b3trMainnetAddress,
+            b3trAbi,
+        );
+        b3trContract.setSigner(signer);
+        b3trContract.transact.transfer(connectedAccount as string, BigInt(1));
     };
 
-    return <button onClick={testSigner}>Sign Transaction</button>;
+    return (
+        <button onClick={async () => await testSigner()}>
+            Sign Transaction
+        </button>
+    );
 };
 
 export default SignComponent;
