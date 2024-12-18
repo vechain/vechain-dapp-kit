@@ -17,9 +17,9 @@ import { type TypedDataDomain, type TypedDataField } from 'ethers';
  * This signer works with Privy's connected wallet and handles transaction signing
  * through abstract account infrastructure.
  */
-class AbstractAccountSigner extends VeChainAbstractSigner {
+class SmartAccountSigner extends VeChainAbstractSigner {
     /**
-     * Creates a new AbstractAccountSigner instance.
+     * Creates a new SmartAccountSigner instance.
      *
      * @param signTypedDataPrivy - Function to sign typed data using Privy
      * @param connectedWallet - The Privy connected wallet instance
@@ -38,7 +38,7 @@ class AbstractAccountSigner extends VeChainAbstractSigner {
         // Assert if the transaction can be signed
         if (typeof signTypedDataPrivy !== 'function') {
             throw new Error(
-                `AbstractAccountSigner.constructor(): signTypedData must be a function.`,
+                `SmartAccountSigner.constructor(): signTypedData must be a function.`,
             );
         }
 
@@ -53,7 +53,7 @@ class AbstractAccountSigner extends VeChainAbstractSigner {
      * @returns A new signer instance connected to the provider
      */
     connect(provider: AvailableVeChainProviders): this {
-        return new AbstractAccountSigner(
+        return new SmartAccountSigner(
             this.signTypedDataPrivy,
             this.connectedWallet,
             provider,
@@ -83,7 +83,7 @@ class AbstractAccountSigner extends VeChainAbstractSigner {
         // 1 - Get the provider (needed to send the raw transaction)
         if (this.provider === undefined) {
             throw new JSONRPCInvalidParams(
-                'AbstractAccountSigner.sendTransaction()',
+                'SmartAccountSigner.sendTransaction()',
                 'Thor provider is not found into the signer. Please attach a Provider to your signer instance.',
                 { transactionToSend },
             );
@@ -144,4 +144,4 @@ class AbstractAccountSigner extends VeChainAbstractSigner {
     }
 }
 
-export { AbstractAccountSigner };
+export { SmartAccountSigner };

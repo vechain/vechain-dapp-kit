@@ -1,1 +1,1 @@
-export * from './abstractAccountSigner';
+export * from './SmartAccountSigner';

@@ -6,13 +6,13 @@ import {
     useWallet,
     useSendTransaction,
     ConnectButton,
-    //AbstractAccountSigner,
-    //usePrivy,
+    SmartAccountSigner,
     TransactionModal,
 } from '@vechain/dapp-kit-react-privy';
-//import { useWallets, type ConnectedWallet } from '@privy-io/react-auth';
+import { usePrivy } from '@privy-io/react-auth';
+import { useWallets, type ConnectedWallet } from '@privy-io/react-auth';
 import { b3trAbi, b3trMainnetAddress } from '../constants';
-//import { ThorClient, VeChainProvider } from '@vechain/sdk-network';
+import { ThorClient, VeChainProvider } from '@vechain/sdk-network';
 
 const HomePage = (): ReactElement => {
     const {
@@ -21,7 +21,6 @@ const HomePage = (): ReactElement => {
         smartAccount,
         isLoadingConnection,
         connectionType,
-        //privyEmbeddedWallet
     } = useWallet();
 
     // A dummy tx sending 0 b3tr tokens
@@ -66,14 +65,14 @@ const HomePage = (): ReactElement => {
         await sendTransaction(clauses);
     }, [sendTransaction, clauses]);
 
-    /*const { signTypedData } = usePrivy();
+    const { signTypedData } = usePrivy(); //@TODO: component sign a parte
     const { wallets } = useWallets();
 
     const embeddedWallet = useMemo<ConnectedWallet | undefined>(() => {
         return wallets.find((wallet) => wallet.walletClientType === 'privy');
     }, [wallets]);
     const THOR_CLIENT = ThorClient.at('https://mainnet.vechain.org');
-    const signer = new AbstractAccountSigner(
+    const signer = new SmartAccountSigner(
         signTypedData,
         embeddedWallet!,
         new VeChainProvider(THOR_CLIENT),
@@ -93,7 +92,7 @@ const HomePage = (): ReactElement => {
                 },
             ],
         });
-    };*/
+    };
 
     return (
         <div className="container">
@@ -137,7 +136,9 @@ const HomePage = (): ReactElement => {
                                 Test Tx
                             </Button>
 
-                            {/*<Button onClick={testSigner}>Test SDK Signer</Button>*/}
+                            <Button onClick={testSigner}>
+                                Test SDK Signer
+                            </Button>
 
                             {status !== 'ready' && (
                                 <>
