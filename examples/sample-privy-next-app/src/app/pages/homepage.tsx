@@ -3,16 +3,22 @@
 import { type ReactElement, useMemo, useCallback } from 'react';
 import {
     Button,
+    Container,
+    Heading,
     HStack,
+    Stack,
     Text,
     useColorMode,
     useDisclosure,
+    VStack,
+    Box,
 } from '@chakra-ui/react';
 import {
     useWallet,
     useSendTransaction,
     ConnectButton,
     TransactionModal,
+    TransactionToast,
     useDAppKitPrivyColorMode,
 } from '@vechain/dapp-kit-react-privy';
 import { b3trAbi, b3trMainnetAddress } from '../constants';
@@ -66,83 +72,87 @@ const HomePage = (): ReactElement => {
     });
 
     const transactionModal = useDisclosure();
+    const transactionAlert = useDisclosure();
 
     const handleTransaction = useCallback(async () => {
-        transactionModal.onOpen();
+        // transactionModal.onOpen();
+        transactionAlert.onOpen();
         await sendTransaction(clauses);
     }, [sendTransaction, clauses]);
 
     return (
-        <div className="container">
+        <Container>
             <ConnectButton />
-            {isLoadingConnection ? (
-                <p>Loading...</p>
-            ) : (
-                <>
+            {isLoadingConnection && <Text>Loading...</Text>}
+            {isConnected && (
+                <Stack
+                    mt={10}
+                    overflowWrap={'break-word'}
+                    wordBreak={'break-word'}
+                    whiteSpace={'normal'}
+                >
                     {isConnected && (
-                        <div>
-                            <h1>
-                                <b>Wallet</b>
-                            </h1>
-                            <p>Address: {connectedAccount}</p>
-                            {<p>Connection Type: {connectionType}</p>}
-                            <br />
+                        <VStack spacing={4} alignItems="flex-start">
+                            <Box>
+                                <Heading size={'md'}>
+                                    <b>Wallet</b>
+                                </Heading>
+                                <Text>Address: {connectedAccount}</Text>
+                                {<Text>Connection Type: {connectionType}</Text>}
+                            </Box>
+
                             {smartAccount.address && (
-                                <>
-                                    <h1>
+                                <Box mt={4}>
+                                    <Heading size={'md'}>
                                         <b>Smart Account</b>
-                                    </h1>
-                                    <p>Smart Account: {smartAccount.address}</p>
-                                    <p>
+                                    </Heading>
+                                    <Text>
+                                        Smart Account: {smartAccount.address}
+                                    </Text>
+                                    <Text>
                                         Deployed:{' '}
                                         {smartAccount.isDeployed.toString()}
-                                    </p>
-                                    <br />
-                                    <br />
-                                </>
+                                    </Text>
+                                </Box>
                             )}
 
-                            <h1>
-                                <b>Actions</b>
-                            </h1>
-                            <br />
-                            <HStack>
-                                <Button
-                                    onClick={handleTransaction}
-                                    isLoading={isTransactionPending}
-                                    isDisabled={isTransactionPending}
-                                >
-                                    Test Tx
-                                </Button>
-                                <Button
-                                    onClick={() => {
-                                        toggleDAppKitPrivyColorMode();
-                                        toggleColorMode();
-                                    }}
-                                >
-                                    {colorMode === 'dark' ? 'Light' : 'Dark'}
-                                </Button>
-                            </HStack>
-                            {status !== 'ready' && (
-                                <>
-                                    <Text>Status: {status}</Text>
-                                    {txReceipt && (
-                                        <Text>
-                                            Tx id: {txReceipt.meta.txID}
-                                        </Text>
-                                    )}
+                            <Box mt={4}>
+                                <Heading size={'md'}>
+                                    <b>Actions</b>
+                                </Heading>
+                                <HStack mt={4} spacing={4}>
                                     <Button
-                                        variant={'link'}
-                                        onClick={resetStatus}
+                                        onClick={handleTransaction}
+                                        isLoading={isTransactionPending}
+                                        isDisabled={isTransactionPending}
                                     >
-                                        Reset
+                                        Test Tx
                                     </Button>
-                                </>
-                            )}
-                        </div>
+                                    <Button
+                                        onClick={() => {
+                                            toggleDAppKitPrivyColorMode();
+                                            toggleColorMode();
+                                        }}
+                                    >
+                                        {colorMode === 'dark'
+                                            ? 'Light'
+                                            : 'Dark'}
+                                    </Button>
+                                </HStack>
+                            </Box>
+                        </VStack>
                     )}
-                </>
+                </Stack>
             )}
+
+            <TransactionToast
+                isOpen={transactionAlert.isOpen}
+                onClose={transactionAlert.onClose}
+                status={status}
+                error={error}
+                txReceipt={txReceipt}
+                resetStatus={resetStatus}
+            />
 
             <TransactionModal
                 isOpen={transactionModal.isOpen}
@@ -153,7 +163,7 @@ const HomePage = (): ReactElement => {
                 showSocialButtons={true}
                 showExplorerButton={true}
             />
-        </div>
+        </Container>
     );
 };
 

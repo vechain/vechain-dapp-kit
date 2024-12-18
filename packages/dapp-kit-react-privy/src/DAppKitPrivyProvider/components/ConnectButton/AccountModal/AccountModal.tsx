@@ -74,7 +74,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
             isOpen={isOpen}
             onClose={onClose}
             isCentered
-            size={'sm'}
+            size="xs"
         >
             <ModalOverlay />
 

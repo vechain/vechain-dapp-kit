@@ -3,7 +3,12 @@ import { ConfirmationModalContent } from './ConfirmationModalContent';
 import { ErrorModalContent } from './ErrorModalContent';
 import { LoadingModalContent } from './LoadingModalContent';
 import { SuccessModalContent } from './SuccessModalContent';
-import { Modal, ModalOverlay } from '@chakra-ui/react';
+import {
+    Modal,
+    ModalContentProps,
+    ModalOverlay,
+    useMediaQuery,
+} from '@chakra-ui/react';
 import { CustomModalContent } from './CustomModalContent';
 
 export type TransactionModalProps = {
@@ -39,6 +44,17 @@ export const TransactionModal = ({
     showExplorerButton,
     txId,
 }: TransactionModalProps) => {
+    const [isDesktop] = useMediaQuery('(min-width: 768px)');
+    const _modalContentProps = isDesktop
+        ? {}
+        : {
+              position: 'fixed',
+              bottom: '0',
+              mb: '0',
+              maxW: '2xl',
+              borderRadius: '24px 24px 0px 0px',
+          };
+
     const modalContent = useMemo(() => {
         if (status === 'pending')
             return <ConfirmationModalContent title={confirmationTitle} />;
@@ -97,7 +113,9 @@ export const TransactionModal = ({
             isCentered={true}
         >
             <ModalOverlay />
-            <CustomModalContent>{modalContent}</CustomModalContent>
+            <CustomModalContent {...(_modalContentProps as ModalContentProps)}>
+                {modalContent}
+            </CustomModalContent>
         </Modal>
     );
 };

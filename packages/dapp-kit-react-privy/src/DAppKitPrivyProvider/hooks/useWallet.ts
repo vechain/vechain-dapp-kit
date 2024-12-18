@@ -47,10 +47,6 @@ export const useWallet = (): UseWalletReturnType => {
         ? 'wallet'
         : 'privy';
 
-    // const isConnectedWithSocials = Boolean(
-    //     user?.linkedAccounts?.some((account) => account.type === 'social'),
-    // );
-
     const crossAppAccount = user?.linkedAccounts.find(
         (account) => account.type === 'cross_app',
     );
@@ -72,12 +68,15 @@ export const useWallet = (): UseWalletReturnType => {
         }
     };
 
+    const isLoadingConnection =
+        !ready || !abstractedAccount.address || !connectedAccount;
+
     return {
         isConnected,
         isConnectedWithPrivy,
         isConnectedWithDappKit,
         connectionType,
-        isLoadingConnection: !ready,
+        isLoadingConnection,
         isCrossAppPrivyAccount,
         connectedAccount,
         crossAppAccount: crossAppAccount?.embeddedWallets?.[0]?.address,
