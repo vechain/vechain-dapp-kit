@@ -7,7 +7,7 @@ export const ACCOUNT_FACTORY_ADDRESSES = {
 
 export const EXPLORER_URL = {
     '14018334920824264832118464179726739019961432051877733167310318607178':
-        'https://vechainstats.com/transaction/',
+        'https://vechainstats.com/transaction',
     '1176455790972829965191905223412607679856028701100105089447013101863':
-        'https://explore-testnet.vechain.org/transactions/',
+        'https://explore-testnet.vechain.org/transactions',
 } as const;

@@ -8,7 +8,6 @@ import {
     ModalBody,
     ModalCloseButton,
     ModalContent,
-    ModalContentProps,
     ModalFooter,
     ModalHeader,
     ModalOverlay,
@@ -32,17 +31,6 @@ type Props = {
 
 export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
     const [isDesktop] = useMediaQuery('(min-width: 768px)');
-    const _modalContentProps = isDesktop
-        ? {
-              borderRadius: '24px 24px 24px 24px',
-          }
-        : {
-              position: 'fixed',
-              bottom: '0px',
-              mb: '0',
-              maxW: '2xl',
-              borderRadius: '24px 24px 0px 0px',
-          };
 
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
@@ -64,9 +52,7 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
             >
                 <ModalOverlay />
                 {!ecosystemModal.isOpen && (
-                    <ModalContent
-                        {...(_modalContentProps as ModalContentProps)}
-                    >
+                    <ModalContent>
                         <ModalHeader
                             fontSize={'sm'}
                             fontWeight={'400'}

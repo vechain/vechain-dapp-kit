@@ -22,7 +22,14 @@ export function SocialLoginWrapper({ children }: Props) {
             privyConfig={{
                 appId: process.env.NEXT_PUBLIC_PRIVY_APP_ID!,
                 clientId: process.env.NEXT_PUBLIC_PRIVY_CLIENT_ID!,
-                loginMethods: ['google', 'twitter'],
+                loginMethods: [
+                    'google',
+                    'twitter',
+                    'github',
+                    'linkedin',
+                    'sms',
+                    'email',
+                ],
                 appearance: {
                     theme: colorMode,
                     accentColor: '#696FFD',
@@ -36,6 +43,7 @@ export function SocialLoginWrapper({ children }: Props) {
                     'clxdoatq601h35inz6qykgmai',
                     'clz41gcg00e4ay75dmq3uzzgr',
                 ],
+                allowPasskeyLinking: true,
             }}
             feeDelegationConfig={{
                 delegatorUrl: 'https://sponsor.vechain.energy/by/749',

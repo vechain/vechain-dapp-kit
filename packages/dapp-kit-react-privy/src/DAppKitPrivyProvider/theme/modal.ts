@@ -7,6 +7,22 @@ import {
 const { definePartsStyle, defineMultiStyleConfig } =
     createMultiStyleConfigHelpers(parts.keys);
 
+const modalContentProps = {
+    base: {
+        borderRadius: '24px 24px 0px 0px',
+        position: 'fixed',
+        bottom: '0px',
+        mb: '0',
+        maxW: '2xl',
+    },
+    '@media (min-width: 768px)': {
+        borderRadius: '24px 24px 24px 24px',
+        position: 'relative',
+        bottom: 'auto',
+        mb: 'auto',
+    },
+};
+
 const variants = {
     base: (props: StyleFunctionProps) =>
         definePartsStyle({
@@ -18,6 +34,7 @@ const variants = {
             closeButton: {
                 borderRadius: '50%',
             },
+            modalContent: modalContentProps,
         }),
 };
 

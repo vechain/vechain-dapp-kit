@@ -8,7 +8,6 @@ import {
     ModalBody,
     ModalCloseButton,
     ModalContent,
-    ModalContentProps,
     ModalHeader,
     Text,
     VStack,
@@ -36,17 +35,6 @@ export const EcosystemAppsModal = ({
     onConnectionSuccess,
 }: Props) => {
     const [isDesktop] = useMediaQuery('(min-width: 768px)');
-    const _modalContentProps = isDesktop
-        ? {
-              borderRadius: '24px 24px 24px 24px',
-          }
-        : {
-              position: 'fixed',
-              bottom: '0px',
-              mb: '0',
-              maxW: '2xl',
-              borderRadius: '24px 24px 0px 0px',
-          };
 
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
@@ -91,7 +79,6 @@ export const EcosystemAppsModal = ({
             preserveScrollBarGap={true}
         >
             <ModalContent
-                {...(_modalContentProps as ModalContentProps)}
                 style={{
                     transition:
                         'transform 0.2s ease-in-out, opacity 0.2s ease-in-out',

@@ -13,7 +13,7 @@ type UseWalletReturnType = {
     isConnectedWithDappKit: boolean;
     isLoadingConnection: boolean;
     isCrossAppPrivyAccount: boolean;
-    connectionType: string;
+    connectionType: 'privy' | 'wallet' | 'privy-cross-app';
     connectedAccount: string | undefined;
     crossAppAccount: string | undefined;
     privyEmbeddedWallet: string | undefined;
