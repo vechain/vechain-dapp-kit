@@ -41,7 +41,7 @@ export function SocialLoginWrapper({ children }: Props) {
                 allowPasskeyLinking: true,
             }}
             feeDelegationConfig={{
-                delegatorUrl: 'https://sponsor.vechain.energy/by/749',
+                delegatorUrl: process.env.NEXT_PUBLIC_DELEGATOR_URL!,
                 delegateAllTransactions: true,
             }}
             dappKitConfig={{

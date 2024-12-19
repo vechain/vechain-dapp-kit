@@ -28,6 +28,8 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
               mb: '0',
               maxW: '2xl',
               borderRadius: '24px 24px 0px 0px',
+              overflowY: 'scroll',
+              overflowX: 'hidden',
           };
     const [currentContent, setCurrentContent] = useState<'main' | 'ecosystem'>(
         'main',

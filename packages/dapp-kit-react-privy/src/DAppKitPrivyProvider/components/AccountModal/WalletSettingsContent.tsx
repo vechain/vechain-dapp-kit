@@ -31,7 +31,7 @@ export const WalletSettingsContent = ({
     const { exportWallet, linkPasskey } = usePrivy();
     const { privyConfig } = useDAppKitPrivyConfig();
 
-    const { privyEmbeddedWallet } = useWallet();
+    const { privyEmbeddedWallet, isCrossAppPrivyAccount } = useWallet();
 
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
@@ -62,6 +62,7 @@ export const WalletSettingsContent = ({
                         onClick={() => {
                             exportWallet();
                         }}
+                        isDisabled={isCrossAppPrivyAccount}
                         leftIcon={GiHouseKeys}
                         rightIcon={MdOutlineNavigateNext}
                     />
@@ -73,6 +74,7 @@ export const WalletSettingsContent = ({
                             onClick={() => {
                                 linkPasskey();
                             }}
+                            isDisabled={isCrossAppPrivyAccount}
                             leftIcon={IoIosFingerPrint}
                             rightIcon={MdOutlineNavigateNext}
                         />

@@ -43,7 +43,15 @@ export const AccountModalMainContent = ({
         connectedAccount,
         smartAccount,
         vetDomain,
+        connectionType,
     } = useWallet();
+
+    const connectionSource =
+        connectionType === 'privy-cross-app'
+            ? 'app'
+            : connectionType === 'privy'
+            ? 'social'
+            : 'wallet';
 
     return (
         <FadeInViewFromBottom>
@@ -53,7 +61,7 @@ export const AccountModalMainContent = ({
                 textAlign={'center'}
                 color={isDark ? '#dfdfdd' : '#4d4d4d'}
             >
-                {'Connected'}
+                {'Connected to ' + connectionSource}
                 <Text
                     fontSize={'xs'}
                     fontWeight={'400'}

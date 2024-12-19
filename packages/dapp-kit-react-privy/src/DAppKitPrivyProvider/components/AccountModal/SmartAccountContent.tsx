@@ -12,12 +12,12 @@ import {
     Icon,
 } from '@chakra-ui/react';
 import { useWallet } from '../../hooks';
-import React from 'react';
+import React, { useState } from 'react';
 import { AddressDisplay } from '../common/AddressDisplay';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import { IoOpenOutline } from 'react-icons/io5';
 import { ActionButton } from './ActionButton';
-import { ModalBackButton } from '../common';
+import { FadeInViewFromBottom, ModalBackButton } from '../common';
 import { FadeInViewFromRight } from '../common';
 import { AccountModalContentTypes } from './AccountModal';
 import { FaRegAddressCard } from 'react-icons/fa';
@@ -38,6 +38,8 @@ export const SmartAccountContent = ({
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
 
+    const [isExpanded, setIsExpanded] = useState(false);
+
     return (
         <FadeInViewFromRight>
             <ModalHeader
@@ -57,36 +59,52 @@ export const SmartAccountContent = ({
                     <AddressDisplay address={privyEmbeddedWallet ?? ''} />
                 </VStack>
 
-                <Text fontSize={'sm'} opacity={0.5}>
-                    To allow you a smooth omboarding on VeChain we are helping
-                    you manage a wallet.
-                </Text>
+                <VStack align="stretch" spacing={5}>
+                    <Text fontSize={'sm'} opacity={0.5}>
+                        To allow you a smooth omboarding on VeChain we are
+                        helping you manage a wallet.
+                    </Text>
 
-                <Text fontSize={'sm'} opacity={0.5} mt={5}>
-                    You have full control and ownership of this wallet,
-                    accessible through your selected login method.
-                </Text>
+                    <Text fontSize={'sm'} opacity={0.5}>
+                        You have full control and ownership of this wallet,
+                        accessible through your selected login method.
+                    </Text>
 
-                <Text fontSize={'sm'} opacity={0.5} mt={5}>
-                    You can backup your wallet by exporting your private key.
-                    This will allow you to restore your wallet if you lose your
-                    login method.
-                </Text>
+                    {isExpanded && (
+                        <FadeInViewFromBottom>
+                            <Text fontSize={'sm'} opacity={0.5}>
+                                You can backup your wallet by exporting your
+                                private key. This will allow you to restore your
+                                wallet if you lose your login method.
+                            </Text>
 
-                <Text fontSize={'sm'} opacity={0.5} mt={5}>
-                    To experience the full blockchain experience, transfer your
-                    assets to{' '}
+                            <Text fontSize={'sm'} opacity={0.5}>
+                                To experience the full blockchain experience,
+                                transfer your assets to{' '}
+                                <Link
+                                    href="https://www.veworld.net/"
+                                    isExternal
+                                    color="gray.500"
+                                    fontSize={'14px'}
+                                    textDecoration={'underline'}
+                                >
+                                    VeWorld Wallet{' '}
+                                    <Icon ml={1} as={IoOpenOutline} />
+                                </Link>
+                                .
+                            </Text>
+                        </FadeInViewFromBottom>
+                    )}
+
                     <Link
-                        href="https://www.veworld.net/"
-                        isExternal
+                        onClick={() => setIsExpanded(!isExpanded)}
                         color="gray.500"
-                        fontSize={'14px'}
-                        textDecoration={'underline'}
+                        fontSize={'sm'}
+                        _hover={{ textDecoration: 'none' }}
                     >
-                        VeWorld Wallet <Icon ml={1} as={IoOpenOutline} />
+                        {isExpanded ? 'Read less' : 'Read more'}
                     </Link>
-                    .
-                </Text>
+                </VStack>
 
                 <Divider mt={10} />
 

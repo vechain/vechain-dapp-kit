@@ -51,21 +51,17 @@ export const ActionButton = ({
                         <Icon as={leftIcon} fontSize={'25px'} />
                     )}
                 </Box>
-                <VStack textAlign={'left'} w={'full'} flex={1}>
-                    <HStack
-                        w={'full'}
-                        textAlign={'left'}
-                        justifyContent={'flex-start'}
-                    >
-                        <Text fontSize={'sm'} fontWeight={'400'}>
-                            {title}
-                        </Text>
-                        {showComingSoon && (
-                            <Tag size="sm" colorScheme="red">
-                                Coming Soon!
-                            </Tag>
-                        )}
-                    </HStack>
+                <VStack
+                    textAlign={'left'}
+                    w={'full'}
+                    flex={1}
+                    justifyContent={'flex-start'}
+                    alignItems={'flex-start'}
+                >
+                    <Text fontSize={'sm'} fontWeight={'400'}>
+                        {title}
+                    </Text>
+
                     <Text
                         fontSize={'xs'}
                         fontWeight={'400'}
@@ -77,6 +73,11 @@ export const ActionButton = ({
                     >
                         {description}
                     </Text>
+                    {showComingSoon && (
+                        <Tag size="sm" colorScheme="red">
+                            Coming Soon!
+                        </Tag>
+                    )}
                 </VStack>
                 <VStack minW={'40px'} justifyContent={'flex-end'}>
                     <Icon as={rightIcon} fontSize={'20px'} opacity={0.5} />

@@ -30,6 +30,8 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
               mb: '0',
               maxW: '2xl',
               borderRadius: '24px 24px 0px 0px',
+              overflowY: 'scroll',
+              overflowX: 'hidden',
           };
 
     const { isConnectedWithPrivy, connectedAccount, smartAccount } =
@@ -83,6 +85,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
             onClose={onClose}
             isCentered
             size="md"
+            scrollBehavior="inside"
         >
             <ModalOverlay />
 
