@@ -10,7 +10,7 @@ import {
     Tag,
 } from '@chakra-ui/react';
 import { ElementType } from 'react';
-import { humanAddress } from '../../utils';
+import { humanAddress } from '../../../utils';
 
 interface AccountDetailsButtonProps {
     title: string;

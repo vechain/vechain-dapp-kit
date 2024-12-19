@@ -7,16 +7,16 @@ import {
     ModalHeader,
     useColorMode,
 } from '@chakra-ui/react';
-import { usePrivy, useWallet, Wallet } from '../../hooks';
-import { AddressDisplay } from '../common/AddressDisplay';
+import { usePrivy, useWallet, Wallet } from '../../../hooks';
+import { AddressDisplay } from '../../common/AddressDisplay';
 import { GiHouseKeys } from 'react-icons/gi';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import { IoIosFingerPrint } from 'react-icons/io';
-import { ActionButton } from './ActionButton';
-import { ModalBackButton } from '../common';
-import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
-import { FadeInViewFromRight } from '../common';
-import { AccountModalContentTypes } from './AccountModal';
+import { ActionButton } from '../Components/ActionButton';
+import { ModalBackButton } from '../../common';
+import { useDAppKitPrivyConfig } from '../../../DAppKitPrivyProvider';
+import { FadeInViewFromRight } from '../../common';
+import { AccountModalContentTypes } from '../AccountModal';
 import { FaRegAddressCard } from 'react-icons/fa';
 
 type Props = {
@@ -48,7 +48,7 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
                 {'Wallet Settings'}
             </ModalHeader>
 
-            <ModalBackButton onClick={() => setCurrentContent('main')} />
+            <ModalBackButton onClick={() => setCurrentContent('accounts')} />
             <ModalCloseButton />
             <ModalBody w={'full'}>
                 <VStack justify={'center'}>
@@ -57,7 +57,7 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
                         maxW={'70px'}
                         borderRadius="50%"
                     />
-                    <AddressDisplay address={account.address} />
+                    <AddressDisplay wallet={account} />
                 </VStack>
 
                 <VStack w={'full'} mt={10}>

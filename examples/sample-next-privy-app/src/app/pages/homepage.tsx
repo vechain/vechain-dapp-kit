@@ -34,7 +34,7 @@ const HomePage = (): ReactElement => {
 
     // A dummy tx sending 0 b3tr tokens
     const clauses = useMemo(() => {
-        if (!connectedWallet) return [];
+        if (!connectedWallet.address) return [];
 
         const clausesArray: any[] = [];
         const abi = new Interface(b3trAbi);

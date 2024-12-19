@@ -7,18 +7,17 @@ import {
     ModalHeader,
     Text,
     useColorMode,
-    Divider,
     Link,
     Icon,
 } from '@chakra-ui/react';
-import { useWallet } from '../../hooks';
+import { useWallet } from '../../../hooks';
 import React, { useState } from 'react';
-import { AddressDisplay } from '../common/AddressDisplay';
+import { AddressDisplay } from '../../common/AddressDisplay';
 import { IoOpenOutline } from 'react-icons/io5';
-import { FadeInViewFromBottom, ModalBackButton } from '../common';
-import { FadeInViewFromRight } from '../common';
-import { AccountModalContentTypes } from './AccountModal';
-import { getPicassoImage } from '../../utils';
+import { FadeInViewFromBottom, ModalBackButton } from '../../common';
+import { FadeInViewFromRight } from '../../common';
+import { AccountModalContentTypes } from '../AccountModal';
+import { getPicassoImage } from '../../../utils';
 
 type Props = {
     setCurrentContent: React.Dispatch<
@@ -47,12 +46,12 @@ export const SmartAccountContent = ({ setCurrentContent }: Props) => {
                 {'Smart Account'}
             </ModalHeader>
 
-            <ModalBackButton onClick={() => setCurrentContent('main')} />
+            <ModalBackButton onClick={() => setCurrentContent('accounts')} />
             <ModalCloseButton />
             <ModalBody w={'full'}>
                 <VStack justify={'center'} mb={10}>
                     <Image src={walletImage} maxW={'70px'} borderRadius="50%" />
-                    <AddressDisplay address={smartAccount.address ?? ''} />
+                    <AddressDisplay wallet={smartAccount} />
                 </VStack>
 
                 <VStack align="stretch" spacing={5}>
@@ -101,8 +100,6 @@ export const SmartAccountContent = ({ setCurrentContent }: Props) => {
                         {isExpanded ? 'Read less' : 'Read more'}
                     </Link>
                 </VStack>
-
-                <Divider mt={10} />
             </ModalBody>
             <ModalFooter />
         </FadeInViewFromRight>
