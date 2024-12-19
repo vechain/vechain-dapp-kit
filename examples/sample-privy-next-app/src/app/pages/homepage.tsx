@@ -12,6 +12,7 @@ import {
     useDisclosure,
     VStack,
     Box,
+    Spinner,
 } from '@chakra-ui/react';
 import {
     useWallet,
@@ -80,72 +81,84 @@ const HomePage = (): ReactElement => {
         await sendTransaction(clauses);
     }, [sendTransaction, clauses]);
 
+    if (isLoadingConnection) {
+        return (
+            <Container>
+                <HStack justifyContent={'center'}>
+                    <Spinner />
+                </HStack>
+            </Container>
+        );
+    }
+
+    if (!isConnected) {
+        return (
+            <Container>
+                <HStack justifyContent={'center'}>
+                    <WalletButton />
+                </HStack>
+            </Container>
+        );
+    }
+
     return (
         <Container>
-            <HStack justifyContent={'center'}>
+            <HStack justifyContent={'space-between'}>
                 <WalletButton />
-                {isConnected && (
-                    <Button
-                        onClick={() => {
-                            toggleDAppKitPrivyColorMode();
-                            toggleColorMode();
-                        }}
-                    >
-                        {colorMode === 'dark' ? 'Light' : 'Dark'}
-                    </Button>
-                )}
-            </HStack>
-            {isLoadingConnection && <Text>Loading...</Text>}
-            {isConnected && (
-                <Stack
-                    mt={10}
-                    overflowWrap={'break-word'}
-                    wordBreak={'break-word'}
-                    whiteSpace={'normal'}
+
+                <Button
+                    onClick={() => {
+                        toggleDAppKitPrivyColorMode();
+                        toggleColorMode();
+                    }}
                 >
-                    {isConnected && (
-                        <VStack spacing={4} alignItems="flex-start">
-                            <Box>
-                                <Heading size={'md'}>
-                                    <b>Wallet</b>
-                                </Heading>
-                                <Text>Address: {connectedAccount}</Text>
-                                {<Text>Connection Type: {connectionType}</Text>}
-                            </Box>
+                    {colorMode === 'dark' ? 'Light' : 'Dark'}
+                </Button>
+            </HStack>
 
-                            {smartAccount.address && (
-                                <Box mt={4}>
-                                    <Heading size={'md'}>
-                                        <b>Smart Account</b>
-                                    </Heading>
-                                    <Text>
-                                        Smart Account: {smartAccount.address}
-                                    </Text>
-                                    <Text>
-                                        Deployed:{' '}
-                                        {smartAccount.isDeployed.toString()}
-                                    </Text>
-                                </Box>
-                            )}
+            <Stack
+                mt={10}
+                overflowWrap={'break-word'}
+                wordBreak={'break-word'}
+                whiteSpace={'normal'}
+            >
+                <VStack spacing={4} alignItems="flex-start">
+                    <Box>
+                        <Heading size={'md'}>
+                            <b>Wallet</b>
+                        </Heading>
+                        <Text>Address: {connectedAccount}</Text>
+                        {<Text>Connection Type: {connectionType}</Text>}
+                    </Box>
 
-                            <Box mt={4}>
-                                <Heading size={'md'}>
-                                    <b>Actions</b>
-                                </Heading>
-                                <HStack mt={4} spacing={4}>
-                                    <Button
-                                        onClick={handleTransaction}
-                                        isLoading={isTransactionPending}
-                                        isDisabled={isTransactionPending}
-                                    >
-                                        Test Tx
-                                    </Button>
-                                </HStack>
-                            </Box>
-                        </VStack>
+                    {smartAccount.address && (
+                        <Box mt={4}>
+                            <Heading size={'md'}>
+                                <b>Smart Account</b>
+                            </Heading>
+                            <Text>Smart Account: {smartAccount.address}</Text>
+                            <Text>
+                                Deployed: {smartAccount.isDeployed.toString()}
+                            </Text>
+                        </Box>
                     )}
-                </Stack>
-            )}
+
+                    <Box mt={4}>
+                        <Heading size={'md'}>
+                            <b>Actions</b>
+                        </Heading>
+                        <HStack mt={4} spacing={4}>
+                            <Button
+                                onClick={handleTransaction}
+                                isLoading={isTransactionPending}
+                                isDisabled={isTransactionPending}
+                            >
+                                Test Tx
+                            </Button>
+                        </HStack>
+                    </Box>
+                </VStack>
+            </Stack>
 
             <TransactionToast
                 isOpen={transactionAlert.isOpen}
