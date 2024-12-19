@@ -9,9 +9,15 @@ type Props = {
     address: string;
     label?: string;
     domain?: string;
+    size?: string;
 };
 
-export const AddressDisplay = ({ address, label, domain }: Props) => {
+export const AddressDisplay = ({
+    address,
+    label,
+    domain,
+    size = 'lg',
+}: Props) => {
     const [copied, setCopied] = useState(false);
 
     const copyToClipboard = async (textToCopy: string) => {
@@ -33,7 +39,7 @@ export const AddressDisplay = ({ address, label, domain }: Props) => {
                 {domain ? (
                     <VStack>
                         <HStack>
-                            <Text fontSize={'lg'} fontWeight={'500'}>
+                            <Text fontSize={size} fontWeight={'500'}>
                                 {domain}
                             </Text>
                             <Icon
@@ -44,7 +50,7 @@ export const AddressDisplay = ({ address, label, domain }: Props) => {
                                 onClick={() => copyToClipboard(address)}
                             />
                         </HStack>
-                        <Text fontSize={'xs'}>
+                        <Text fontSize={'sm'}>
                             {'('}
                             {humanAddress(address, 8, 7)}
                             {')'}
@@ -52,7 +58,7 @@ export const AddressDisplay = ({ address, label, domain }: Props) => {
                     </VStack>
                 ) : (
                     <HStack>
-                        <Text fontSize={'md'}>
+                        <Text fontSize={size}>
                             {humanAddress(address, 6, 4)}
                         </Text>
                         <Icon
