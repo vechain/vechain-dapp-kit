@@ -16,7 +16,7 @@ import {
 import {
     useWallet,
     useSendTransaction,
-    ConnectButton,
+    WalletButton,
     TransactionModal,
     TransactionToast,
     useDAppKitPrivyColorMode,
@@ -82,7 +82,19 @@ const HomePage = (): ReactElement => {
 
     return (
         <Container>
-            <ConnectButton />
+            <HStack justifyContent={'center'}>
+                <WalletButton />
+                {isConnected && (
+                    <Button
+                        onClick={() => {
+                            toggleDAppKitPrivyColorMode();
+                            toggleColorMode();
+                        }}
+                    >
+                        {colorMode === 'dark' ? 'Light' : 'Dark'}
+                    </Button>
+                )}
+            </HStack>
             {isLoadingConnection && <Text>Loading...</Text>}
             {isConnected && (
                 <Stack
@@ -127,16 +139,6 @@ const HomePage = (): ReactElement => {
                                         isDisabled={isTransactionPending}
                                     >
                                         Test Tx
-                                    </Button>
-                                    <Button
-                                        onClick={() => {
-                                            toggleDAppKitPrivyColorMode();
-                                            toggleColorMode();
-                                        }}
-                                    >
-                                        {colorMode === 'dark'
-                                            ? 'Light'
-                                            : 'Dark'}
                                     </Button>
                                 </HStack>
                             </Box>

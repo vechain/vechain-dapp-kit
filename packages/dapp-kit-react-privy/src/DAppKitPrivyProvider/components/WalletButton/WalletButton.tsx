@@ -5,7 +5,7 @@ import { AccountModal } from './AccountModal';
 import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
 import { getPicassoImage, humanAddress, humanDomain } from '../../utils';
 
-export const ConnectButton = () => {
+export const WalletButton = () => {
     const {
         isConnected,
         isLoadingConnection,

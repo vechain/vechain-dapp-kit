@@ -1,6 +1,5 @@
 import {
     Button,
-    HStack,
     Image,
     ModalBody,
     ModalCloseButton,
@@ -16,7 +15,6 @@ import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
 import { FadeInViewFromRight } from '../common';
 import { ModalBackButton } from '../common';
 import { PrivyAppInfo } from '../../utils';
-import { AppLogos } from '../common/AppLogos';
 
 type Props = {
     setCurrentContent: React.Dispatch<
@@ -59,33 +57,19 @@ export const EcosystemContent = ({
         <FadeInViewFromRight>
             <ModalHeader
                 fontSize={'sm'}
-                fontWeight={'400'}
+                fontWeight={'200'}
                 textAlign={'center'}
                 color={isDark ? '#dfdfdd' : '#4d4d4d'}
                 justifyContent={'center'}
                 alignItems={'center'}
             >
-                Log in or sign up
+                Select a login app
             </ModalHeader>
-            <HStack justify={'center'}>
-                {appsInfo && (
-                    <AppLogos
-                        apps={Object.values(appsInfo)}
-                        maxDisplayed={3}
-                        showText={false}
-                        size="60px"
-                        my={6}
-                    />
-                )}
-            </HStack>
 
             <ModalBackButton onClick={() => setCurrentContent('main')} />
             <ModalCloseButton />
             <ModalBody>
                 <VStack spacing={4} w={'full'} pb={6}>
-                    <Text color={isDark ? '#dfdfdd' : '#4d4d4d'} fontSize={14}>
-                        Select a VeChain App
-                    </Text>
                     {appsInfo &&
                         Object.entries(appsInfo).map(([appId, appInfo]) => (
                             <Button
@@ -112,7 +96,7 @@ export const EcosystemContent = ({
                                     alt={appInfo.name}
                                     w={'30px'}
                                 />
-                                <Text ml={2}>{appInfo.name}</Text>
+                                <Text ml={5}>{appInfo.name}</Text>
                             </Button>
                         ))}
                 </VStack>

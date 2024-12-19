@@ -65,3 +65,10 @@ export type PrivyAppInfo = {
     logo_url: string;
     description?: string;
 };
+
+export type SocialInfo = {
+    code: string;
+    name: string;
+    logo_url: string;
+    description?: string;
+};

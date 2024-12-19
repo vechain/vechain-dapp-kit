@@ -31,7 +31,7 @@ export const useWallet = (): UseWalletReturnType => {
     const { account: dappKitAccount, disconnect: dappKitDisconnect } =
         useDappKitWallet();
 
-    const abstractedAccount = useSmartAccount();
+    const smartAccount = useSmartAccount();
 
     const isConnectedWithDappKit = !!dappKitAccount;
     const isConnectedWithPrivy = authenticated && !!user;
@@ -68,8 +68,7 @@ export const useWallet = (): UseWalletReturnType => {
         }
     };
 
-    const isLoadingConnection =
-        !ready || !abstractedAccount.address || !connectedAccount;
+    const isLoadingConnection = !ready;
 
     return {
         isConnected,
@@ -81,10 +80,7 @@ export const useWallet = (): UseWalletReturnType => {
         connectedAccount,
         crossAppAccount: crossAppAccount?.embeddedWallets?.[0]?.address,
         privyEmbeddedWallet,
-        smartAccount: {
-            address: abstractedAccount.address,
-            isDeployed: abstractedAccount.isDeployed,
-        },
+        smartAccount,
         logoutAndDisconnect,
         vetDomain: vetDomain.domain,
     };

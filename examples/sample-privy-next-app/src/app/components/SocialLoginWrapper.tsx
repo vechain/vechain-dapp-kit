@@ -40,8 +40,8 @@ export function SocialLoginWrapper({ children }: Props) {
                     createOnLogin: 'all-users',
                 },
                 ecosystemAppsID: [
+                    'clz41gcg00e4ay75dmq3uzzgr', //cleanify
                     'clxdoatq601h35inz6qykgmai',
-                    'clz41gcg00e4ay75dmq3uzzgr',
                     'clpgf04wn04hnkw0fv1m11mnb',
                     'clrtmg1n104ypl60p9w5c3v4c',
                 ],

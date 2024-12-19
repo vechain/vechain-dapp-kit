@@ -68,7 +68,7 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
             isOpen={isOpen}
             onClose={onClose}
             isCentered
-            size={'sm'}
+            size={'xs'}
         >
             <ModalOverlay />
             <ModalContent {...(_modalContentProps as ModalContentProps)}>

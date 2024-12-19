@@ -1,53 +1,40 @@
 import { Circle, HStack, Image, Text, useColorMode } from '@chakra-ui/react';
-import { AppInfo } from '../ConnectModal/MainContent';
+import { PrivyAppInfo, SocialInfo } from '../../utils';
 
-type AppLogosProps = {
-    apps: AppInfo[];
+export type AppLogosProps = {
+    apps: PrivyAppInfo[] | SocialInfo[];
     maxDisplayed?: number;
     showText?: boolean;
     textContent?: string;
     size?: string;
     my?: number | string;
+    backgroundColor?: string;
 };
 
 export const AppLogos = ({
     apps,
-    maxDisplayed = 3,
+    maxDisplayed = 2,
     showText = true,
     textContent = 'Continue with VeChain Apps',
     size = '40px',
-    my = 0,
+    backgroundColor,
 }: AppLogosProps) => {
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
 
     return (
-        <HStack
-            w={'full'}
-            justify={'center'}
-            position="relative"
-            h={size}
-            my={my}
-        >
-            {showText && (
-                <Text
-                    color={isDark ? '#dfdfdd' : '#4d4d4d'}
-                    ml={apps.length > 3 ? '120px' : '70px'}
-                >
-                    {textContent}
-                </Text>
-            )}
+        <HStack spacing={4} w={'full'} justify={'start'}>
             {apps.slice(0, maxDisplayed).map((app, index) => (
                 <Circle
                     key={index}
                     size={size}
-                    bg={isDark ? '#2D2D2D' : '#F5F5F5'}
+                    bg={backgroundColor ?? (isDark ? '#d3d3d3' : '#F5F5F5')}
                     border="1px solid"
-                    borderColor={isDark ? '#3D3D3D' : '#FFFFFF'}
+                    borderColor={isDark ? '#d3d3d3' : '#FFFFFF'}
                     overflow="hidden"
-                    zIndex={maxDisplayed - index}
-                    position={showText ? 'absolute' : 'relative'}
-                    left={showText ? `${index * 27}px` : 'auto'}
+                    position={'absolute'}
+                    zIndex={100 - index}
+                    left={`${index === 0 ? 40 : index * 15}px`}
                 >
                     <Image
                         src={app.logo_url}
@@ -58,6 +45,14 @@ export const AppLogos = ({
                     />
                 </Circle>
             ))}
+
+            {showText && (
+                <HStack ml={'80px'} w={'full'} justify={'start'}>
+                    <Text color={isDark ? '#dfdfdd' : '#4d4d4d'}>
+                        {textContent}
+                    </Text>
+                </HStack>
+            )}
         </HStack>
     );
 };

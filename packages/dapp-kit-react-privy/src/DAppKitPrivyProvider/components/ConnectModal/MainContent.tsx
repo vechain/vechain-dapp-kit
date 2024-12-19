@@ -12,11 +12,11 @@ import {
 } from '@chakra-ui/react';
 import { usePrivy } from '@privy-io/react-auth';
 import { useWalletModal } from '@vechain/dapp-kit-react';
-import { TwitterLogo, GoogleLogo } from '../../assets/';
 import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
 import { FadeInViewFromBottom } from '../common';
 import { useFetchAppInfo } from '../../hooks/useFetchAppInfo';
 import { AppLogos } from '../common/AppLogos';
+import { PrivyAppInfo, SOCIAL_INFOS, WALLET_INFOS } from '../../utils';
 
 type Props = {
     setCurrentContent: React.Dispatch<
@@ -25,7 +25,7 @@ type Props = {
     onClose: () => void;
     logo?: string;
     setAppsInfo: React.Dispatch<
-        React.SetStateAction<Record<string, AppInfo> | undefined>
+        React.SetStateAction<Record<string, PrivyAppInfo> | undefined>
     >;
 };
 
@@ -37,6 +37,7 @@ export const MainContent = ({
 }: Props) => {
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
+
     const { login } = usePrivy();
     const { open } = useWalletModal();
     const { privyConfig } = useDAppKitPrivyConfig();
@@ -56,11 +57,20 @@ export const MainContent = ({
         setCurrentContent('ecosystem');
     };
 
+    // Filter SOCIAL_INFOS based on privyConfig.loginMethods and order by loginMethods
+    const configuredSocialInfos = SOCIAL_INFOS.filter((social) =>
+        privyConfig?.loginMethods?.includes(social.code as any),
+    ).sort(
+        (a, b) =>
+            privyConfig?.loginMethods?.indexOf(a.code as any) -
+            privyConfig?.loginMethods?.indexOf(b.code as any),
+    );
+
     return (
         <FadeInViewFromBottom>
             <ModalHeader
-                fontSize={'sm'}
-                fontWeight={'400'}
+                fontSize={'md'}
+                fontWeight={'500'}
                 textAlign={'center'}
                 color={isDark ? '#dfdfdd' : '#4d4d4d'}
             >
@@ -76,10 +86,14 @@ export const MainContent = ({
                 />
             </HStack>
 
-            <ModalCloseButton />
+            <ModalCloseButton mt={'5px'} />
             <ModalBody>
                 <HStack spacing={4} w={'full'} justify={'center'} mb={'24px'}>
-                    <Text color={isDark ? '#dfdfdd' : '#4d4d4d'} fontSize={14}>
+                    <Text
+                        color={isDark ? '#dfdfdd' : '#4d4d4d'}
+                        fontSize={'sm'}
+                        fontWeight={'200'}
+                    >
                         {'Select a login method'}
                     </Text>
                 </HStack>
@@ -98,17 +112,11 @@ export const MainContent = ({
                             login();
                         }}
                     >
-                        <HStack spacing={4} w={'full'} justify={'center'}>
-                            <HStack justify={'start'}>
-                                <TwitterLogo isDark={isDark} />
-                                <GoogleLogo />
-                            </HStack>
-                            <HStack justify={'start'}>
-                                <Text color={isDark ? '#dfdfdd' : '#4d4d4d'}>
-                                    {'Continue with Social'}
-                                </Text>
-                            </HStack>
-                        </HStack>
+                        <AppLogos
+                            apps={configuredSocialInfos}
+                            size="40px"
+                            textContent="Login with Socials"
+                        />
                     </Button>
                     {showEcosystemButton && (
                         <Button
@@ -129,39 +137,36 @@ export const MainContent = ({
                             {appsInfo && (
                                 <AppLogos
                                     apps={Object.values(appsInfo)}
-                                    maxDisplayed={3}
-                                    showText={true}
                                     size="40px"
-                                    textContent="Continue with VeChain Apps"
+                                    textContent="Login with Apps"
                                 />
                             )}
                         </Button>
                     )}
                     <Button
+                        variant={'loginIn'}
                         fontSize={'14px'}
                         fontWeight={'400'}
-                        variant={'link'}
+                        backgroundColor={isDark ? 'transparent' : '#ffffff'}
+                        border={`1px solid ${isDark ? '#ffffff29' : '#ebebeb'}`}
+                        p={6}
+                        borderRadius={16}
                         w={'full'}
                         onClick={() => {
                             onClose();
                             open();
                         }}
                     >
-                        <HStack spacing={4} w={'full'} justify={'center'}>
-                            <Text color={isDark ? '#dfdfdd' : '#4d4d4dab'}>
-                                {'or continue with Crypto Wallet'}
-                            </Text>
-                        </HStack>
+                        <AppLogos
+                            apps={WALLET_INFOS}
+                            backgroundColor="black"
+                            size="40px"
+                            textContent="Login with Wallet"
+                        />
                     </Button>
                 </VStack>
             </ModalBody>
             <ModalFooter />
         </FadeInViewFromBottom>
     );
-};
-
-export type AppInfo = {
-    name: string;
-    logo_url: string;
-    description?: string;
 };
