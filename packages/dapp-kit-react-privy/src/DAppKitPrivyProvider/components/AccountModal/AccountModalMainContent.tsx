@@ -68,8 +68,7 @@ export const AccountModalMainContent = ({
             <VStack justify={'center'}>
                 <Image
                     src={walletImage}
-                    maxW={'180px'}
-                    maxH={'90px'}
+                    w={'100px'}
                     m={10}
                     borderRadius="50%"
                 />

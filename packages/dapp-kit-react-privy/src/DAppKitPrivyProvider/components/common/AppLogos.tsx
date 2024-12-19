@@ -29,12 +29,13 @@ export const AppLogos = ({
                     key={index}
                     size={size}
                     bg={backgroundColor ?? (isDark ? '#d3d3d3' : '#F5F5F5')}
-                    border="1px solid"
-                    borderColor={isDark ? '#d3d3d3' : '#FFFFFF'}
+                    // border="1px solid"
+                    // borderColor={isDark ? '#d3d3d3' : '#FFFFFF'}
                     overflow="hidden"
                     position={'absolute'}
                     zIndex={100 - index}
-                    left={`${index === 0 ? 40 : index * 15}px`}
+                    boxShadow={'0px 0px 10px 0px rgba(0, 0, 0, 0.1)'}
+                    left={`${index === 0 ? 90 : 90 - index * 25}px`}
                 >
                     <Image
                         src={app.logo_url}

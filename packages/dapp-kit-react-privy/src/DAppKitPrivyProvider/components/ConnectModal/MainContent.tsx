@@ -6,6 +6,7 @@ import {
     ModalCloseButton,
     ModalFooter,
     ModalHeader,
+    Stack,
     Text,
     VStack,
     useColorMode,
@@ -97,28 +98,8 @@ export const MainContent = ({
                         {'Select a login method'}
                     </Text>
                 </HStack>
-                <VStack spacing={4} w={'full'}>
-                    <Button
-                        variant={'loginIn'}
-                        fontSize={'14px'}
-                        fontWeight={'400'}
-                        backgroundColor={isDark ? 'transparent' : '#ffffff'}
-                        border={`1px solid ${isDark ? '#ffffff29' : '#ebebeb'}`}
-                        p={6}
-                        borderRadius={16}
-                        w={'full'}
-                        onClick={() => {
-                            onClose();
-                            login();
-                        }}
-                    >
-                        <AppLogos
-                            apps={configuredSocialInfos}
-                            size="40px"
-                            textContent="Login with Socials"
-                        />
-                    </Button>
-                    {showEcosystemButton && (
+                <Stack spacing={4} w={'full'} align={'center'}>
+                    <VStack spacing={4} w={'full'}>
                         <Button
                             variant={'loginIn'}
                             fontSize={'14px'}
@@ -130,41 +111,81 @@ export const MainContent = ({
                             p={6}
                             borderRadius={16}
                             w={'full'}
-                            color={isDark ? '#dfdfdd' : '#4d4d4d'}
-                            onClick={handleEcosystemClick}
-                            isLoading={isLoading}
+                            onClick={() => {
+                                onClose();
+                                login();
+                            }}
+                            justifyContent={'center'}
                         >
-                            {appsInfo && (
-                                <AppLogos
-                                    apps={Object.values(appsInfo)}
-                                    size="40px"
-                                    textContent="Login with Apps"
-                                />
-                            )}
+                            <AppLogos
+                                apps={configuredSocialInfos}
+                                size="40px"
+                                textContent=""
+                                maxDisplayed={4}
+                            />
+                            <Text w={'full'} textAlign={'left'}>
+                                Login with Socials
+                            </Text>
                         </Button>
-                    )}
-                    <Button
-                        variant={'loginIn'}
-                        fontSize={'14px'}
-                        fontWeight={'400'}
-                        backgroundColor={isDark ? 'transparent' : '#ffffff'}
-                        border={`1px solid ${isDark ? '#ffffff29' : '#ebebeb'}`}
-                        p={6}
-                        borderRadius={16}
-                        w={'full'}
-                        onClick={() => {
-                            onClose();
-                            open();
-                        }}
-                    >
-                        <AppLogos
-                            apps={WALLET_INFOS}
-                            backgroundColor="black"
-                            size="40px"
-                            textContent="Login with Wallet"
-                        />
-                    </Button>
-                </VStack>
+                        {showEcosystemButton && (
+                            <Button
+                                variant={'loginIn'}
+                                fontSize={'14px'}
+                                fontWeight={'400'}
+                                backgroundColor={
+                                    isDark ? 'transparent' : '#ffffff'
+                                }
+                                border={`1px solid ${
+                                    isDark ? '#ffffff29' : '#ebebeb'
+                                }`}
+                                p={6}
+                                borderRadius={16}
+                                w={'full'}
+                                color={isDark ? '#dfdfdd' : '#4d4d4d'}
+                                onClick={handleEcosystemClick}
+                                isLoading={isLoading}
+                            >
+                                {appsInfo && (
+                                    <AppLogos
+                                        apps={Object.values(appsInfo)}
+                                        size="40px"
+                                        textContent=""
+                                        maxDisplayed={4}
+                                    />
+                                )}
+                                <Text w={'full'} textAlign={'left'}>
+                                    Login with Apps
+                                </Text>
+                            </Button>
+                        )}
+                        <Button
+                            variant={'loginIn'}
+                            fontSize={'14px'}
+                            fontWeight={'400'}
+                            backgroundColor={isDark ? 'transparent' : '#ffffff'}
+                            border={`1px solid ${
+                                isDark ? '#ffffff29' : '#ebebeb'
+                            }`}
+                            p={6}
+                            borderRadius={16}
+                            w={'full'}
+                            onClick={() => {
+                                onClose();
+                                open();
+                            }}
+                        >
+                            <AppLogos
+                                apps={WALLET_INFOS}
+                                backgroundColor="black"
+                                size="40px"
+                                textContent=""
+                            />
+                            <Text w={'full'} textAlign={'left'}>
+                                Login with Wallet
+                            </Text>
+                        </Button>
+                    </VStack>
+                </Stack>
             </ModalBody>
             <ModalFooter />
         </FadeInViewFromBottom>

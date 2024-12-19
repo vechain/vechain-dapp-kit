@@ -88,7 +88,7 @@ export const SOCIAL_INFOS: SocialInfo[] = [
         code: 'sms',
         name: 'SMS',
         logo_url:
-            'https://www.creativefabrica.com/wp-content/uploads/2018/12/Sms-icon-by-rudezstudio-580x386.jpg',
+            'https://w7.pngwing.com/pngs/356/440/png-transparent-iphone-computer-icons-telephone-email-telephone-electronics-text-mobile-phones.png',
     },
     {
         code: 'email',

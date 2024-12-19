@@ -22,14 +22,7 @@ export function SocialLoginWrapper({ children }: Props) {
             privyConfig={{
                 appId: process.env.NEXT_PUBLIC_PRIVY_APP_ID!,
                 clientId: process.env.NEXT_PUBLIC_PRIVY_CLIENT_ID!,
-                loginMethods: [
-                    'google',
-                    'twitter',
-                    'github',
-                    'linkedin',
-                    'sms',
-                    'email',
-                ],
+                loginMethods: ['google', 'twitter', 'github', 'sms', 'email'],
                 appearance: {
                     theme: colorMode,
                     accentColor: '#696FFD',
