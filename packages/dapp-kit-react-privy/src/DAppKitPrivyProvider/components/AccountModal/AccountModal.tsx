@@ -10,13 +10,15 @@ import {
 import { useWallet } from '../../hooks';
 import { getPicassoImage } from '../../utils';
 import { useState, useEffect } from 'react';
-import { SettingsContent } from './SettingsContent';
-import { MainContent } from './MainContent';
-
+import { WalletSettingsContent } from './WalletSettingsContent';
+import { AccountModalMainContent } from './AccountModalMainContent';
+import { SmartAccountContent } from './SmartAccountContent';
 type Props = {
     isOpen: boolean;
     onClose: () => void;
 };
+
+export type AccountModalContentTypes = 'main' | 'settings' | 'smart-account';
 
 export const AccountModal = ({ isOpen, onClose }: Props) => {
     const [isDesktop] = useMediaQuery('(min-width: 768px)');
@@ -39,9 +41,8 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
             : connectedAccount ?? '',
     );
 
-    const [currentContent, setCurrentContent] = useState<'main' | 'settings'>(
-        'main',
-    );
+    const [currentContent, setCurrentContent] =
+        useState<AccountModalContentTypes>('main');
     useEffect(() => {
         if (isOpen) {
             setCurrentContent('main');
@@ -52,7 +53,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
         switch (currentContent) {
             case 'main':
                 return (
-                    <MainContent
+                    <AccountModalMainContent
                         setCurrentContent={setCurrentContent}
                         onClose={onClose}
                         walletImage={walletImage}
@@ -60,7 +61,14 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
                 );
             case 'settings':
                 return (
-                    <SettingsContent
+                    <WalletSettingsContent
+                        setCurrentContent={setCurrentContent}
+                        walletImage={walletImage}
+                    />
+                );
+            case 'smart-account':
+                return (
+                    <SmartAccountContent
                         setCurrentContent={setCurrentContent}
                         walletImage={walletImage}
                     />

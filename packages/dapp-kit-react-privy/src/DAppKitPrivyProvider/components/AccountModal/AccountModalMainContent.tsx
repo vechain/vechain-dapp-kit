@@ -7,6 +7,7 @@ import {
     ModalCloseButton,
     ModalFooter,
     ModalHeader,
+    Text,
     VStack,
     useColorMode,
 } from '@chakra-ui/react';
@@ -14,19 +15,21 @@ import { useWallet } from '../../hooks';
 import { RxExit } from 'react-icons/rx';
 import { AddressDisplay } from '../common/AddressDisplay';
 import { FadeInViewFromBottom } from '../common';
-import { ActionButton } from './ActionButton';
-import { humanAddress } from '../../utils';
+import { AccountDetailsButton } from './AccountDetailsButton';
+import packageJson from '../../../../package.json';
 import { MdOutlineNavigateNext } from 'react-icons/md';
+import { AccountModalContentTypes } from './AccountModal';
+import { HiOutlineWallet } from 'react-icons/hi2';
 
 type Props = {
     setCurrentContent: React.Dispatch<
-        React.SetStateAction<'main' | 'settings'>
+        React.SetStateAction<AccountModalContentTypes>
     >;
     onClose: () => void;
     walletImage: string;
 };
 
-export const MainContent = ({
+export const AccountModalMainContent = ({
     setCurrentContent,
     onClose,
     walletImage,
@@ -51,6 +54,16 @@ export const MainContent = ({
                 color={isDark ? '#dfdfdd' : '#4d4d4d'}
             >
                 {'Connected'}
+                <Text
+                    fontSize={'xs'}
+                    fontWeight={'400'}
+                    w={'full'}
+                    textAlign={'center'}
+                    opacity={0.3}
+                    mt={2}
+                >
+                    v{packageJson.version}
+                </Text>
             </ModalHeader>
             <VStack justify={'center'}>
                 <Image
@@ -72,41 +85,22 @@ export const MainContent = ({
                             w="100%"
                             h="100%"
                         >
-                            <ActionButton
+                            <AccountDetailsButton
                                 title="Smart Account"
-                                description={humanAddress(
-                                    smartAccount.address ?? '',
-                                    6,
-                                    4,
-                                )}
+                                address={smartAccount.address ?? ''}
+                                isActive
                                 onClick={() => {
-                                    // setCurrentContent('settings');
+                                    setCurrentContent('smart-account');
                                 }}
-                                backgroundColor={
-                                    isDark ? 'transparent' : 'transparent'
-                                }
-                                border={`1px solid ${
-                                    isDark ? '#ffffff29' : '#ebebeb'
-                                }`}
-                                // leftImage={SOCIAL_INFOS}
+                                leftIcon={HiOutlineWallet}
                                 rightIcon={MdOutlineNavigateNext}
                             />
-                            <ActionButton
+                            <AccountDetailsButton
                                 title="Wallet"
-                                description={humanAddress(
-                                    connectedAccount ?? '',
-                                    6,
-                                    4,
-                                )}
+                                address={connectedAccount ?? ''}
                                 onClick={() => {
                                     setCurrentContent('settings');
                                 }}
-                                backgroundColor={
-                                    isDark ? 'transparent' : 'transparent'
-                                }
-                                border={`1px solid ${
-                                    isDark ? '#ffffff29' : '#ebebeb'
-                                }`}
                                 // leftImage={SOCIAL_INFOS}
                                 rightIcon={MdOutlineNavigateNext}
                             />
@@ -121,19 +115,6 @@ export const MainContent = ({
             </ModalBody>
             <ModalFooter>
                 <VStack w={'full'}>
-                    {/* {connectionType === 'privy' && (
-                        <Button
-                            w={'full'}
-                            onClick={() => {
-                                setCurrentContent('settings');
-                            }}
-                            fontSize={'sm'}
-                            fontWeight={'400'}
-                            leftIcon={<RiSettings3Line color="#888888" />}
-                        >
-                            Wallet settings
-                        </Button>
-                    )} */}
                     <Button
                         w={'full'}
                         onClick={() => {

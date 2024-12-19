@@ -52,7 +52,7 @@ export const AddressDisplay = ({ address, label, domain }: Props) => {
                     </VStack>
                 ) : (
                     <HStack>
-                        <Text fontSize={'sm'}>
+                        <Text fontSize={'md'}>
                             {humanAddress(address, 6, 4)}
                         </Text>
                         <Icon

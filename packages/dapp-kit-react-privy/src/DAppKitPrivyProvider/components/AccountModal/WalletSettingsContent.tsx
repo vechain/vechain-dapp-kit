@@ -5,31 +5,30 @@ import {
     VStack,
     ModalFooter,
     ModalHeader,
-    Text,
     useColorMode,
 } from '@chakra-ui/react';
 import { usePrivy, useWallet } from '../../hooks';
-import React from 'react';
 import { AddressDisplay } from '../common/AddressDisplay';
 import { GiHouseKeys } from 'react-icons/gi';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import { IoIosFingerPrint } from 'react-icons/io';
-import { IoShieldCheckmarkOutline } from 'react-icons/io5';
 import { ActionButton } from './ActionButton';
-import packageJson from '../../../../package.json';
 import { ModalBackButton } from '../common';
 import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
 import { FadeInViewFromRight } from '../common';
+import { AccountModalContentTypes } from './AccountModal';
+import { FaRegAddressCard } from 'react-icons/fa';
 
 type Props = {
-    setCurrentContent: React.Dispatch<
-        React.SetStateAction<'main' | 'settings'>
-    >;
+    setCurrentContent: (content: AccountModalContentTypes) => void;
     walletImage: string;
 };
 
-export const SettingsContent = ({ setCurrentContent, walletImage }: Props) => {
-    const { exportWallet, setWalletRecovery, linkPasskey } = usePrivy();
+export const WalletSettingsContent = ({
+    setCurrentContent,
+    walletImage,
+}: Props) => {
+    const { exportWallet, linkPasskey } = usePrivy();
     const { privyConfig } = useDAppKitPrivyConfig();
 
     const { privyEmbeddedWallet } = useWallet();
@@ -47,15 +46,16 @@ export const SettingsContent = ({ setCurrentContent, walletImage }: Props) => {
             >
                 {'Wallet Settings'}
             </ModalHeader>
-            <VStack justify={'center'} m={5}>
-                <Image src={walletImage} maxW={'50px'} borderRadius="50%" />
-                <AddressDisplay address={privyEmbeddedWallet ?? ''} />
-            </VStack>
 
             <ModalBackButton onClick={() => setCurrentContent('main')} />
             <ModalCloseButton />
             <ModalBody w={'full'}>
-                <VStack w={'full'}>
+                <VStack justify={'center'}>
+                    <Image src={walletImage} maxW={'70px'} borderRadius="50%" />
+                    <AddressDisplay address={privyEmbeddedWallet ?? ''} />
+                </VStack>
+
+                <VStack w={'full'} mt={10}>
                     <ActionButton
                         title="Backup your wallet"
                         description="Export your private key"
@@ -63,16 +63,6 @@ export const SettingsContent = ({ setCurrentContent, walletImage }: Props) => {
                             exportWallet();
                         }}
                         leftIcon={GiHouseKeys}
-                        rightIcon={MdOutlineNavigateNext}
-                    />
-
-                    <ActionButton
-                        title="Set up wallet recovery"
-                        description="Set a password to secure your account"
-                        onClick={() => {
-                            setWalletRecovery(true);
-                        }}
-                        leftIcon={IoShieldCheckmarkOutline}
                         rightIcon={MdOutlineNavigateNext}
                     />
 
@@ -87,19 +77,21 @@ export const SettingsContent = ({ setCurrentContent, walletImage }: Props) => {
                             rightIcon={MdOutlineNavigateNext}
                         />
                     )}
+
+                    <ActionButton
+                        title="Choose account name"
+                        description="Give a nickname to your wallet to easily identify it."
+                        onClick={() => {
+                            // linkPasskey();
+                        }}
+                        isDisabled={true}
+                        showComingSoon={true}
+                        leftIcon={FaRegAddressCard}
+                        rightIcon={MdOutlineNavigateNext}
+                    />
                 </VStack>
             </ModalBody>
-            <ModalFooter>
-                <Text
-                    fontSize={'sm'}
-                    fontWeight={'400'}
-                    w={'full'}
-                    textAlign={'center'}
-                    opacity={0.5}
-                >
-                    v{packageJson.version}
-                </Text>
-            </ModalFooter>
+            <ModalFooter />
         </FadeInViewFromRight>
     );
 };

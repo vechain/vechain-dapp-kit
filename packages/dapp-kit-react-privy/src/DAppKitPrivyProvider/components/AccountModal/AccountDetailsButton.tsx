@@ -6,33 +6,36 @@ import {
     Text,
     Icon,
     Image,
+    useColorMode,
     Tag,
 } from '@chakra-ui/react';
 import { ElementType } from 'react';
+import { humanAddress } from '../../utils';
 
-interface ActionButtonProps {
+interface AccountDetailsButtonProps {
     title: string;
-    description: string;
+    address: string;
     onClick: () => void;
     leftIcon?: ElementType;
     rightIcon?: ElementType;
     leftImage?: string;
     backgroundColor?: string;
     border?: string;
-    isDisabled?: boolean;
-    showComingSoon?: boolean;
+    isActive?: boolean;
 }
 
-export const ActionButton = ({
+export const AccountDetailsButton = ({
     leftIcon,
     rightIcon,
     title,
-    description,
+    address,
     onClick,
     leftImage,
-    isDisabled = false,
-    showComingSoon = false,
-}: ActionButtonProps) => {
+    isActive = false,
+}: AccountDetailsButtonProps) => {
+    const { colorMode } = useColorMode();
+    const isDark = colorMode === 'dark';
+
     return (
         <Button
             w={'full'}
@@ -40,8 +43,8 @@ export const ActionButton = ({
             h={'fit-content'}
             py={4}
             onClick={onClick}
-            opacity={isDisabled ? 0.5 : 1}
-            isDisabled={isDisabled}
+            backgroundColor={isDark ? 'transparent' : 'transparent'}
+            border={`1px solid ${isDark ? '#ffffff29' : '#ebebeb'}`}
         >
             <HStack w={'full'} justify={'space-between'}>
                 <Box minW={'40px'}>
@@ -54,28 +57,28 @@ export const ActionButton = ({
                 <VStack textAlign={'left'} w={'full'} flex={1}>
                     <HStack
                         w={'full'}
-                        textAlign={'left'}
+                        spacing={2}
                         justifyContent={'flex-start'}
                     >
                         <Text fontSize={'sm'} fontWeight={'400'}>
                             {title}
                         </Text>
-                        {showComingSoon && (
-                            <Tag size="sm" colorScheme="red">
-                                Coming Soon!
+                        {isActive && (
+                            <Tag ml={1} size={'sm'} colorScheme={'green'}>
+                                Selected
                             </Tag>
                         )}
                     </HStack>
                     <Text
-                        fontSize={'xs'}
-                        fontWeight={'400'}
+                        fontSize={'md'}
+                        fontWeight={'500'}
                         opacity={0.5}
                         overflowWrap={'break-word'}
                         wordBreak={'break-word'}
                         whiteSpace={'normal'}
                         w={'full'}
                     >
-                        {description}
+                        {humanAddress(address, 6, 4)}
                     </Text>
                 </VStack>
                 <VStack minW={'40px'} justifyContent={'flex-end'}>
