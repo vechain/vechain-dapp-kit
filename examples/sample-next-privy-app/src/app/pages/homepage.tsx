@@ -141,7 +141,7 @@ const HomePage = (): ReactElement => {
                         <Heading size={'md'}>
                             <b>Wallet</b>
                         </Heading>
-                        <Text>Address: {smartAccount.ownerAddress}</Text>
+                        <Text>Address: {connectedAccount}</Text>
                         {<Text>Connection Type: {connectionType}</Text>}
                     </Box>
 

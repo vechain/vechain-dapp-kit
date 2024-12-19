@@ -15,6 +15,7 @@ type UseWalletReturnType = {
     isCrossAppPrivyAccount: boolean;
     connectionType: 'privy' | 'wallet' | 'privy-cross-app';
     connectedAccount: string | undefined;
+    selectedAddress: string | undefined;
     crossAppAccount: string | undefined;
     privyEmbeddedWallet: string | undefined;
     dappKitAccount: string | undefined | null;
@@ -56,18 +57,20 @@ export const useWallet = (): UseWalletReturnType => {
 
     const privyEmbeddedWallet = user?.wallet?.address;
 
-    // TODO: Add the possibility to manually select the account
-    // If I am connected with dappKit then the connectedAccount is of dappKit,
-    // if I am connected with app then the connected account is the smart account owned
-    // by the crossAppAccount, if instead I am connected with social the connected
-    // account is the smart account owned by the privyEmbedded wallet
+    // The connectedAccount can be either:
+    // 1. The dappKit connected account
+    // 2. The owner of the smart account (either crossAppAccount or privyEmbeddedWallet)
     const connectedAccount = isConnectedWithDappKit
         ? dappKitAccount
-        : isCrossAppPrivyAccount
-        ? smartAccount.address // Use smart account owned by crossAppAccount
-        : smartAccount.address; // Use smart account owned by privyEmbeddedWallet
+        : smartAccount.ownerAddress;
 
-    const vetDomain = useVechainDomain({ addressOrDomain: dappKitAccount });
+    const selectedAddress = isConnectedWithDappKit
+        ? dappKitAccount
+        : smartAccount.address;
+
+    const selectedAddressVetDomain = useVechainDomain({
+        addressOrDomain: selectedAddress,
+    });
 
     const logoutAndDisconnect = async () => {
         if (isConnectedWithDappKit) {
@@ -88,13 +91,14 @@ export const useWallet = (): UseWalletReturnType => {
         connectionType,
 
         connectedAccount,
+        selectedAddress,
         dappKitAccount,
         crossAppAccount: crossAppAccount?.embeddedWallets?.[0]?.address,
         privyEmbeddedWallet,
         smartAccount,
 
         logoutAndDisconnect,
-        vetDomain: vetDomain.domain,
+        vetDomain: selectedAddressVetDomain.domain,
         privyUser: user,
     };
 };

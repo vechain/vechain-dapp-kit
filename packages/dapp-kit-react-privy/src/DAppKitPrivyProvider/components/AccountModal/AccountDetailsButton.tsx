@@ -49,7 +49,12 @@ export const AccountDetailsButton = ({
             <HStack w={'full'} justify={'space-between'}>
                 <Box minW={'40px'}>
                     {leftImage ? (
-                        <Image src={leftImage} alt="left-image" />
+                        <Image
+                            src={leftImage}
+                            w={'25px'}
+                            h={'25px'}
+                            alt="left-image"
+                        />
                     ) : (
                         <Icon as={leftIcon} fontSize={'25px'} />
                     )}

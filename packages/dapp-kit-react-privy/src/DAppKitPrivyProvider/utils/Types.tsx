@@ -72,3 +72,19 @@ export type SocialInfo = {
     logo_url: string;
     description?: string;
 };
+
+export type PrivyLoginMethod =
+    | 'wallet'
+    | 'email'
+    | 'sms'
+    | 'google'
+    | 'twitter'
+    | 'discord'
+    | 'github'
+    | 'linkedin'
+    | 'spotify'
+    | 'instagram'
+    | 'tiktok'
+    | 'apple'
+    | 'farcaster'
+    | 'telegram';

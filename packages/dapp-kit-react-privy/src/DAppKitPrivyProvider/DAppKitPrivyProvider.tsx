@@ -4,6 +4,7 @@ import { DAppKitProvider, DAppKitUIOptions } from '@vechain/dapp-kit-react';
 import { SmartAccountProvider } from './hooks';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Theme } from './theme';
+import { PrivyLoginMethod } from './utils';
 
 type Props = {
     children: ReactNode;
@@ -19,22 +20,7 @@ type Props = {
         embeddedWallets?: {
             createOnLogin: 'users-without-wallets' | 'all-users' | 'off';
         };
-        loginMethods: (
-            | 'wallet'
-            | 'email'
-            | 'sms'
-            | 'google'
-            | 'twitter'
-            | 'discord'
-            | 'github'
-            | 'linkedin'
-            | 'spotify'
-            | 'instagram'
-            | 'tiktok'
-            | 'apple'
-            | 'farcaster'
-            | 'telegram'
-        )[];
+        loginMethods: PrivyLoginMethod[];
         ecosystemAppsID?: string[];
         allowPasskeyLinking?: boolean;
     };

@@ -17,7 +17,7 @@ import { AddressDisplay } from '../common/AddressDisplay';
 import { FadeInViewFromBottom } from '../common';
 import { AccountDetailsButton } from './AccountDetailsButton';
 import packageJson from '../../../../package.json';
-import { MdOutlineNavigateNext } from 'react-icons/md';
+import { MdAccountCircle, MdOutlineNavigateNext } from 'react-icons/md';
 import { AccountModalContentTypes } from './AccountModal';
 import { HiOutlineWallet } from 'react-icons/hi2';
 
@@ -99,7 +99,7 @@ export const AccountModalMainContent = ({
                                 onClick={() => {
                                     setCurrentContent('smart-account');
                                 }}
-                                leftIcon={HiOutlineWallet}
+                                leftIcon={MdAccountCircle}
                                 rightIcon={MdOutlineNavigateNext}
                             />
                             <AccountDetailsButton
@@ -108,7 +108,7 @@ export const AccountModalMainContent = ({
                                 onClick={() => {
                                     setCurrentContent('settings');
                                 }}
-                                // leftImage={SOCIAL_INFOS}
+                                leftIcon={HiOutlineWallet}
                                 rightIcon={MdOutlineNavigateNext}
                             />
                         </Grid>

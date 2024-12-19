@@ -3,26 +3,12 @@ import { useWallet } from '../../hooks';
 import { ConnectModal } from '../ConnectModal';
 import { AccountModal } from '../AccountModal';
 import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
-import { getPicassoImage, humanAddress, humanDomain } from '../../utils';
+import { getPicassoImage, humanAddress } from '../../utils';
 
 export const WalletButton = () => {
-    const {
-        isConnected,
-        isLoadingConnection,
-        isConnectedWithPrivy,
-        connectedAccount,
-        smartAccount,
-    } = useWallet();
+    const { isConnected, isLoadingConnection, selectedAddress } = useWallet();
 
-    const addressOrDomain = isConnectedWithPrivy
-        ? humanDomain(smartAccount.address ?? '', 6, 4)
-        : humanAddress(connectedAccount ?? '', 6, 4);
-
-    const walletImage = getPicassoImage(
-        isConnectedWithPrivy
-            ? smartAccount.address ?? ''
-            : connectedAccount ?? '',
-    );
+    const walletImage = getPicassoImage(selectedAddress ?? '');
 
     const connectModal = useDisclosure();
     const accountModal = useDisclosure();
@@ -46,7 +32,9 @@ export const WalletButton = () => {
                                     height={23}
                                     borderRadius="50%"
                                 />
-                                <Text fontSize="sm">{addressOrDomain}</Text>
+                                <Text fontSize="sm">
+                                    {humanAddress(selectedAddress ?? '', 6, 4)}
+                                </Text>
                             </HStack>
                         </Button>
                     ) : (
