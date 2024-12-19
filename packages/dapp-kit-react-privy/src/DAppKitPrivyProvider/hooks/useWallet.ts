@@ -17,9 +17,11 @@ type UseWalletReturnType = {
     connectedAccount: string | undefined;
     crossAppAccount: string | undefined;
     privyEmbeddedWallet: string | undefined;
+    dappKitAccount: string | undefined | null;
     smartAccount: {
         address: string | undefined;
         isDeployed: boolean;
+        ownerAddress: string | undefined;
     };
     logoutAndDisconnect: () => Promise<void>;
     vetDomain: string | undefined;
@@ -54,10 +56,16 @@ export const useWallet = (): UseWalletReturnType => {
 
     const privyEmbeddedWallet = user?.wallet?.address;
 
-    const connectedAccount =
-        dappKitAccount ??
-        crossAppAccount?.embeddedWallets?.[0]?.address ??
-        privyEmbeddedWallet;
+    // TODO: Add the possibility to manually select the account
+    // If I am connected with dappKit then the connectedAccount is of dappKit,
+    // if I am connected with app then the connected account is the smart account owned
+    // by the crossAppAccount, if instead I am connected with social the connected
+    // account is the smart account owned by the privyEmbedded wallet
+    const connectedAccount = isConnectedWithDappKit
+        ? dappKitAccount
+        : isCrossAppPrivyAccount
+        ? smartAccount.address // Use smart account owned by crossAppAccount
+        : smartAccount.address; // Use smart account owned by privyEmbeddedWallet
 
     const vetDomain = useVechainDomain({ addressOrDomain: dappKitAccount });
 
@@ -75,13 +83,16 @@ export const useWallet = (): UseWalletReturnType => {
         isConnected,
         isConnectedWithPrivy,
         isConnectedWithDappKit,
-        connectionType,
         isLoadingConnection,
         isCrossAppPrivyAccount,
+        connectionType,
+
         connectedAccount,
+        dappKitAccount,
         crossAppAccount: crossAppAccount?.embeddedWallets?.[0]?.address,
         privyEmbeddedWallet,
         smartAccount,
+
         logoutAndDisconnect,
         vetDomain: vetDomain.domain,
         privyUser: user,

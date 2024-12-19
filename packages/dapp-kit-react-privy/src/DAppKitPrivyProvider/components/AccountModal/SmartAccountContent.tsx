@@ -21,19 +21,18 @@ import { FadeInViewFromBottom, ModalBackButton } from '../common';
 import { FadeInViewFromRight } from '../common';
 import { AccountModalContentTypes } from './AccountModal';
 import { FaRegAddressCard } from 'react-icons/fa';
+import { getPicassoImage } from '../../utils';
 
 type Props = {
     setCurrentContent: React.Dispatch<
         React.SetStateAction<AccountModalContentTypes>
     >;
-    walletImage: string;
 };
 
-export const SmartAccountContent = ({
-    setCurrentContent,
-    walletImage,
-}: Props) => {
-    const { privyEmbeddedWallet } = useWallet();
+export const SmartAccountContent = ({ setCurrentContent }: Props) => {
+    const { smartAccount } = useWallet();
+
+    const walletImage = getPicassoImage(smartAccount.address ?? '');
 
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
@@ -56,7 +55,7 @@ export const SmartAccountContent = ({
             <ModalBody w={'full'}>
                 <VStack justify={'center'} mb={10}>
                     <Image src={walletImage} maxW={'70px'} borderRadius="50%" />
-                    <AddressDisplay address={privyEmbeddedWallet ?? ''} />
+                    <AddressDisplay address={smartAccount.address ?? ''} />
                 </VStack>
 
                 <VStack align="stretch" spacing={5}>

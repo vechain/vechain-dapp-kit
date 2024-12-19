@@ -18,20 +18,24 @@ import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
 import { FadeInViewFromRight } from '../common';
 import { AccountModalContentTypes } from './AccountModal';
 import { FaRegAddressCard } from 'react-icons/fa';
+import { getPicassoImage } from '../../utils';
 
 type Props = {
     setCurrentContent: (content: AccountModalContentTypes) => void;
-    walletImage: string;
 };
 
-export const WalletSettingsContent = ({
-    setCurrentContent,
-    walletImage,
-}: Props) => {
+export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
     const { exportWallet, linkPasskey } = usePrivy();
     const { privyConfig } = useDAppKitPrivyConfig();
 
-    const { privyEmbeddedWallet, isCrossAppPrivyAccount } = useWallet();
+    const { privyEmbeddedWallet, isCrossAppPrivyAccount, crossAppAccount } =
+        useWallet();
+
+    const account = isCrossAppPrivyAccount
+        ? crossAppAccount
+        : privyEmbeddedWallet;
+
+    const walletImage = getPicassoImage(account ?? '');
 
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
@@ -52,7 +56,7 @@ export const WalletSettingsContent = ({
             <ModalBody w={'full'}>
                 <VStack justify={'center'}>
                     <Image src={walletImage} maxW={'70px'} borderRadius="50%" />
-                    <AddressDisplay address={privyEmbeddedWallet ?? ''} />
+                    <AddressDisplay address={account ?? ''} />
                 </VStack>
 
                 <VStack w={'full'} mt={10}>

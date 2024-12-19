@@ -125,14 +125,6 @@ const HomePage = (): ReactElement => {
                 whiteSpace={'normal'}
             >
                 <VStack spacing={4} alignItems="flex-start">
-                    <Box>
-                        <Heading size={'md'}>
-                            <b>Wallet</b>
-                        </Heading>
-                        <Text>Address: {connectedAccount}</Text>
-                        {<Text>Connection Type: {connectionType}</Text>}
-                    </Box>
-
                     {smartAccount.address && (
                         <Box mt={4}>
                             <Heading size={'md'}>
@@ -144,6 +136,14 @@ const HomePage = (): ReactElement => {
                             </Text>
                         </Box>
                     )}
+
+                    <Box>
+                        <Heading size={'md'}>
+                            <b>Wallet</b>
+                        </Heading>
+                        <Text>Address: {smartAccount.ownerAddress}</Text>
+                        {<Text>Connection Type: {connectionType}</Text>}
+                    </Box>
 
                     <Box mt={4}>
                         <Heading size={'md'}>

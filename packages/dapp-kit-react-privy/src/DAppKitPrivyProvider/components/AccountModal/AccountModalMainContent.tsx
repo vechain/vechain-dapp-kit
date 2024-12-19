@@ -104,7 +104,7 @@ export const AccountModalMainContent = ({
                             />
                             <AccountDetailsButton
                                 title="Wallet"
-                                address={connectedAccount ?? ''}
+                                address={smartAccount.ownerAddress ?? ''}
                                 onClick={() => {
                                     setCurrentContent('settings');
                                 }}

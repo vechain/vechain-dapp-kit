@@ -24,6 +24,7 @@ import {
 
 export interface SmartAccountContextType {
     address: string | undefined;
+    ownerAddress: string | undefined;
     embeddedWallet: ConnectedWallet | undefined;
     isDeployed: boolean;
     sendTransaction: (tx: {
@@ -78,6 +79,7 @@ export const SmartAccountProvider = ({
     const [smartAccountAddress, setSmartAccountAddress] = useState<
         string | undefined
     >();
+    const [ownerAddress, setOwnerAddress] = useState<string | undefined>();
     const [chainId, setChainId] = useState('');
     const thor = ThorClient.fromUrl(nodeUrl);
     const [isDeployed, setIsDeployed] = useState(false);
@@ -92,6 +94,13 @@ export const SmartAccountProvider = ({
           user?.linkedAccounts?.[0]?.embeddedWallets?.[0]?.address
         : //@ts-ignore
           user?.linkedAccounts?.[0]?.address ?? user?.wallet?.address;
+
+    /**
+     * Set the owner address to the connected account
+     */
+    useEffect(() => {
+        setOwnerAddress(connectedAccount);
+    }, [connectedAccount]);
 
     /**
      * Load the smartAccountAddress of the account abstraction wallet identified by
@@ -372,6 +381,7 @@ export const SmartAccountProvider = ({
         <VechainAccountContext.Provider
             value={{
                 address: smartAccountAddress,
+                ownerAddress,
                 accountFactory: accountFactory ?? '',
                 nodeUrl,
                 delegatorUrl,

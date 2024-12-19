@@ -34,14 +34,9 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
               overflowX: 'hidden',
           };
 
-    const { isConnectedWithPrivy, connectedAccount, smartAccount } =
-        useWallet();
+    const { connectedAccount } = useWallet();
 
-    const walletImage = getPicassoImage(
-        isConnectedWithPrivy
-            ? smartAccount.address ?? ''
-            : connectedAccount ?? '',
-    );
+    const walletImage = getPicassoImage(connectedAccount ?? '');
 
     const [currentContent, setCurrentContent] =
         useState<AccountModalContentTypes>('main');
@@ -65,14 +60,12 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
                 return (
                     <WalletSettingsContent
                         setCurrentContent={setCurrentContent}
-                        walletImage={walletImage}
                     />
                 );
             case 'smart-account':
                 return (
                     <SmartAccountContent
                         setCurrentContent={setCurrentContent}
-                        walletImage={walletImage}
                     />
                 );
         }
