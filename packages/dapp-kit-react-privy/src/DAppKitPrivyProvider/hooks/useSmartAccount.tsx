@@ -79,7 +79,7 @@ export const SmartAccountProvider = ({
     const [smartAccountAddress, setSmartAccountAddress] = useState<
         string | undefined
     >();
-    const [ownerAddress, setOwnerAddress] = useState<string | undefined>();
+    const [owner, setOwner] = useState<string | undefined>();
     const [chainId, setChainId] = useState('');
     const thor = ThorClient.fromUrl(nodeUrl);
     const [isDeployed, setIsDeployed] = useState(false);
@@ -99,7 +99,7 @@ export const SmartAccountProvider = ({
      * Set the owner address to the connected account
      */
     useEffect(() => {
-        setOwnerAddress(connectedAccount);
+        setOwner(connectedAccount);
     }, [connectedAccount]);
 
     /**
@@ -381,7 +381,7 @@ export const SmartAccountProvider = ({
         <VechainAccountContext.Provider
             value={{
                 address: smartAccountAddress,
-                ownerAddress,
+                ownerAddress: owner,
                 accountFactory: accountFactory ?? '',
                 nodeUrl,
                 delegatorUrl,
