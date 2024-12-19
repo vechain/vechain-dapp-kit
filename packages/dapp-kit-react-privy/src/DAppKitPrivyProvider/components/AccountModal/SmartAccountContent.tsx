@@ -60,7 +60,7 @@ export const SmartAccountContent = ({ setCurrentContent }: Props) => {
 
                 <VStack align="stretch" spacing={5}>
                     <Text fontSize={'sm'} opacity={0.5}>
-                        To allow you a smooth omboarding on VeChain we are
+                        To allow you a smooth onboarding on VeChain we are
                         helping you manage a wallet.
                     </Text>
 
