@@ -8,18 +8,18 @@ import {
     Text,
     useColorMode,
 } from '@chakra-ui/react';
-import { usePrivy, useWallet } from '../../../hooks';
+import { usePrivy, useWallet } from '../../hooks';
 import React from 'react';
-import { AddressDisplay } from '../../common/AddressDisplay';
+import { AddressDisplay } from '../common/AddressDisplay';
 import { GiHouseKeys } from 'react-icons/gi';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import { IoIosFingerPrint } from 'react-icons/io';
 import { IoShieldCheckmarkOutline } from 'react-icons/io5';
 import { ActionButton } from './ActionButton';
-import packageJson from '../../../../../package.json';
-import { ModalBackButton } from '../../common';
-import { useDAppKitPrivyConfig } from '../../../DAppKitPrivyProvider';
-import { FadeInViewFromRight } from '../../common';
+import packageJson from '../../../../package.json';
+import { ModalBackButton } from '../common';
+import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
+import { FadeInViewFromRight } from '../common';
 
 type Props = {
     setCurrentContent: React.Dispatch<

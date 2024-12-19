@@ -1,4 +1,12 @@
-import { Button, Box, HStack, VStack, Text, Icon } from '@chakra-ui/react';
+import {
+    Button,
+    Box,
+    HStack,
+    VStack,
+    Text,
+    Icon,
+    Image,
+} from '@chakra-ui/react';
 import { ElementType } from 'react';
 
 interface ActionButtonProps {
@@ -7,6 +15,9 @@ interface ActionButtonProps {
     onClick: () => void;
     leftIcon?: ElementType;
     rightIcon?: ElementType;
+    leftImage?: string;
+    backgroundColor?: string;
+    border?: string;
 }
 
 export const ActionButton = ({
@@ -15,6 +26,9 @@ export const ActionButton = ({
     title,
     description,
     onClick,
+    leftImage,
+    backgroundColor,
+    border,
 }: ActionButtonProps) => {
     return (
         <Button
@@ -23,10 +37,16 @@ export const ActionButton = ({
             h={'fit-content'}
             py={4}
             onClick={onClick}
+            backgroundColor={backgroundColor}
+            border={border}
         >
             <HStack w={'full'} justify={'space-between'}>
                 <Box minW={'40px'}>
-                    <Icon as={leftIcon} fontSize={'25px'} />
+                    {leftImage ? (
+                        <Image src={leftImage} alt="left-image" />
+                    ) : (
+                        <Icon as={leftIcon} fontSize={'25px'} />
+                    )}
                 </Box>
                 <VStack textAlign={'left'} w={'full'} flex={1}>
                     <Text w={'full'} fontSize={'sm'} fontWeight={'400'}>

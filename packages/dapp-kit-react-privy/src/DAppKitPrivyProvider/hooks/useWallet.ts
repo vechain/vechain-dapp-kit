@@ -23,6 +23,7 @@ type UseWalletReturnType = {
     };
     logoutAndDisconnect: () => Promise<void>;
     vetDomain: string | undefined;
+    privyUser: any;
 };
 
 export const useWallet = (): UseWalletReturnType => {
@@ -83,5 +84,6 @@ export const useWallet = (): UseWalletReturnType => {
         smartAccount,
         logoutAndDisconnect,
         vetDomain: vetDomain.domain,
+        privyUser: user,
     };
 };

@@ -1,7 +1,6 @@
 import {
     Button,
-    Card,
-    CardBody,
+    Grid,
     HStack,
     Image,
     ModalBody,
@@ -11,11 +10,13 @@ import {
     VStack,
     useColorMode,
 } from '@chakra-ui/react';
-import { useWallet } from '../../../hooks';
+import { useWallet } from '../../hooks';
 import { RxExit } from 'react-icons/rx';
-import { RiSettings3Line } from 'react-icons/ri';
-import { AddressDisplay } from '../../common/AddressDisplay';
-import { FadeInViewFromBottom } from '../../common';
+import { AddressDisplay } from '../common/AddressDisplay';
+import { FadeInViewFromBottom } from '../common';
+import { ActionButton } from './ActionButton';
+import { humanAddress } from '../../utils';
+import { MdOutlineNavigateNext } from 'react-icons/md';
 
 type Props = {
     setCurrentContent: React.Dispatch<
@@ -39,7 +40,6 @@ export const MainContent = ({
         connectedAccount,
         smartAccount,
         vetDomain,
-        connectionType,
     } = useWallet();
 
     return (
@@ -66,25 +66,51 @@ export const MainContent = ({
             <ModalBody w={'full'}>
                 <HStack justify={'space-between'} w={'full'}>
                     {isConnectedWithPrivy ? (
-                        <>
-                            <Card w={'full'}>
-                                <CardBody p={4} textAlign={'center'}>
-                                    <AddressDisplay
-                                        address={smartAccount.address ?? ''}
-                                        label="Smart Account"
-                                    />
-                                </CardBody>
-                            </Card>
-                            <Card w={'full'}>
-                                <CardBody p={4} textAlign={'center'}>
-                                    <AddressDisplay
-                                        address={connectedAccount ?? ''}
-                                        label="Wallet"
-                                        domain={vetDomain}
-                                    />
-                                </CardBody>
-                            </Card>
-                        </>
+                        <Grid
+                            gap={2}
+                            templateColumns={['repeat(1, 1fr)']}
+                            w="100%"
+                            h="100%"
+                        >
+                            <ActionButton
+                                title="Smart Account"
+                                description={humanAddress(
+                                    smartAccount.address ?? '',
+                                    6,
+                                    4,
+                                )}
+                                onClick={() => {
+                                    // setCurrentContent('settings');
+                                }}
+                                backgroundColor={
+                                    isDark ? 'transparent' : 'transparent'
+                                }
+                                border={`1px solid ${
+                                    isDark ? '#ffffff29' : '#ebebeb'
+                                }`}
+                                // leftImage={SOCIAL_INFOS}
+                                rightIcon={MdOutlineNavigateNext}
+                            />
+                            <ActionButton
+                                title="Wallet"
+                                description={humanAddress(
+                                    connectedAccount ?? '',
+                                    6,
+                                    4,
+                                )}
+                                onClick={() => {
+                                    setCurrentContent('settings');
+                                }}
+                                backgroundColor={
+                                    isDark ? 'transparent' : 'transparent'
+                                }
+                                border={`1px solid ${
+                                    isDark ? '#ffffff29' : '#ebebeb'
+                                }`}
+                                // leftImage={SOCIAL_INFOS}
+                                rightIcon={MdOutlineNavigateNext}
+                            />
+                        </Grid>
                     ) : (
                         <AddressDisplay
                             address={connectedAccount ?? ''}
@@ -95,7 +121,7 @@ export const MainContent = ({
             </ModalBody>
             <ModalFooter>
                 <VStack w={'full'}>
-                    {connectionType === 'privy' && (
+                    {/* {connectionType === 'privy' && (
                         <Button
                             w={'full'}
                             onClick={() => {
@@ -107,7 +133,7 @@ export const MainContent = ({
                         >
                             Wallet settings
                         </Button>
-                    )}
+                    )} */}
                     <Button
                         w={'full'}
                         onClick={() => {

@@ -7,8 +7,8 @@ import {
     ModalOverlay,
     useMediaQuery,
 } from '@chakra-ui/react';
-import { useWallet } from '../../../hooks';
-import { getPicassoImage } from '../../../utils';
+import { useWallet } from '../../hooks';
+import { getPicassoImage } from '../../utils';
 import { useState, useEffect } from 'react';
 import { SettingsContent } from './SettingsContent';
 import { MainContent } from './MainContent';
@@ -74,7 +74,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
             isOpen={isOpen}
             onClose={onClose}
             isCentered
-            size="xs"
+            size="md"
         >
             <ModalOverlay />
 

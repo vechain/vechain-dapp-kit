@@ -1,7 +1,7 @@
 import { Button, HStack, Image, Text, useDisclosure } from '@chakra-ui/react';
 import { useWallet } from '../../hooks';
 import { ConnectModal } from '../ConnectModal';
-import { AccountModal } from './AccountModal';
+import { AccountModal } from '../AccountModal';
 import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
 import { getPicassoImage, humanAddress, humanDomain } from '../../utils';
 
