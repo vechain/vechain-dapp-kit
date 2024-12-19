@@ -1,5 +1,6 @@
 'use client';
 
+import { useColorMode } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 
 const DAppKitPrivyProvider = dynamic(
@@ -15,14 +16,15 @@ interface Props {
 }
 
 export function SocialLoginWrapper({ children }: Props) {
+    const { colorMode } = useColorMode();
     return (
         <DAppKitPrivyProvider
             privyConfig={{
                 appId: process.env.NEXT_PUBLIC_PRIVY_APP_ID!,
                 clientId: process.env.NEXT_PUBLIC_PRIVY_CLIENT_ID!,
-                loginMethods: ['google', 'twitter'],
+                loginMethods: ['google', 'twitter', 'github', 'sms', 'email'],
                 appearance: {
-                    theme: 'light',
+                    theme: colorMode,
                     accentColor: '#696FFD',
                     loginMessage: 'Select a social media profile',
                     logo: 'https://i.ibb.co/ZHGmq3y/image-21.png',
@@ -31,9 +33,12 @@ export function SocialLoginWrapper({ children }: Props) {
                     createOnLogin: 'all-users',
                 },
                 ecosystemAppsID: [
+                    'clz41gcg00e4ay75dmq3uzzgr', //cleanify
                     'clxdoatq601h35inz6qykgmai',
-                    'clz41gcg00e4ay75dmq3uzzgr',
+                    'clpgf04wn04hnkw0fv1m11mnb',
+                    'clrtmg1n104ypl60p9w5c3v4c',
                 ],
+                allowPasskeyLinking: true,
             }}
             feeDelegationConfig={{
                 delegatorUrl: 'https://sponsor.vechain.energy/by/749',
@@ -63,7 +68,7 @@ export function SocialLoginWrapper({ children }: Props) {
                     isTrunk: true,
                     transactions: [],
                 },
-                themeMode: 'LIGHT',
+                themeMode: colorMode === 'dark' ? 'DARK' : 'LIGHT',
                 walletConnectOptions: {
                     projectId:
                         process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,

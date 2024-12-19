@@ -59,3 +59,16 @@ export type EnhancedClause = Connex.VM.Clause & {
     comment?: string;
     abi?: object;
 };
+
+export type PrivyAppInfo = {
+    name: string;
+    logo_url: string;
+    description?: string;
+};
+
+export type SocialInfo = {
+    code: string;
+    name: string;
+    logo_url: string;
+    description?: string;
+};

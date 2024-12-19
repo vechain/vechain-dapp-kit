@@ -64,7 +64,7 @@ export const SuccessModalContent = ({
                 </motion.div>
                 {showExplorerButton && txId && (
                     <Link
-                        href={`${explorerUrl}/transactions/${txId}`}
+                        href={`${explorerUrl}/${txId}`}
                         isExternal
                         color="gray.500"
                         fontSize={'14px'}

@@ -36,6 +36,7 @@ type Props = {
             | 'telegram'
         )[];
         ecosystemAppsID?: string[];
+        allowPasskeyLinking?: boolean;
     };
     feeDelegationConfig: {
         delegatorUrl: string;
@@ -117,6 +118,7 @@ export const DAppKitPrivyProvider = ({
                                 'all-users',
                         },
                     }}
+                    allowPasskeyLinking={privyConfig.allowPasskeyLinking}
                 >
                     <DAppKitProvider
                         nodeUrl={dappKitConfig.nodeUrl}

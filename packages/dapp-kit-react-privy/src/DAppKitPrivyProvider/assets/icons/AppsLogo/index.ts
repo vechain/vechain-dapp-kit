@@ -1,1 +1,0 @@
-export { AppsLogo } from './AppsLogo';

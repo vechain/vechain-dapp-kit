@@ -13,7 +13,7 @@ type UseWalletReturnType = {
     isConnectedWithDappKit: boolean;
     isLoadingConnection: boolean;
     isCrossAppPrivyAccount: boolean;
-    connectionType: string;
+    connectionType: 'privy' | 'wallet' | 'privy-cross-app';
     connectedAccount: string | undefined;
     crossAppAccount: string | undefined;
     privyEmbeddedWallet: string | undefined;
@@ -23,6 +23,7 @@ type UseWalletReturnType = {
     };
     logoutAndDisconnect: () => Promise<void>;
     vetDomain: string | undefined;
+    privyUser: any;
 };
 
 export const useWallet = (): UseWalletReturnType => {
@@ -31,7 +32,7 @@ export const useWallet = (): UseWalletReturnType => {
     const { account: dappKitAccount, disconnect: dappKitDisconnect } =
         useDappKitWallet();
 
-    const abstractedAccount = useSmartAccount();
+    const smartAccount = useSmartAccount();
 
     const isConnectedWithDappKit = !!dappKitAccount;
     const isConnectedWithPrivy = authenticated && !!user;
@@ -46,10 +47,6 @@ export const useWallet = (): UseWalletReturnType => {
         : isConnectedWithDappKit
         ? 'wallet'
         : 'privy';
-
-    // const isConnectedWithSocials = Boolean(
-    //     user?.linkedAccounts?.some((account) => account.type === 'social'),
-    // );
 
     const crossAppAccount = user?.linkedAccounts.find(
         (account) => account.type === 'cross_app',
@@ -72,21 +69,21 @@ export const useWallet = (): UseWalletReturnType => {
         }
     };
 
+    const isLoadingConnection = !ready;
+
     return {
         isConnected,
         isConnectedWithPrivy,
         isConnectedWithDappKit,
         connectionType,
-        isLoadingConnection: !ready,
+        isLoadingConnection,
         isCrossAppPrivyAccount,
         connectedAccount,
         crossAppAccount: crossAppAccount?.embeddedWallets?.[0]?.address,
         privyEmbeddedWallet,
-        smartAccount: {
-            address: abstractedAccount.address,
-            isDeployed: abstractedAccount.isDeployed,
-        },
+        smartAccount,
         logoutAndDisconnect,
         vetDomain: vetDomain.domain,
+        privyUser: user,
     };
 };

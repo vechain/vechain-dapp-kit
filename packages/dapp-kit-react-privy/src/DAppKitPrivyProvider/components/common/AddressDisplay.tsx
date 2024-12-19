@@ -33,24 +33,26 @@ export const AddressDisplay = ({ address, label, domain }: Props) => {
                 {domain ? (
                     <VStack>
                         <HStack>
-                            <Text fontSize={'sm'}>{domain}</Text>
+                            <Text fontSize={'lg'} fontWeight={'500'}>
+                                {domain}
+                            </Text>
                             <Icon
-                                boxSize={3}
+                                boxSize={4}
                                 aria-label="Copy Address"
                                 as={copied ? IoCheckmarkOutline : IoCopyOutline}
                                 cursor="pointer"
                                 onClick={() => copyToClipboard(address)}
                             />
                         </HStack>
-                        <Text fontSize={'sm'}>
+                        <Text fontSize={'xs'}>
                             {'('}
-                            {humanAddress(address, 6, 4)}
+                            {humanAddress(address, 8, 7)}
                             {')'}
                         </Text>
                     </VStack>
                 ) : (
                     <HStack>
-                        <Text fontSize={'sm'}>
+                        <Text fontSize={'md'}>
                             {humanAddress(address, 6, 4)}
                         </Text>
                         <Icon

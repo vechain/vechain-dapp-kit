@@ -7,33 +7,42 @@ import {
     ModalOverlay,
     useMediaQuery,
 } from '@chakra-ui/react';
+import { useWallet } from '../../hooks';
+import { getPicassoImage } from '../../utils';
 import { useState, useEffect } from 'react';
-import { MainContent } from './MainContent';
-import { EcosystemContent } from './EcosystemContent';
-import { PrivyAppInfo } from '../../utils';
-
+import { WalletSettingsContent } from './WalletSettingsContent';
+import { AccountModalMainContent } from './AccountModalMainContent';
+import { SmartAccountContent } from './SmartAccountContent';
 type Props = {
     isOpen: boolean;
     onClose: () => void;
-    logo?: string;
 };
 
-export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
+export type AccountModalContentTypes = 'main' | 'settings' | 'smart-account';
+
+export const AccountModal = ({ isOpen, onClose }: Props) => {
     const [isDesktop] = useMediaQuery('(min-width: 768px)');
     const _modalContentProps = isDesktop
         ? {}
         : {
               position: 'fixed',
-              bottom: '0px',
+              bottom: '0',
               mb: '0',
               maxW: '2xl',
               borderRadius: '24px 24px 0px 0px',
           };
-    const [currentContent, setCurrentContent] = useState<'main' | 'ecosystem'>(
-        'main',
-    );
-    const [appsInfo, setAppsInfo] = useState<Record<string, PrivyAppInfo>>();
 
+    const { isConnectedWithPrivy, connectedAccount, smartAccount } =
+        useWallet();
+
+    const walletImage = getPicassoImage(
+        isConnectedWithPrivy
+            ? smartAccount.address ?? ''
+            : connectedAccount ?? '',
+    );
+
+    const [currentContent, setCurrentContent] =
+        useState<AccountModalContentTypes>('main');
     useEffect(() => {
         if (isOpen) {
             setCurrentContent('main');
@@ -44,19 +53,24 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
         switch (currentContent) {
             case 'main':
                 return (
-                    <MainContent
+                    <AccountModalMainContent
                         setCurrentContent={setCurrentContent}
                         onClose={onClose}
-                        logo={logo}
-                        setAppsInfo={setAppsInfo}
+                        walletImage={walletImage}
                     />
                 );
-            case 'ecosystem':
+            case 'settings':
                 return (
-                    <EcosystemContent
+                    <WalletSettingsContent
                         setCurrentContent={setCurrentContent}
-                        onClose={onClose}
-                        appsInfo={appsInfo}
+                        walletImage={walletImage}
+                    />
+                );
+            case 'smart-account':
+                return (
+                    <SmartAccountContent
+                        setCurrentContent={setCurrentContent}
+                        walletImage={walletImage}
                     />
                 );
         }
@@ -64,13 +78,14 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
 
     return (
         <Modal
-            motionPreset={isDesktop ? 'none' : 'slideInBottom'}
+            motionPreset="slideInBottom"
             isOpen={isOpen}
             onClose={onClose}
             isCentered
-            size={'sm'}
+            size="md"
         >
             <ModalOverlay />
+
             <ModalContent {...(_modalContentProps as ModalContentProps)}>
                 {renderContent()}
             </ModalContent>

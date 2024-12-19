@@ -1,11 +1,11 @@
 import { Button, HStack, Image, Text, useDisclosure } from '@chakra-ui/react';
 import { useWallet } from '../../hooks';
 import { ConnectModal } from '../ConnectModal';
-import { AccountModal } from './AccountModal';
+import { AccountModal } from '../AccountModal';
 import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
 import { getPicassoImage, humanAddress, humanDomain } from '../../utils';
 
-export const ConnectButton = () => {
+export const WalletButton = () => {
     const {
         isConnected,
         isLoadingConnection,
@@ -36,7 +36,7 @@ export const ConnectButton = () => {
             ) : (
                 <>
                     {isConnected ? (
-                        <Button onClick={accountModal.onOpen}>
+                        <Button onClick={accountModal.onOpen} p={'9px 12px'}>
                             <HStack>
                                 <Image
                                     className="address-icon mobile"
