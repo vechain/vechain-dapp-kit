@@ -31,7 +31,13 @@ const SignComponent = async ({
             b3trAbi,
         );
         b3trContract.setSigner(signer);
-        b3trContract.transact.transfer(connectedAccount as string, BigInt(1));
+        const result = await b3trContract.transact.transfer(
+            connectedAccount as string,
+            BigInt(1),
+        );
+        const receipt = await result.wait();
+        // eslint-disable-next-line no-console
+        console.log('txId: ', receipt?.meta.txID);
     };
 
     return (
