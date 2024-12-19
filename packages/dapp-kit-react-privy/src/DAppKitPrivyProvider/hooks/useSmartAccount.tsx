@@ -7,7 +7,6 @@ import {
     useWallets,
     type ConnectedWallet,
 } from '@privy-io/react-auth';
-import { randomTransactionUser } from '../utils';
 import { encodeFunctionData } from 'viem';
 import { ABIContract, Address, Clause } from '@vechain/sdk-core';
 import {
@@ -17,8 +16,11 @@ import {
     signerUtils,
 } from '@vechain/sdk-network';
 import { SimpleAccountABI, SimpleAccountFactoryABI } from '../assets/abi';
-import { ExecuteWithAuthorizationSignData } from '../utils';
-import { ACCOUNT_FACTORY_ADDRESSES } from '../utils';
+import {
+    ExecuteWithAuthorizationSignData,
+    randomTransactionUser,
+    ACCOUNT_FACTORY_ADDRESSES,
+} from '../utils';
 
 export interface SmartAccountContextType {
     address: string | undefined;
