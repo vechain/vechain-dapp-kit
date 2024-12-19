@@ -23,6 +23,7 @@ import {
     useDAppKitPrivyColorMode,
 } from '@vechain/dapp-kit-react-privy';
 import { b3trAbi, b3trMainnetAddress } from '../constants';
+import { Interface } from 'ethers';
 
 const HomePage = (): ReactElement => {
     const { toggleColorMode, colorMode } = useColorMode();
@@ -42,15 +43,16 @@ const HomePage = (): ReactElement => {
         if (!connectedAccount) return [];
 
         const clausesArray: any[] = [];
+        const abi = new Interface(b3trAbi);
         clausesArray.push({
             to: b3trMainnetAddress,
             value: '0x0',
-            data: b3trAbi.encodeFunctionData('transfer', [
+            data: abi.encodeFunctionData('transfer', [
                 connectedAccount,
                 '0', // 1 B3TR (in wei)
             ]),
             comment: `Transfer ${1} B3TR to `,
-            abi: b3trAbi.getFunction('transfer'),
+            abi: abi.getFunction('transfer'),
         });
         return clausesArray;
     }, [connectedAccount]);
