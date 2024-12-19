@@ -4,33 +4,41 @@ import { usePrivy, User } from '@privy-io/react-auth';
 import { useWallet as useDappKitWallet } from '@vechain/dapp-kit-react';
 import { useSmartAccount } from './useSmartAccount';
 import { useCachedVechainDomain } from './useCachedVechainDomain';
+import { getPicassoImage } from '../utils';
+
+export type Wallet = {
+    address: string;
+    domain: string | undefined;
+    image: string;
+};
+
+export type SmartAccount = Wallet & {
+    isDeployed: boolean;
+    owner: string;
+};
+
+export type ConnectionSource = {
+    type: 'privy' | 'wallet' | 'privy-cross-app';
+    displayName: string;
+};
 
 export type UseWalletReturnType = {
     // When user connects with a wallet
-    wallet: {
-        address: string;
-        domain: string;
-    };
-
-    // Every user connected with privy has one
-    smartAccount: {
-        address: string;
-        domain: string;
-        isDeployed: boolean;
-        owner: string;
-    };
+    wallet: Wallet;
 
     // wallet created by the social login provider
-    embeddedWallet: {
-        address: string;
-        domain: string;
-    };
+    embeddedWallet: Wallet;
 
     // Wallet of the user connected with a cross app provider
-    crossAppAccount: {
-        address: string;
-        domain: string;
-    };
+    crossAppWallet: Wallet;
+
+    // Every user connected with privy has one
+    smartAccount: SmartAccount;
+
+    // Currently is always the smart account if connected with privy
+    selectedAccount: Wallet;
+    // Privy wallet or veworld wallet
+    connectedWallet: Wallet;
 
     // Privy user if user is connected with privy
     privyUser: User | null;
@@ -42,9 +50,7 @@ export type UseWalletReturnType = {
         isConnectedWithDappKit: boolean;
         isConnectedWithCrossAppPrivy: boolean;
         isLoadingPrivyConnection: boolean;
-        type: 'privy' | 'wallet' | 'privy-cross-app';
-        selectedAccount: string;
-        connectedAccount: string;
+        source: ConnectionSource;
     };
 
     // Disconnect function
@@ -66,11 +72,20 @@ export const useWallet = (): UseWalletReturnType => {
     );
 
     // Connection type
-    const connectionType = isCrossAppPrivyAccount
-        ? 'privy-cross-app'
+    const connectionSource: ConnectionSource = isCrossAppPrivyAccount
+        ? {
+              type: 'privy-cross-app',
+              displayName: 'App',
+          }
         : isConnectedWithDappKit
-        ? 'wallet'
-        : 'privy';
+        ? {
+              type: 'wallet',
+              displayName: 'Wallet',
+          }
+        : {
+              type: 'privy',
+              displayName: 'Social',
+          };
 
     // Get cross app account
     const crossAppAccount = user?.linkedAccounts.find(
@@ -81,7 +96,7 @@ export const useWallet = (): UseWalletReturnType => {
     const privyEmbeddedWallet = user?.wallet?.address;
 
     // Get connected and selected accounts
-    const connectedAccount = isConnectedWithDappKit
+    const connectedWalletAddress = isConnectedWithDappKit
         ? dappKitAccount
         : smartAccount.owner;
 
@@ -102,6 +117,20 @@ export const useWallet = (): UseWalletReturnType => {
         crossAppAccount?.embeddedWallets?.[0]?.address ?? '',
     ).domainResult.domain;
 
+    const selectedAccount = {
+        address: selectedAddress ?? '',
+        domain: useCachedVechainDomain(selectedAddress ?? '').domainResult
+            .domain,
+        image: getPicassoImage(selectedAddress ?? ''),
+    };
+
+    const connectedWallet = {
+        address: connectedWalletAddress ?? '',
+        domain: useCachedVechainDomain(connectedWalletAddress ?? '')
+            .domainResult.domain,
+        image: getPicassoImage(connectedWalletAddress ?? ''),
+    };
+
     // Disconnect function
     const disconnect = async () => {
         if (isConnectedWithDappKit) {
@@ -115,21 +144,27 @@ export const useWallet = (): UseWalletReturnType => {
         wallet: {
             address: dappKitAccount ?? '',
             domain: walletDomain ?? '',
+            image: getPicassoImage(selectedAccount.address),
         },
         smartAccount: {
             address: smartAccount.address ?? '',
             domain: smartAccountDomain ?? '',
+            image: getPicassoImage(selectedAccount.address),
             isDeployed: smartAccount.isDeployed,
             owner: smartAccount.owner ?? '',
         },
         embeddedWallet: {
             address: privyEmbeddedWallet ?? '',
             domain: embeddedWalletDomain ?? '',
+            image: getPicassoImage(selectedAccount.address),
         },
-        crossAppAccount: {
+        crossAppWallet: {
             address: crossAppAccount?.embeddedWallets?.[0]?.address ?? '',
             domain: crossAppAccountDomain ?? '',
+            image: getPicassoImage(selectedAccount.address),
         },
+        selectedAccount,
+        connectedWallet,
         privyUser: user,
         connection: {
             isConnected,
@@ -137,9 +172,7 @@ export const useWallet = (): UseWalletReturnType => {
             isConnectedWithDappKit,
             isConnectedWithCrossAppPrivy: isCrossAppPrivyAccount,
             isLoadingPrivyConnection: !ready,
-            type: connectionType,
-            selectedAccount: selectedAddress ?? '',
-            connectedAccount: connectedAccount ?? '',
+            source: connectionSource,
         },
         disconnect,
     };

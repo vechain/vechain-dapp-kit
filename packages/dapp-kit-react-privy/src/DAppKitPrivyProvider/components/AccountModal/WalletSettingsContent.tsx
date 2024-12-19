@@ -7,7 +7,7 @@ import {
     ModalHeader,
     useColorMode,
 } from '@chakra-ui/react';
-import { usePrivy, useWallet } from '../../hooks';
+import { usePrivy, useWallet, Wallet } from '../../hooks';
 import { AddressDisplay } from '../common/AddressDisplay';
 import { GiHouseKeys } from 'react-icons/gi';
 import { MdOutlineNavigateNext } from 'react-icons/md';
@@ -18,7 +18,6 @@ import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
 import { FadeInViewFromRight } from '../common';
 import { AccountModalContentTypes } from './AccountModal';
 import { FaRegAddressCard } from 'react-icons/fa';
-import { getPicassoImage } from '../../utils';
 
 type Props = {
     setCurrentContent: (content: AccountModalContentTypes) => void;
@@ -28,14 +27,12 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
     const { exportWallet, linkPasskey } = usePrivy();
     const { privyConfig } = useDAppKitPrivyConfig();
 
-    const { privyEmbeddedWallet, isCrossAppPrivyAccount, crossAppAccount } =
-        useWallet();
+    const { embeddedWallet, connection, crossAppWallet } = useWallet();
 
-    const account = isCrossAppPrivyAccount
-        ? crossAppAccount
-        : privyEmbeddedWallet;
-
-    const walletImage = getPicassoImage(account ?? '');
+    // Privy always creates an embedded wallet, so if the user is connected with app we use the other
+    const account: Wallet = connection.isConnectedWithCrossAppPrivy
+        ? crossAppWallet
+        : embeddedWallet;
 
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
@@ -55,8 +52,12 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
             <ModalCloseButton />
             <ModalBody w={'full'}>
                 <VStack justify={'center'}>
-                    <Image src={walletImage} maxW={'70px'} borderRadius="50%" />
-                    <AddressDisplay address={account ?? ''} />
+                    <Image
+                        src={account.image}
+                        maxW={'70px'}
+                        borderRadius="50%"
+                    />
+                    <AddressDisplay address={account.address} />
                 </VStack>
 
                 <VStack w={'full'} mt={10}>
@@ -66,7 +67,7 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
                         onClick={() => {
                             exportWallet();
                         }}
-                        isDisabled={isCrossAppPrivyAccount}
+                        hide={connection.isConnectedWithCrossAppPrivy}
                         leftIcon={GiHouseKeys}
                         rightIcon={MdOutlineNavigateNext}
                     />
@@ -78,7 +79,7 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
                             onClick={() => {
                                 linkPasskey();
                             }}
-                            isDisabled={isCrossAppPrivyAccount}
+                            hide={connection.isConnectedWithCrossAppPrivy}
                             leftIcon={IoIosFingerPrint}
                             rightIcon={MdOutlineNavigateNext}
                         />
@@ -90,7 +91,6 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
                         onClick={() => {
                             // linkPasskey();
                         }}
-                        isDisabled={true}
                         showComingSoon={true}
                         leftIcon={FaRegAddressCard}
                         rightIcon={MdOutlineNavigateNext}

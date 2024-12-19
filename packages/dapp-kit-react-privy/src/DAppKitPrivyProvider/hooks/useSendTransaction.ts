@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useConnex } from '@vechain/dapp-kit-react';
 import { Transaction } from 'thor-devkit';
 import { useDAppKitPrivyConfig } from '../DAppKitPrivyProvider';
-import { useWallet } from './useWallet';
+import { useWallet, Wallet } from './useWallet';
 import { useSmartAccount } from './useSmartAccount';
 import {
     EnhancedClause,
@@ -69,7 +69,7 @@ const estimateTxGasWithNext = async (
  * @param suggestedMaxGas the suggested max gas for the transaction
  */
 type UseSendTransactionProps = {
-    signerAccount?: string | null;
+    signerAccount?: Wallet | null;
     clauses?:
         | EnhancedClause[]
         | (() => EnhancedClause[])
@@ -129,7 +129,7 @@ export const useSendTransaction = ({
     const { dappKitConfig, feeDelegationConfig } = useDAppKitPrivyConfig();
     const nodeUrl = dappKitConfig.nodeUrl;
 
-    const { isConnectedWithPrivy } = useWallet();
+    const { connection } = useWallet();
     const smartAccount = useSmartAccount();
 
     /**
@@ -154,7 +154,7 @@ export const useSendTransaction = ({
             parsedClauses = clauses;
         }
 
-        if (isConnectedWithPrivy) {
+        if (connection.isConnectedWithPrivy) {
             return parsedClauses.map((clause) => {
                 return {
                     to: clause.to ?? '',
@@ -174,7 +174,7 @@ export const useSendTransaction = ({
      */
     const sendTransaction = useCallback(
         async (clauses: EnhancedClause[]) => {
-            if (isConnectedWithPrivy) {
+            if (connection.isConnectedWithPrivy) {
                 return await smartAccount.sendTransaction({
                     txClauses: clauses,
                     ...privyUIOptions,
@@ -194,7 +194,7 @@ export const useSendTransaction = ({
                 try {
                     gasLimitNext = await estimateTxGasWithNext(
                         [...clauses],
-                        signerAccount,
+                        signerAccount.address,
                         undefined,
                         nodeUrl,
                     );
@@ -209,10 +209,10 @@ export const useSendTransaction = ({
                 // specify gasLimit if we have a suggested or an estimation
                 if (parsedGasLimit > 0)
                     return transaction
-                        .signer(signerAccount)
+                        .signer(signerAccount.address)
                         .gas(parseInt(parsedGasLimit.toString()))
                         .request();
-                else return transaction.signer(signerAccount).request();
+                else return transaction.signer(signerAccount.address).request();
             }
             return transaction.request();
         },

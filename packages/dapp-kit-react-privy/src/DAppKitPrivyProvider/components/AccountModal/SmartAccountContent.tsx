@@ -14,13 +14,10 @@ import {
 import { useWallet } from '../../hooks';
 import React, { useState } from 'react';
 import { AddressDisplay } from '../common/AddressDisplay';
-import { MdOutlineNavigateNext } from 'react-icons/md';
 import { IoOpenOutline } from 'react-icons/io5';
-import { ActionButton } from './ActionButton';
 import { FadeInViewFromBottom, ModalBackButton } from '../common';
 import { FadeInViewFromRight } from '../common';
 import { AccountModalContentTypes } from './AccountModal';
-import { FaRegAddressCard } from 'react-icons/fa';
 import { getPicassoImage } from '../../utils';
 
 type Props = {
@@ -106,20 +103,6 @@ export const SmartAccountContent = ({ setCurrentContent }: Props) => {
                 </VStack>
 
                 <Divider mt={10} />
-
-                <VStack w={'full'} mt={10}>
-                    <ActionButton
-                        title="Choose account name"
-                        description="Give a nickname to your smart account to easily identify it."
-                        onClick={() => {
-                            // linkPasskey();
-                        }}
-                        isDisabled={true}
-                        showComingSoon={true}
-                        leftIcon={FaRegAddressCard}
-                        rightIcon={MdOutlineNavigateNext}
-                    />
-                </VStack>
             </ModalBody>
             <ModalFooter />
         </FadeInViewFromRight>

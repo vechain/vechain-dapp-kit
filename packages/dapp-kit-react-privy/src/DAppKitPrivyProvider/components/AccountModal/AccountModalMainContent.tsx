@@ -37,21 +37,8 @@ export const AccountModalMainContent = ({
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
 
-    const {
-        logoutAndDisconnect,
-        isConnectedWithPrivy,
-        connectedAccount,
-        smartAccount,
-        vetDomain,
-        connectionType,
-    } = useWallet();
-
-    const connectionSource =
-        connectionType === 'privy-cross-app'
-            ? 'app'
-            : connectionType === 'privy'
-            ? 'social'
-            : 'wallet';
+    const { disconnect, connection, selectedAccount, connectedWallet } =
+        useWallet();
 
     return (
         <FadeInViewFromBottom>
@@ -61,7 +48,7 @@ export const AccountModalMainContent = ({
                 textAlign={'center'}
                 color={isDark ? '#dfdfdd' : '#4d4d4d'}
             >
-                {'Connected to ' + connectionSource}
+                {'Connected with ' + connection.source.displayName}
                 <Text
                     fontSize={'xs'}
                     fontWeight={'400'}
@@ -85,7 +72,7 @@ export const AccountModalMainContent = ({
             <ModalCloseButton />
             <ModalBody w={'full'}>
                 <HStack justify={'space-between'} w={'full'}>
-                    {isConnectedWithPrivy ? (
+                    {connection.isConnectedWithPrivy ? (
                         <Grid
                             gap={2}
                             templateColumns={['repeat(1, 1fr)']}
@@ -94,7 +81,7 @@ export const AccountModalMainContent = ({
                         >
                             <AccountDetailsButton
                                 title="Smart Account"
-                                address={smartAccount.address ?? ''}
+                                address={selectedAccount.address ?? ''}
                                 isActive
                                 onClick={() => {
                                     setCurrentContent('smart-account');
@@ -104,7 +91,7 @@ export const AccountModalMainContent = ({
                             />
                             <AccountDetailsButton
                                 title="Wallet"
-                                address={smartAccount.ownerAddress ?? ''}
+                                address={connectedWallet?.address}
                                 onClick={() => {
                                     setCurrentContent('settings');
                                 }}
@@ -114,8 +101,8 @@ export const AccountModalMainContent = ({
                         </Grid>
                     ) : (
                         <AddressDisplay
-                            address={connectedAccount ?? ''}
-                            domain={vetDomain}
+                            address={connectedWallet?.address}
+                            domain={connectedWallet?.domain}
                         />
                     )}
                 </HStack>
@@ -125,7 +112,7 @@ export const AccountModalMainContent = ({
                     <Button
                         w={'full'}
                         onClick={() => {
-                            logoutAndDisconnect();
+                            disconnect();
                             onClose();
                         }}
                         fontSize={'sm'}

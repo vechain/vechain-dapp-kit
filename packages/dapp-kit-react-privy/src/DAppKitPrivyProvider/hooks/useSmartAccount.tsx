@@ -24,7 +24,7 @@ import {
 
 export interface SmartAccountContextType {
     address: string | undefined;
-    ownerAddress: string | undefined;
+    owner: string | undefined;
     embeddedWallet: ConnectedWallet | undefined;
     isDeployed: boolean;
     sendTransaction: (tx: {
@@ -381,7 +381,7 @@ export const SmartAccountProvider = ({
         <VechainAccountContext.Provider
             value={{
                 address: smartAccountAddress,
-                ownerAddress: owner,
+                owner,
                 accountFactory: accountFactory ?? '',
                 nodeUrl,
                 delegatorUrl,

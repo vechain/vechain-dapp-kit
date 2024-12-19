@@ -8,7 +8,6 @@ import {
     useMediaQuery,
 } from '@chakra-ui/react';
 import { useWallet } from '../../hooks';
-import { getPicassoImage } from '../../utils';
 import { useState, useEffect } from 'react';
 import { WalletSettingsContent } from './WalletSettingsContent';
 import { AccountModalMainContent } from './AccountModalMainContent';
@@ -34,9 +33,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
               overflowX: 'hidden',
           };
 
-    const { connectedAccount } = useWallet();
-
-    const walletImage = getPicassoImage(connectedAccount ?? '');
+    const { selectedAccount } = useWallet();
 
     const [currentContent, setCurrentContent] =
         useState<AccountModalContentTypes>('main');
@@ -53,7 +50,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
                     <AccountModalMainContent
                         setCurrentContent={setCurrentContent}
                         onClose={onClose}
-                        walletImage={walletImage}
+                        walletImage={selectedAccount.image}
                     />
                 );
             case 'settings':
