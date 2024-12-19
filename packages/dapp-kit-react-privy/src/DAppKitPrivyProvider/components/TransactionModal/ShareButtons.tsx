@@ -19,7 +19,8 @@ const BouncingAnimation = ({ children }: { children: React.ReactNode }) => (
             duration: 0.5,
             ease: 'easeInOut',
             repeat: Infinity,
-            repeatDelay: Math.random() * 5,
+            repeatDelay:
+                (crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32) * 5,
         }}
         animate={{
             y: [0, -2, 0],
