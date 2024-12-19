@@ -23,7 +23,6 @@ import {
     useDAppKitPrivyColorMode,
 } from '@vechain/dapp-kit-react-privy';
 import { b3trAbi, b3trMainnetAddress } from '../constants';
-import SignComponent from '../components/SignComponent';
 import { Interface } from 'ethers';
 
 const HomePage = (): ReactElement => {
@@ -171,8 +170,6 @@ const HomePage = (): ReactElement => {
                 txReceipt={txReceipt}
                 resetStatus={resetStatus}
             />
-
-            <SignComponent connectedAccount={connectedAccount} />
 
             <TransactionModal
                 isOpen={transactionModal.isOpen}
