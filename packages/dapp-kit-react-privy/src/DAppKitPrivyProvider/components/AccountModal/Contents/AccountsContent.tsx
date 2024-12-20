@@ -47,7 +47,7 @@ export const AccountsContent = ({ setCurrentContent, onClose }: Props) => {
             <ModalBackButton onClick={() => setCurrentContent('main')} />
             <ModalCloseButton />
 
-            <ModalBody w={'full'} mt={10}>
+            <ModalBody w={'full'}>
                 <HStack justify={'space-between'} w={'full'}>
                     {connection.isConnectedWithPrivy ? (
                         <Grid
