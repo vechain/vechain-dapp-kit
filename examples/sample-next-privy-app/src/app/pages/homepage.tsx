@@ -30,17 +30,11 @@ const HomePage = (): ReactElement => {
     const { toggleColorMode: toggleDAppKitPrivyColorMode } =
         useDAppKitPrivyColorMode();
 
-    const {
-        isConnected,
-        connectedAccount,
-        smartAccount,
-        isLoadingConnection,
-        connectionType,
-    } = useWallet();
+    const { connection, smartAccount, connectedWallet } = useWallet();
 
     // A dummy tx sending 0 b3tr tokens
     const clauses = useMemo(() => {
-        if (!connectedAccount) return [];
+        if (!connectedWallet.address) return [];
 
         const clausesArray: any[] = [];
         const abi = new Interface(b3trAbi);
@@ -48,14 +42,14 @@ const HomePage = (): ReactElement => {
             to: b3trMainnetAddress,
             value: '0x0',
             data: abi.encodeFunctionData('transfer', [
-                connectedAccount,
+                connectedWallet.address,
                 '0', // 1 B3TR (in wei)
             ]),
             comment: `Transfer ${1} B3TR to `,
             abi: abi.getFunction('transfer'),
         });
         return clausesArray;
-    }, [connectedAccount]);
+    }, [connectedWallet.address]);
 
     const {
         sendTransaction,
@@ -65,7 +59,7 @@ const HomePage = (): ReactElement => {
         isTransactionPending,
         error,
     } = useSendTransaction({
-        signerAccount: smartAccount.address,
+        signerAccount: smartAccount,
         privyUIOptions: {
             title: 'Sign to confirm',
             description:
@@ -74,16 +68,19 @@ const HomePage = (): ReactElement => {
         },
     });
 
-    const transactionModal = useDisclosure();
-    const transactionAlert = useDisclosure();
-
-    const handleTransaction = useCallback(async () => {
-        // transactionModal.onOpen();
-        transactionAlert.onOpen();
+    const transactionToast = useDisclosure();
+    const handleTransactionWithToast = useCallback(async () => {
+        transactionToast.onOpen();
         await sendTransaction(clauses);
     }, [sendTransaction, clauses]);
 
-    if (isLoadingConnection) {
+    const transactionModal = useDisclosure();
+    const handleTransactionWithModal = useCallback(async () => {
+        transactionModal.onOpen();
+        await sendTransaction(clauses);
+    }, [sendTransaction, clauses]);
+
+    if (connection.isLoadingPrivyConnection) {
         return (
             <Container>
                 <HStack justifyContent={'center'}>
@@ -93,7 +90,7 @@ const HomePage = (): ReactElement => {
         );
     }
 
-    if (!isConnected) {
+    if (!connection.isConnected) {
         return (
             <Container>
                 <HStack justifyContent={'center'}>
@@ -134,6 +131,7 @@ const HomePage = (): ReactElement => {
                             <Text>
                                 Deployed: {smartAccount.isDeployed.toString()}
                             </Text>
+                            <Text>Owner: {smartAccount.owner}</Text>
                         </Box>
                     )}
 
@@ -141,8 +139,8 @@ const HomePage = (): ReactElement => {
                         <Heading size={'md'}>
                             <b>Wallet</b>
                         </Heading>
-                        <Text>Address: {connectedAccount}</Text>
-                        {<Text>Connection Type: {connectionType}</Text>}
+                        <Text>Address: {connectedWallet?.address}</Text>
+                        <Text>Connection Type: {connection.source.type}</Text>
                     </Box>
 
                     <Box mt={4}>
@@ -150,21 +148,30 @@ const HomePage = (): ReactElement => {
                             <b>Actions</b>
                         </Heading>
                         <HStack mt={4} spacing={4}>
-                            <Button
-                                onClick={handleTransaction}
-                                isLoading={isTransactionPending}
-                                isDisabled={isTransactionPending}
-                            >
-                                Test Tx
-                            </Button>
+                            <HStack mt={4} spacing={4}>
+                                <Button
+                                    onClick={handleTransactionWithToast}
+                                    isLoading={isTransactionPending}
+                                    isDisabled={isTransactionPending}
+                                >
+                                    Test Tx with toast
+                                </Button>
+                                <Button
+                                    onClick={handleTransactionWithModal}
+                                    isLoading={isTransactionPending}
+                                    isDisabled={isTransactionPending}
+                                >
+                                    Test Tx with modal
+                                </Button>
+                            </HStack>
                         </HStack>
                     </Box>
                 </VStack>
             </Stack>
 
             <TransactionToast
-                isOpen={transactionAlert.isOpen}
-                onClose={transactionAlert.onClose}
+                isOpen={transactionToast.isOpen}
+                onClose={transactionToast.onClose}
                 status={status}
                 error={error}
                 txReceipt={txReceipt}
