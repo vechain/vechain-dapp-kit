@@ -13,9 +13,8 @@ import { GiHouseKeys } from 'react-icons/gi';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import { IoIosFingerPrint } from 'react-icons/io';
 import { ActionButton } from '../Components/ActionButton';
-import { ModalBackButton } from '../../common';
+import { FadeInViewFromBottom, ModalBackButton } from '../../common';
 import { useDAppKitPrivyConfig } from '../../../DAppKitPrivyProvider';
-import { FadeInViewFromRight } from '../../common';
 import { AccountModalContentTypes } from '../AccountModal';
 import { FaRegAddressCard } from 'react-icons/fa';
 
@@ -38,7 +37,7 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
     const isDark = colorMode === 'dark';
 
     return (
-        <FadeInViewFromRight>
+        <FadeInViewFromBottom>
             <ModalHeader
                 fontSize={'md'}
                 fontWeight={'500'}
@@ -98,6 +97,6 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
                 </VStack>
             </ModalBody>
             <ModalFooter />
-        </FadeInViewFromRight>
+        </FadeInViewFromBottom>
     );
 };
