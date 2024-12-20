@@ -11,7 +11,11 @@ import {
 } from '@chakra-ui/react';
 import { useWallet, Wallet } from '../../../hooks';
 import { RxExit } from 'react-icons/rx';
-import { AccountSelector, FadeInViewFromBottom } from '../../common';
+import {
+    AccountSelector,
+    AddressDisplay,
+    FadeInViewFromBottom,
+} from '../../common';
 import { AccountModalContentTypes } from '../AccountModal';
 import packageJson from '../../../../../package.json';
 
@@ -48,12 +52,16 @@ export const MainContent = ({ setCurrentContent, onClose, wallet }: Props) => {
                     borderRadius="full"
                     objectFit="cover"
                 />
-                <AccountSelector
-                    onClick={() => {
-                        setCurrentContent('accounts');
-                    }}
-                    wallet={wallet}
-                />
+                {connection.isConnectedWithPrivy ? (
+                    <AccountSelector
+                        onClick={() => {
+                            setCurrentContent('accounts');
+                        }}
+                        wallet={wallet}
+                    />
+                ) : (
+                    <AddressDisplay wallet={wallet} />
+                )}
             </VStack>
 
             <ModalCloseButton />
