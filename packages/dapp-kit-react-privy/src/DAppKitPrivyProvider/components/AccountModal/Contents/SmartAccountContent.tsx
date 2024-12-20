@@ -7,21 +7,16 @@ import {
     ModalHeader,
     Text,
     useColorMode,
-    Divider,
     Link,
     Icon,
 } from '@chakra-ui/react';
-import { useWallet } from '../../hooks';
+import { useWallet } from '../../../hooks';
 import React, { useState } from 'react';
-import { AddressDisplay } from '../common/AddressDisplay';
-import { MdOutlineNavigateNext } from 'react-icons/md';
+import { AddressDisplay } from '../../common/AddressDisplay';
 import { IoOpenOutline } from 'react-icons/io5';
-import { ActionButton } from './ActionButton';
-import { FadeInViewFromBottom, ModalBackButton } from '../common';
-import { FadeInViewFromRight } from '../common';
-import { AccountModalContentTypes } from './AccountModal';
-import { FaRegAddressCard } from 'react-icons/fa';
-import { getPicassoImage } from '../../utils';
+import { FadeInViewFromBottom, ModalBackButton } from '../../common';
+import { AccountModalContentTypes } from '../AccountModal';
+import { getPicassoImage } from '../../../utils';
 
 type Props = {
     setCurrentContent: React.Dispatch<
@@ -40,7 +35,7 @@ export const SmartAccountContent = ({ setCurrentContent }: Props) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     return (
-        <FadeInViewFromRight>
+        <FadeInViewFromBottom>
             <ModalHeader
                 fontSize={'md'}
                 fontWeight={'500'}
@@ -50,17 +45,17 @@ export const SmartAccountContent = ({ setCurrentContent }: Props) => {
                 {'Smart Account'}
             </ModalHeader>
 
-            <ModalBackButton onClick={() => setCurrentContent('main')} />
+            <ModalBackButton onClick={() => setCurrentContent('accounts')} />
             <ModalCloseButton />
             <ModalBody w={'full'}>
                 <VStack justify={'center'} mb={10}>
                     <Image src={walletImage} maxW={'70px'} borderRadius="50%" />
-                    <AddressDisplay address={smartAccount.address ?? ''} />
+                    <AddressDisplay wallet={smartAccount} />
                 </VStack>
 
                 <VStack align="stretch" spacing={5}>
                     <Text fontSize={'sm'} opacity={0.5}>
-                        To allow you a smooth omboarding on VeChain we are
+                        To allow you a smooth onboarding on VeChain we are
                         helping you manage a wallet.
                     </Text>
 
@@ -104,24 +99,8 @@ export const SmartAccountContent = ({ setCurrentContent }: Props) => {
                         {isExpanded ? 'Read less' : 'Read more'}
                     </Link>
                 </VStack>
-
-                <Divider mt={10} />
-
-                <VStack w={'full'} mt={10}>
-                    <ActionButton
-                        title="Choose account name"
-                        description="Give a nickname to your smart account to easily identify it."
-                        onClick={() => {
-                            // linkPasskey();
-                        }}
-                        isDisabled={true}
-                        showComingSoon={true}
-                        leftIcon={FaRegAddressCard}
-                        rightIcon={MdOutlineNavigateNext}
-                    />
-                </VStack>
             </ModalBody>
             <ModalFooter />
-        </FadeInViewFromRight>
+        </FadeInViewFromBottom>
     );
 };

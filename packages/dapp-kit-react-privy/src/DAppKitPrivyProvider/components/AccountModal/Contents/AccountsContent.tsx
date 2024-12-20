@@ -2,23 +2,20 @@ import {
     Button,
     Grid,
     HStack,
-    Image,
     ModalBody,
     ModalCloseButton,
     ModalFooter,
     ModalHeader,
-    Text,
     VStack,
     useColorMode,
 } from '@chakra-ui/react';
-import { useWallet } from '../../hooks';
+import { useWallet, Wallet } from '../../../hooks';
 import { RxExit } from 'react-icons/rx';
-import { AddressDisplay } from '../common/AddressDisplay';
-import { FadeInViewFromBottom } from '../common';
-import { AccountDetailsButton } from './AccountDetailsButton';
-import packageJson from '../../../../package.json';
+import { AddressDisplay } from '../../common/AddressDisplay';
+import { FadeInViewFromBottom, ModalBackButton } from '../../common';
+import { AccountDetailsButton } from '../Components/AccountDetailsButton';
 import { MdAccountCircle, MdOutlineNavigateNext } from 'react-icons/md';
-import { AccountModalContentTypes } from './AccountModal';
+import { AccountModalContentTypes } from '../AccountModal';
 import { HiOutlineWallet } from 'react-icons/hi2';
 
 type Props = {
@@ -26,32 +23,15 @@ type Props = {
         React.SetStateAction<AccountModalContentTypes>
     >;
     onClose: () => void;
-    walletImage: string;
+    wallet?: Wallet;
 };
 
-export const AccountModalMainContent = ({
-    setCurrentContent,
-    onClose,
-    walletImage,
-}: Props) => {
+export const AccountsContent = ({ setCurrentContent, onClose }: Props) => {
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
 
-    const {
-        logoutAndDisconnect,
-        isConnectedWithPrivy,
-        connectedAccount,
-        smartAccount,
-        vetDomain,
-        connectionType,
-    } = useWallet();
-
-    const connectionSource =
-        connectionType === 'privy-cross-app'
-            ? 'app'
-            : connectionType === 'privy'
-            ? 'social'
-            : 'wallet';
+    const { disconnect, connection, selectedAccount, connectedWallet } =
+        useWallet();
 
     return (
         <FadeInViewFromBottom>
@@ -61,31 +41,15 @@ export const AccountModalMainContent = ({
                 textAlign={'center'}
                 color={isDark ? '#dfdfdd' : '#4d4d4d'}
             >
-                {'Connected to ' + connectionSource}
-                <Text
-                    fontSize={'xs'}
-                    fontWeight={'400'}
-                    w={'full'}
-                    textAlign={'center'}
-                    opacity={0.3}
-                    mt={2}
-                >
-                    v{packageJson.version}
-                </Text>
+                {'Your accounts'}
             </ModalHeader>
-            <VStack justify={'center'}>
-                <Image
-                    src={walletImage}
-                    w={'100px'}
-                    m={10}
-                    borderRadius="50%"
-                />
-            </VStack>
 
+            <ModalBackButton onClick={() => setCurrentContent('main')} />
             <ModalCloseButton />
+
             <ModalBody w={'full'}>
                 <HStack justify={'space-between'} w={'full'}>
-                    {isConnectedWithPrivy ? (
+                    {connection.isConnectedWithPrivy ? (
                         <Grid
                             gap={2}
                             templateColumns={['repeat(1, 1fr)']}
@@ -94,7 +58,7 @@ export const AccountModalMainContent = ({
                         >
                             <AccountDetailsButton
                                 title="Smart Account"
-                                address={smartAccount.address ?? ''}
+                                address={selectedAccount.address ?? ''}
                                 isActive
                                 onClick={() => {
                                     setCurrentContent('smart-account');
@@ -104,7 +68,7 @@ export const AccountModalMainContent = ({
                             />
                             <AccountDetailsButton
                                 title="Wallet"
-                                address={smartAccount.ownerAddress ?? ''}
+                                address={connectedWallet?.address}
                                 onClick={() => {
                                     setCurrentContent('settings');
                                 }}
@@ -113,10 +77,7 @@ export const AccountModalMainContent = ({
                             />
                         </Grid>
                     ) : (
-                        <AddressDisplay
-                            address={connectedAccount ?? ''}
-                            domain={vetDomain}
-                        />
+                        <AddressDisplay wallet={connectedWallet} />
                     )}
                 </HStack>
             </ModalBody>
@@ -125,7 +86,7 @@ export const AccountModalMainContent = ({
                     <Button
                         w={'full'}
                         onClick={() => {
-                            logoutAndDisconnect();
+                            disconnect();
                             onClose();
                         }}
                         fontSize={'sm'}
