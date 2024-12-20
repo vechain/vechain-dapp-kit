@@ -4,23 +4,22 @@ import { Text, VStack, Icon, HStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { IoCopyOutline, IoCheckmarkOutline } from 'react-icons/io5';
 import { humanAddress } from '../../utils';
+import { Wallet } from '../../hooks';
 
 type Props = {
-    address: string;
+    wallet: Wallet;
     label?: string;
-    domain?: string;
     size?: string;
 };
 
-export const AddressDisplay = ({
-    address,
-    label,
-    domain,
-    size = 'lg',
-}: Props) => {
+export const AddressDisplay = ({ wallet, label, size = 'lg' }: Props) => {
     const [copied, setCopied] = useState(false);
+    const [copiedDomain, setCopiedDomain] = useState(false);
 
-    const copyToClipboard = async (textToCopy: string) => {
+    const copyToClipboard = async (
+        textToCopy: string,
+        setCopied: (value: boolean) => void,
+    ) => {
         await navigator.clipboard.writeText(textToCopy);
         setCopied(true);
         setTimeout(() => {
@@ -36,37 +35,59 @@ export const AddressDisplay = ({
                         {label}
                     </Text>
                 )}
-                {domain ? (
+                {wallet.domain ? (
                     <VStack>
                         <HStack>
                             <Text fontSize={size} fontWeight={'500'}>
-                                {domain}
+                                {wallet.domain}
                             </Text>
                             <Icon
                                 boxSize={4}
+                                aria-label="Copy Domain"
+                                as={
+                                    copiedDomain
+                                        ? IoCheckmarkOutline
+                                        : IoCopyOutline
+                                }
+                                cursor="pointer"
+                                onClick={() =>
+                                    copyToClipboard(
+                                        wallet.domain || '',
+                                        setCopiedDomain,
+                                    )
+                                }
+                            />
+                        </HStack>
+                        <HStack>
+                            <Text fontSize={'sm'}>
+                                {'('}
+                                {humanAddress(wallet.address, 8, 7)}
+                                {')'}
+                            </Text>
+                            <Icon
+                                boxSize={3}
                                 aria-label="Copy Address"
                                 as={copied ? IoCheckmarkOutline : IoCopyOutline}
                                 cursor="pointer"
-                                onClick={() => copyToClipboard(address)}
+                                onClick={() =>
+                                    copyToClipboard(wallet.address, setCopied)
+                                }
                             />
                         </HStack>
-                        <Text fontSize={'sm'}>
-                            {'('}
-                            {humanAddress(address, 8, 7)}
-                            {')'}
-                        </Text>
                     </VStack>
                 ) : (
                     <HStack>
                         <Text fontSize={size}>
-                            {humanAddress(address, 6, 4)}
+                            {humanAddress(wallet.address, 6, 4)}
                         </Text>
                         <Icon
                             boxSize={3}
                             aria-label="Copy Address"
                             as={copied ? IoCheckmarkOutline : IoCopyOutline}
                             cursor="pointer"
-                            onClick={() => copyToClipboard(address)}
+                            onClick={() =>
+                                copyToClipboard(wallet.address, setCopied)
+                            }
                         />
                     </HStack>
                 )}

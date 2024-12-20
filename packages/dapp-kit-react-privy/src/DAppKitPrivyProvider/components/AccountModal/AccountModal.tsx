@@ -8,17 +8,22 @@ import {
     useMediaQuery,
 } from '@chakra-ui/react';
 import { useWallet } from '../../hooks';
-import { getPicassoImage } from '../../utils';
 import { useState, useEffect } from 'react';
-import { WalletSettingsContent } from './WalletSettingsContent';
-import { AccountModalMainContent } from './AccountModalMainContent';
-import { SmartAccountContent } from './SmartAccountContent';
+import { WalletSettingsContent } from './Contents/WalletSettingsContent';
+import { MainContent } from './Contents/MainContent';
+import { SmartAccountContent } from './Contents/SmartAccountContent';
+import { AccountsContent } from './Contents';
+
 type Props = {
     isOpen: boolean;
     onClose: () => void;
 };
 
-export type AccountModalContentTypes = 'main' | 'settings' | 'smart-account';
+export type AccountModalContentTypes =
+    | 'main'
+    | 'settings'
+    | 'smart-account'
+    | 'accounts';
 
 export const AccountModal = ({ isOpen, onClose }: Props) => {
     const [isDesktop] = useMediaQuery('(min-width: 768px)');
@@ -34,9 +39,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
               overflowX: 'hidden',
           };
 
-    const { connectedAccount } = useWallet();
-
-    const walletImage = getPicassoImage(connectedAccount ?? '');
+    const { selectedAccount } = useWallet();
 
     const [currentContent, setCurrentContent] =
         useState<AccountModalContentTypes>('main');
@@ -50,10 +53,10 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
         switch (currentContent) {
             case 'main':
                 return (
-                    <AccountModalMainContent
+                    <MainContent
                         setCurrentContent={setCurrentContent}
                         onClose={onClose}
-                        walletImage={walletImage}
+                        wallet={selectedAccount}
                     />
                 );
             case 'settings':
@@ -66,6 +69,14 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
                 return (
                     <SmartAccountContent
                         setCurrentContent={setCurrentContent}
+                    />
+                );
+            case 'accounts':
+                return (
+                    <AccountsContent
+                        setCurrentContent={setCurrentContent}
+                        onClose={onClose}
+                        wallet={selectedAccount}
                     />
                 );
         }

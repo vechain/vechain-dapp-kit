@@ -19,7 +19,7 @@ interface ActionButtonProps {
     leftImage?: string;
     backgroundColor?: string;
     border?: string;
-    isDisabled?: boolean;
+    hide?: boolean;
     showComingSoon?: boolean;
 }
 
@@ -30,7 +30,7 @@ export const ActionButton = ({
     description,
     onClick,
     leftImage,
-    isDisabled = false,
+    hide = false,
     showComingSoon = false,
 }: ActionButtonProps) => {
     return (
@@ -40,8 +40,8 @@ export const ActionButton = ({
             h={'fit-content'}
             py={4}
             onClick={onClick}
-            opacity={isDisabled ? 0.5 : 1}
-            isDisabled={isDisabled}
+            display={hide ? 'none' : 'flex'}
+            isDisabled={showComingSoon}
         >
             <HStack w={'full'} justify={'space-between'}>
                 <Box minW={'40px'}>

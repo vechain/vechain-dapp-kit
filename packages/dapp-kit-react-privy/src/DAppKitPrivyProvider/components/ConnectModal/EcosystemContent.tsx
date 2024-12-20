@@ -36,7 +36,7 @@ export const EcosystemContent = ({
     const { authenticated } = usePrivy();
     const { loginWithCrossAppAccount, linkCrossAppAccount } =
         useCrossAppAccounts();
-    const { isCrossAppPrivyAccount } = useWallet();
+    const { connection } = useWallet();
     const [crossAppLogin, setCrossAppLogin] = useState(false);
 
     const connectWithVebetterDaoApps = async (appId: string) => {
@@ -46,12 +46,16 @@ export const EcosystemContent = ({
     };
 
     useEffect(() => {
-        if (!isCrossAppPrivyAccount && crossAppLogin && authenticated) {
+        if (
+            connection.source.type === 'privy-cross-app' &&
+            crossAppLogin &&
+            authenticated
+        ) {
             linkCrossAppAccount({
                 appId: `${privyConfig?.ecosystemAppsID?.[0]}`,
             });
         }
-    }, [isCrossAppPrivyAccount, crossAppLogin, authenticated]);
+    }, [connection.source.type, crossAppLogin, authenticated]);
 
     return (
         <FadeInViewFromRight>
