@@ -2,7 +2,6 @@ import {
     Button,
     Grid,
     HStack,
-    Image,
     ModalBody,
     ModalCloseButton,
     ModalFooter,
@@ -24,14 +23,10 @@ type Props = {
         React.SetStateAction<AccountModalContentTypes>
     >;
     onClose: () => void;
-    wallet: Wallet;
+    wallet?: Wallet;
 };
 
-export const AccountsContent = ({
-    setCurrentContent,
-    onClose,
-    wallet,
-}: Props) => {
+export const AccountsContent = ({ setCurrentContent, onClose }: Props) => {
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
 
@@ -45,21 +40,12 @@ export const AccountsContent = ({
                 fontWeight={'500'}
                 textAlign={'center'}
                 color={isDark ? '#dfdfdd' : '#4d4d4d'}
-            ></ModalHeader>
+            >
+                {'Your accounts'}
+            </ModalHeader>
 
             <ModalBackButton onClick={() => setCurrentContent('main')} />
             <ModalCloseButton />
-
-            <VStack justify={'center'} mt={10}>
-                <Image
-                    src={wallet.image}
-                    w="50px"
-                    h="50px"
-                    borderRadius="full"
-                    objectFit="cover"
-                />
-                <AddressDisplay size="lg" wallet={wallet} />
-            </VStack>
 
             <ModalBody w={'full'} mt={10}>
                 <HStack justify={'space-between'} w={'full'}>
