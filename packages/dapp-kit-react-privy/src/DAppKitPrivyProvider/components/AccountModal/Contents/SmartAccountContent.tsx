@@ -15,6 +15,7 @@ import React, { useState } from 'react';
 import { AddressDisplay } from '../../common/AddressDisplay';
 import { IoOpenOutline } from 'react-icons/io5';
 import { FadeInViewFromBottom, ModalBackButton } from '../../common';
+import { FadeInViewFromRight } from '../../common';
 import { AccountModalContentTypes } from '../AccountModal';
 import { getPicassoImage } from '../../../utils';
 
@@ -35,7 +36,7 @@ export const SmartAccountContent = ({ setCurrentContent }: Props) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     return (
-        <FadeInViewFromBottom>
+        <FadeInViewFromRight>
             <ModalHeader
                 fontSize={'md'}
                 fontWeight={'500'}
@@ -101,6 +102,6 @@ export const SmartAccountContent = ({ setCurrentContent }: Props) => {
                 </VStack>
             </ModalBody>
             <ModalFooter />
-        </FadeInViewFromBottom>
+        </FadeInViewFromRight>
     );
 };

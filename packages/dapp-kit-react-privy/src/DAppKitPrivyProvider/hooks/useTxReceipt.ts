@@ -64,8 +64,8 @@ export const useTxReceipt = (txId?: string, blockTimeout?: number) => {
             try {
                 const result = await pollForReceipt(thor, txId, blockTimeout);
                 setReceipt(result);
-            } catch {
-                setError(new Error('Unknown error'));
+            } catch (e) {
+                setError(e instanceof Error ? e : new Error('Unknown error'));
             } finally {
                 setIsLoading(false);
             }

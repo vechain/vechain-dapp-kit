@@ -15,7 +15,7 @@ import { usePrivy } from '@privy-io/react-auth';
 import { useWalletModal } from '@vechain/dapp-kit-react';
 import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
 import { FadeInViewFromBottom } from '../common';
-import { useFetchAppInfo } from '../../api';
+import { useFetchAppInfo } from '../../hooks/useFetchAppInfo';
 import { AppLogos } from '../common/AppLogos';
 import { PrivyAppInfo, SOCIAL_INFOS, WALLET_INFOS } from '../../utils';
 

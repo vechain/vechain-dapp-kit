@@ -3,7 +3,7 @@ import { ABIContract } from '@vechain/sdk-core';
 import { THOR_CLIENT } from '../utils/Constants';
 import { SimpleAccountFactoryABI } from '../assets';
 
-interface GetSmartAccountAddressReturnType {
+interface UseGetSmartAccountAddressReturnType {
     address: string | undefined;
     isLoading: boolean;
     error: Error | null;
@@ -14,9 +14,9 @@ interface GetSmartAccountAddressReturnType {
  * @param ownerAddress The address of the smart account owner
  * @returns The smart account address and loading/error states
  */
-export const getSmartAccountAddress = (
+export const useGetSmartAccountAddress = (
     ownerAddress?: string,
-): GetSmartAccountAddressReturnType => {
+): UseGetSmartAccountAddressReturnType => {
     const [address, setAddress] = useState<string>();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
