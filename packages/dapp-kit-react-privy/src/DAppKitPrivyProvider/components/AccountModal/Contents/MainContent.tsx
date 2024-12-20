@@ -23,11 +23,7 @@ type Props = {
     wallet: Wallet;
 };
 
-export const AccountModalMainContent = ({
-    setCurrentContent,
-    onClose,
-    wallet,
-}: Props) => {
+export const MainContent = ({ setCurrentContent, onClose, wallet }: Props) => {
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
 
@@ -42,16 +38,6 @@ export const AccountModalMainContent = ({
                 color={isDark ? '#dfdfdd' : '#4d4d4d'}
             >
                 {'Connected with ' + connection.source.displayName}
-                {/* <Text
-                    fontSize={'xs'}
-                    fontWeight={'400'}
-                    w={'full'}
-                    textAlign={'center'}
-                    opacity={0.3}
-                    mt={2}
-                >
-                    v{packageJson.version}
-                </Text> */}
             </ModalHeader>
             <VStack justify={'center'}>
                 <Image

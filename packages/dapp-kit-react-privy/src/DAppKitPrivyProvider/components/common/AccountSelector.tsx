@@ -4,6 +4,8 @@ import { Text, Icon, HStack, Button, useColorMode } from '@chakra-ui/react';
 import { humanAddress } from '../../utils';
 import { Wallet } from '../../hooks';
 import { IoIosArrowDown } from 'react-icons/io';
+import { useState } from 'react';
+import { IoCheckmarkOutline, IoCopyOutline } from 'react-icons/io5';
 
 type Props = {
     wallet: Wallet;
@@ -14,6 +16,16 @@ type Props = {
 export const AccountSelector = ({ wallet, size = 'xl', onClick }: Props) => {
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
+
+    const [copied, setCopied] = useState(false);
+
+    const copyToClipboard = async (textToCopy: string) => {
+        await navigator.clipboard.writeText(textToCopy);
+        setCopied(true);
+        setTimeout(() => {
+            setCopied(false);
+        }, 2000);
+    };
 
     return (
         <Button
@@ -34,6 +46,16 @@ export const AccountSelector = ({ wallet, size = 'xl', onClick }: Props) => {
             transition="all 0.2s"
         >
             <HStack spacing={4} align="center">
+                <Icon
+                    boxSize={5}
+                    as={copied ? IoCheckmarkOutline : IoCopyOutline}
+                    cursor="pointer"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        copyToClipboard(wallet.address);
+                    }}
+                />
                 <Text fontSize={size} fontWeight="500">
                     {wallet.domain || humanAddress(wallet.address, 6, 4)}
                 </Text>

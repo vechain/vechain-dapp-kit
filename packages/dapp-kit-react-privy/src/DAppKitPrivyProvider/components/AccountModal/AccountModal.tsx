@@ -10,7 +10,7 @@ import {
 import { useWallet } from '../../hooks';
 import { useState, useEffect } from 'react';
 import { WalletSettingsContent } from './Contents/WalletSettingsContent';
-import { AccountModalMainContent } from './Contents/AccountModalMainContent';
+import { MainContent } from './Contents/MainContent';
 import { SmartAccountContent } from './Contents/SmartAccountContent';
 import { AccountsContent } from './Contents';
 
@@ -53,7 +53,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
         switch (currentContent) {
             case 'main':
                 return (
-                    <AccountModalMainContent
+                    <MainContent
                         setCurrentContent={setCurrentContent}
                         onClose={onClose}
                         wallet={selectedAccount}
