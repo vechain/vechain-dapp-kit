@@ -41,7 +41,7 @@ export const MainContent = ({ setCurrentContent, onClose, wallet }: Props) => {
                 textAlign={'center'}
                 color={isDark ? '#dfdfdd' : '#4d4d4d'}
             >
-                {'Connected with ' + connection.source.displayName}
+                {'Account'}
             </ModalHeader>
             <VStack justify={'center'}>
                 <Image

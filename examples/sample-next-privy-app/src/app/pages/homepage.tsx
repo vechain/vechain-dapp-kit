@@ -131,7 +131,6 @@ const HomePage = (): ReactElement => {
                             <Text>
                                 Deployed: {smartAccount.isDeployed.toString()}
                             </Text>
-                            <Text>Owner: {smartAccount.owner}</Text>
                         </Box>
                     )}
 
@@ -140,12 +139,18 @@ const HomePage = (): ReactElement => {
                             <b>Wallet</b>
                         </Heading>
                         <Text>Address: {connectedWallet?.address}</Text>
-                        <Text>Connection Type: {connection.source.type}</Text>
+                    </Box>
+
+                    <Box>
+                        <Heading size={'md'}>
+                            <b>Connection</b>
+                        </Heading>
+                        <Text>Type: {connection.source.type}</Text>
                     </Box>
 
                     <Box mt={4}>
                         <Heading size={'md'}>
-                            <b>Actions</b>
+                            <b>Test actions</b>
                         </Heading>
                         <HStack mt={4} spacing={4}>
                             <HStack mt={4} spacing={4}>
@@ -154,14 +159,14 @@ const HomePage = (): ReactElement => {
                                     isLoading={isTransactionPending}
                                     isDisabled={isTransactionPending}
                                 >
-                                    Test Tx with toast
+                                    Tx with toast
                                 </Button>
                                 <Button
                                     onClick={handleTransactionWithModal}
                                     isLoading={isTransactionPending}
                                     isDisabled={isTransactionPending}
                                 >
-                                    Test Tx with modal
+                                    Tx with modal
                                 </Button>
                             </HStack>
                         </HStack>

@@ -6,6 +6,7 @@ import {
     ModalFooter,
     ModalHeader,
     useColorMode,
+    Text,
 } from '@chakra-ui/react';
 import { usePrivy, useWallet, Wallet } from '../../../hooks';
 import { AddressDisplay } from '../../common/AddressDisplay';
@@ -45,7 +46,7 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
                 textAlign={'center'}
                 color={isDark ? '#dfdfdd' : '#4d4d4d'}
             >
-                {'Wallet Settings'}
+                {'Wallet'}
             </ModalHeader>
 
             <ModalBackButton onClick={() => setCurrentContent('accounts')} />
@@ -58,6 +59,13 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
                         borderRadius="50%"
                     />
                     <AddressDisplay wallet={account} />
+                </VStack>
+
+                <VStack align="stretch" spacing={5} mt={2}>
+                    <Text fontSize={'sm'} opacity={0.5} textAlign={'center'}>
+                        This is your main wallet and access point to your smart
+                        accounts. Please be sure to keep it safe and backed up.
+                    </Text>
                 </VStack>
 
                 <VStack w={'full'} mt={10}>

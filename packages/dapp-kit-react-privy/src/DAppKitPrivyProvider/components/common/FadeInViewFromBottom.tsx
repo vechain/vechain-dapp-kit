@@ -8,7 +8,7 @@ type Props = {
 export const FadeInViewFromBottom = ({ children }: Props) => {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 1, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, easing: [0.17, 0.55, 0.55, 1] }}
         >

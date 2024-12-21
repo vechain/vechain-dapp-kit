@@ -24,6 +24,7 @@ export function SocialLoginWrapper({ children }: Props) {
                 clientId: process.env.NEXT_PUBLIC_PRIVY_CLIENT_ID!,
                 loginMethods: ['google', 'twitter', 'github', 'sms', 'email'],
                 appearance: {
+                    walletList: ['metamask', 'rainbow'],
                     theme: colorMode,
                     accentColor: '#696FFD',
                     loginMessage: 'Select a social media profile',
@@ -33,6 +34,7 @@ export function SocialLoginWrapper({ children }: Props) {
                     createOnLogin: 'all-users',
                 },
                 ecosystemAppsID: [
+                    'cm4wxxujb022fyujl7g0thb21', //vechain
                     'clz41gcg00e4ay75dmq3uzzgr', //cleanify
                     'clxdoatq601h35inz6qykgmai',
                     'clpgf04wn04hnkw0fv1m11mnb',

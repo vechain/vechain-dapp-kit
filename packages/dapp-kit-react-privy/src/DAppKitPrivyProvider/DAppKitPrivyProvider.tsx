@@ -1,5 +1,8 @@
 import { createContext, ReactNode, useContext } from 'react';
-import { PrivyProvider as BasePrivyProvider } from '@privy-io/react-auth';
+import {
+    PrivyProvider as BasePrivyProvider,
+    WalletListEntry,
+} from '@privy-io/react-auth';
 import { DAppKitProvider, DAppKitUIOptions } from '@vechain/dapp-kit-react';
 import { SmartAccountProvider } from './hooks';
 import { ChakraProvider } from '@chakra-ui/react';
@@ -12,6 +15,7 @@ type Props = {
         appId: string;
         clientId: string;
         appearance: {
+            walletList: WalletListEntry[];
             theme: 'dark' | 'light';
             accentColor: `#${string}`;
             loginMessage: string;

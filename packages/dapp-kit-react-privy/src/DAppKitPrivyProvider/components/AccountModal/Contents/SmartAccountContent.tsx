@@ -53,7 +53,7 @@ export const SmartAccountContent = ({ setCurrentContent }: Props) => {
                     <AddressDisplay wallet={smartAccount} />
                 </VStack>
 
-                <VStack align="stretch" spacing={5}>
+                <VStack align="stretch" spacing={5} textAlign={'center'}>
                     <Text fontSize={'sm'} opacity={0.5}>
                         To allow you a smooth onboarding on VeChain we are
                         helping you manage a wallet.
