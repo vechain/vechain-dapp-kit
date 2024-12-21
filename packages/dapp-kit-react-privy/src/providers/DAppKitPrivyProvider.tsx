@@ -4,10 +4,11 @@ import {
     WalletListEntry,
 } from '@privy-io/react-auth';
 import { DAppKitProvider, DAppKitUIOptions } from '@vechain/dapp-kit-react';
-import { SmartAccountProvider } from './hooks';
+import { SmartAccountProvider } from '../hooks';
 import { ChakraProvider } from '@chakra-ui/react';
-import { Theme } from './theme';
-import { PrivyLoginMethod } from './utils';
+import { Theme } from '../theme';
+import { PrivyLoginMethod } from '../utils';
+import { EnsureQueryClient } from './ReactQueryProvider';
 
 type Props = {
     children: ReactNode;
@@ -92,46 +93,48 @@ export const DAppKitPrivyProvider = ({
         <DAppKitPrivyContext.Provider
             value={{ privyConfig, feeDelegationConfig, dappKitConfig }}
         >
-            <ChakraProvider theme={Theme}>
-                <BasePrivyProvider
-                    appId={privyConfig.appId}
-                    clientId={privyConfig.clientId}
-                    config={{
-                        loginMethodsAndOrder: {
-                            // @ts-ignore
-                            primary: loginMethods,
-                        },
-                        appearance: privyConfig.appearance,
-                        embeddedWallets: {
-                            createOnLogin:
-                                privyConfig.embeddedWallets?.createOnLogin ??
-                                'all-users',
-                        },
-                    }}
-                    allowPasskeyLinking={privyConfig.allowPasskeyLinking}
-                >
-                    <DAppKitProvider
-                        nodeUrl={dappKitConfig.nodeUrl}
-                        genesis={dappKitConfig.genesis}
-                        usePersistence
-                        walletConnectOptions={
-                            dappKitConfig.walletConnectOptions
-                        }
-                        themeMode={dappKitConfig.themeMode}
-                        themeVariables={{}}
+            <EnsureQueryClient>
+                <ChakraProvider theme={Theme}>
+                    <BasePrivyProvider
+                        appId={privyConfig.appId}
+                        clientId={privyConfig.clientId}
+                        config={{
+                            loginMethodsAndOrder: {
+                                // @ts-ignore
+                                primary: loginMethods,
+                            },
+                            appearance: privyConfig.appearance,
+                            embeddedWallets: {
+                                createOnLogin:
+                                    privyConfig.embeddedWallets
+                                        ?.createOnLogin ?? 'all-users',
+                            },
+                        }}
+                        allowPasskeyLinking={privyConfig.allowPasskeyLinking}
                     >
-                        <SmartAccountProvider
+                        <DAppKitProvider
                             nodeUrl={dappKitConfig.nodeUrl}
-                            delegatorUrl={feeDelegationConfig.delegatorUrl}
-                            delegateAllTransactions={
-                                feeDelegationConfig.delegateAllTransactions
+                            genesis={dappKitConfig.genesis}
+                            usePersistence
+                            walletConnectOptions={
+                                dappKitConfig.walletConnectOptions
                             }
+                            themeMode={dappKitConfig.themeMode}
+                            themeVariables={{}}
                         >
-                            {children}
-                        </SmartAccountProvider>
-                    </DAppKitProvider>
-                </BasePrivyProvider>
-            </ChakraProvider>
+                            <SmartAccountProvider
+                                nodeUrl={dappKitConfig.nodeUrl}
+                                delegatorUrl={feeDelegationConfig.delegatorUrl}
+                                delegateAllTransactions={
+                                    feeDelegationConfig.delegateAllTransactions
+                                }
+                            >
+                                {children}
+                            </SmartAccountProvider>
+                        </DAppKitProvider>
+                    </BasePrivyProvider>
+                </ChakraProvider>
+            </EnsureQueryClient>
         </DAppKitPrivyContext.Provider>
     );
 };

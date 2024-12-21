@@ -17,7 +17,7 @@ import {
     FadeInViewFromBottom,
 } from '../../common';
 import { AccountModalContentTypes } from '../AccountModal';
-import packageJson from '../../../../../package.json';
+import packageJson from '../../../../package.json';
 
 type Props = {
     setCurrentContent: React.Dispatch<

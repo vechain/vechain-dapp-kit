@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { usePrivy } from '@privy-io/react-auth';
 import { useWalletModal } from '@vechain/dapp-kit-react';
-import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
+import { useDAppKitPrivyConfig } from '../../providers/DAppKitPrivyProvider';
 import { FadeInViewFromBottom } from '../common';
 import { useFetchAppInfo } from '../../hooks/useFetchAppInfo';
 import { AppLogos } from '../common/AppLogos';

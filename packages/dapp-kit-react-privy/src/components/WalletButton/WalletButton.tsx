@@ -2,7 +2,7 @@ import { Button, HStack, Image, Text, useDisclosure } from '@chakra-ui/react';
 import { useWallet } from '../../hooks';
 import { ConnectModal } from '../ConnectModal';
 import { AccountModal } from '../AccountModal';
-import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
+import { useDAppKitPrivyConfig } from '../../providers/DAppKitPrivyProvider';
 import { humanAddress } from '../../utils';
 
 export const WalletButton = () => {

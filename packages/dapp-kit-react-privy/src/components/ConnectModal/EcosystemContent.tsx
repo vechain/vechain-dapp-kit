@@ -11,7 +11,7 @@ import {
 import { useCrossAppAccounts, usePrivy } from '@privy-io/react-auth';
 import { useWallet } from '../../hooks';
 import { useEffect, useState } from 'react';
-import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
+import { useDAppKitPrivyConfig } from '../../providers/DAppKitPrivyProvider';
 import { FadeInViewFromRight } from '../common';
 import { ModalBackButton } from '../common';
 import { PrivyAppInfo } from '../../utils';
