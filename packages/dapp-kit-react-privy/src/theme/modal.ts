@@ -11,6 +11,10 @@ const variants = {
     base: (props: StyleFunctionProps) =>
         definePartsStyle({
             dialog: {
+                scrollbarWidth: 'none',
+                overflow: 'scroll',
+                overflowX: 'hidden',
+                maxHeight: '500px',
                 borderRadius: '24px',
                 backgroundColor:
                     props.colorMode === 'dark' ? '#1f1f1e' : 'white',

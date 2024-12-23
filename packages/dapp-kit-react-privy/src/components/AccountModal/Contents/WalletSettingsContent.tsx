@@ -71,7 +71,7 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
                 <VStack w={'full'} mt={10}>
                     <ActionButton
                         title="Backup your wallet"
-                        description="Export your private key"
+                        description="Upgrade wallet in Self-Custody by storing your Recovery Phrase and seamlessly importing it into a wallet provider."
                         onClick={() => {
                             exportWallet();
                         }}
