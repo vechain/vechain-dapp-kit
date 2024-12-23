@@ -20,13 +20,11 @@ const walletConnectOptions = {
     },
 };
 
-const vechainDAppKitOptions = {
-    nodeUrl: 'https://mainnet.vechain.org',
+DAppKitUI.configure({
+    nodeUrl: 'https://mainnet.vechain.org/',
     walletConnectOptions,
     usePersistence: true,
-};
-
-DAppKitUI.configure(vechainDAppKitOptions);
+});
 
 // custom button configuration
 

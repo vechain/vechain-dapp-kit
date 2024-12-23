@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useConnex } from '../../DAppKitProvider/hooks/useConnex';
+import { useThor } from '../../DAppKitProvider/hooks/useThor';
 import {
     fetchVechainDomain,
     type VechainDomainResult,
@@ -17,7 +17,7 @@ export const useVechainDomain = ({
 }: {
     addressOrDomain?: string | null;
 }): UseVechainDomainReturnType => {
-    const connex = useConnex();
+    const thor = useThor();
     const [result, setResult] = useState<VechainDomainResult>({
         address: undefined,
         domain: undefined,
@@ -27,7 +27,7 @@ export const useVechainDomain = ({
 
     useEffect(() => {
         setIsLoading(true);
-        fetchVechainDomain({ addressOrDomain, connex })
+        fetchVechainDomain({ addressOrDomain, thor })
             .then(setResult)
             .catch((err) => {
                 console.error('Error fetching vechain domain: ', err);
@@ -38,7 +38,7 @@ export const useVechainDomain = ({
                 });
             })
             .finally(() => setIsLoading(false));
-    }, [addressOrDomain, connex]);
+    }, [addressOrDomain, thor]);
 
     return { ...result, isLoading };
 };

@@ -14,10 +14,10 @@ export interface VechainDomainResult {
  */
 export const fetchVechainDomain = async ({
     addressOrDomain,
-    connex,
+    thor,
 }: {
     addressOrDomain?: string | null;
-    connex: DAppKitContext['connex'];
+    thor: DAppKitContext['thor'];
 }): Promise<VechainDomainResult> => {
     if (!addressOrDomain) {
         return {
@@ -33,7 +33,7 @@ export const fetchVechainDomain = async ({
         try {
             const domainName = await getDomain({
                 address: addressOrDomain,
-                connex,
+                thor,
             });
             return {
                 address: addressOrDomain,
@@ -53,7 +53,7 @@ export const fetchVechainDomain = async ({
     try {
         const domainAddress = await getAddress({
             domain: addressOrDomain,
-            connex,
+            thor,
         });
         if (domainAddress === '0x0000000000000000000000000000000000000000') {
             return {

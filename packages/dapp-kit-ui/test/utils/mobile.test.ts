@@ -1,4 +1,5 @@
-import { isMobile, isAndroid } from '../../src/utils/mobile';
+import { isAndroid, isMobile } from '../../src/utils/mobile';
+import { describe, expect, it } from 'vitest';
 
 describe('isMobile', () => {
     it('should return true for a mobile user agent', () => {

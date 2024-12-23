@@ -1,9 +1,9 @@
 import {
     DAppKitProvider,
-    WalletButton,
-    WalletConnectOptions,
     useWallet,
     useWalletModal,
+    WalletButton,
+    WalletConnectOptions,
 } from '@vechain/dapp-kit-react';
 import { useEffect, useState } from 'react';
 
@@ -58,7 +58,6 @@ const walletConnectOptions: WalletConnectOptions = {
 export const App = () => {
     return (
         <DAppKitProvider
-            genesis="test"
             logLevel="DEBUG"
             nodeUrl="https://testnet.vechain.org/"
             usePersistence
