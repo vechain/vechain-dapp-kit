@@ -1,6 +1,6 @@
 'use client';
 
-import { Text, Icon, HStack, Button, useColorMode } from '@chakra-ui/react';
+import { Text, Icon, HStack, Button } from '@chakra-ui/react';
 import { humanAddress } from '../../utils';
 import { Wallet } from '../../hooks';
 import { IoIosArrowDown } from 'react-icons/io';
@@ -14,9 +14,6 @@ type Props = {
 };
 
 export const AccountSelector = ({ wallet, size = 'md', onClick }: Props) => {
-    const { colorMode } = useColorMode();
-    const isDark = colorMode === 'dark';
-
     const [copied, setCopied] = useState(false);
 
     const copyToClipboard = async (textToCopy: string) => {
@@ -28,40 +25,39 @@ export const AccountSelector = ({ wallet, size = 'md', onClick }: Props) => {
     };
 
     return (
-        <Button
-            w="fit-content"
-            h="fit-content"
-            p={2}
-            px={4}
-            onClick={onClick}
-            bg="transparent"
-            border={`1px solid ${isDark ? '#ffffff29' : '#ebebeb'}`}
-            _hover={{
-                borderColor: isDark ? '#ffffff50' : '#dedede',
-                bg: isDark ? 'whiteAlpha.50' : 'blackAlpha.50',
-            }}
-            _active={{
-                transform: 'scale(0.98)',
-            }}
-            transition="all 0.2s"
-        >
-            <HStack spacing={4} align="center">
+        <HStack>
+            <Button
+                w="fit-content"
+                h="fit-content"
+                p={2}
+                px={4}
+                onClick={onClick}
+                variant="selector"
+            >
+                <HStack spacing={4} align="center">
+                    <Text fontSize={size} fontWeight="500">
+                        {wallet.domain || humanAddress(wallet.address, 6, 4)}
+                    </Text>
+
+                    <Icon boxSize={5} as={IoIosArrowDown} cursor="pointer" />
+                </HStack>
+            </Button>
+
+            <Button
+                p={2}
+                px={4}
+                variant="selector"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    copyToClipboard(wallet.address);
+                }}
+            >
                 <Icon
                     boxSize={5}
                     as={copied ? IoCheckmarkOutline : IoCopyOutline}
-                    cursor="pointer"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        copyToClipboard(wallet.address);
-                    }}
                 />
-                <Text fontSize={size} fontWeight="500">
-                    {wallet.domain || humanAddress(wallet.address, 6, 4)}
-                </Text>
-
-                <Icon boxSize={5} as={IoIosArrowDown} cursor="pointer" />
-            </HStack>
-        </Button>
+            </Button>
+        </HStack>
     );
 };

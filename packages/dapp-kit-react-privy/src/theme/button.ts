@@ -20,6 +20,18 @@ const variants = {
             border: '1px solid #5e5e5e',
         },
     })),
+    selector: defineStyle(({ colorMode }) => ({
+        bg: 'transparent',
+        border: `1px solid ${colorMode === 'dark' ? '#ffffff29' : '#ebebeb'}`,
+        _hover: {
+            borderColor: colorMode === 'dark' ? '#ffffff50' : '#dedede',
+            bg: colorMode === 'dark' ? 'whiteAlpha.50' : 'blackAlpha.50',
+        },
+        _active: {
+            transform: 'scale(0.98)',
+        },
+        transition: 'all 0.2s',
+    })),
 };
 
 export const buttonTheme = defineStyleConfig({
