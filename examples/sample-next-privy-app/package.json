@@ -1,19 +1,19 @@
 {
-    "name": "sample-next-app",
+    "name": "sample-next-privy-app",
     "version": "0.1.0",
     "private": true,
     "scripts": {
         "build": "next build",
         "clean": "rm -rf .next dist .turbo",
-        "dev": "next dev",
-        "gh-pages-build": "BASE_PATH='/vechain-dapp-kit/next' next build",
-        "preview": "npx serve -p 5002 dist",
-        "purge": "yarn clean; rm -rf node_modules"
+        "dev": "next dev"
     },
     "dependencies": {
+        "@chakra-ui/react": "2.8.2",
+        "@emotion/react": "^11.13.5",
+        "@emotion/styled": "^11.13.5",
         "@vechain/dapp-kit": "*",
         "@vechain/dapp-kit-react": "*",
-        "@vechain/dapp-kit-ui": "*",
+        "@vechain/dapp-kit-react-privy": "*",
         "next": ">=14.2.15",
         "react": "^18",
         "react-dom": "^18"
