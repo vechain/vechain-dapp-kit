@@ -1,8 +1,8 @@
 'use client';
 
 import { Text, Icon, HStack, Button } from '@chakra-ui/react';
-import { humanAddress } from '../../utils';
-import { Wallet } from '../../hooks';
+import { humanAddress } from '../../../utils';
+import { Wallet } from '../../../hooks';
 import { IoIosArrowDown } from 'react-icons/io';
 import { useState } from 'react';
 import { IoCheckmarkOutline, IoCopyOutline } from 'react-icons/io5';

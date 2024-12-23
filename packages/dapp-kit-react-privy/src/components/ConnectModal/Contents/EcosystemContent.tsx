@@ -11,11 +11,11 @@ import {
     useColorMode,
 } from '@chakra-ui/react';
 import { useCrossAppAccounts } from '@privy-io/react-auth';
-import { FadeInViewFromBottom } from '../common';
-import { ModalBackButton } from '../common';
-import { ConnectModalContents } from './ConnectModal';
-import { useDAppKitPrivyConfig } from '../../providers';
-import { useFetchAppInfo } from '../../hooks/useFetchAppInfo';
+import { FadeInViewFromBottom } from '../../common';
+import { ModalBackButton } from '../../common';
+import { ConnectModalContents } from '../ConnectModal';
+import { useDAppKitPrivyConfig } from '../../../providers';
+import { useFetchAppInfo } from '../../../hooks/useFetchAppInfo';
 
 type Props = {
     setCurrentContent: React.Dispatch<

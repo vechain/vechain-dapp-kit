@@ -8,8 +8,8 @@ import {
     useMediaQuery,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
-import { MainContent } from './MainContent';
-import { EcosystemContent } from './EcosystemContent';
+import { MainContent } from './Contents/MainContent';
+import { EcosystemContent } from './Contents/EcosystemContent';
 
 type Props = {
     isOpen: boolean;

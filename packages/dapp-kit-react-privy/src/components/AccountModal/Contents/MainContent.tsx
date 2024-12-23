@@ -11,12 +11,9 @@ import {
 } from '@chakra-ui/react';
 import { useWallet, Wallet } from '../../../hooks';
 import { RxExit } from 'react-icons/rx';
-import {
-    AccountSelector,
-    AddressDisplay,
-    FadeInViewFromBottom,
-} from '../../common';
+import { AddressDisplay, FadeInViewFromBottom } from '../../common';
 import { AccountModalContentTypes } from '../AccountModal';
+import { AccountSelector } from '../Components';
 
 type Props = {
     setCurrentContent: React.Dispatch<
