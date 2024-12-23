@@ -1,18 +1,19 @@
 import {
-    Button,
     Grid,
     HStack,
     ModalBody,
     ModalCloseButton,
     ModalFooter,
     ModalHeader,
-    VStack,
     useColorMode,
 } from '@chakra-ui/react';
 import { useWallet, Wallet } from '../../../hooks';
-import { RxExit } from 'react-icons/rx';
 import { AddressDisplay } from '../../common/AddressDisplay';
-import { FadeInViewFromBottom, ModalBackButton } from '../../common';
+import {
+    FadeInViewFromBottom,
+    ModalBackButton,
+    StickyHeaderContainer,
+} from '../../common';
 import { AccountDetailsButton } from '../Components/AccountDetailsButton';
 import { MdAccountCircle, MdOutlineNavigateNext } from 'react-icons/md';
 import { AccountModalContentTypes } from '../AccountModal';
@@ -26,28 +27,28 @@ type Props = {
     wallet?: Wallet;
 };
 
-export const AccountsContent = ({ setCurrentContent, onClose }: Props) => {
+export const AccountsContent = ({ setCurrentContent }: Props) => {
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
 
-    const { disconnect, connection, selectedAccount, connectedWallet } =
-        useWallet();
+    const { connection, selectedAccount, connectedWallet } = useWallet();
 
     return (
         <FadeInViewFromBottom>
-            <ModalHeader
-                fontSize={'md'}
-                fontWeight={'500'}
-                textAlign={'center'}
-                color={isDark ? '#dfdfdd' : '#4d4d4d'}
-            >
-                {'Your accounts'}
-            </ModalHeader>
+            <StickyHeaderContainer>
+                <ModalHeader
+                    fontSize={'md'}
+                    fontWeight={'500'}
+                    textAlign={'center'}
+                    color={isDark ? '#dfdfdd' : '#4d4d4d'}
+                >
+                    {'Your accounts'}
+                </ModalHeader>
+                <ModalBackButton onClick={() => setCurrentContent('main')} />
+                <ModalCloseButton />
+            </StickyHeaderContainer>
 
-            <ModalBackButton onClick={() => setCurrentContent('main')} />
-            <ModalCloseButton />
-
-            <ModalBody w={'full'}>
+            <ModalBody w={'full'} pt={'80px'}>
                 <HStack justify={'space-between'} w={'full'}>
                     {connection.isConnectedWithPrivy ? (
                         <Grid
@@ -81,22 +82,7 @@ export const AccountsContent = ({ setCurrentContent, onClose }: Props) => {
                     )}
                 </HStack>
             </ModalBody>
-            <ModalFooter>
-                <VStack w={'full'}>
-                    <Button
-                        w={'full'}
-                        onClick={() => {
-                            disconnect();
-                            onClose();
-                        }}
-                        fontSize={'sm'}
-                        fontWeight={'400'}
-                        leftIcon={<RxExit color="#888888" />}
-                    >
-                        Logout
-                    </Button>
-                </VStack>
-            </ModalFooter>
+            <ModalFooter></ModalFooter>
         </FadeInViewFromBottom>
     );
 };

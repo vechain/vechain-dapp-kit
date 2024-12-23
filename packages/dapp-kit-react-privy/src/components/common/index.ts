@@ -6,3 +6,5 @@ export * from './AddressDisplay';
 export * from './AppLogos';
 export * from './AccountSelector';
 export * from './FadeInView';
+export * from './VersionFooter';
+export * from './StickyHeaderContainer';

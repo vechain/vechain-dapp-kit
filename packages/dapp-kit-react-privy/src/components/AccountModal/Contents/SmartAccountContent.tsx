@@ -9,13 +9,16 @@ import {
     useColorMode,
     Link,
     Icon,
-    Divider,
 } from '@chakra-ui/react';
 import { usePrivy, useWallet } from '../../../hooks';
 import React, { useState } from 'react';
 import { AddressDisplay } from '../../common/AddressDisplay';
 import { IoOpenOutline } from 'react-icons/io5';
-import { FadeInViewFromBottom, ModalBackButton } from '../../common';
+import {
+    FadeInViewFromBottom,
+    ModalBackButton,
+    StickyHeaderContainer,
+} from '../../common';
 import { AccountModalContentTypes } from '../AccountModal';
 import { getPicassoImage } from '../../../utils';
 import { ActionButton } from '../Components';
@@ -41,18 +44,23 @@ export const SmartAccountContent = ({ setCurrentContent }: Props) => {
 
     return (
         <FadeInViewFromBottom>
-            <ModalHeader
-                fontSize={'md'}
-                fontWeight={'500'}
-                textAlign={'center'}
-                color={isDark ? '#dfdfdd' : '#4d4d4d'}
-            >
-                {'Smart Account'}
-            </ModalHeader>
+            <StickyHeaderContainer>
+                <ModalHeader
+                    fontSize={'md'}
+                    fontWeight={'500'}
+                    textAlign={'center'}
+                    color={isDark ? '#dfdfdd' : '#4d4d4d'}
+                >
+                    {'Smart Account'}
+                </ModalHeader>
 
-            <ModalBackButton onClick={() => setCurrentContent('accounts')} />
-            <ModalCloseButton />
-            <ModalBody w={'full'}>
+                <ModalBackButton
+                    onClick={() => setCurrentContent('accounts')}
+                />
+                <ModalCloseButton />
+            </StickyHeaderContainer>
+
+            <ModalBody w={'full'} pt={'80px'}>
                 <VStack justify={'center'} mb={10}>
                     <Image src={walletImage} maxW={'70px'} borderRadius="50%" />
                     <AddressDisplay wallet={smartAccount} />
@@ -107,8 +115,6 @@ export const SmartAccountContent = ({ setCurrentContent }: Props) => {
                     >
                         {isExpanded ? 'Read less' : 'Read more'}
                     </Link>
-
-                    <Divider />
                 </VStack>
 
                 <VStack mt={5} spacing={5}>
@@ -163,7 +169,7 @@ export const SmartAccountContent = ({ setCurrentContent }: Props) => {
                     />
                 </VStack>
             </ModalBody>
-            <ModalFooter />
+            <ModalFooter></ModalFooter>
         </FadeInViewFromBottom>
     );
 };

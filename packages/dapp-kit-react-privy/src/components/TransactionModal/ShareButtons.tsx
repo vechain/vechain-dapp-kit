@@ -8,8 +8,7 @@ const TWITTER_INJECT = 'https://twitter.com/intent/tweet?text=';
 
 const WHATSAPP_INJECT = 'https://wa.me/?text=';
 
-const TELEGRAM_INJECT =
-    'https://telegram.me/share/url?url=https://governance.vebetterdao.org&text=';
+const TELEGRAM_INJECT = 'https://telegram.me/share/url?url=';
 
 // bouncing circle button animation provider
 const BouncingAnimation = ({ children }: { children: React.ReactNode }) => (

@@ -33,6 +33,7 @@ export const ActionButton = ({
     leftImage,
     hide = false,
     showComingSoon = false,
+    backgroundColor,
 }: ActionButtonProps) => {
     return (
         <FadeInView>
@@ -44,6 +45,7 @@ export const ActionButton = ({
                 onClick={onClick}
                 display={hide ? 'none' : 'flex'}
                 isDisabled={showComingSoon}
+                bgColor={backgroundColor}
             >
                 <HStack w={'full'} justify={'space-between'}>
                     <Box minW={'40px'}>

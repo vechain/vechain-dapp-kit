@@ -10,7 +10,6 @@ import {
 import { useState, useEffect } from 'react';
 import { MainContent } from './MainContent';
 import { EcosystemContent } from './EcosystemContent';
-import { PrivyAppInfo } from '../../utils';
 
 type Props = {
     isOpen: boolean;
@@ -35,7 +34,6 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
           };
     const [currentContent, setCurrentContent] =
         useState<ConnectModalContents>('main');
-    const [appsInfo, setAppsInfo] = useState<Record<string, PrivyAppInfo>>();
 
     useEffect(() => {
         if (isOpen) {
@@ -51,7 +49,6 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
                         setCurrentContent={setCurrentContent}
                         onClose={onClose}
                         logo={logo}
-                        setAppsInfo={setAppsInfo}
                     />
                 );
             case 'ecosystem':
@@ -59,7 +56,6 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
                     <EcosystemContent
                         setCurrentContent={setCurrentContent}
                         onClose={onClose}
-                        appsInfo={appsInfo}
                     />
                 );
         }
@@ -72,6 +68,7 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
             onClose={onClose}
             isCentered
             size={'sm'}
+            trapFocus={false}
         >
             <ModalOverlay />
             <ModalContent {...(_modalContentProps as ModalContentProps)}>

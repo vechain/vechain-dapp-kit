@@ -42,8 +42,7 @@ export const SuccessModalContent = ({
     const explorerUrl = EXPLORER_URL[chainId as keyof typeof EXPLORER_URL];
 
     const socialDescription =
-        socialDescriptionEncoded ??
-        encodeURIComponent(`🚀 Just transacted on VeChain! 📷🌿 \n\n`);
+        socialDescriptionEncoded ?? `${explorerUrl}/${txId}`;
 
     return (
         <ModalAnimation>
@@ -75,9 +74,7 @@ export const SuccessModalContent = ({
                 )}
                 {showSocialButtons && (
                     <VStack>
-                        <Text fontSize="sm">
-                            {'Share your success on social media'}
-                        </Text>
+                        <Text fontSize="sm">{'Share your transaction'}</Text>
                         <ShareButtons descriptionEncoded={socialDescription} />
                     </VStack>
                 )}

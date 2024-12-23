@@ -7,6 +7,7 @@ import {
     ModalHeader,
     useColorMode,
     Text,
+    Divider,
 } from '@chakra-ui/react';
 import { usePrivy, useWallet, Wallet } from '../../../hooks';
 import { AddressDisplay } from '../../common/AddressDisplay';
@@ -14,21 +15,27 @@ import { GiHouseKeys } from 'react-icons/gi';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import { IoIosFingerPrint } from 'react-icons/io';
 import { ActionButton } from '../Components/ActionButton';
-import { ModalBackButton } from '../../common';
+import { ModalBackButton, StickyHeaderContainer } from '../../common';
 import { useDAppKitPrivyConfig } from '../../../providers/DAppKitPrivyProvider';
 import { FadeInViewFromBottom } from '../../common';
 import { AccountModalContentTypes } from '../AccountModal';
 import { FaRegAddressCard } from 'react-icons/fa';
+import { RxExit } from 'react-icons/rx';
 
 type Props = {
     setCurrentContent: (content: AccountModalContentTypes) => void;
+    onLogoutSuccess: () => void;
 };
 
-export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
+export const WalletSettingsContent = ({
+    setCurrentContent,
+    onLogoutSuccess,
+}: Props) => {
     const { exportWallet, linkPasskey } = usePrivy();
     const { privyConfig } = useDAppKitPrivyConfig();
 
-    const { embeddedWallet, connection, crossAppWallet } = useWallet();
+    const { embeddedWallet, connection, crossAppWallet, disconnect } =
+        useWallet();
 
     // Privy always creates an embedded wallet, so if the user is connected with app we use the other
     const account: Wallet = connection.isConnectedWithCrossAppPrivy
@@ -40,18 +47,23 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
 
     return (
         <FadeInViewFromBottom>
-            <ModalHeader
-                fontSize={'md'}
-                fontWeight={'500'}
-                textAlign={'center'}
-                color={isDark ? '#dfdfdd' : '#4d4d4d'}
-            >
-                {'Wallet'}
-            </ModalHeader>
+            <StickyHeaderContainer>
+                <ModalHeader
+                    fontSize={'md'}
+                    fontWeight={'500'}
+                    textAlign={'center'}
+                    color={isDark ? '#dfdfdd' : '#4d4d4d'}
+                >
+                    {'Wallet'}
+                </ModalHeader>
 
-            <ModalBackButton onClick={() => setCurrentContent('accounts')} />
-            <ModalCloseButton />
-            <ModalBody w={'full'}>
+                <ModalBackButton
+                    onClick={() => setCurrentContent('accounts')}
+                />
+                <ModalCloseButton />
+            </StickyHeaderContainer>
+
+            <ModalBody w={'full'} pt={'80px'}>
                 <VStack justify={'center'}>
                     <Image
                         src={account.image}
@@ -68,7 +80,7 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
                     </Text>
                 </VStack>
 
-                <VStack w={'full'} mt={10}>
+                <VStack mt={5} w={'full'} spacing={5}>
                     <ActionButton
                         title="Backup your wallet"
                         description="Upgrade wallet in Self-Custody by storing your Recovery Phrase and seamlessly importing it into a wallet provider."
@@ -103,9 +115,23 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
                         leftIcon={FaRegAddressCard}
                         rightIcon={MdOutlineNavigateNext}
                     />
+
+                    <Divider />
+
+                    <ActionButton
+                        title="Disconnect"
+                        description="Disconnect from your wallet and logout"
+                        onClick={() => {
+                            disconnect();
+                            onLogoutSuccess();
+                        }}
+                        leftIcon={RxExit}
+                        rightIcon={MdOutlineNavigateNext}
+                        backgroundColor={'#ff00000f'}
+                    />
                 </VStack>
             </ModalBody>
-            <ModalFooter />
+            <ModalFooter></ModalFooter>
         </FadeInViewFromBottom>
     );
 };

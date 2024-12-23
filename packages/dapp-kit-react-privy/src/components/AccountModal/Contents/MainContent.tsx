@@ -1,11 +1,11 @@
 import {
     Button,
+    Container,
     Image,
     ModalBody,
     ModalCloseButton,
     ModalFooter,
     ModalHeader,
-    Text,
     VStack,
     useColorMode,
 } from '@chakra-ui/react';
@@ -17,7 +17,6 @@ import {
     FadeInViewFromBottom,
 } from '../../common';
 import { AccountModalContentTypes } from '../AccountModal';
-import packageJson from '../../../../package.json';
 
 type Props = {
     setCurrentContent: React.Dispatch<
@@ -52,46 +51,41 @@ export const MainContent = ({ setCurrentContent, onClose, wallet }: Props) => {
                     borderRadius="full"
                     objectFit="cover"
                 />
-                {connection.isConnectedWithPrivy ? (
-                    <AccountSelector
-                        onClick={() => {
-                            setCurrentContent('accounts');
-                        }}
-                        wallet={wallet}
-                    />
-                ) : (
-                    <AddressDisplay wallet={wallet} />
-                )}
             </VStack>
 
             <ModalCloseButton />
-            <ModalBody w={'full'}></ModalBody>
-            <ModalFooter>
-                <VStack w={'full'}>
-                    <Button
-                        w={'full'}
-                        onClick={() => {
-                            disconnect();
-                            onClose();
-                        }}
-                        fontSize={'sm'}
-                        fontWeight={'400'}
-                        leftIcon={<RxExit color="#888888" />}
-                    >
-                        Logout
-                    </Button>
-                    <Text
-                        fontSize={'10px'}
-                        fontWeight={'400'}
-                        w={'full'}
-                        textAlign={'center'}
-                        opacity={0.3}
-                        mt={2}
-                    >
-                        v{packageJson.version}
-                    </Text>
-                </VStack>
-            </ModalFooter>
+
+            <Container maxW={'container.lg'}>
+                <ModalBody w={'full'}>
+                    <VStack w={'full'} spacing={5}>
+                        {connection.isConnectedWithPrivy ? (
+                            <AccountSelector
+                                onClick={() => {
+                                    setCurrentContent('accounts');
+                                }}
+                                wallet={wallet}
+                            />
+                        ) : (
+                            <AddressDisplay wallet={wallet} />
+                        )}
+
+                        <Button
+                            w={'full'}
+                            onClick={() => {
+                                disconnect();
+                                onClose();
+                            }}
+                            minH={'40px'}
+                            fontSize={'sm'}
+                            fontWeight={'400'}
+                            leftIcon={<RxExit color="#888888" />}
+                        >
+                            Logout
+                        </Button>
+                    </VStack>
+                </ModalBody>
+                <ModalFooter></ModalFooter>
+            </Container>
         </FadeInViewFromBottom>
     );
 };

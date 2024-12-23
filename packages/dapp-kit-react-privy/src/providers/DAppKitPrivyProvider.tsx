@@ -118,7 +118,9 @@ export const DAppKitPrivyProvider = ({
                             dappKitConfig.walletConnectOptions
                         }
                         themeMode={dappKitConfig.themeMode}
-                        themeVariables={{}}
+                        themeVariables={{
+                            '--vdk-modal-z-index': '1000000',
+                        }}
                     >
                         <SmartAccountProvider
                             nodeUrl={dappKitConfig.nodeUrl}

@@ -17,7 +17,7 @@ const variants = {
             _hover: {
                 bg: '#3c3c39',
             },
-            border: '1px solid #5e5e5e',
+            // border: '1px solid #5e5e5e',
         },
     })),
     selector: defineStyle(({ colorMode }) => ({

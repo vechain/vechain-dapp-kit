@@ -64,6 +64,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
                 return (
                     <WalletSettingsContent
                         setCurrentContent={setCurrentContent}
+                        onLogoutSuccess={onClose}
                     />
                 );
             case 'smart-account':
