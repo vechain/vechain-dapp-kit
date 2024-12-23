@@ -8,17 +8,16 @@ import {
     VStack,
     useColorMode,
 } from '@chakra-ui/react';
-import { useCrossAppAccounts, usePrivy } from '@privy-io/react-auth';
-import { useWallet } from '../../hooks';
-import { useEffect, useState } from 'react';
-import { useDAppKitPrivyConfig } from '../../providers/DAppKitPrivyProvider';
-import { FadeInViewFromRight } from '../common';
+import { useCrossAppAccounts } from '@privy-io/react-auth';
+import { FadeInViewFromBottom } from '../common';
 import { ModalBackButton } from '../common';
 import { PrivyAppInfo } from '../../utils';
+import { useWalletModal } from '@vechain/dapp-kit-react';
+import { ConnectModalContents } from './ConnectModal';
 
 type Props = {
     setCurrentContent: React.Dispatch<
-        React.SetStateAction<'main' | 'ecosystem'>
+        React.SetStateAction<ConnectModalContents>
     >;
     onClose: () => void;
     appsInfo?: Record<string, PrivyAppInfo>;
@@ -32,33 +31,29 @@ export const EcosystemContent = ({
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
 
-    const { privyConfig } = useDAppKitPrivyConfig();
-    const { authenticated } = usePrivy();
-    const { loginWithCrossAppAccount, linkCrossAppAccount } =
-        useCrossAppAccounts();
-    const { connection } = useWallet();
-    const [crossAppLogin, setCrossAppLogin] = useState(false);
+    const { loginWithCrossAppAccount } = useCrossAppAccounts();
 
     const connectWithVebetterDaoApps = async (appId: string) => {
-        setCrossAppLogin(true);
         await loginWithCrossAppAccount({ appId });
         onClose();
     };
 
-    useEffect(() => {
-        if (
-            connection.source.type === 'privy-cross-app' &&
-            crossAppLogin &&
-            authenticated
-        ) {
-            linkCrossAppAccount({
-                appId: `${privyConfig?.ecosystemAppsID?.[0]}`,
-            });
-        }
-    }, [connection.source.type, crossAppLogin, authenticated]);
+    const { open } = useWalletModal();
+
+    // useEffect(() => {
+    //     if (
+    //         connection.source.type === 'privy-cross-app' &&
+    //         crossAppLogin &&
+    //         authenticated
+    //     ) {
+    //         linkCrossAppAccount({
+    //             appId: `${privyConfig?.ecosystemAppsID?.[0]}`,
+    //         });
+    //     }
+    // }, [connection.source.type, crossAppLogin, authenticated]);
 
     return (
-        <FadeInViewFromRight>
+        <FadeInViewFromBottom>
             <ModalHeader
                 fontSize={'sm'}
                 fontWeight={'200'}
@@ -67,13 +62,60 @@ export const EcosystemContent = ({
                 justifyContent={'center'}
                 alignItems={'center'}
             >
-                Select a login app
+                Select wallet
             </ModalHeader>
 
             <ModalBackButton onClick={() => setCurrentContent('main')} />
             <ModalCloseButton />
             <ModalBody>
                 <VStack spacing={4} w={'full'} pb={6}>
+                    <Button
+                        fontSize={'14px'}
+                        fontWeight={'400'}
+                        backgroundColor={isDark ? 'transparent' : '#ffffff'}
+                        border={`1px solid ${isDark ? '#ffffff29' : '#ebebeb'}`}
+                        p={6}
+                        borderRadius={16}
+                        w={'full'}
+                        onClick={() => {
+                            onClose();
+                            open();
+                        }}
+                    >
+                        <Text>VeWorld</Text>
+                    </Button>
+
+                    <Button
+                        fontSize={'14px'}
+                        fontWeight={'400'}
+                        backgroundColor={isDark ? 'transparent' : '#ffffff'}
+                        border={`1px solid ${isDark ? '#ffffff29' : '#ebebeb'}`}
+                        p={6}
+                        borderRadius={16}
+                        w={'full'}
+                        onClick={() => {
+                            onClose();
+                            open();
+                        }}
+                    >
+                        <Text>WalletConnect</Text>
+                    </Button>
+
+                    <Button
+                        fontSize={'14px'}
+                        fontWeight={'400'}
+                        backgroundColor={isDark ? 'transparent' : '#ffffff'}
+                        border={`1px solid ${isDark ? '#ffffff29' : '#ebebeb'}`}
+                        p={6}
+                        borderRadius={16}
+                        w={'full'}
+                        onClick={() => {
+                            onClose();
+                            open();
+                        }}
+                    >
+                        <Text>Sync2</Text>
+                    </Button>
                     {appsInfo &&
                         Object.entries(appsInfo).map(([appId, appInfo]) => (
                             <Button
@@ -89,8 +131,6 @@ export const EcosystemContent = ({
                                 p={6}
                                 borderRadius={16}
                                 w={'full'}
-                                justifyContent={'flex-start'}
-                                color={isDark ? '#dfdfdd' : '#4d4d4d'}
                                 onClick={() =>
                                     connectWithVebetterDaoApps(appId)
                                 }
@@ -105,6 +145,6 @@ export const EcosystemContent = ({
                         ))}
                 </VStack>
             </ModalBody>
-        </FadeInViewFromRight>
+        </FadeInViewFromBottom>
     );
 };

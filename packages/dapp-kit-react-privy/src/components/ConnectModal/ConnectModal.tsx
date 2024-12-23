@@ -18,6 +18,8 @@ type Props = {
     logo?: string;
 };
 
+export type ConnectModalContents = 'main' | 'ecosystem' | 'email-verification';
+
 export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
     const [isDesktop] = useMediaQuery('(min-width: 768px)');
     const _modalContentProps = isDesktop
@@ -31,9 +33,8 @@ export const ConnectModal = ({ isOpen, onClose, logo }: Props) => {
               overflowY: 'scroll',
               overflowX: 'hidden',
           };
-    const [currentContent, setCurrentContent] = useState<'main' | 'ecosystem'>(
-        'main',
-    );
+    const [currentContent, setCurrentContent] =
+        useState<ConnectModalContents>('main');
     const [appsInfo, setAppsInfo] = useState<Record<string, PrivyAppInfo>>();
 
     useEffect(() => {

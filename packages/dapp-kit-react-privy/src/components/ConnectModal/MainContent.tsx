@@ -1,6 +1,9 @@
 import {
     Button,
+    Grid,
+    GridItem,
     HStack,
+    Icon,
     Image,
     ModalBody,
     ModalCloseButton,
@@ -8,20 +11,23 @@ import {
     ModalHeader,
     Stack,
     Text,
-    VStack,
     useColorMode,
 } from '@chakra-ui/react';
-import { usePrivy } from '@privy-io/react-auth';
-import { useWalletModal } from '@vechain/dapp-kit-react';
+import { useCrossAppAccounts, usePrivy } from '@privy-io/react-auth';
 import { useDAppKitPrivyConfig } from '../../providers/DAppKitPrivyProvider';
 import { FadeInViewFromBottom } from '../common';
 import { useFetchAppInfo } from '../../hooks/useFetchAppInfo';
-import { AppLogos } from '../common/AppLogos';
-import { PrivyAppInfo, SOCIAL_INFOS, WALLET_INFOS } from '../../utils';
+import { PrivyAppInfo, VECHAIN_PRIVY_APP_ID } from '../../utils';
+import { HiOutlineWallet } from 'react-icons/hi2';
+import { FcGoogle } from 'react-icons/fc';
+import { VechainLogoHorizontal } from '../../assets';
+import { CiCircleMore } from 'react-icons/ci';
+import { useLoginWithOAuth } from '@privy-io/react-auth';
+import { ConnectModalContents } from './ConnectModal';
 
 type Props = {
     setCurrentContent: React.Dispatch<
-        React.SetStateAction<'main' | 'ecosystem'>
+        React.SetStateAction<ConnectModalContents>
     >;
     onClose: () => void;
     logo?: string;
@@ -40,15 +46,12 @@ export const MainContent = ({
     const isDark = colorMode === 'dark';
 
     const { login } = usePrivy();
-    const { open } = useWalletModal();
     const { privyConfig } = useDAppKitPrivyConfig();
+
+    const { loginWithCrossAppAccount } = useCrossAppAccounts();
 
     const { data: appsInfo, isLoading } = useFetchAppInfo(
         privyConfig?.ecosystemAppsID || [],
-    );
-
-    const showEcosystemButton = Boolean(
-        privyConfig?.ecosystemAppsID && privyConfig.ecosystemAppsID.length > 0,
     );
 
     const handleEcosystemClick = () => {
@@ -58,14 +61,14 @@ export const MainContent = ({
         setCurrentContent('ecosystem');
     };
 
-    // Filter SOCIAL_INFOS based on privyConfig.loginMethods and order by loginMethods
-    const configuredSocialInfos = SOCIAL_INFOS.filter((social) =>
-        privyConfig?.loginMethods?.includes(social.code as any),
-    ).sort(
-        (a, b) =>
-            privyConfig?.loginMethods?.indexOf(a.code as any) -
-            privyConfig?.loginMethods?.indexOf(b.code as any),
-    );
+    /**
+     * Logic for loggin in with OAuth with whitelabel privy
+     */
+    const {
+        // When the OAuth provider redirects back to your app, the `loading`
+        // value can be used to show an intermediate state while login completes.
+        initOAuth,
+    } = useLoginWithOAuth();
 
     return (
         <FadeInViewFromBottom>
@@ -99,35 +102,39 @@ export const MainContent = ({
                     </Text>
                 </HStack>
                 <Stack spacing={4} w={'full'} align={'center'}>
-                    <VStack spacing={4} w={'full'}>
-                        <Button
-                            variant={'loginIn'}
-                            fontSize={'14px'}
-                            fontWeight={'400'}
-                            backgroundColor={isDark ? 'transparent' : '#ffffff'}
-                            border={`1px solid ${
-                                isDark ? '#ffffff29' : '#ebebeb'
-                            }`}
-                            p={6}
-                            borderRadius={16}
-                            w={'full'}
-                            onClick={() => {
-                                onClose();
-                                login();
-                            }}
-                            justifyContent={'center'}
-                        >
-                            <AppLogos
-                                apps={configuredSocialInfos}
-                                size="40px"
-                                textContent=""
-                                maxDisplayed={4}
-                            />
-                            <Text w={'full'} textAlign={'left'}>
-                                Login with Socials
-                            </Text>
-                        </Button>
-                        {showEcosystemButton && (
+                    <Grid templateColumns="repeat(2, 1fr)" gap={2} w={'full'}>
+                        {privyConfig?.loginMethods?.includes('google') && (
+                            <GridItem colSpan={2}>
+                                <Button
+                                    variant={'loginIn'}
+                                    fontSize={'14px'}
+                                    fontWeight={'400'}
+                                    backgroundColor={
+                                        isDark ? 'transparent' : '#ffffff'
+                                    }
+                                    border={`1px solid ${
+                                        isDark ? '#ffffff29' : '#ebebeb'
+                                    }`}
+                                    p={6}
+                                    borderRadius={16}
+                                    w={'full'}
+                                    onClick={() => {
+                                        initOAuth({ provider: 'google' });
+                                    }}
+                                    leftIcon={
+                                        <Icon
+                                            as={FcGoogle}
+                                            w={'25px'}
+                                            h={'25px'}
+                                        />
+                                    }
+                                >
+                                    <Text>Continue with Google</Text>
+                                </Button>
+                            </GridItem>
+                        )}
+
+                        <GridItem colSpan={2}>
                             <Button
                                 variant={'loginIn'}
                                 fontSize={'14px'}
@@ -141,50 +148,85 @@ export const MainContent = ({
                                 p={6}
                                 borderRadius={16}
                                 w={'full'}
-                                color={isDark ? '#dfdfdd' : '#4d4d4d'}
-                                onClick={handleEcosystemClick}
-                                isLoading={isLoading}
-                            >
-                                {appsInfo && (
-                                    <AppLogos
-                                        apps={Object.values(appsInfo)}
-                                        size="40px"
-                                        textContent=""
-                                        maxDisplayed={4}
+                                onClick={async () => {
+                                    await loginWithCrossAppAccount({
+                                        appId: VECHAIN_PRIVY_APP_ID,
+                                        // appId: 'clz41gcg00e4ay75dmq3uzzgr',
+                                    });
+                                    onClose();
+                                    onClose();
+                                    login();
+                                    onClose();
+                                    login();
+                                }}
+                                leftIcon={
+                                    <VechainLogoHorizontal
+                                        boxSize={'20px'}
+                                        isDark={isDark}
                                     />
-                                )}
-                                <Text w={'full'} textAlign={'left'}>
-                                    Login with Apps
-                                </Text>
+                                }
+                            >
+                                <Text>Login with VeChain</Text>
                             </Button>
-                        )}
-                        <Button
-                            variant={'loginIn'}
-                            fontSize={'14px'}
-                            fontWeight={'400'}
-                            backgroundColor={isDark ? 'transparent' : '#ffffff'}
-                            border={`1px solid ${
-                                isDark ? '#ffffff29' : '#ebebeb'
-                            }`}
-                            p={6}
-                            borderRadius={16}
-                            w={'full'}
-                            onClick={() => {
-                                onClose();
-                                open();
-                            }}
-                        >
-                            <AppLogos
-                                apps={WALLET_INFOS}
-                                backgroundColor="black"
-                                size="40px"
-                                textContent=""
-                            />
-                            <Text w={'full'} textAlign={'left'}>
-                                Login with Wallet
-                            </Text>
-                        </Button>
-                    </VStack>
+                        </GridItem>
+
+                        <GridItem>
+                            <Button
+                                variant={'loginIn'}
+                                fontSize={'14px'}
+                                fontWeight={'400'}
+                                backgroundColor={
+                                    isDark ? 'transparent' : '#ffffff'
+                                }
+                                border={`1px solid ${
+                                    isDark ? '#ffffff29' : '#ebebeb'
+                                }`}
+                                p={6}
+                                borderRadius={16}
+                                w={'full'}
+                                onClick={handleEcosystemClick}
+                                isDisabled={isLoading}
+                                leftIcon={
+                                    <Icon
+                                        as={HiOutlineWallet}
+                                        w={'20px'}
+                                        h={'20px'}
+                                    />
+                                }
+                            >
+                                <Text>External wallets</Text>
+                            </Button>
+                        </GridItem>
+                        <GridItem>
+                            <Button
+                                variant={'loginIn'}
+                                fontSize={'14px'}
+                                fontWeight={'400'}
+                                backgroundColor={
+                                    isDark ? 'transparent' : '#ffffff'
+                                }
+                                border={`1px solid ${
+                                    isDark ? '#ffffff29' : '#ebebeb'
+                                }`}
+                                p={6}
+                                borderRadius={16}
+                                w={'full'}
+                                onClick={() => {
+                                    onClose();
+                                    login();
+                                }}
+                                leftIcon={
+                                    <Icon
+                                        as={CiCircleMore}
+                                        w={'20px'}
+                                        h={'20px'}
+                                    />
+                                }
+                            >
+                                <Text>See more</Text>
+                            </Button>
+                        </GridItem>
+                    </Grid>
                 </Stack>
             </ModalBody>
             <ModalFooter />

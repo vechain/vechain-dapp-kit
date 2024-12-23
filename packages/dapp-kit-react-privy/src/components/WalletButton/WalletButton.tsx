@@ -4,14 +4,39 @@ import { ConnectModal } from '../ConnectModal';
 import { AccountModal } from '../AccountModal';
 import { useDAppKitPrivyConfig } from '../../providers/DAppKitPrivyProvider';
 import { humanAddress } from '../../utils';
+import { useLoginWithOAuth, usePrivy } from '@privy-io/react-auth';
+import { useEffect } from 'react';
+import { LoginLoadingModal } from '../LoginLoadingModal';
 
 export const WalletButton = () => {
     const { connection, selectedAccount } = useWallet();
+    const { authenticated, user, createWallet } = usePrivy();
 
     const connectModal = useDisclosure();
     const accountModal = useDisclosure();
 
     const { privyConfig } = useDAppKitPrivyConfig();
+
+    const { loading: isLoadingLoginOAuth } = useLoginWithOAuth({});
+
+    // If the user authenticates directly with google, we need to wait for success
+    // and if it's first time we create an embedded wallet for the user
+    useEffect(() => {
+        const embeddedWallet = user?.wallet?.address;
+
+        const asyncCreateWallet = async () => {
+            await createWallet();
+        };
+
+        if (authenticated && !isLoadingLoginOAuth && !embeddedWallet) {
+            try {
+                asyncCreateWallet();
+            } catch (error) {
+                // if user already has an embedded wallet, this will throw an error
+                console.error(error);
+            }
+        }
+    }, [authenticated, isLoadingLoginOAuth, user]);
 
     return (
         <>
@@ -44,6 +69,11 @@ export const WalletButton = () => {
             <AccountModal
                 isOpen={accountModal.isOpen}
                 onClose={accountModal.onClose}
+            />
+
+            <LoginLoadingModal
+                isOpen={isLoadingLoginOAuth}
+                onClose={() => {}}
             />
         </>
     );

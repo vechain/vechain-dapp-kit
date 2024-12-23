@@ -32,6 +32,8 @@ export const EXPLORER_URL = {
         'https://explore-testnet.vechain.org/transactions',
 } as const;
 
+export const VECHAIN_PRIVY_APP_ID = 'cm4wxxujb022fyujl7g0thb21';
+
 export const WALLET_INFOS: SocialInfo[] = [
     {
         code: 'veworld',

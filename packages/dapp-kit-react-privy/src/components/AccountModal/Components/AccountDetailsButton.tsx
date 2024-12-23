@@ -75,7 +75,7 @@ export const AccountDetailsButton = ({
                         )}
                     </HStack>
                     <Text
-                        fontSize={'md'}
+                        fontSize={'sm'}
                         fontWeight={'500'}
                         opacity={0.5}
                         overflowWrap={'break-word'}

@@ -8,7 +8,6 @@ import { SmartAccountProvider } from '../hooks';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Theme } from '../theme';
 import { PrivyLoginMethod } from '../utils';
-import { EnsureQueryClient } from './ReactQueryProvider';
 
 type Props = {
     children: ReactNode;
@@ -93,48 +92,46 @@ export const DAppKitPrivyProvider = ({
         <DAppKitPrivyContext.Provider
             value={{ privyConfig, feeDelegationConfig, dappKitConfig }}
         >
-            <EnsureQueryClient>
-                <ChakraProvider theme={Theme}>
-                    <BasePrivyProvider
-                        appId={privyConfig.appId}
-                        clientId={privyConfig.clientId}
-                        config={{
-                            loginMethodsAndOrder: {
-                                // @ts-ignore
-                                primary: loginMethods,
-                            },
-                            appearance: privyConfig.appearance,
-                            embeddedWallets: {
-                                createOnLogin:
-                                    privyConfig.embeddedWallets
-                                        ?.createOnLogin ?? 'all-users',
-                            },
-                        }}
-                        allowPasskeyLinking={privyConfig.allowPasskeyLinking}
+            <ChakraProvider theme={Theme}>
+                <BasePrivyProvider
+                    appId={privyConfig.appId}
+                    clientId={privyConfig.clientId}
+                    config={{
+                        loginMethodsAndOrder: {
+                            // @ts-ignore
+                            primary: loginMethods,
+                        },
+                        appearance: privyConfig.appearance,
+                        embeddedWallets: {
+                            createOnLogin:
+                                privyConfig.embeddedWallets?.createOnLogin ??
+                                'all-users',
+                        },
+                    }}
+                    allowPasskeyLinking={privyConfig.allowPasskeyLinking}
+                >
+                    <DAppKitProvider
+                        nodeUrl={dappKitConfig.nodeUrl}
+                        genesis={dappKitConfig.genesis}
+                        usePersistence
+                        walletConnectOptions={
+                            dappKitConfig.walletConnectOptions
+                        }
+                        themeMode={dappKitConfig.themeMode}
+                        themeVariables={{}}
                     >
-                        <DAppKitProvider
+                        <SmartAccountProvider
                             nodeUrl={dappKitConfig.nodeUrl}
-                            genesis={dappKitConfig.genesis}
-                            usePersistence
-                            walletConnectOptions={
-                                dappKitConfig.walletConnectOptions
+                            delegatorUrl={feeDelegationConfig.delegatorUrl}
+                            delegateAllTransactions={
+                                feeDelegationConfig.delegateAllTransactions
                             }
-                            themeMode={dappKitConfig.themeMode}
-                            themeVariables={{}}
                         >
-                            <SmartAccountProvider
-                                nodeUrl={dappKitConfig.nodeUrl}
-                                delegatorUrl={feeDelegationConfig.delegatorUrl}
-                                delegateAllTransactions={
-                                    feeDelegationConfig.delegateAllTransactions
-                                }
-                            >
-                                {children}
-                            </SmartAccountProvider>
-                        </DAppKitProvider>
-                    </BasePrivyProvider>
-                </ChakraProvider>
-            </EnsureQueryClient>
+                            {children}
+                        </SmartAccountProvider>
+                    </DAppKitProvider>
+                </BasePrivyProvider>
+            </ChakraProvider>
         </DAppKitPrivyContext.Provider>
     );
 };

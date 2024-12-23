@@ -111,6 +111,7 @@ export const TransactionModal = ({
             trapFocus={false}
             closeOnOverlayClick={status !== 'pending'}
             isCentered={true}
+            size="sm"
         >
             <ModalOverlay />
             <CustomModalContent {...(_modalContentProps as ModalContentProps)}>

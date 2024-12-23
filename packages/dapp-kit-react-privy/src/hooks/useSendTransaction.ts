@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useConnex } from '@vechain/dapp-kit-react';
 import { Transaction } from 'thor-devkit';
 import { useDAppKitPrivyConfig } from '../providers/DAppKitPrivyProvider';
-import { useWallet, Wallet } from './useWallet';
+import { useWallet } from './useWallet';
 import { useSmartAccount } from './useSmartAccount';
 import {
     EnhancedClause,
@@ -62,14 +62,14 @@ const estimateTxGasWithNext = async (
 
 /**
  * Props for the {@link useSendTransaction} hook
- * @param signerAccount the signer account to use
+ * @param signerAccountAddress the signer account to use
  * @param clauses clauses to send in the transaction
  * @param onTxConfirmed callback to run when the tx is confirmed
  * @param onTxFailedOrCancelled callback to run when the tx fails or is cancelled
  * @param suggestedMaxGas the suggested max gas for the transaction
  */
 type UseSendTransactionProps = {
-    signerAccount?: Wallet | null;
+    signerAccountAddress?: string | null;
     clauses?:
         | EnhancedClause[]
         | (() => EnhancedClause[])
@@ -118,7 +118,7 @@ export type UseSendTransactionReturnValue = {
  * @returns see {@link UseSendTransactionReturnValue}
  */
 export const useSendTransaction = ({
-    signerAccount,
+    signerAccountAddress,
     clauses,
     onTxConfirmed,
     onTxFailedOrCancelled,
@@ -189,12 +189,12 @@ export const useSendTransaction = ({
                 );
             }
 
-            if (signerAccount) {
+            if (signerAccountAddress) {
                 let gasLimitNext;
                 try {
                     gasLimitNext = await estimateTxGasWithNext(
                         [...clauses],
-                        signerAccount.address,
+                        signerAccountAddress,
                         undefined,
                         nodeUrl,
                     );
@@ -209,14 +209,14 @@ export const useSendTransaction = ({
                 // specify gasLimit if we have a suggested or an estimation
                 if (parsedGasLimit > 0)
                     return transaction
-                        .signer(signerAccount.address)
+                        .signer(signerAccountAddress)
                         .gas(parseInt(parsedGasLimit.toString()))
                         .request();
-                else return transaction.signer(signerAccount.address).request();
+                else return transaction.signer(signerAccountAddress).request();
             }
             return transaction.request();
         },
-        [vendor, signerAccount, suggestedMaxGas, nodeUrl, smartAccount],
+        [vendor, signerAccountAddress, suggestedMaxGas, nodeUrl, smartAccount],
     );
 
     /**

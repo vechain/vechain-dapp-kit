@@ -13,7 +13,7 @@ type Props = {
     onClick?: () => void;
 };
 
-export const AccountSelector = ({ wallet, size = 'xl', onClick }: Props) => {
+export const AccountSelector = ({ wallet, size = 'md', onClick }: Props) => {
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
 

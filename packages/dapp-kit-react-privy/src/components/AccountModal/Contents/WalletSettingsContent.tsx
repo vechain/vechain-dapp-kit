@@ -63,8 +63,8 @@ export const WalletSettingsContent = ({ setCurrentContent }: Props) => {
 
                 <VStack align="stretch" spacing={5} mt={2}>
                     <Text fontSize={'sm'} opacity={0.5} textAlign={'center'}>
-                        This is your main wallet and access point to your smart
-                        accounts. Please be sure to keep it safe and backed up.
+                        This is your main wallet and identity. Please be sure to
+                        keep it safe and backed up.
                     </Text>
                 </VStack>
 

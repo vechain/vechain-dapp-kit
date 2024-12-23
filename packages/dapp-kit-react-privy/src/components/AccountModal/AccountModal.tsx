@@ -43,6 +43,7 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
 
     const [currentContent, setCurrentContent] =
         useState<AccountModalContentTypes>('main');
+
     useEffect(() => {
         if (isOpen) {
             setCurrentContent('main');
@@ -88,8 +89,10 @@ export const AccountModal = ({ isOpen, onClose }: Props) => {
             isOpen={isOpen}
             onClose={onClose}
             isCentered
-            size="md"
+            size="sm"
             scrollBehavior="inside"
+            trapFocus={false}
+            autoFocus={false}
         >
             <ModalOverlay />
 

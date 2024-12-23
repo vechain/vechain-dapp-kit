@@ -12,7 +12,7 @@ import { ModalAnimation } from '../ModalAnimation';
 import { motion } from 'framer-motion';
 import { useSmartAccount } from '../../../hooks';
 import { EXPLORER_URL } from '../../../utils';
-import { IoCloseOutline } from 'react-icons/io5';
+import { MdOutlineErrorOutline } from 'react-icons/md';
 
 export type ErrorModalContentProps = {
     title?: ReactNode;
@@ -51,7 +51,7 @@ export const ErrorModalContent = ({
                         }}
                     >
                         <Icon
-                            as={IoCloseOutline}
+                            as={MdOutlineErrorOutline}
                             color={'red'}
                             fontSize={'100px'}
                         />
