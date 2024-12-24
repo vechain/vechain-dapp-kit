@@ -81,7 +81,7 @@ export const SmartAccountProvider = ({
     >();
     const [owner, setOwner] = useState<string | undefined>();
     const [chainId, setChainId] = useState('');
-    const thor = ThorClient.fromUrl(nodeUrl);
+    const thor = ThorClient.at(nodeUrl);
     const [isDeployed, setIsDeployed] = useState(false);
     const [accountFactory, setAccountFactory] = useState<string>();
 
