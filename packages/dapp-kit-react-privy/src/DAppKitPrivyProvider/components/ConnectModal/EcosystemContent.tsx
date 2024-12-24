@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { useCrossAppAccounts, usePrivy } from '@privy-io/react-auth';
 import { useWallet } from '../../hooks';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDAppKitPrivyConfig } from '../../DAppKitPrivyProvider';
 import { FadeInViewFromRight } from '../common';
 import { ModalBackButton } from '../common';

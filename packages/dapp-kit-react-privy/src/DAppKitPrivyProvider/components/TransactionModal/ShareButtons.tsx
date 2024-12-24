@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { FaWhatsapp } from 'react-icons/fa6';
 import { RiTwitterXFill } from 'react-icons/ri';
+import React from 'react';
 
 const TWITTER_INJECT = 'https://twitter.com/intent/tweet?text=';
 

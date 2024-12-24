@@ -18,6 +18,7 @@ import {
 } from '../../common';
 import { AccountModalContentTypes } from '../AccountModal';
 import packageJson from '../../../../../package.json';
+import React from 'react';
 
 type Props = {
     setCurrentContent: React.Dispatch<

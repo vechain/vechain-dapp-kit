@@ -11,12 +11,16 @@ import {
 } from '@chakra-ui/react';
 import { useWallet, Wallet } from '../../../hooks';
 import { RxExit } from 'react-icons/rx';
-import { AddressDisplay } from '../../common/AddressDisplay';
-import { FadeInViewFromBottom, ModalBackButton } from '../../common';
-import { AccountDetailsButton } from '../Components/AccountDetailsButton';
+import {
+    AddressDisplay,
+    FadeInViewFromBottom,
+    ModalBackButton,
+} from '../../common';
+import { AccountDetailsButton } from '../Components';
 import { MdAccountCircle, MdOutlineNavigateNext } from 'react-icons/md';
 import { AccountModalContentTypes } from '../AccountModal';
 import { HiOutlineWallet } from 'react-icons/hi2';
+import React from 'react';
 
 type Props = {
     setCurrentContent: React.Dispatch<

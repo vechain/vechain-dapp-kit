@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useConnex } from '../../DAppKitProvider/hooks/useConnex';
 import {
     fetchVechainDomain,
-    type VechainDomainResult,
+    type VeChainDomainResult,
 } from './api/fetchVechainDomain';
 
-interface UseVechainDomainReturnType extends VechainDomainResult {
+interface UseVechainDomainReturnType extends VeChainDomainResult {
     isLoading: boolean;
 }
 
@@ -18,7 +18,7 @@ export const useVechainDomain = ({
     addressOrDomain?: string | null;
 }): UseVechainDomainReturnType => {
     const connex = useConnex();
-    const [result, setResult] = useState<VechainDomainResult>({
+    const [result, setResult] = useState<VeChainDomainResult>({
         address: undefined,
         domain: undefined,
         isValidAddressOrDomain: false,

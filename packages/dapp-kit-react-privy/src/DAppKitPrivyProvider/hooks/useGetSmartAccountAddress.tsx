@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ABIContract } from '@vechain/sdk-core';
-import { THOR_CLIENT } from '../utils/Constants';
+import { THOR_CLIENT } from '../utils';
 import { SimpleAccountFactoryABI } from '../assets';
 
 interface UseGetSmartAccountAddressReturnType {
