@@ -14,7 +14,11 @@ import { GiHouseKeys } from 'react-icons/gi';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import { IoIosFingerPrint } from 'react-icons/io';
 import { ActionButton } from '../Components/ActionButton';
-import { ModalBackButton, StickyHeaderContainer } from '../../common';
+import {
+    AddressDisplay,
+    ModalBackButton,
+    StickyHeaderContainer,
+} from '../../common';
 import { useDAppKitPrivyConfig } from '../../../providers/DAppKitPrivyProvider';
 import { FadeInViewFromBottom } from '../../common';
 import { AccountModalContentTypes } from '../AccountModal';
