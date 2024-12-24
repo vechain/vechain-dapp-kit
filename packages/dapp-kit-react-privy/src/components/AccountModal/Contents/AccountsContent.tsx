@@ -18,6 +18,7 @@ import { AccountDetailsButton } from '../Components/AccountDetailsButton';
 import { MdAccountCircle, MdOutlineNavigateNext } from 'react-icons/md';
 import { AccountModalContentTypes } from '../AccountModal';
 import { HiOutlineWallet } from 'react-icons/hi2';
+import React from 'react';
 
 type Props = {
     setCurrentContent: React.Dispatch<

@@ -25,9 +25,10 @@ export type SuccessModalContentProps = {
 /**
  * SuccessModalContent is a component that shows a success message with a lottie animation and share buttons
  * @param {SuccessModalContentProps} props - The props of the component
- * @param {boolean} props.isOpen - A boolean to control the visibility of the modal
- * @param {() => void} props.onClose - A function to close the modal
  * @param {string} props.title - The title of the modal
+ * @param {boolean} props.showSocialButtons - Whether to show the social media share buttons
+ * @param {boolean} props.showExplorerButton - Whether to show the explorer button
+ * @param {string} props.txId - The transaction ID to link to the explorer
  * @param {string} props.socialDescriptionEncoded - The encoded description to share on social media
  * @returns {React.ReactElement} The SuccessModalContent component
  */

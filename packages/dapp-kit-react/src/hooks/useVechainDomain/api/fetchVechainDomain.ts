@@ -3,7 +3,7 @@ import type { DAppKitContext } from '../../../types';
 import { getDomain } from './getDomain';
 import { getAddress } from './getAddress';
 
-export interface VechainDomainResult {
+export interface VeChainDomainResult {
     address: string | undefined;
     domain: string | undefined;
     isValidAddressOrDomain: boolean;
@@ -18,7 +18,7 @@ export const fetchVechainDomain = async ({
 }: {
     addressOrDomain?: string | null;
     connex: DAppKitContext['connex'];
-}): Promise<VechainDomainResult> => {
+}): Promise<VeChainDomainResult> => {
     if (!addressOrDomain) {
         return {
             address: undefined,

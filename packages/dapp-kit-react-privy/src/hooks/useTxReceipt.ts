@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 import { useConnex } from '@vechain/dapp-kit-react';
 
 /**
- * Poll the chain for a transaction receipt until it is found (or timeout after 3 blocks)
+ * Poll the chain for a transaction receipt until it is found (or timeout after 5 blocks)
+ * @param thor Thor instance
  * @param id Transaction id
- * @param blocksTimeout Number of blocks to wait before timeout
+ * @param blocksTimeout Number of blocks to wait for the receipt
  * @returns Transaction receipt
  */
 export const pollForReceipt = async (
@@ -19,8 +20,7 @@ export const pollForReceipt = async (
     const transaction = thor.transaction(id);
     let receipt;
 
-    //Query the transaction until it has a receipt
-    //Timeout after 3 blocks
+    // Query the transaction until it has a receipt
     for (let i = 0; i < blocksTimeout; i++) {
         receipt = await transaction.getReceipt();
         if (receipt) {
@@ -41,10 +41,10 @@ export const pollForReceipt = async (
 };
 
 /**
- *  Get the tx receipt of a tx id with a block timeout to wait for the receipt
- * @param txId  the tx id to get the receipt
- * @param blocksTimeout  the blocks to wait for the receipt
- * @returns  the tx receipt
+ * Get the tx receipt of a tx id with a block timeout to wait for the receipt
+ * @param txId The tx id to get the receipt
+ * @param blockTimeout The block timeout to wait for the receipt
+ * @returns The tx receipt
  */
 export const useTxReceipt = (txId?: string, blockTimeout?: number) => {
     const { thor } = useConnex();

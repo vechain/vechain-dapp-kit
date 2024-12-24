@@ -10,7 +10,6 @@ import {
     Divider,
 } from '@chakra-ui/react';
 import { usePrivy, useWallet, Wallet } from '../../../hooks';
-import { AddressDisplay } from '../../common/AddressDisplay';
 import { GiHouseKeys } from 'react-icons/gi';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import { IoIosFingerPrint } from 'react-icons/io';
