@@ -1,15 +1,14 @@
 import {
-    Modal,
-    ModalContent,
+    Box,
     VStack,
     Text,
     Link,
-    ModalCloseButton,
-    ModalBody,
-    Spinner,
     Icon,
     HStack,
     Heading,
+    Spinner,
+    useColorMode,
+    Button,
 } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
 import { useSmartAccount } from '../../hooks';
@@ -41,6 +40,9 @@ export const TransactionToast = ({
     error,
     resetStatus,
 }: TransactionToastProps) => {
+    const { colorMode } = useColorMode();
+    const isDark = colorMode === 'dark';
+
     const { chainId } = useSmartAccount();
     const explorerUrl = EXPLORER_URL[chainId as keyof typeof EXPLORER_URL];
 
@@ -110,31 +112,35 @@ export const TransactionToast = ({
         );
     }, [status, txReceipt, explorerUrl, error]);
 
-    if (!toastContent) return null;
+    if (!toastContent || !isOpen) return null;
 
     return (
-        <Modal
-            size={'sm'}
-            motionPreset="slideInBottom"
-            onClose={handleClose}
-            isOpen={isOpen}
-            blockScrollOnMount={false}
-            variant={'transactionToast'}
-            closeOnOverlayClick={false}
-            closeOnEsc={false}
-            trapFocus={false}
-            allowPinchZoom={false}
+        <Box
+            position="fixed"
+            bottom="10"
+            left="10"
+            zIndex="11111"
+            bg={isDark ? '#1f1f1e' : 'white'}
+            borderRadius={'md'}
+            p={5}
+            boxShadow="lg"
+            maxW="sm"
         >
-            <ModalContent>
-                <ModalCloseButton
-                    onClick={handleClose}
-                    isDisabled={statusConfig[status].closeDisabled}
-                    fontSize={'10px'}
-                />
-                <ModalBody>
-                    <VStack spacing={4}>{toastContent}</VStack>
-                </ModalBody>
-            </ModalContent>
-        </Modal>
+            <HStack justify="space-between" alignItems={'center'} w="full">
+                <VStack spacing={4}>{toastContent}</VStack>
+                {!statusConfig[status].closeDisabled && (
+                    <Button
+                        onClick={handleClose}
+                        variant="ghost"
+                        size="sm"
+                        borderRadius={'full'}
+                        aria-label="Close"
+                        ml={5}
+                    >
+                        Close
+                    </Button>
+                )}
+            </HStack>
+        </Box>
     );
 };
