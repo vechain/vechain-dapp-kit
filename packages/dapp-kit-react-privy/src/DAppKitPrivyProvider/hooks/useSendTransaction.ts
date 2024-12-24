@@ -47,7 +47,7 @@ const estimateTxGasWithNext = async (
 
     const execGas = outputs.reduce((sum, out) => sum + out.gasUsed, 0);
 
-    // Calculate the intrinsic gas (transaction fee) cast is needed as data could be undefinedin Connex.Vm.Clause
+    // Calculate the intrinsic gas (transaction fee) cast is needed as data could be undefined in Connex.Vm.Clause
     const intrinsicGas = Transaction.intrinsicGas(
         clauses as Transaction.Clause[],
     );
@@ -104,7 +104,7 @@ export type UseSendTransactionReturnValue = {
 
 /**
  * Generic hook to send a transaction using connex.
- * This hook supports both Privy and Vechain wallets.
+ * This hook supports both Privy and VeChain wallets.
  *
  * It returns a function to send the transaction and a status to indicate the state
  * of the transaction (together with the transaction id).
@@ -136,7 +136,7 @@ export const useSendTransaction = ({
      * Convert the clauses to the format expected by the vendor
      * If the clauses are a function, it will be executed and the result will be used
      * If the clauses are an array, it will be used directly
-     * If the the wallet is connected with Privy, the clauses will be converted to the format expected by the vendor
+     * If the wallet is connected with Privy, the clauses will be converted to the format expected by the vendor
      * @param clauses the clauses to convert
      * @returns the converted clauses
      */
@@ -284,11 +284,10 @@ export const useSendTransaction = ({
                 .get();
             if (!transactionData) return;
 
-            const explained = await thor
+            return await thor
                 .explain(transactionData.clauses)
                 .caller(transactionData.origin)
                 .execute();
-            return explained;
         },
         [thor],
     );

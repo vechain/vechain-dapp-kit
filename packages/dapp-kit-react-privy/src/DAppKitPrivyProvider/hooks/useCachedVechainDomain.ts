@@ -1,23 +1,23 @@
 import { useVechainDomain } from '@vechain/dapp-kit-react';
 
-interface VechainDomainResult {
+interface VeChainDomainResult {
     address?: string;
     domain?: string;
     isValidAddressOrDomain: boolean;
     isLoading: boolean;
 }
 
-interface CachedVechainDomainResult {
-    domainResult: VechainDomainResult;
+interface CachedVeChainDomainResult {
+    domainResult: VeChainDomainResult;
     getCachedDomain: () => string | null;
     saveCachedDomain: (domain: string) => void;
 }
 
 const DOMAIN_CACHE_KEY = 'vechainDomainCache';
 const CACHE_EXPIRY_TIME = 24 * 60 * 60 * 1000; // 24 hours
-export const useCachedVechainDomain = (
+export const useCachedVeChainDomain = (
     address: string,
-): CachedVechainDomainResult => {
+): CachedVeChainDomainResult => {
     const domainResult = useVechainDomain({ addressOrDomain: address });
 
     // Try to get from cache first
