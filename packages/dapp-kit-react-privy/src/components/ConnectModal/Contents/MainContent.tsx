@@ -1,5 +1,4 @@
 import {
-    Button,
     Grid,
     GridItem,
     HStack,
@@ -31,6 +30,8 @@ import { useWalletModal } from '@vechain/dapp-kit-react';
 import { VECHAIN_PRIVY_APP_ID } from '../../../utils';
 import { useEffect } from 'react';
 import { useWallet } from '../../../hooks';
+// import { EmailLoginButton } from '../Components/EmailLoginButton';
+import { ConnectionButton } from '../Components';
 
 type Props = {
     setCurrentContent: React.Dispatch<
@@ -43,22 +44,22 @@ type Props = {
 export const MainContent = ({ setCurrentContent, onClose, logo }: Props) => {
     const { colorMode } = useColorMode();
     const isDark = colorMode === 'dark';
-
-    const { login: viewMoreLogin } = usePrivy();
-    const { privyConfig } = useDAppKitPrivyConfig();
-    const { open: openDappKitModal } = useWalletModal();
     const { connection } = useWallet();
+    const { privyConfig } = useDAppKitPrivyConfig();
 
+    // View more login
+    const { login: viewMoreLogin } = usePrivy();
+
+    // Open DappKit modal
+    const { open: openDappKitModal } = useWalletModal();
+
+    // Login with Vechain - Cross app account login
     const { loginWithCrossAppAccount } = useCrossAppAccounts();
+    // Passkey login
     const { loginWithPasskey } = useLoginWithPasskey();
 
-    useEffect(() => {
-        if (connection.isConnected) {
-            onClose();
-        }
-    }, [connection.isConnected]);
-
     /**
+     * Login with Google
      * Logic for loggin in with OAuth with whitelabel privy
      */
     const {
@@ -66,6 +67,12 @@ export const MainContent = ({ setCurrentContent, onClose, logo }: Props) => {
         // value can be used to show an intermediate state while login completes.
         initOAuth,
     } = useLoginWithOAuth();
+
+    useEffect(() => {
+        if (connection.isConnected) {
+            onClose();
+        }
+    }, [connection.isConnected]);
 
     return (
         <FadeInViewFromBottom>
@@ -100,21 +107,24 @@ export const MainContent = ({ setCurrentContent, onClose, logo }: Props) => {
                 </HStack>
                 <Stack spacing={4} w={'full'} align={'center'}>
                     <Grid templateColumns="repeat(4, 1fr)" gap={2} w={'full'}>
+                        {/* {privyConfig?.loginMethods?.includes('email') && (
+                            <>
+                                <GridItem colSpan={4} w={'full'}>
+                                    <EmailLoginButton />
+                                </GridItem>
+                                <GridItem colSpan={4} w={'full'}>
+                                    <HStack>
+                                        <Divider />
+                                        <Text fontSize={'xs'}>or</Text>
+                                        <Divider />
+                                    </HStack>
+                                </GridItem>
+                            </>
+                        )} */}
                         {privyConfig?.loginMethods?.includes('google') && (
                             <GridItem colSpan={4} w={'full'}>
-                                <Button
-                                    variant={'loginIn'}
-                                    fontSize={'14px'}
-                                    fontWeight={'400'}
-                                    backgroundColor={
-                                        isDark ? 'transparent' : '#ffffff'
-                                    }
-                                    border={`1px solid ${
-                                        isDark ? '#ffffff0a' : '#ebebeb'
-                                    }`}
-                                    p={6}
-                                    borderRadius={16}
-                                    w={'full'}
+                                <ConnectionButton
+                                    isDark={isDark}
                                     onClick={() => {
                                         initOAuth({ provider: 'google' });
                                     }}
@@ -125,26 +135,14 @@ export const MainContent = ({ setCurrentContent, onClose, logo }: Props) => {
                                             h={'25px'}
                                         />
                                     }
-                                >
-                                    <Text>Continue with Google</Text>
-                                </Button>
+                                    text="Continue with Google"
+                                />
                             </GridItem>
                         )}
 
                         <GridItem colSpan={4} w={'full'}>
-                            <Button
-                                variant={'loginIn'}
-                                fontSize={'14px'}
-                                fontWeight={'400'}
-                                backgroundColor={
-                                    isDark ? 'transparent' : '#ffffff'
-                                }
-                                border={`1px solid ${
-                                    isDark ? '#ffffff0a' : '#ebebeb'
-                                }`}
-                                p={6}
-                                borderRadius={16}
-                                w={'full'}
+                            <ConnectionButton
+                                isDark={isDark}
                                 onClick={async () => {
                                     await loginWithCrossAppAccount({
                                         appId: VECHAIN_PRIVY_APP_ID,
@@ -158,76 +156,35 @@ export const MainContent = ({ setCurrentContent, onClose, logo }: Props) => {
                                         isDark={isDark}
                                     />
                                 }
-                            >
-                                <Text>Login with VeChain</Text>
-                            </Button>
+                                text="Login with VeChain"
+                            />
                         </GridItem>
 
-                        <Button
-                            variant={'loginIn'}
-                            fontSize={'14px'}
-                            fontWeight={'400'}
-                            backgroundColor={isDark ? 'transparent' : '#ffffff'}
-                            border={`1px solid ${
-                                isDark ? '#ffffff0a' : '#ebebeb'
-                            }`}
-                            p={6}
-                            borderRadius={16}
-                            w={'full'}
+                        <ConnectionButton
+                            isDark={isDark}
                             onClick={openDappKitModal}
-                        >
-                            <Icon as={HiOutlineWallet} w={'20px'} h={'20px'} />
-                        </Button>
+                            icon={HiOutlineWallet}
+                        />
 
-                        <Button
-                            variant={'loginIn'}
-                            fontSize={'14px'}
-                            fontWeight={'400'}
-                            backgroundColor={isDark ? 'transparent' : '#ffffff'}
-                            border={`1px solid ${
-                                isDark ? '#ffffff0a' : '#ebebeb'
-                            }`}
-                            p={6}
-                            borderRadius={16}
-                            w={'full'}
+                        <ConnectionButton
+                            isDark={isDark}
                             onClick={() => {
                                 setCurrentContent('ecosystem');
                             }}
-                        >
-                            <Icon as={IoIosApps} w={'20px'} h={'20px'} />
-                        </Button>
+                            icon={IoIosApps}
+                        />
 
-                        <Button
-                            variant={'loginIn'}
-                            fontSize={'14px'}
-                            fontWeight={'400'}
-                            backgroundColor={isDark ? 'transparent' : '#ffffff'}
-                            border={`1px solid ${
-                                isDark ? '#ffffff0a' : '#ebebeb'
-                            }`}
-                            p={6}
-                            borderRadius={16}
-                            w={'full'}
+                        <ConnectionButton
+                            isDark={isDark}
                             onClick={loginWithPasskey}
-                        >
-                            <Icon as={IoIosFingerPrint} w={'20px'} h={'20px'} />
-                        </Button>
+                            icon={IoIosFingerPrint}
+                        />
 
-                        <Button
-                            variant={'loginIn'}
-                            fontSize={'14px'}
-                            fontWeight={'400'}
-                            backgroundColor={isDark ? 'transparent' : '#ffffff'}
-                            border={`1px solid ${
-                                isDark ? '#ffffff0a' : '#ebebeb'
-                            }`}
-                            p={6}
-                            borderRadius={16}
-                            w={'full'}
+                        <ConnectionButton
+                            isDark={isDark}
                             onClick={viewMoreLogin}
-                        >
-                            <Icon as={CiCircleMore} w={'20px'} h={'20px'} />
-                        </Button>
+                            icon={CiCircleMore}
+                        />
                     </Grid>
                 </Stack>
             </ModalBody>
