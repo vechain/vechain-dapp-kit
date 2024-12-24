@@ -30,7 +30,8 @@ const HomePage = (): ReactElement => {
     const { toggleColorMode: toggleDAppKitPrivyColorMode } =
         useDAppKitPrivyColorMode();
 
-    const { connection, smartAccount, connectedWallet } = useWallet();
+    const { connection, selectedAccount, connectedWallet, smartAccount } =
+        useWallet();
 
     // A dummy tx sending 0 b3tr tokens
     const clauses = useMemo(() => {
@@ -45,7 +46,7 @@ const HomePage = (): ReactElement => {
                 connectedWallet.address,
                 '0', // 1 B3TR (in wei)
             ]),
-            comment: `Transfer ${1} B3TR to `,
+            comment: `Transfer ${0} B3TR to `,
             abi: abi.getFunction('transfer'),
         });
         return clausesArray;
@@ -59,11 +60,11 @@ const HomePage = (): ReactElement => {
         isTransactionPending,
         error,
     } = useSendTransaction({
-        signerAccount: smartAccount,
+        signerAccountAddress: selectedAccount?.address,
         privyUIOptions: {
             title: 'Sign to confirm',
             description:
-                'This is a test transaction performing a transfer of 1 B3TR tokens from your smart account.',
+                'This is a test transaction performing a transfer of 0 B3TR tokens from your smart account.',
             buttonText: 'Sign',
         },
     });
@@ -131,7 +132,6 @@ const HomePage = (): ReactElement => {
                             <Text>
                                 Deployed: {smartAccount.isDeployed.toString()}
                             </Text>
-                            <Text>Owner: {smartAccount.owner}</Text>
                         </Box>
                     )}
 
@@ -140,12 +140,18 @@ const HomePage = (): ReactElement => {
                             <b>Wallet</b>
                         </Heading>
                         <Text>Address: {connectedWallet?.address}</Text>
-                        <Text>Connection Type: {connection.source.type}</Text>
+                    </Box>
+
+                    <Box>
+                        <Heading size={'md'}>
+                            <b>Connection</b>
+                        </Heading>
+                        <Text>Type: {connection.source.type}</Text>
                     </Box>
 
                     <Box mt={4}>
                         <Heading size={'md'}>
-                            <b>Actions</b>
+                            <b>Test actions</b>
                         </Heading>
                         <HStack mt={4} spacing={4}>
                             <HStack mt={4} spacing={4}>
@@ -154,14 +160,14 @@ const HomePage = (): ReactElement => {
                                     isLoading={isTransactionPending}
                                     isDisabled={isTransactionPending}
                                 >
-                                    Test Tx with toast
+                                    Tx with toast
                                 </Button>
                                 <Button
                                     onClick={handleTransactionWithModal}
                                     isLoading={isTransactionPending}
                                     isDisabled={isTransactionPending}
                                 >
-                                    Test Tx with modal
+                                    Tx with modal
                                 </Button>
                             </HStack>
                         </HStack>
