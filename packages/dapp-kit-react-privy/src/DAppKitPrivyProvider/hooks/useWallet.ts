@@ -3,7 +3,7 @@
 import { usePrivy, User } from '@privy-io/react-auth';
 import { useWallet as useDappKitWallet } from '@vechain/dapp-kit-react';
 import { useSmartAccount } from './useSmartAccount';
-import { useCachedVeChainDomain } from './useCachedVeChainDomain';
+import { useCachedVeChainDomain } from './useCachedVechainDomain';
 import { getPicassoImage } from '../utils';
 
 export type Wallet = {
