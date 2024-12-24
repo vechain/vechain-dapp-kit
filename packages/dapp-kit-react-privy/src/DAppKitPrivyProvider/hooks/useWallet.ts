@@ -136,7 +136,7 @@ export const useWallet = (): UseWalletReturnType => {
         if (isConnectedWithDappKit) {
             dappKitDisconnect();
         } else {
-            logout();
+            await logout();
         }
     };
 

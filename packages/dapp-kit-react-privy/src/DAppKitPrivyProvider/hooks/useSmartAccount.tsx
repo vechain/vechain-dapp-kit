@@ -15,7 +15,7 @@ import {
     ProviderInternalBaseWallet,
     signerUtils,
 } from '@vechain/sdk-network';
-import { SimpleAccountABI, SimpleAccountFactoryABI } from '../assets/abi';
+import { SimpleAccountABI, SimpleAccountFactoryABI } from '../assets';
 import {
     ExecuteWithAuthorizationSignData,
     randomTransactionUser,
@@ -199,7 +199,7 @@ export const SmartAccountProvider = ({
 
     /**
      * Send a transaction on vechain by asking the privy wallet to sign a typed data content
-     * that will allow us the execute the action with his smart account trough the executeWithAuthorization
+     * that will allow us the execute the action with his smart account through the executeWithAuthorization
      * function of the smart account.
      */
     const sendTransaction = async ({
