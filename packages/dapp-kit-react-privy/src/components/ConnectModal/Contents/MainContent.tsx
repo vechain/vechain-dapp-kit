@@ -57,6 +57,13 @@ export const MainContent = ({ setCurrentContent, onClose, logo }: Props) => {
     const { loginWithCrossAppAccount } = useCrossAppAccounts();
     // Passkey login
     const { loginWithPasskey } = useLoginWithPasskey();
+    const handleLoginWithPasskey = async () => {
+        try {
+            await loginWithPasskey();
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     /**
      * Login with Google
@@ -176,7 +183,7 @@ export const MainContent = ({ setCurrentContent, onClose, logo }: Props) => {
 
                         <ConnectionButton
                             isDark={isDark}
-                            onClick={loginWithPasskey}
+                            onClick={handleLoginWithPasskey}
                             icon={IoIosFingerPrint}
                         />
 
