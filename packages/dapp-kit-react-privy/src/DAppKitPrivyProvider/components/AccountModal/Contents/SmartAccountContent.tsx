@@ -12,9 +12,12 @@ import {
 } from '@chakra-ui/react';
 import { useWallet } from '../../../hooks';
 import React, { useState } from 'react';
-import { AddressDisplay } from '../../common/AddressDisplay';
 import { IoOpenOutline } from 'react-icons/io5';
-import { FadeInViewFromBottom, ModalBackButton } from '../../common';
+import {
+    AddressDisplay,
+    FadeInViewFromBottom,
+    ModalBackButton,
+} from '../../common';
 import { AccountModalContentTypes } from '../AccountModal';
 import { getPicassoImage } from '../../../utils';
 

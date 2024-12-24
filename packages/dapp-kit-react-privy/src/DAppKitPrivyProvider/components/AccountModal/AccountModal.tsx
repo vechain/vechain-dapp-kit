@@ -9,9 +9,11 @@ import {
 } from '@chakra-ui/react';
 import { useWallet } from '../../hooks';
 import { useState, useEffect } from 'react';
-import { WalletSettingsContent } from './Contents/WalletSettingsContent';
-import { MainContent } from './Contents/MainContent';
-import { SmartAccountContent } from './Contents/SmartAccountContent';
+import {
+    MainContent,
+    WalletSettingsContent,
+    SmartAccountContent,
+} from './Contents';
 import { AccountsContent } from './Contents';
 
 type Props = {

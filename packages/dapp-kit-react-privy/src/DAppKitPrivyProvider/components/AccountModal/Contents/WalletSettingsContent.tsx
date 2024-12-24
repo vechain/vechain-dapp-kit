@@ -8,14 +8,13 @@ import {
     useColorMode,
 } from '@chakra-ui/react';
 import { usePrivy, useWallet, Wallet } from '../../../hooks';
-import { AddressDisplay } from '../../common/AddressDisplay';
 import { GiHouseKeys } from 'react-icons/gi';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import { IoIosFingerPrint } from 'react-icons/io';
-import { ActionButton } from '../Components/ActionButton';
+import { ActionButton } from '../Components';
 import { ModalBackButton } from '../../common';
 import { useDAppKitPrivyConfig } from '../../../DAppKitPrivyProvider';
-import { FadeInViewFromBottom } from '../../common';
+import { AddressDisplay, FadeInViewFromBottom } from '../../common';
 import { AccountModalContentTypes } from '../AccountModal';
 import { FaRegAddressCard } from 'react-icons/fa';
 
