@@ -18,7 +18,7 @@ export const fetchVechainDomain = async ({
 }: {
     addressOrDomain?: string | null;
     thor: DAppKitContext['thor'];
-}): Promise<VechainDomainResult> => {
+}): Promise<VeChainDomainResult> => {
     if (!addressOrDomain) {
         return {
             address: undefined,

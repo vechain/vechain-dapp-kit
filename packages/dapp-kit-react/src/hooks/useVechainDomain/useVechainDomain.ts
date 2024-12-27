@@ -18,7 +18,7 @@ export const useVechainDomain = ({
     addressOrDomain?: string | null;
 }): UseVechainDomainReturnType => {
     const thor = useThor();
-    const [result, setResult] = useState<VechainDomainResult>({
+    const [result, setResult] = useState<VeChainDomainResult>({
         address: undefined,
         domain: undefined,
         isValidAddressOrDomain: false,
