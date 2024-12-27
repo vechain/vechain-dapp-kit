@@ -1,6 +1,8 @@
+import type { CompressedBlockDetail } from '@vechain/sdk-network';
+
 type NetworkType = 'main' | 'test';
 
-export const genesisBlocks: Record<NetworkType, Connex.Thor.Block> = {
+export const genesisBlocks: Record<NetworkType, CompressedBlockDetail> = {
     main: {
         number: 0,
         id: '0x00000000851caf3cfdb6e899cf5958bfb1ac3413d346d43539627e6be7ec1b4a',

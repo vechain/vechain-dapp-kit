@@ -1,4 +1,4 @@
-import { describe, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { SignClient } from '@walletconnect/sign-client';
 import { createWcModal } from '../../src';
 import { mockedSignClient } from '../helpers/mocked-sign-client';
