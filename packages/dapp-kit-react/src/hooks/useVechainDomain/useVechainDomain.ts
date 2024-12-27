@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useThor } from '../../DAppKitProvider/hooks/useThor';
 import {
     fetchVechainDomain,
-    type VechainDomainResult,
+    type VeChainDomainResult,
 } from './api/fetchVechainDomain';
 
-interface UseVechainDomainReturnType extends VechainDomainResult {
+interface UseVechainDomainReturnType extends VeChainDomainResult {
     isLoading: boolean;
 }
 
