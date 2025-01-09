@@ -20,7 +20,6 @@
         "@vechain/dapp-kit-ui": "workspace:^",
         "@vechain/sdk-core": "2.0.0-beta.1",
         "@vechain/sdk-network": "2.0.0-beta.1",
-        "ethers": "6.13.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "vite": "^5.3.6"
