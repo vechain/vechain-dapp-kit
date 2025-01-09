@@ -23,14 +23,15 @@
         "watch": "yarn build --watch"
     },
     "dependencies": {
-        "@vechain/sdk-core": "1.0.0-rc.1",
-        "@vechain/sdk-errors": "1.0.0-rc.1",
-        "@vechain/sdk-network": "1.0.0-rc.1",
+        "@vechain/sdk-core": "2.0.0-beta.1",
+        "@vechain/sdk-errors": "2.0.0-beta.1",
+        "@vechain/sdk-network": "2.0.0-beta.1",
         "@walletconnect/modal": "2.6.2",
         "@walletconnect/sign-client": "2.11.3",
         "@walletconnect/utils": "2.11.3",
         "events": "^3.3.0",
-        "valtio": "1.11.2"
+        "valtio": "1.11.2",
+        "viem": "^2.22.5"
     },
     "devDependencies": {
         "@types/react": "^18.2.28",

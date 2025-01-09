@@ -1,4 +1,3 @@
-import type { vechain_sdk_core_ethers as ethers } from '@vechain/sdk-core';
 import { JSONRPCInvalidParams } from '@vechain/sdk-errors';
 import type {
     AvailableVeChainProviders,
@@ -12,6 +11,7 @@ import type {
     TransactionResponse,
 } from '../types/requests';
 import type { WalletManager } from './wallet-manager';
+import { TypedDataDomain, TypedDataParameter } from 'viem';
 
 class VeChainSignerDAppKit extends VeChainAbstractSigner {
     private readonly walletManager: WalletManager;
@@ -89,9 +89,10 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
     }
 
     async signTypedData(
-        _domain: ethers.TypedDataDomain,
-        _types: Record<string, ethers.TypedDataField[]>,
-        _value: Record<string, unknown>,
+        _domain: TypedDataDomain,
+        _types: Record<string, TypedDataParameter[]>,
+        _primaryType: string,
+        _message: Record<string, unknown>
     ): Promise<string> {
         return Promise.reject(new Error('Method not implemented.'));
     }
