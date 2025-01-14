@@ -1,27 +1,38 @@
 import { Certificate } from '@vechain/sdk-core';
-import type { BaseWallet, ConnectResponse, ConnexWallet } from '../types';
-import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
 import { ethers } from 'ethers';
+import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
+import type {
+    BaseWallet,
+    CertificateArgs,
+    ConnectResponse,
+    ConnexWallet,
+} from '../types';
 import { SignTypedDataOptions } from '../types/types';
 
 /**
  * A `ConnexWallet` for wallet's that use a certificate connection
  */
 class CertificateBasedWallet implements ConnexWallet {
+    private readonly certificateData: Required<CertificateArgs>;
     constructor(
         private readonly wallet: BaseWallet,
-        private readonly connectionCertificateData?: {
-            message?: Connex.Vendor.CertMessage;
-            options?: Connex.Signer.CertOptions;
-        },
-    ) {}
+        connectionCertificateData?: CertificateArgs,
+    ) {
+        this.certificateData = {
+            message:
+                connectionCertificateData?.message ??
+                DEFAULT_CONNECT_CERT_MESSAGE,
+            options: connectionCertificateData?.options ?? {},
+        };
+    }
 
-    connect = async (): Promise<ConnectResponse> => {
+    connect = async (
+        _certificate?: CertificateArgs,
+    ): Promise<ConnectResponse> => {
         const certificateMessage =
-            this.connectionCertificateData?.message ||
-            DEFAULT_CONNECT_CERT_MESSAGE;
+            _certificate?.message || this.certificateData.message;
         const certificateOptions =
-            this.connectionCertificateData?.options || {};
+            _certificate?.options ?? this.certificateData.options;
         const {
             annex: { domain, signer, timestamp },
             signature,
