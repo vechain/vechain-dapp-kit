@@ -1,10 +1,10 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as util from 'node:util';
-import { exec } from 'node:child_process';
+import { execFile } from 'node:child_process';
 import { BeforeAll } from '@cucumber/cucumber';
 
-const asyncExec = util.promisify(exec);
+const asyncExecFile = util.promisify(execFile);
 
 BeforeAll(async function () {
     const distPath = path.resolve(__dirname, '..', '..', '..', 'veworld-dist');
@@ -20,5 +20,5 @@ BeforeAll(async function () {
         '..',
         'veworld-dist.zip',
     );
-    await asyncExec(`unzip ${zipPath} -d ${distPath}`);
+    await asyncExecFile('unzip', ['-o', zipPath]);
 });

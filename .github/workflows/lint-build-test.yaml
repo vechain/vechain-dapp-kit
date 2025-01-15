@@ -1,38 +1,40 @@
 name: Lint, Build & Test
 
 on:
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 concurrency:
-    group: ${{ github.head_ref || github.ref_name }}-build-test-scan
-    cancel-in-progress: true
+  group: ${{ github.head_ref || github.ref_name }}-build-test-scan
+  cancel-in-progress: true
 
 jobs:
-    build-and-test:
-        runs-on: ubuntu-latest
-        name: Lint, Build & Test
+  build-and-test:
+    runs-on: ubuntu-latest
+    name: Lint, Build & Test
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            - name: Setup Node
-              uses: actions/setup-node@v3
-              with:
-                  node-version-file: .nvmrc
-                  cache: 'yarn'
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'yarn'
 
-            - name: Install
-              run: yarn install:all
+      - name: Install
+        run: |
+          yarn
+          yarn install:all
 
-            - name: Lint
-              run: yarn run lint
+      - name: Lint
+        run: yarn run lint
 
-            - name: Test
-              run: yarn run test
+      - name: Test
+        run: yarn run test
 
-            - name: Build
-              run: yarn run build
+      - name: Build
+        run: yarn run build

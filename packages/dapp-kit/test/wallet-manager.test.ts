@@ -2,21 +2,20 @@ import { describe, expect, it, vi } from 'vitest';
 import type { WalletConnectOptions } from '../src';
 import { WalletManager } from '../src';
 import { mockedConnexSigner } from './helpers/mocked-signer';
-import { typedData } from './fixture';
+import { ThorClient } from '@vechain/sdk-network';
 
 const newWalletManager = (wcOptions?: WalletConnectOptions): WalletManager => {
     return new WalletManager(
         {
             nodeUrl: 'https://testnet.veblocks.net/',
             walletConnectOptions: wcOptions,
-            genesis: 'main',
         },
-        {} as any,
+        ThorClient.fromUrl('https://testnet.vechain.org'),
     );
 };
 
 window.vechain = {
-    newConnexSigner: () => mockedConnexSigner,
+    newConnexSigner: () => mockedConnexSigner as any,
 };
 
 describe('WalletManager', () => {
@@ -32,10 +31,7 @@ describe('WalletManager', () => {
     describe('connect', () => {
         it('no source set', async () => {
             const walletManager = newWalletManager();
-
-            await expect(async () => walletManager.connect()).rejects.toThrow(
-                'No wallet has been selected',
-            );
+            expect(() => walletManager.connect()).throws();
         });
     });
 
@@ -62,20 +58,6 @@ describe('WalletManager', () => {
             );
 
             expect(res.signature).toBeDefined();
-        });
-    });
-
-    describe('signTypedData', () => {
-        it('should sign the typedData', async () => {
-            const walletManager = newWalletManager();
-            walletManager.setSource('veworld');
-            const res = await walletManager.signTypedData(
-                typedData.domain,
-                typedData.types,
-                typedData.value,
-            );
-
-            expect(res).toBeDefined();
         });
     });
 

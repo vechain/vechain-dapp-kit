@@ -10,13 +10,11 @@ const walletConnectOptions = {
     },
 };
 
-const vechainDAppKitOptions = {
+DAppKitUI.configure({
     nodeUrl: 'https://testnet.vechain.org/',
     walletConnectOptions,
     usePersistence: true,
-};
-
-DAppKitUI.configure(vechainDAppKitOptions);
+});
 
 // custom button configuration
 setTimeout(() => {

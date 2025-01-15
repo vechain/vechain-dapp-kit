@@ -1,18 +1,25 @@
 import { Certificate } from '@vechain/sdk-core';
-import type { BaseWallet, ConnectResponse, ConnexWallet } from '../types';
+import type { ConnectResponse, VeChainWallet } from '../types';
 import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
-import { ethers } from 'ethers';
-import { SignTypedDataOptions } from '../types/types';
+import type {
+    CertificateMessage,
+    CertificateOptions,
+    CertificateResponse,
+    TransactionMessage,
+    TransactionOptions,
+    TransactionResponse,
+} from '../types/requests';
+import type { WalletSigner } from '../types/types';
 
 /**
- * A `ConnexWallet` for wallet's that use a certificate connection
+ * A `VechainWallet` for wallet's that use a certificate connection
  */
-class CertificateBasedWallet implements ConnexWallet {
+class CertificateBasedWallet implements VeChainWallet {
     constructor(
-        private readonly wallet: BaseWallet,
+        private readonly wallet: Promise<WalletSigner>,
         private readonly connectionCertificateData?: {
-            message?: Connex.Vendor.CertMessage;
-            options?: Connex.Signer.CertOptions;
+            message?: CertificateMessage;
+            options?: CertificateOptions;
         },
     ) {}
 
@@ -53,25 +60,36 @@ class CertificateBasedWallet implements ConnexWallet {
     };
 
     signCert = (
-        msg: Connex.Vendor.CertMessage,
-        options: Connex.Signer.CertOptions,
-    ): Promise<Connex.Vendor.CertResponse> =>
-        this.wallet.signCert(msg, options);
+        msg: CertificateMessage,
+        options: CertificateOptions,
+    ): Promise<CertificateResponse> =>
+        this.wallet.then((w) => w.signCert(msg, options));
 
     signTx = (
-        msg: Connex.Vendor.TxMessage,
-        options: Connex.Signer.TxOptions,
-    ): Promise<Connex.Vendor.TxResponse> => this.wallet.signTx(msg, options);
+        msg: TransactionMessage[],
+        options: TransactionOptions,
+    ): Promise<TransactionResponse> =>
+        this.wallet.then((w) => {
+            if (options.delegator?.url === '') {
+                options.delegator = undefined;
+            }
 
-    signTypedData = (
-        _domain: ethers.TypedDataDomain,
-        _types: Record<string, ethers.TypedDataField[]>,
-        _value: Record<string, unknown>,
-        _options?: SignTypedDataOptions,
-    ): Promise<string> =>
-        this.wallet.signTypedData(_domain, _types, _value, _options);
+            if (options.gas === 0) {
+                options.gas = undefined;
+            }
 
-    disconnect = async (): Promise<void> => this.wallet.disconnect?.();
+            if (options.comment === '') {
+                options.comment = undefined;
+            }
+
+            if (options.dependsOn === '') {
+                options.dependsOn = undefined;
+            }
+
+            return w.signTx(msg, options);
+        });
+
+    disconnect = () => Promise.resolve();
 }
 
 export { CertificateBasedWallet };

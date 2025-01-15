@@ -76,9 +76,11 @@ body {
     align-items: center;
     justify-content: center;
 }
+
 h2 {
     margin: 0;
 }
+
 .container {
     display: flex;
     flex-direction: column;
@@ -88,6 +90,7 @@ h2 {
     border-radius: 20px;
     padding: 20px;
 }
+
 .label {
     margin-top: 20px;
     margin-bottom: 10px;
