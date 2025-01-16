@@ -1,9 +1,9 @@
-import { proxy, subscribe } from 'valtio/vanilla';
-import { subscribeKey } from 'valtio/vanilla/utils';
+import { type DriverNoVendor } from '@vechain/connex-driver';
 import { Certificate } from '@vechain/sdk-core';
 import { type ethers } from 'ethers';
-import { type DriverNoVendor } from '@vechain/connex-driver';
-import { type SignTypedDataOptions } from '../types/types';
+import { proxy, subscribe } from 'valtio/vanilla';
+import { subscribeKey } from 'valtio/vanilla/utils';
+import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
 import type {
     ConnectResponse,
     ConnexWallet,
@@ -11,8 +11,8 @@ import type {
     WalletManagerState,
     WalletSource,
 } from '../types';
+import { CertificateArgs, type SignTypedDataOptions } from '../types/types';
 import { DAppKitLogger, Storage, createWallet } from '../utils';
-import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
 import { getAccountDomain } from '../utils/get-account-domain';
 
 class WalletManager {
@@ -118,12 +118,17 @@ class WalletManager {
      * Sign a connection certificate
      * this is needed for wallet connect connections when a connection certificate is required
      */
-    signConnectionCertificate = async (): Promise<ConnectResponse> => {
+    signConnectionCertificate = async (
+        _certificate?: CertificateArgs,
+    ): Promise<ConnectResponse> => {
         const certificateMessage =
+            _certificate?.message ||
             this.options.connectionCertificate?.message ||
             DEFAULT_CONNECT_CERT_MESSAGE;
         const certificateOptions =
-            this.options.connectionCertificate?.options || {};
+            _certificate?.options ||
+            this.options.connectionCertificate?.options ||
+            {};
         const {
             annex: { domain, signer, timestamp },
             signature,
@@ -157,9 +162,9 @@ class WalletManager {
         }
     };
 
-    connect = (): Promise<ConnectResponse> =>
+    connect = (_certificate?: CertificateArgs): Promise<ConnectResponse> =>
         this.wallet
-            .connect()
+            .connect(_certificate)
             .then((res) => {
                 if (
                     this.state.source === 'wallet-connect' &&

@@ -1,15 +1,15 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { WalletConnectOptions } from '../src';
 import { WalletManager } from '../src';
-import { mockedConnexSigner } from './helpers/mocked-signer';
 import { typedData } from './fixture';
+import { mockedConnexSigner } from './helpers/mocked-signer';
 
 const newWalletManager = (wcOptions?: WalletConnectOptions): WalletManager => {
     return new WalletManager(
         {
             nodeUrl: 'https://testnet.veblocks.net/',
             walletConnectOptions: wcOptions,
-            genesis: 'main',
+            genesis: 'test',
         },
         {} as any,
     );
@@ -35,6 +35,28 @@ describe('WalletManager', () => {
 
             await expect(async () => walletManager.connect()).rejects.toThrow(
                 'No wallet has been selected',
+            );
+        });
+        it('connect with custom message', async () => {
+            const walletManager = newWalletManager();
+            walletManager.setSource('veworld');
+            await walletManager.connect({
+                message: {
+                    payload: {
+                        type: 'text',
+                        content: 'TEST1',
+                    },
+                    purpose: 'identification',
+                },
+            });
+
+            expect(walletManager.state.connectionCertificate).toEqual(
+                expect.objectContaining({
+                    payload: {
+                        type: 'text',
+                        content: 'TEST1',
+                    },
+                }),
             );
         });
     });

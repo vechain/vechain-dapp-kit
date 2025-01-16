@@ -1,6 +1,6 @@
-import type { WalletConnectOptions } from '@vechain/dapp-kit';
 import { CertificateData } from '@vechain/sdk-core';
 import type { LogLevel } from '../utils';
+import { WalletConnectOptions } from './wc-types';
 
 declare global {
     interface Window {
@@ -30,6 +30,21 @@ interface WalletConfig {
 type Genesis = 'main' | 'test' | Connex.Thor.Block;
 
 /**
+ * Simple Certificate Args
+ */
+type CertificateArgs = {
+    message: Connex.Vendor.CertMessage;
+    options?: Connex.Signer.CertOptions;
+};
+
+/**
+ * Callback used by the DAppKit `connect` function
+ */
+type ConnectCallback = (
+    _certificate?: CertificateArgs,
+) => Promise<ConnectResponse>;
+
+/**
  * Options for the DAppKit class
  * @param nodeUrl - The URL of the VeChain node to connect to
  * @param genesis - Optional. The genesis block of the VeChain network you want to connect to. Eg, 'main', 'test', or a Connex.Thor.Block object
@@ -51,10 +66,7 @@ interface DAppKitOptions {
     useFirstDetectedSource?: boolean;
     logLevel?: LogLevel;
     requireCertificate?: boolean;
-    connectionCertificate?: {
-        message?: Connex.Vendor.CertMessage;
-        options?: Connex.Signer.CertOptions;
-    };
+    connectionCertificate?: CertificateArgs;
     customNet?: Net;
     allowedWallets?: WalletSource[];
 }
@@ -67,7 +79,7 @@ type BaseWallet = ExpandedConnexSigner & {
  * Modifies the Connex.Signer interface to include a disconnect method
  */
 type ConnexWallet = BaseWallet & {
-    connect: () => Promise<ConnectResponse>;
+    connect: ConnectCallback;
 };
 
 interface ConnectResponse {
@@ -91,14 +103,16 @@ interface SignTypedDataOptions {
 
 export type {
     BaseWallet,
-    DAppKitOptions,
-    ConnexWallet,
-    WalletConfig,
-    WalletSource,
-    WalletManagerState,
+    CertificateArgs,
+    ConnectCallback,
     ConnectResponse,
+    ConnexWallet,
+    DAppKitOptions,
+    DriverSignedTypedData,
+    ExpandedConnexSigner,
     Genesis,
     SignTypedDataOptions,
-    ExpandedConnexSigner,
-    DriverSignedTypedData,
+    WalletConfig,
+    WalletManagerState,
+    WalletSource,
 };

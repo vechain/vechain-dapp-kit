@@ -1,14 +1,14 @@
 /// <reference types="@vechain/connex" />
-import type React from 'react';
 import type {
-    ConnectResponse,
+    ConnectCallback,
     WalletManager,
     WalletSource,
 } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 import { CertificateData } from '@vechain/sdk-core';
+import type React from 'react';
 
-export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
+export type { DAppKitOptions, WalletConnectOptions } from '@vechain/dapp-kit';
 export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 
 export interface AccountState {
@@ -39,7 +39,7 @@ export interface DAppKitContext {
         setSource: (source: WalletSource) => void;
         availableWallets: WalletSource[];
         disconnect: () => void;
-        connect: () => Promise<ConnectResponse>;
+        connect: ConnectCallback;
         account: string | null;
         accountDomain: string | null;
         isAccountDomainLoading: boolean;
