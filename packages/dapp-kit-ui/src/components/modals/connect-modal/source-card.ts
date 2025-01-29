@@ -17,6 +17,7 @@ export class SourceCard extends LitElement {
                 margin: 8px 0;
                 justify-content: space-between;
                 font-size: var(--vdk-font-size-medium, ${Font.Size.Medium});
+                border: var(--vdk-source-card-border, none);
             }
 
             img {

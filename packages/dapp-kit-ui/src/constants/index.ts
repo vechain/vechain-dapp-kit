@@ -5,5 +5,5 @@ export * from './theme';
 export * from './stores';
 export * from './font';
 export * from './i18n';
-export * from './z-index';
+export * from './modal';
 export * from './veworld';

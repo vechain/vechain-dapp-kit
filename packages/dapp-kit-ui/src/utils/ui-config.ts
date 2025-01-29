@@ -5,6 +5,8 @@ import {
     modalZIndex,
     defaultI18n,
     type I18n,
+    modalBackdropFilter,
+    modalWidth,
 } from '../constants';
 
 const getModal = (): HTMLElement | null => document.querySelector('vdk-modal');
@@ -44,6 +46,9 @@ const ThemeVariables = {
     '--vdk-font-size-large': Font.Size.Large.toString(),
     '--vdk-font-weight-medium': Font.Weight.Medium.toString(),
     '--vdk-modal-z-index': modalZIndex.toString(),
+    '--vdk-source-card-border': 'none',
+    '--vdk-modal-backdrop-filter': modalBackdropFilter.toString(),
+    '--vdk-modal-width': modalWidth.toString(),
 };
 
 export type ThemeVariables = keyof typeof ThemeVariables;
