@@ -2,7 +2,12 @@ import type { TemplateResult } from 'lit';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WalletManager } from '@vechain/dapp-kit';
-import { Font, type SourceInfo, type ThemeMode } from '../../../constants';
+import {
+    Font,
+    sourceCardBorder,
+    type SourceInfo,
+    type ThemeMode,
+} from '../../../constants';
 import { buttonStyle } from '../../../assets/styles';
 import { DAppKitUI } from '../../../client';
 
@@ -17,7 +22,18 @@ export class SourceCard extends LitElement {
                 margin: 8px 0;
                 justify-content: space-between;
                 font-size: var(--vdk-font-size-medium, ${Font.Size.Medium});
-                border: var(--vdk-source-card-border, none);
+            }
+            button.LIGHT {
+                border: var(
+                    --vdk-border-light-source-card,
+                    ${sourceCardBorder.Light}
+                );
+            }
+            button.DARK {
+                border: var(
+                    --vdk-border-dark-source-card,
+                    ${sourceCardBorder.Dark}
+                );
             }
 
             img {
