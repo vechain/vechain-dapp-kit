@@ -1,6 +1,6 @@
 import type React from 'react';
 import type {
-    ConnectResponse,
+    ConnectCallback,
     VeChainSignerDAppKit,
     WalletSource,
 } from '@vechain/dapp-kit';
@@ -8,6 +8,7 @@ import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 import type { CertificateData } from '@vechain/sdk-core';
 import type { ThorClient } from '@vechain/sdk-network';
 
+export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
 
 export interface AccountState {
@@ -35,7 +36,7 @@ export interface DAppKitContext {
         setSource: (source: WalletSource) => void;
         availableWallets: WalletSource[];
         disconnect: () => void;
-        connect: () => Promise<ConnectResponse>;
+        connect: ConnectCallback;
         account: string | null;
         accountDomain: string | null;
         isAccountDomainLoading: boolean;

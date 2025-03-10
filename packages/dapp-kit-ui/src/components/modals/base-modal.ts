@@ -5,6 +5,8 @@ import {
     type ThemeMode,
     Breakpoint,
     Colors,
+    modalBackdropFilter,
+    modalWidth,
     modalZIndex,
 } from '../../constants';
 
@@ -24,6 +26,10 @@ export class BaseModal extends LitElement {
             opacity: 1;
             transition: opacity 0.1s ease-in-out;
             z-index: var(--vdk-modal-z-index, ${modalZIndex});
+            backdrop-filter: var(
+                --vdk-modal-backdrop-filter,
+                ${modalBackdropFilter}
+            );
         }
 
         .modal-container.hidden {
@@ -75,7 +81,7 @@ export class BaseModal extends LitElement {
                 justify-content: center;
             }
             .modal {
-                width: 350px;
+                width: var(--vdk-modal-width, ${modalWidth});
                 border-radius: 16px;
             }
         }

@@ -9,8 +9,9 @@ const newWalletManager = (wcOptions?: WalletConnectOptions): WalletManager => {
         {
             nodeUrl: 'https://testnet.veblocks.net/',
             walletConnectOptions: wcOptions,
+            genesis: 'test',
         },
-        ThorClient.fromUrl('https://testnet.vechain.org'),
+        ThorClient.at('https://testnet.vechain.org'),
     );
 };
 
@@ -32,6 +33,28 @@ describe('WalletManager', () => {
         it('no source set', async () => {
             const walletManager = newWalletManager();
             expect(() => walletManager.connect()).throws();
+        });
+        it('connect with custom message', async () => {
+            const walletManager = newWalletManager();
+            walletManager.setSource('veworld');
+            await walletManager.connect({
+                message: {
+                    payload: {
+                        type: 'text',
+                        content: 'TEST1',
+                    },
+                    purpose: 'identification',
+                },
+            });
+
+            expect(walletManager.state.connectionCertificate).toEqual(
+                expect.objectContaining({
+                    payload: {
+                        type: 'text',
+                        content: 'TEST1',
+                    },
+                }),
+            );
         });
     });
 

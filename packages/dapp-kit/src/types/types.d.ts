@@ -1,7 +1,7 @@
+import type { LogLevel } from '../utils';
+import { WalletConnectOptions } from './wc-types';
 import type { CertificateData } from '@vechain/sdk-core';
 import type { CompressedBlockDetail } from '@vechain/sdk-network';
-import type { WalletConnectOptions } from '@vechain/dapp-kit';
-import type { LogLevel } from '../utils';
 import type {
     CertificateMessage,
     CertificateOptions,
@@ -34,6 +34,21 @@ interface WalletConfig {
 type Genesis = 'main' | 'test' | CompressedBlockDetail;
 
 /**
+ * Simple Certificate Args
+ */
+type CertificateArgs = {
+    message: CertificateMessage;
+    options?: CertificateOptions;
+};
+
+/**
+ * Callback used by the DAppKit `connect` function
+ */
+type ConnectCallback = (
+    _certificate?: CertificateArs,
+) => Promise<ConnectResponse>;
+
+/**
  * Options for the DAppKit class
  * @param nodeUrl - The URL of the VeChain node to connect to
  * @param genesis - Optional. The genesis block of the VeChain network you want to connect to. Eg, 'main', 'test', or a genesis block
@@ -55,10 +70,7 @@ interface DAppKitOptions {
     useFirstDetectedSource?: boolean;
     logLevel?: LogLevel;
     requireCertificate?: boolean;
-    connectionCertificate?: {
-        message?: CertificateMessage;
-        options?: CertificateOptions;
-    };
+    connectionCertificate?: CertificateArgs;
     customNet?: Net;
     allowedWallets?: WalletSource[];
 }
@@ -82,7 +94,7 @@ interface WalletSigner {
  * Modifies the WalletSigner interface to include a disconnect method
  */
 type VeChainWallet = WalletSigner & {
-    connect: () => Promise<ConnectResponse>;
+    connect: ConnectCallback;
     disconnect?: () => void | Promise<void>;
 };
 
@@ -103,12 +115,18 @@ interface WalletManagerState {
 
 export type {
     BaseWallet,
+    CertificateArgs,
+    ConnectCallback,
     DAppKitOptions,
     VeChainWallet,
     WalletConfig,
     WalletSource,
     WalletManagerState,
     ConnectResponse,
+    ConnexWallet,
+    DriverSignedTypedData,
+    ExpandedConnexSigner,
     Genesis,
+    SignTypedDataOptions,
     WalletSigner,
 };

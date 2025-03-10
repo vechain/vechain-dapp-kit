@@ -1,23 +1,25 @@
 export type {
-    DAppKitOptions,
-    VeChainWallet,
-    WalletSource,
-    ConnectResponse,
-    WalletConfig,
     BaseWallet,
-    WalletManagerState,
+    CertificateArgs,
+    ConnectCallback,
+    ConnectResponse,
+    VeChainWallet,
+    DAppKitOptions,
     Genesis,
+    WalletConfig,
+    WalletManagerState,
+    WalletSource,
 } from './types';
 
 export type {
-    WCSigner,
-    WCSignerOptions,
-    WalletConnectOptions,
+    OpenOptions,
     ResolvedSignClient,
+    SubscribeModalState,
+    WalletConnectOptions,
     WCClient,
     WCModal,
-    OpenOptions,
-    SubscribeModalState,
+    WCSigner,
+    WCSignerOptions,
 } from './wc-types';
 
 export * from './requests';
