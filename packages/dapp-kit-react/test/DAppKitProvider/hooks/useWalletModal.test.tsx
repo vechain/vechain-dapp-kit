@@ -1,11 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
-import { useWalletModal } from '../..';
-import { wrapper } from '../../../test/helpers/react-test-helpers';
+import { useWalletModal } from '../../../src';
+import { wrapper } from '../../helpers';
+import { act } from 'react';
 
 describe('useWalletModal', () => {
     it('should be able to open the modal', async () => {
-        const { result } = renderHook(() => useWalletModal(), { wrapper });
+        const { result } = await act(async () => {
+            return renderHook(() => useWalletModal(), { wrapper });
+        });
 
         expect(result.current).toBeDefined();
 

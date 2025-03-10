@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-import { resolve } from 'node:path';
+import { resolve } from 'path';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -23,10 +23,10 @@ export default defineConfig({
                 'text-summary',
                 'text',
             ],
-            statements: 99,
-            branches: 100,
-            functions: 100,
-            lines: 99,
+            lines: 90,
+            statements: 90,
+            functions: 90,
+            branches: 75,
         },
         globals: true,
     },

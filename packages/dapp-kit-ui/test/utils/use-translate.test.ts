@@ -1,5 +1,5 @@
-import { defaultI18n } from '../../src/constants';
-import { useTranslate } from '../../src/utils';
+import { defaultI18n, useTranslate } from '../../src';
+import { describe, expect, it } from 'vitest';
 
 describe('useTranslate', () => {
     it('should return correct translation', () => {

@@ -1,5 +1,4 @@
 export * from './logger';
-export * from './convert-vendor-to-signer';
 export * from './local-storage';
 export * from './genesis';
 export * from './create-wallet';

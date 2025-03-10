@@ -16,8 +16,12 @@
         "preserveWatchOutput": true,
         "skipLibCheck": true,
         "strict": true,
-        // React
         "jsx": "react-jsx"
     },
-    "include": ["src/**/*.ts", "test/**/*.test.ts", "eslint.config.mjs"]
+    "include": [
+        "src/**/*.ts",
+        "test/**/*.ts",
+        "test/**/*.tsx",
+        "eslint.config.mjs"
+    ]
 }

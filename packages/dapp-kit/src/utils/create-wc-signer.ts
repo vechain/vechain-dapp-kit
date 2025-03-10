@@ -5,11 +5,19 @@ import type {
 } from '@walletconnect/types';
 import { getSdkError } from '@walletconnect/utils';
 import type { SignClient } from '@walletconnect/sign-client/dist/types/client';
-import type { WCSigner, WCSignerOptions } from '../types';
 import { DefaultMethods } from '../constants';
+import type {
+    CertificateMessage,
+    CertificateOptions,
+    CertificateResponse,
+    ConnectResponse,
+    TransactionMessage,
+    TransactionOptions,
+    TransactionResponse,
+    WCSigner,
+    WCSignerOptions,
+} from '../types';
 import { DAppKitLogger } from './logger';
-import { ethers } from 'ethers';
-import { SignTypedDataOptions } from '../types/types';
 
 interface SessionAccount {
     networkIdentifier: string;
@@ -28,14 +36,19 @@ export const createWcSigner = ({
     web3Modal,
     onDisconnected,
 }: WCSignerOptions): WCSigner => {
-    const chainId = `vechain:${genesisId.slice(-32)}`;
+    const chainId = genesisId.then((id) => {
+        return `vechain:${id.slice(-32)}`;
+    });
+
     let session: SessionTypes.Struct | undefined;
 
     wcClient
         .get()
         .then((clientInstance) => {
             listenToEvents(clientInstance);
-            restoreSession(clientInstance);
+            restoreSession(clientInstance).catch((e) => {
+                throw e;
+            });
         })
         .catch(() => {
             throw new Error(`Failed to get the wallet connect sign client`);
@@ -76,18 +89,20 @@ export const createWcSigner = ({
     };
 
     // restore a session if undefined
-    const restoreSession = (_client: SignClient): void => {
+    const restoreSession = async (_client: SignClient): Promise<void> => {
         if (typeof session !== 'undefined') return;
 
         DAppKitLogger.debug('wallet connect signer', 'restore session');
         const sessionKeys = _client.session.keys;
+
+        const _genesisId = await genesisId;
 
         for (const key of sessionKeys) {
             const _session = _client.session.get(key);
             const accounts = _session.namespaces.vechain.accounts;
 
             for (const acc of accounts) {
-                if (acc.split(':')[1] === genesisId.slice(-32)) {
+                if (acc.split(':')[1] === _genesisId.slice(-32)) {
                     session = _session;
                     return;
                 }
@@ -99,9 +114,9 @@ export const createWcSigner = ({
      * Validates the requested account and network against a request
      * @param requestedAddress - The optional requested account address
      */
-    const validateSession = (
+    const validateSession = async (
         requestedAddress?: string,
-    ): SessionAccount | undefined => {
+    ): Promise<SessionAccount | undefined> => {
         if (!session) return;
         DAppKitLogger.debug('wallet connect signer', 'validate session');
 
@@ -111,7 +126,7 @@ export const createWcSigner = ({
         const networkIdentifier = firstAccount.split(':')[1];
 
         // Return undefined if the network identifier doesn't match
-        if (networkIdentifier !== genesisId.slice(-32)) return;
+        if (networkIdentifier !== (await genesisId).slice(-32)) return;
 
         // Return undefined if the address doesn't match
         if (
@@ -133,7 +148,7 @@ export const createWcSigner = ({
 
         const namespace: ProposalTypes.RequiredNamespace = {
             methods: Object.values(DefaultMethods),
-            chains: [chainId],
+            chains: [await chainId],
             events: [],
         };
 
@@ -181,7 +196,7 @@ export const createWcSigner = ({
     const getSessionTopic = async (
         requestedAccount?: string,
     ): Promise<string> => {
-        const validation = validateSession(requestedAccount);
+        const validation = await validateSession(requestedAccount);
 
         if (validation) return validation.topic;
 
@@ -200,40 +215,28 @@ export const createWcSigner = ({
 
         return signClient.request({
             topic: sessionTopic,
-            chainId,
+            chainId: await chainId,
             request: params,
         });
     };
 
     const signTx = async (
-        message: Connex.Vendor.TxMessage,
-        options: Connex.Signer.TxOptions,
-    ): Promise<Connex.Vendor.TxResponse> => {
-        return makeRequest<Connex.Vendor.TxResponse>({
+        message: TransactionMessage[],
+        options: TransactionOptions = {},
+    ): Promise<TransactionResponse> => {
+        return makeRequest<TransactionResponse>({
             method: DefaultMethods.RequestTransaction,
             params: [{ message, options }],
         });
     };
 
     const signCert = async (
-        message: Connex.Vendor.CertMessage,
-        options: Connex.Signer.CertOptions,
-    ): Promise<Connex.Vendor.CertResponse> => {
-        return makeRequest<Connex.Vendor.CertResponse>({
+        message: CertificateMessage,
+        options: CertificateOptions = {},
+    ): Promise<CertificateResponse> => {
+        return makeRequest<CertificateResponse>({
             method: DefaultMethods.SignCertificate,
             params: [{ message, options }],
-        });
-    };
-
-    const signTypedData = async (
-        domain: ethers.TypedDataDomain,
-        types: Record<string, ethers.TypedDataField[]>,
-        value: Record<string, unknown>,
-        options?: SignTypedDataOptions,
-    ): Promise<string> => {
-        return makeRequest<string>({
-            method: DefaultMethods.SignTypedData,
-            params: [{ domain, types, value, options }],
         });
     };
 
@@ -256,7 +259,7 @@ export const createWcSigner = ({
         }
     };
 
-    const connectAccount = async (): Promise<string> => {
+    const connectAccount = async (): Promise<ConnectResponse> => {
         if (!session) {
             session = await connect();
         }
@@ -272,7 +275,10 @@ export const createWcSigner = ({
         const firstAccount = vechainNamespace.accounts[0];
 
         try {
-            return firstAccount.split(':')[2];
+            return {
+                account: firstAccount.split(':')[2],
+                verified: false,
+            };
         } catch (e) {
             console.error('Failed to get account from session', e);
             throw new Error('Failed to get account from session');
@@ -282,9 +288,7 @@ export const createWcSigner = ({
     return {
         signTx,
         signCert,
-        signTypedData,
         disconnect,
-        genesisId,
         connect: connectAccount,
     };
 };

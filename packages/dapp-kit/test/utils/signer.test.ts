@@ -4,9 +4,7 @@ import type { SignClientTypes } from '@walletconnect/types';
 import type { WCModal, WCSigner } from '../../src';
 import { createWcClient, createWcSigner } from '../../src';
 import { mockedSignClient } from '../helpers/mocked-sign-client';
-import { normalizeGenesisId } from '../../src';
 import { address } from '../helpers/mocked-signer';
-import { typedData } from '../fixture';
 
 vi.spyOn(SignClient, 'init').mockResolvedValue(mockedSignClient);
 
@@ -28,7 +26,7 @@ const customModal: WCModal = {
 
 const createNewSignClient = (): WCSigner =>
     createWcSigner({
-        genesisId: normalizeGenesisId('main'),
+        genesisId: Promise.resolve('main'),
         wcClient: createWcClient({ projectId, metadata }),
         onDisconnected: () => {
             // eslint-disable-next-line no-console
@@ -43,7 +41,9 @@ describe('createWcSigner', () => {
 
         const res = await signer.connect();
 
-        expect(res).toBe(address);
+        expect(res.account.toLowerCase()).toBe(
+            address.toString().toLowerCase(),
+        );
     });
 
     it('can connect before signing TX', async () => {
@@ -66,18 +66,6 @@ describe('createWcSigner', () => {
         );
 
         expect(certRes).toBeDefined();
-    });
-
-    it('can sign typed data', async () => {
-        const signer = createNewSignClient();
-
-        const signedData = await signer.signTypedData(
-            typedData.domain,
-            typedData.types,
-            typedData.value,
-        );
-
-        expect(signedData).toBeDefined();
     });
 
     it('can disconnect', async () => {

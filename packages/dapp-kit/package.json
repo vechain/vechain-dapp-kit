@@ -1,13 +1,13 @@
 {
     "name": "@vechain/dapp-kit",
-    "version": "1.5.0",
-    "private": false,
+    "version": "1.3.0",
     "homepage": "https://github.com/vechain/vechain-dapp-kit",
     "repository": "github:vechain/vechain-dapp-kit",
     "license": "MIT",
     "type": "module",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
     "files": [
         "dist",
         "package.json",
@@ -23,16 +23,15 @@
         "watch": "yarn build --watch"
     },
     "dependencies": {
-        "@vechain/connex": "2.1.0",
-        "@vechain/connex-driver": "2.1.0",
-        "@vechain/connex-framework": "2.1.0",
-        "@vechain/connex-types": "^2.1.0",
-        "@vechain/sdk-core": "1.0.0-beta.32",
+        "@vechain/sdk-core": "1.0.0",
+        "@vechain/sdk-errors": "1.0.0",
+        "@vechain/sdk-network": "1.0.0",
         "@walletconnect/modal": "2.6.2",
         "@walletconnect/sign-client": "2.11.3",
         "@walletconnect/utils": "2.11.3",
         "events": "^3.3.0",
-        "valtio": "1.11.2"
+        "valtio": "1.11.2",
+        "viem": "^2.22.5"
     },
     "devDependencies": {
         "@types/react": "^18.2.28",
