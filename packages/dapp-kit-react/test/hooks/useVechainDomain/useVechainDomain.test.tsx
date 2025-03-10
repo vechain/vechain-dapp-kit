@@ -1,9 +1,9 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import { useVechainDomain } from './useVechainDomain';
-import { wrapper } from '../../../test';
+import { useVechainDomain } from '../../../src';
+import { wrapper } from '../../helpers';
 
-vi.mock('./api/getDomain', () => ({
+vi.mock('../../../src/hooks/useVechainDomain/api/getDomain', () => ({
     getDomain: vi.fn().mockImplementation(({ address }) => {
         if (address === '0x1234567890123456789012345678901234567890') {
             return Promise.resolve('test.vet');
@@ -18,7 +18,7 @@ vi.mock('./api/getDomain', () => ({
     }),
 }));
 
-vi.mock('./api/getAddress', () => ({
+vi.mock('../../../src/hooks/useVechainDomain/api/getAddress', () => ({
     getAddress: vi.fn().mockImplementation(({ domain }) => {
         if (domain === 'test.vet') {
             return Promise.resolve(

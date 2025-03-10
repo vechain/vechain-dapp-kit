@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import { useVechainDomain } from './useVechainDomain';
-import { wrapper } from '../../../test';
+import { useVechainDomain } from '../../../src';
+import { wrapper } from '../../helpers';
 
 vi.mock('./api/fetchVechainDomain', () => ({
     ...vi.importActual('./api/fetchVechainDomain'),

@@ -2,7 +2,7 @@ import type React from 'react';
 import type {
     ConnectResponse,
     VeChainSignerDAppKit,
-    WalletSource
+    WalletSource,
 } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 import type { CertificateData } from '@vechain/sdk-core';

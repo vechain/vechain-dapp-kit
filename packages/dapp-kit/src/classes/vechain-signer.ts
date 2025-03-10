@@ -1,17 +1,17 @@
 import { JSONRPCInvalidParams } from '@vechain/sdk-errors';
-import type {
+import {
     AvailableVeChainProviders,
+    DelegationHandler,
     SignTransactionOptions,
     TransactionRequestInput,
+    VeChainAbstractSigner,
 } from '@vechain/sdk-network';
-import { DelegationHandler, VeChainAbstractSigner } from '@vechain/sdk-network';
 import type {
     TransactionMessage,
     TransactionOptions,
     TransactionResponse,
-} from '../types/requests';
+} from '../types';
 import type { WalletManager } from './wallet-manager';
-import { TypedDataDomain, TypedDataParameter } from 'viem';
 
 class VeChainSignerDAppKit extends VeChainAbstractSigner {
     private readonly walletManager: WalletManager;
@@ -60,8 +60,8 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
         const tx = await this._signFlow(
             transactionToSign,
             DelegationHandler(
-                await this.provider?.wallet?.getDelegator(),
-            ).delegatorOrNull(),
+                await this.provider?.wallet?.getGasPayer(),
+            ).gasPayerOrNull(),
         );
 
         // Return the transaction hash
@@ -88,12 +88,7 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
         return Promise.reject(new Error('Method not implemented.'));
     }
 
-    async signTypedData(
-        _domain: TypedDataDomain,
-        _types: Record<string, TypedDataParameter[]>,
-        _primaryType: string,
-        _message: Record<string, unknown>
-    ): Promise<string> {
+    signTypedData(): Promise<string> {
         return Promise.reject(new Error('Method not implemented.'));
     }
 
@@ -125,8 +120,7 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
             gas: Number(transaction.gas),
             dependsOn: populatedTransaction.dependsOn ?? '',
             delegator: {
-                url: delegator?.delegatorUrl ?? '',
-                signer: delegator?.delegatorPrivateKey ?? '',
+                url: delegator?.gasPayerServiceUrl ?? '',
             },
         };
 

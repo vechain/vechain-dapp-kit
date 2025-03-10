@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { useThor } from '../..';
-import { wrapper } from '../../../test';
+import { useThor } from '../../../src';
+import { wrapper } from '../../index';
 
 describe('useThor', () => {
     it('Thor should get initialised', async () => {

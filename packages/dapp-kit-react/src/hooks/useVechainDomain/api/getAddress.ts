@@ -21,7 +21,11 @@ export const getAddress = async ({
             ? VNS_RESOLVER.test
             : VNS_RESOLVER.main;
 
-    const res = await thor.contracts.executeCall(resolver, ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getAddresses'), [domain]);
+    const res = await thor.contracts.executeCall(
+        resolver,
+        ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getAddresses'),
+        [domain],
+    );
     const resArray = res.result.array as string[];
 
     return (resArray[0] as string) || undefined;

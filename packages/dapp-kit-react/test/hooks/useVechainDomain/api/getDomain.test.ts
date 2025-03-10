@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { getDomain } from './getDomain';
+import { getDomain } from '../../../../src/hooks/useVechainDomain/api/getDomain';
 import { genesisBlocks, VNS_RESOLVER } from '@vechain/dapp-kit';
 import { ABIContract } from '@vechain/sdk-core';
 
@@ -21,10 +21,12 @@ describe('getDomain', () => {
     });
 
     it('should use main resolver for mainnet', async () => {
-        mockThorClient.thor.blocks.getGenesisBlock.mockResolvedValue({ id: genesisBlocks.main.id });
+        mockThorClient.thor.blocks.getGenesisBlock.mockResolvedValue({
+            id: genesisBlocks.main.id,
+        });
         mockThorClient.thor.contracts.executeCall.mockResolvedValue({
             result: {
-                array: ['example.vet']
+                array: ['example.vet'],
             },
         });
 
@@ -33,25 +35,35 @@ describe('getDomain', () => {
             thor: mockThorClient.thor,
         });
 
-        expect(mockThorClient.thor.contracts.executeCall).toHaveBeenCalledWith(VNS_RESOLVER.main, ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getNames'), ["0x1234567890123456789012345678901234567890"]);
+        expect(mockThorClient.thor.contracts.executeCall).toHaveBeenCalledWith(
+            VNS_RESOLVER.main,
+            ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getNames'),
+            ['0x1234567890123456789012345678901234567890'],
+        );
 
         expect(result).toBe('example.vet');
     });
 
     it('should use test resolver for testnet', async () => {
-        mockThorClient.thor.blocks.getGenesisBlock.mockResolvedValue({ id: genesisBlocks.test.id });
+        mockThorClient.thor.blocks.getGenesisBlock.mockResolvedValue({
+            id: genesisBlocks.test.id,
+        });
         mockThorClient.thor.contracts.executeCall.mockResolvedValue({
             result: {
-                array: ['example.vet']
+                array: ['example.vet'],
             },
         });
-    
+
         const result = await getDomain({
             address: '0x1234567890123456789012345678901234567890',
             thor: mockThorClient.thor,
         });
 
-        expect(mockThorClient.thor.contracts.executeCall).toHaveBeenCalledWith(VNS_RESOLVER.test, ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getNames'), ["0x1234567890123456789012345678901234567890"]);
+        expect(mockThorClient.thor.contracts.executeCall).toHaveBeenCalledWith(
+            VNS_RESOLVER.test,
+            ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getNames'),
+            ['0x1234567890123456789012345678901234567890'],
+        );
 
         expect(result).toBe('example.vet');
     });
@@ -60,7 +72,7 @@ describe('getDomain', () => {
         const expectedDomain = 'example.vet';
         mockThorClient.thor.contracts.executeCall.mockResolvedValue({
             result: {
-                array: [expectedDomain]
+                array: [expectedDomain],
             },
         });
 
@@ -75,7 +87,7 @@ describe('getDomain', () => {
     it('should return null if no names are resolved', async () => {
         mockThorClient.thor.contracts.executeCall.mockResolvedValue({
             result: {
-                array: []
+                array: [],
             },
         });
 

@@ -73,7 +73,9 @@ describe('Storage', () => {
 
         it('should set the connection certificate', () => {
             Storage.setConnectionCertificate(testCertificate);
-            const bytecode = HexUInt.of(Txt.of(JSON.stringify(testCertificate)).bytes);
+            const bytecode = HexUInt.of(
+                Txt.of(JSON.stringify(testCertificate)).bytes,
+            );
             expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
                 'dappkit@vechain/connectionCertificate',
                 bytecode.toString(),
@@ -128,10 +130,10 @@ describe('Storage', () => {
         const testCertificate = { some: 'data' } as any;
 
         it('should return the connection certificate', () => {
-            const hexUInt = HexUInt.of(Txt.of(JSON.stringify(testCertificate)).bytes);
-            mockLocalStorage.getItem.mockReturnValue(
-                hexUInt.toString()
+            const hexUInt = HexUInt.of(
+                Txt.of(JSON.stringify(testCertificate)).bytes,
             );
+            mockLocalStorage.getItem.mockReturnValue(hexUInt.toString());
             expect(Storage.getConnectionCertificate()).toEqual(testCertificate);
         });
 

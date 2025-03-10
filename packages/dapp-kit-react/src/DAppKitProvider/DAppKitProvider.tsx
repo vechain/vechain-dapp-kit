@@ -8,7 +8,7 @@ import { Context } from './context';
 
 export const DAppKitProviderData = ({
     children,
-    dAppKit
+    dAppKit,
 }: {
     children: React.ReactNode;
     dAppKit: DAppKit;
@@ -122,21 +122,21 @@ export const DAppKitProviderData = ({
 };
 
 export const DAppKitProvider = ({
-        children,
-        nodeUrl,
-        genesis,
-        walletConnectOptions,
-        usePersistence = false,
-        logLevel,
-        requireCertificate,
-        themeVariables,
-        themeMode,
-        i18n,
-        language,
-        modalParent,
-        onSourceClick,
-        connectionCertificate: connectionCertificateData,
-        allowedWallets,
+    children,
+    nodeUrl,
+    genesis,
+    walletConnectOptions,
+    usePersistence = false,
+    logLevel,
+    requireCertificate,
+    themeVariables,
+    themeMode,
+    i18n,
+    language,
+    modalParent,
+    onSourceClick,
+    connectionCertificate: connectionCertificateData,
+    allowedWallets,
 }: DAppKitProviderOptions): React.ReactElement | null => {
     const [dAppKit, setDAppKit] = useState<DAppKit | null>(null);
     useEffect(() => {

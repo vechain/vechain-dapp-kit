@@ -16,7 +16,7 @@ describe('VeChainSignerDAppKit', () => {
 
     const mockProvider = {
         wallet: {
-            getDelegator: vi.fn().mockResolvedValue({
+            getGasPayer: vi.fn().mockResolvedValue({
                 delegatorUrl: 'https://example.com',
                 delegatorPrivateKey: '0xabc',
             }),

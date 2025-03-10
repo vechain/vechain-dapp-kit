@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
-import { mockedConnexSigner, wrapper } from '../../../test';
-import { useWallet } from './useWallet';
+import { mockedConnexSigner, wrapper } from '../../index';
+import { useWallet } from '../../../src/DAppKitProvider/hooks/useWallet';
 
 window.vechain = {} as any;
 window.vechain = {

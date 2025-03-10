@@ -1,3 +1,4 @@
+import React from 'react';
 import { WalletButton, DAppKitProvider } from '../../src';
 
 export const wrapper = ({ children }: { children?: React.ReactNode }) => (

@@ -6,61 +6,61 @@ export const VNS_RESOLVER = {
     test: '0xc403b8EA53F707d7d4de095f0A20bC491Cf2bc94',
     abi: [
         {
-            "inputs": [
+            inputs: [
                 {
-                    "internalType": "string[]",
-                    "name": "names",
-                    "type": "string[]"
-                }
+                    internalType: 'string[]',
+                    name: 'names',
+                    type: 'string[]',
+                },
             ],
-            "name": "getAddresses",
-            "outputs": [
+            name: 'getAddresses',
+            outputs: [
                 {
-                    "internalType": "address[]",
-                    "name": "addresses",
-                    "type": "address[]"
-                }
+                    internalType: 'address[]',
+                    name: 'addresses',
+                    type: 'address[]',
+                },
             ],
-            "stateMutability": "view",
-            "type": "function"
+            stateMutability: 'view',
+            type: 'function',
         },
         {
-            "inputs": [
+            inputs: [
                 {
-                    "internalType": "address[]",
-                    "name": "addresses",
-                    "type": "address[]"
-                }
+                    internalType: 'address[]',
+                    name: 'addresses',
+                    type: 'address[]',
+                },
             ],
-            "name": "getNames",
-            "outputs": [
+            name: 'getNames',
+            outputs: [
                 {
-                    "internalType": "string[]",
-                    "name": "names",
-                    "type": "string[]"
-                }
+                    internalType: 'string[]',
+                    name: 'names',
+                    type: 'string[]',
+                },
             ],
-            "stateMutability": "view",
-            "type": "function"
+            stateMutability: 'view',
+            type: 'function',
         },
         {
-            "inputs": [
+            inputs: [
                 {
-                    "internalType": "string[]",
-                    "name": "names",
-                    "type": "string[]"
-                }
+                    internalType: 'string[]',
+                    name: 'names',
+                    type: 'string[]',
+                },
             ],
-            "name": "getNamehashes",
-            "outputs": [
+            name: 'getNamehashes',
+            outputs: [
                 {
-                    "internalType": "bytes32[]",
-                    "name": "nodes",
-                    "type": "bytes32[]"
-                }
+                    internalType: 'bytes32[]',
+                    name: 'nodes',
+                    type: 'bytes32[]',
+                },
             ],
-            "stateMutability": "pure",
-            "type": "function"
-        }
-    ]
-};
+            stateMutability: 'pure',
+            type: 'function',
+        },
+    ],
+} as const;

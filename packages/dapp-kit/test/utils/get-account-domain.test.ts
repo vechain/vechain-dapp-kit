@@ -31,7 +31,7 @@ describe('getAccountDomain', () => {
 
         mockThor.thor.contracts.executeCall.mockResolvedValue({
             result: {
-                array: [mockDomain]
+                array: [mockDomain],
             },
         });
 
@@ -44,7 +44,7 @@ describe('getAccountDomain', () => {
         expect(mockThor.thor.contracts.executeCall).toHaveBeenCalledWith(
             VNS_RESOLVER.main,
             ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getNames'),
-            [mockAddress]
+            [mockAddress],
         );
     });
 
@@ -53,7 +53,7 @@ describe('getAccountDomain', () => {
 
         mockThor.thor.contracts.executeCall.mockResolvedValue({
             result: {
-                array: []
+                array: [],
             },
         });
 
@@ -74,7 +74,7 @@ describe('getAccountDomain', () => {
         expect(mockThor.thor.contracts.executeCall).toHaveBeenCalledWith(
             VNS_RESOLVER.main,
             ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getNames'),
-            ['0x1234567890123456789012345678901234567890']
+            ['0x1234567890123456789012345678901234567890'],
         );
     });
 });
