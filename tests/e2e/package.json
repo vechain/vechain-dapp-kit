@@ -11,14 +11,16 @@
         "test:e2e": "DEBUG=cucumber cucumber-js",
         "test:e2e:headless": "SELENIUM_HEADLESS=true cucumber-js"
     },
+    "resolutions": {
+        "@cucumber/cucumber": "11.2.0"
+    },
     "devDependencies": {
-        "@cucumber/cucumber": "^11.0.1",
-        "@serenity-js/console-reporter": "^3.4.1",
-        "@serenity-js/cucumber": "^3.4.1",
-        "@serenity-js/serenity-bdd": "^3.4.1",
+        "@cucumber/cucumber": "11.2.0",
+        "@serenity-js/console-reporter": "^3.31.10",
+        "@serenity-js/cucumber": "^3.31.10",
+        "@serenity-js/serenity-bdd": "^3.31.10",
         "@types/chrome": "^0.0.262",
         "@types/chromedriver": "^81.0.1",
-        "@types/cucumber": "^7.0.0",
         "@types/jest": "^29.5.12",
         "@types/node": "^16.11.11",
         "@types/selenium-webdriver": "^4.1.13",

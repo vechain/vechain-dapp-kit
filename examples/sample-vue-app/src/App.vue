@@ -89,7 +89,7 @@ export default defineComponent({
                     verifyingContract:
                         '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
                 },
-               { test: [{ name 'test', type: 'address' }] },
+               { test: [{ name: 'test', type: 'address' }] },
                 { test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68' },
                 {},
             );
