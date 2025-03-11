@@ -51,17 +51,17 @@ defineStep(
 );
 
 defineStep(
-  'The user sends a transaction',
+  'The user sends a transaction in dapp {string}',
   async function (dapp: string) {
     const dappUrl: string = DappUrl[dapp];
-    await sendTransaction(dappUrl)
+    return await sendTransaction(dappUrl)
   },
 )
 
 defineStep(
-  'The user signs typed data',
+  'The user signs typed data in dapp {string}',
   async function (dapp: string) {
     const dappUrl: string = DappUrl[dapp];
-    await signTypedData(dappUrl)
+    return await signTypedData(dappUrl)
   },
 )
