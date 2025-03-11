@@ -39,7 +39,7 @@ export const sendTransaction = async function (dappUrl: string) {
     await NavigationUtils.goToUrl(dappUrl);
 
     await extension.driver
-        .findElement(Locators.buttonByText('Send'))
+        .findElement(Locators.buttonByText('Send TX'))
         .click();
 
     await NavigationUtils.switchToExtensionIframe();

@@ -8,7 +8,7 @@
             Connect Custom Button
         </button>
         <div class="label">TX</div>
-        <button v-on:click="sendTx">Send</button>
+        <button v-on:click="sendTx">Send TX</button>
         <div class="label">Typed Data</div>
         <button v-on:click="signTypedData">Sign Typed Data</button>
     </div>

@@ -8,7 +8,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <div class="label">custom button:</div>
     <button id="custom-button">Connect Custom Button</button>
     <div class="label">TX</div>
-    <button id="send-tx">Send</button>
+    <button id="send-tx">Send TX</button>
     <div class="label">Typed Data</div>
     <button id="sign-typed-data-button">Sign Typed Data</button>
     </div>

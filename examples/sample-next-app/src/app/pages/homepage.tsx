@@ -64,7 +64,7 @@ const Button = (): ReactElement => {
                 {buttonText}
             </button>
             <div className="label">TX</div>
-            <button onClick={sendTx}>Send</button>
+            <button onClick={sendTx}>Send TX</button>
             <div className="label">Typed Data</div>
             <button onClick={signTypedData}>Sign Typed Data</button>
         </div>
