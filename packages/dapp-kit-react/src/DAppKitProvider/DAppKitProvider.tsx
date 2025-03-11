@@ -123,8 +123,7 @@ export const DAppKitProviderData = ({
 
 export const DAppKitProvider = ({
     children,
-    nodeUrl,
-    genesis,
+    node,
     walletConnectOptions,
     usePersistence = false,
     logLevel,
@@ -142,8 +141,7 @@ export const DAppKitProvider = ({
     useEffect(() => {
         setDAppKit(
             DAppKitUI.configure({
-                nodeUrl,
-                genesis,
+                node,
                 walletConnectOptions,
                 usePersistence,
                 logLevel,
@@ -159,8 +157,7 @@ export const DAppKitProvider = ({
             }),
         );
     }, [
-        nodeUrl,
-        genesis,
+        node,
         walletConnectOptions,
         usePersistence,
         logLevel,

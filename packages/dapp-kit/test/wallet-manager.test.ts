@@ -7,7 +7,7 @@ import { ThorClient } from '@vechain/sdk-network';
 const newWalletManager = (wcOptions?: WalletConnectOptions): WalletManager => {
     return new WalletManager(
         {
-            nodeUrl: 'https://testnet.veblocks.net/',
+            node: 'https://testnet.veblocks.net/',
             walletConnectOptions: wcOptions,
             genesis: 'test',
         },

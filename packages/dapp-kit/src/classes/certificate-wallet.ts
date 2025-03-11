@@ -11,7 +11,7 @@ import type {
 } from '../types/requests';
 import type { WalletSigner } from '../types/types';
 import { ethers } from 'ethers';
-import {SignTypedDataOptions} from "@vechain/sdk-network"
+import { SignTypedDataOptions } from '@vechain/sdk-network';
 
 /**
  * A `VechainWallet` for wallet's that use a certificate connection
@@ -99,17 +99,17 @@ class CertificateBasedWallet implements VeChainWallet {
         });
 
     signTypedData = (
-      _domain: ethers.TypedDataDomain,
-      _types: Record<string, ethers.TypedDataField[]>,
-      _value: Record<string, unknown>,
-      _options?: SignTypedDataOptions,
+        _domain: ethers.TypedDataDomain,
+        _types: Record<string, ethers.TypedDataField[]>,
+        _value: Record<string, unknown>,
+        _options?: SignTypedDataOptions,
     ): Promise<string> =>
-      this.wallet.then((wallet) => {
-          if (!wallet.signTypedData) {
-              throw new Error('signTypedData is not implemented');
-          }
-          return wallet?.signTypedData(_domain, _types, _value, _options)
-      });
+        this.wallet.then((wallet) => {
+            if (!wallet.signTypedData) {
+                throw new Error('signTypedData is not implemented');
+            }
+            return wallet?.signTypedData(_domain, _types, _value, _options);
+        });
 
     disconnect = () => Promise.resolve();
 }

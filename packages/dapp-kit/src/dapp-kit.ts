@@ -14,9 +14,12 @@ class DAppKit {
             DAppKitLogger.debug('DAppKit', 'constructor', options);
         }
 
-        const { nodeUrl } = options;
-
-        this.thor = ThorClient.at(nodeUrl);
+        const { node } = options;
+        if (typeof node === 'string') {
+            this.thor = ThorClient.at(node);
+        } else {
+            this.thor = new ThorClient(node);
+        }
         this.wallet = new WalletManager(options, this.thor);
         this.signer = new VeChainSignerDAppKit(
             this.wallet,

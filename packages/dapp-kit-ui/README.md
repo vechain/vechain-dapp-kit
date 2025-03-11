@@ -29,7 +29,7 @@ const walletConnectOptions: WalletConnectOptions = {
 };
 
 const options: DAppKitOptions = {
-    nodeUrl: 'https://testnet.vechain.org/',
+    node: 'https://testnet.vechain.org/',
     walletConnectOptions,
     usePersistence: true,
 };

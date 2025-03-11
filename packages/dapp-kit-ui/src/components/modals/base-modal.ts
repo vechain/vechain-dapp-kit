@@ -40,7 +40,9 @@ export class BaseModal extends LitElement {
         .modal {
             position: absolute;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            transition: height 0.1s ease-in-out, transform 0.2s ease-in-out;
+            transition:
+                height 0.1s ease-in-out,
+                transform 0.2s ease-in-out;
             overflow: hidden;
         }
 

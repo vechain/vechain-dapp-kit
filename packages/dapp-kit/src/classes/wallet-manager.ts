@@ -389,6 +389,10 @@ class WalletManager {
             this.setSource('veworld');
         } else if (this.options.walletConnectOptions) {
             this.setSource('wallet-connect');
+        } else if (window.connex) {
+            this.setSource('sync');
+        } else {
+            this.setSource('sync2');
         }
     };
 }

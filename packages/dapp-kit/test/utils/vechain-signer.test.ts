@@ -91,16 +91,16 @@ describe('VeChainSignerDAppKit', () => {
         const signer = new VeChainSignerDAppKit(mockWallet, mockProvider);
 
         const res = await signer.signTypedData(
-          {
-              name: 'Test Data',
-              version: '1',
-              chainId: 1,
-              verifyingContract: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
-          },
-          { test: [{ name: 'test', type: 'address' }] },
-          { test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68' },
-          {},
-        )
+            {
+                name: 'Test Data',
+                version: '1',
+                chainId: 1,
+                verifyingContract: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+            },
+            { test: [{ name: 'test', type: 'address' }] },
+            { test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68' },
+            {},
+        );
         expect(res).toBe('0x123');
     });
 });

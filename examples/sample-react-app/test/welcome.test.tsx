@@ -18,7 +18,7 @@ test('Welcome', async () => {
     const component = renderer.create(
         <React.StrictMode>
             <DAppKitProvider
-                nodeUrl={'https://testnet.vechain.org/'}
+                node={'https://testnet.vechain.org/'}
                 usePersistence
                 walletConnectOptions={walletConnectOptions}
             >

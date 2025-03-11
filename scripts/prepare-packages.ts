@@ -51,6 +51,7 @@ const preparePackages = async () => {
 
     console.log(' Build:');
     console.log('       - 📦 Install dependencies and build packages...');
+    await exec('yarn install');
     await exec('yarn install:all');
     console.log('       - ✅  Built!');
 
