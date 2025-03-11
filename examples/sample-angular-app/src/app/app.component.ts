@@ -54,4 +54,17 @@ export class AppComponent implements OnInit {
     public openModal(): void {
         DAppKitUI.modal.open();
     }
+
+    public sendTx = () =>
+        DAppKitUI.signer.sendTransaction({
+            clauses: [
+                {
+                    to: DAppKitUI.wallet.state.address,
+                    value: '0x1',
+                    data: '0x',
+
+                },
+            ],
+          comment: 'Send 1 Wei',
+        });
 }

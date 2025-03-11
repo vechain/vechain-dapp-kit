@@ -1,15 +1,27 @@
 'use client'; // This is a client component
 import { type ReactElement, useEffect, useState } from 'react';
 import {
-    WalletButton,
-    useWalletModal,
     useWallet,
+    useWalletModal,
+    WalletButton,
 } from '@vechain/dapp-kit-react';
 
 const Button = (): ReactElement => {
-    const { account } = useWallet();
+    const { account, signer } = useWallet();
     const { open, onConnectionStatusChange } = useWalletModal();
     const [buttonText, setButtonText] = useState('Connect Custom Button');
+
+    const sendTx = () =>
+        signer?.sendTransaction({
+                clauses: [
+                    {
+                        to: '0xf077b491b355E64048cE21E3A6Fc4751eEeA77fa',
+                        value: '0x1',
+                        data: '0x',
+                    },
+                ],
+                comment: 'Send 1 Wei',
+            });
 
     useEffect(() => {
         const handleConnected = (address: string | null): void => {
@@ -38,6 +50,8 @@ const Button = (): ReactElement => {
             <button onClick={open} type="button">
                 {buttonText}
             </button>
+            <div className="label">TX</div>
+            <button onClick={sendTx}>Send</button>
         </div>
     );
 };

@@ -7,7 +7,7 @@ import {
 import AccessFlows from '../extension/flows/AccessFlows';
 import OnboardingFlows from '../extension/flows/OnboardingFlows';
 import DashboardFlows from '../extension/flows/DashboardFlows';
-import { connectDapp, connectWithCustomButton } from '../flows/ConnectFlows';
+import {connectDapp, connectWithCustomButton, sendTransaction} from '../flows/ConnectFlows';
 import { DappUrl } from '../constants/dapp';
 
 defineStep('The user has previously onboarded', async function () {
@@ -49,3 +49,11 @@ defineStep(
         await disconnectWithCustomButton();
     },
 );
+
+defineStep(
+  'The user sends a transaction',
+  async function (dapp: string) {
+    const dappUrl: string = DappUrl[dapp];
+    await sendTransaction(dappUrl)
+  },
+)

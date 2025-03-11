@@ -7,6 +7,8 @@
         <button id="custom-button" v-on:click="openModal">
             Connect Custom Button
         </button>
+        <div class="label">TX</div>
+        <button v-on:click="sendTx">Send</button>
     </div>
 </template>
 
@@ -64,6 +66,18 @@ export default defineComponent({
         openModal: () => {
             DAppKitUI.modal.open();
         },
+        sendTx:  () => {
+          DAppKitUI.signer.sendTransaction({
+            clauses: [
+              {
+                to: DAppKitUI.wallet.state.address,
+                value: '0x1',
+                data: '0x',
+              },
+            ],
+            comment: 'Send 1 Wei',
+          });
+        }
     },
 });
 </script>
