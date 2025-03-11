@@ -16,7 +16,7 @@ class DAppKit {
 
         const { nodeUrl } = options;
 
-        this.thor = ThorClient.fromUrl(nodeUrl);
+        this.thor = ThorClient.at(nodeUrl);
         this.wallet = new WalletManager(options, this.thor);
         this.signer = new VeChainSignerDAppKit(
             this.wallet,

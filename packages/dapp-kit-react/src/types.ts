@@ -40,7 +40,7 @@ export interface DAppKitContext {
         account: string | null;
         accountDomain: string | null;
         isAccountDomainLoading: boolean;
-        signer: VeChainSignerDAppKit | undefined;
+        signer: VeChainSignerDAppKit;
         source: WalletSource | null;
         connectionCertificate: CertificateData | null;
     };

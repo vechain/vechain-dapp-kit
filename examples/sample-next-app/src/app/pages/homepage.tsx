@@ -23,6 +23,19 @@ const Button = (): ReactElement => {
                 comment: 'Send 1 Wei',
             });
 
+  const signTypedData = () =>
+    signer?.signTypedData(
+      {
+        name: 'Test Data',
+        version: '1',
+        chainId: 1,
+        verifyingContract: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+      },
+      { test: [{ name: 'test', type: 'address' }] },
+      { test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68' },
+      {},
+    );
+
     useEffect(() => {
         const handleConnected = (address: string | null): void => {
             if (address) {
@@ -52,6 +65,8 @@ const Button = (): ReactElement => {
             </button>
             <div className="label">TX</div>
             <button onClick={sendTx}>Send</button>
+          <div className="label">Typed Data</div>
+          <button onClick={signTypedData}>Sign Typed Data</button>
         </div>
     );
 };

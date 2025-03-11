@@ -31,3 +31,17 @@ Feature: The user can connect to a wallet
       | vue     |
       | angular |
       | vanilla |
+
+
+  Scenario: the user can sign typed data
+    * The user connect to VeWorld wallet in dapp "<dapp>"
+    * The user signs typed data
+    Examples:
+      | dapp    |
+      | remix   |
+      | react   |
+      | next    |
+      | svelte  |
+      | vue     |
+      | angular |
+      | vanilla |
