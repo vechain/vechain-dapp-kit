@@ -89,7 +89,7 @@ export const App = () => {
     return (
         <DAppKitProvider
             logLevel="DEBUG"
-            nodeUrl="https://testnet.vechain.org/"
+            node="https://testnet.vechain.org/"
             usePersistence
             walletConnectOptions={walletConnectOptions}
         >

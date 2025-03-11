@@ -1,7 +1,7 @@
 import type { LogLevel } from '../utils';
 import { WalletConnectOptions } from './wc-types';
 import type { CertificateData } from '@vechain/sdk-core';
-import type { CompressedBlockDetail } from '@vechain/sdk-network';
+import type {CompressedBlockDetail, HttpClient} from '@vechain/sdk-network';
 import type {
     CertificateMessage,
     CertificateOptions,
@@ -50,8 +50,7 @@ type ConnectCallback = (
 
 /**
  * Options for the DAppKit class
- * @param nodeUrl - The URL of the VeChain node to connect to
- * @param genesis - Optional. The genesis block of the VeChain network you want to connect to. Eg, 'main', 'test', or a genesis block
+ * @param node - The URL of the Node, or the {@link HttpClient} instance
  * @param onDisconnected - A callback that will be called when the session is disconnected
  * @param walletConnectOptions - Optional. Options for the WalletConnect integration
  * @param usePersistence - Optional. Whether to persist the wallet source/ account
@@ -59,19 +58,16 @@ type ConnectCallback = (
  * @param logLevel - Optional. The log level to use for the DAppKitUI logger
  * @param requireCertificate - Optional. Whether to require a connection certificate. Defaults to true
  * @param connectionCertificate - Optional. Options for the connection certificate
- * @param customNet - Optional. A custom network to use. Defaults to the mainnet
  * @param allowedWallets - Optional. An array of wallet sources to allow. Defaults to all sources
  */
 interface DAppKitOptions {
-    nodeUrl: string;
-    genesis?: Genesis;
+    node: string | HttpClient
     walletConnectOptions?: WalletConnectOptions;
     usePersistence?: boolean;
     useFirstDetectedSource?: boolean;
     logLevel?: LogLevel;
     requireCertificate?: boolean;
     connectionCertificate?: CertificateArgs;
-    customNet?: Net;
     allowedWallets?: WalletSource[];
 }
 
