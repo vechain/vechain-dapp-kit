@@ -62,6 +62,10 @@ export const DAppKitUI = {
         return this.get().wallet;
     },
 
+    get signer() {
+        return this.get().signer;
+    },
+
     get configuration(): DAppKitUIOptions | null {
         return dappKitOptions;
     },

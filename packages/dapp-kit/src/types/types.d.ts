@@ -88,6 +88,12 @@ interface WalletSigner {
         msg: CertificateMessage,
         options: CertificateOptions,
     ) => Promise<CertificateResponse>;
+    signTypedData?: (
+      _domain: ethers.TypedDataDomain,
+      _types: Record<string, ethers.TypedDataField[]>,
+      _value: Record<string, unknown>,
+      _options?: SignTypedDataOptions,
+    ) => Promise<string>;
 }
 
 /**
@@ -96,6 +102,12 @@ interface WalletSigner {
 type VeChainWallet = WalletSigner & {
     connect: ConnectCallback;
     disconnect?: () => void | Promise<void>;
+    signTypedData?: (
+        _domain: ethers.TypedDataDomain,
+        _types: Record<string, ethers.TypedDataField[]>,
+        _value: Record<string, unknown>,
+        _options?: SignTypedDataOptions,
+    ) => Promise<string>;
 };
 
 interface ConnectResponse {

@@ -34,3 +34,25 @@ export const connectWithCustomButton = async function (dappUrl: string) {
     await ApproveFlows.sign();
     await NavigationUtils.switchToWindow(windowHandle);
 };
+
+export const sendTransaction = async function (dappUrl: string) {
+    await NavigationUtils.goToUrl(dappUrl);
+
+    await extension.driver
+        .findElement(Locators.buttonByText('Send TX'))
+        .click();
+
+    await NavigationUtils.switchToExtensionIframe();
+    await ApproveFlows.signTransaction();
+}
+
+export  const signTypedData = async function (dappUrl: string) {
+    await NavigationUtils.goToUrl(dappUrl);
+
+    await extension.driver
+        .findElement(Locators.buttonByText('Sign Typed Data'))
+        .click();
+
+    await NavigationUtils.switchToExtensionIframe();
+    await ApproveFlows.sign();
+}

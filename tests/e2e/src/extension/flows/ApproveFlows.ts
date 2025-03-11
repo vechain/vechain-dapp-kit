@@ -16,6 +16,13 @@ const sign = async (password?: string) => {
     await PasswordFlows.submitPassword(pw);
 };
 
+const signTransaction = async (password?: string) => {
+    const pw = password || TestDefaults.PASSWORD;
+    //Click the "Sign Cert" button
+    await extension.driver.waitAndClick(Locators.byId('sendTransactionButton'));
+    await PasswordFlows.submitPassword(pw);
+};
+
 const approve = async () => {
     await NavigationUtils.switchToExtensionIframe();
     //Click Approve on "InitialAppApproval"
@@ -25,6 +32,7 @@ const approve = async () => {
 };
 
 export default {
+    signTransaction,
     approveAndSign,
     approve,
     sign,

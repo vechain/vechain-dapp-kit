@@ -9,6 +9,7 @@ import { TransactionBody } from '@vechain/sdk-core';
 describe('VeChainSignerDAppKit', () => {
     const mockWallet = {
         signTx: vi.fn().mockResolvedValue({ txid: '0x123' }),
+        signTypedData: vi.fn().mockResolvedValue('0x123'),
         state: {
             address: '0x456',
         },
@@ -89,8 +90,17 @@ describe('VeChainSignerDAppKit', () => {
     it('should reject signTypedData with "Method not implemented." error', async () => {
         const signer = new VeChainSignerDAppKit(mockWallet, mockProvider);
 
-        await expect(signer.signTypedData({}, {}, {})).rejects.toThrow(
-            'Method not implemented.',
-        );
+        const res = await signer.signTypedData(
+          {
+              name: 'Test Data',
+              version: '1',
+              chainId: 1,
+              verifyingContract: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+          },
+          { test: [{ name: 'test', type: 'address' }] },
+          { test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68' },
+          {},
+        )
+        expect(res).toBe('0x123');
     });
 });

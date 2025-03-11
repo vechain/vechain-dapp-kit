@@ -2,7 +2,8 @@ import { Certificate } from '@vechain/sdk-core';
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
-import type { ThorClient } from '@vechain/sdk-network';
+import type { SignTypedDataOptions, ThorClient } from '@vechain/sdk-network';
+import ethers from 'ethers';
 import type {
     ConnectResponse,
     DAppKitOptions,
@@ -256,6 +257,22 @@ class WalletManager {
                 DAppKitLogger.error('WalletManager', 'signCert', e);
                 throw e;
             });
+
+    signTypedData = (
+        domain: ethers.TypedDataDomain,
+        types: Record<string, ethers.TypedDataField[]>,
+        value: Record<string, unknown>,
+        options?: SignTypedDataOptions,
+    ): Promise<string> => {
+        if (!this.wallet.signTypedData)
+            return Promise.reject(new Error('signTypedData is not supported'));
+        return this.wallet
+            .signTypedData(domain, types, value, options)
+            .catch((e) => {
+                DAppKitLogger.error('WalletManager', 'signTypedData', e);
+                throw e;
+            });
+    };
 
     setSource = (src: WalletSource): void => {
         if (this.state.source === src) {

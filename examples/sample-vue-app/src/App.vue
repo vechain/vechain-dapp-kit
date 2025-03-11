@@ -7,6 +7,10 @@
         <button id="custom-button" v-on:click="openModal">
             Connect Custom Button
         </button>
+        <div class="label">TX</div>
+        <button v-on:click="sendTx">Send TX</button>
+        <div class="label">Typed Data</div>
+        <button v-on:click="signTypedData">Sign Typed Data</button>
     </div>
 </template>
 
@@ -63,6 +67,32 @@ export default defineComponent({
     methods: {
         openModal: () => {
             DAppKitUI.modal.open();
+        },
+        sendTx: () => {
+            DAppKitUI.signer.sendTransaction({
+                clauses: [
+                    {
+                        to: DAppKitUI.wallet.state.address,
+                       value: '01',
+                        data: '0x',
+                   },
+                ],
+                comment: 'Send 1 Wei',
+            });
+        },
+        signTypedData: () => {
+            DAppKitUI.signer.signTypedData(
+                {
+                    name: 'Test Data',
+                    version: '1',
+                   chainId: 1,
+                    verifyingContract:
+                        '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+                },
+               { test: [{ name: 'test', type: 'address' }] },
+                { test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68' },
+                {},
+            );
         },
     },
 });
