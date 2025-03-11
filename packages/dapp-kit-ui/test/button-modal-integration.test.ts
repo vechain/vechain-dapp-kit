@@ -20,7 +20,7 @@ const themeVariables = {
 describe('button', () => {
     beforeEach(() => {
         DAppKitUI.configure({
-            nodeUrl: 'https://mainnet.vechain.org/',
+            node: 'https://mainnet.vechain.org/',
             themeVariables,
         });
     });

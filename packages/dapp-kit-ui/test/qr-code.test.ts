@@ -14,7 +14,7 @@ const sampleUri =
 describe('qr-code-modal', () => {
     beforeEach(() => {
         DAppKitUI.configure({
-            nodeUrl: 'https://mainnet.vechain.org/',
+            node: 'https://mainnet.vechain.org/',
             walletConnectOptions: {
                 projectId: '123',
                 metadata: {

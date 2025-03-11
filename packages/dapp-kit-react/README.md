@@ -39,7 +39,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <DAppKitProvider
             // REQUIRED: The URL of the node you want to connect to
-            nodeUrl={'https://testnet.vechain.org/'}
+            node={'https://testnet.vechain.org/'}
             // OPTIONAL: Whether or not to persist state in local storage (account, wallet source)
             usePersistence={true}
             // OPTIONAL: Options to enable wallet connect

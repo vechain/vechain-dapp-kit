@@ -36,7 +36,7 @@ const walletConnectOptions: WalletConnectOptions = {
 import { DAppKit } from '@vechain/dapp-kit';
 
 const { thor, vendor, wallet } = new DAppKit({
-    nodeUrl: 'https://sync-testnet.vechain.org/', //Required
+    node: 'https://sync-testnet.vechain.org/', //Required
     walletConnectOptions, //Optional
 });
 ```

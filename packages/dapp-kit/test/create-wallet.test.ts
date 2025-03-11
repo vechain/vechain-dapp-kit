@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createWallet } from '../src/utils';
+import { createWallet } from '../src';
 import type {
     DAppKitOptions,
     WalletConnectOptions,
@@ -19,11 +19,11 @@ const createOptions = (
     wcOptions?: WalletConnectOptions,
 ): ICreateWallet => {
     return {
-        nodeUrl: 'https://testnet.veblocks.net/',
+        node: 'https://testnet.veblocks.net/',
         source,
         walletConnectOptions: wcOptions,
         onDisconnected: () => {},
-        thor: ThorClient.fromUrl('https://testnet.vechain.org'),
+        thor: ThorClient.at('https://testnet.vechain.org'),
     };
 };
 

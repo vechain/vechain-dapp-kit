@@ -11,7 +11,7 @@ const walletConnectOptions = {
 };
 
 const vechainDAppKitOptions = {
-    nodeUrl: 'https://mainnet.vechain.org',
+    node: 'https://mainnet.vechain.org',
     walletConnectOptions,
     usePersistence: true,
 };
