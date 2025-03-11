@@ -7,7 +7,7 @@ import {
 import AccessFlows from '../extension/flows/AccessFlows';
 import OnboardingFlows from '../extension/flows/OnboardingFlows';
 import DashboardFlows from '../extension/flows/DashboardFlows';
-import {connectDapp, connectWithCustomButton, sendTransaction} from '../flows/ConnectFlows';
+import {connectDapp, connectWithCustomButton, sendTransaction, signTypedData} from '../flows/ConnectFlows';
 import { DappUrl } from '../constants/dapp';
 
 defineStep('The user has previously onboarded', async function () {
@@ -51,9 +51,17 @@ defineStep(
 );
 
 defineStep(
-  'The user sends a transaction',
+  'The user sends a transaction in dapp {string}',
   async function (dapp: string) {
     const dappUrl: string = DappUrl[dapp];
-    await sendTransaction(dappUrl)
+    return await sendTransaction(dappUrl)
+  },
+)
+
+defineStep(
+  'The user signs typed data in dapp {string}',
+  async function (dapp: string) {
+    const dappUrl: string = DappUrl[dapp];
+    return await signTypedData(dappUrl)
   },
 )

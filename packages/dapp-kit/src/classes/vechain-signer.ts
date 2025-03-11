@@ -3,6 +3,7 @@ import {
     AvailableVeChainProviders,
     DelegationHandler,
     SignTransactionOptions,
+    type SignTypedDataOptions,
     TransactionRequestInput,
     VeChainAbstractSigner,
 } from '@vechain/sdk-network';
@@ -12,6 +13,7 @@ import type {
     TransactionResponse,
 } from '../types';
 import type { WalletManager } from './wallet-manager';
+import ethers from 'ethers';
 
 class VeChainSignerDAppKit extends VeChainAbstractSigner {
     private readonly walletManager: WalletManager;
@@ -88,8 +90,13 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
         return Promise.reject(new Error('Method not implemented.'));
     }
 
-    signTypedData(): Promise<string> {
-        return Promise.reject(new Error('Method not implemented.'));
+    signTypedData(
+        domain: ethers.TypedDataDomain,
+        types: Record<string, ethers.TypedDataField[]>,
+        value: Record<string, unknown>,
+        options?: SignTypedDataOptions,
+    ): Promise<string> {
+        return this.walletManager.signTypedData(domain, types, value, options);
     }
 
     async _signFlow(
