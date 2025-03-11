@@ -1,7 +1,7 @@
 import type { LogLevel } from '../utils';
 import { WalletConnectOptions } from './wc-types';
 import type { CertificateData } from '@vechain/sdk-core';
-import type {CompressedBlockDetail, HttpClient} from '@vechain/sdk-network';
+import type { CompressedBlockDetail, HttpClient } from '@vechain/sdk-network';
 import type {
     CertificateMessage,
     CertificateOptions,
@@ -61,7 +61,7 @@ type ConnectCallback = (
  * @param allowedWallets - Optional. An array of wallet sources to allow. Defaults to all sources
  */
 interface DAppKitOptions {
-    node: string | HttpClient
+    node: string | HttpClient;
     walletConnectOptions?: WalletConnectOptions;
     usePersistence?: boolean;
     useFirstDetectedSource?: boolean;
@@ -85,10 +85,10 @@ interface WalletSigner {
         options: CertificateOptions,
     ) => Promise<CertificateResponse>;
     signTypedData?: (
-      _domain: ethers.TypedDataDomain,
-      _types: Record<string, ethers.TypedDataField[]>,
-      _value: Record<string, unknown>,
-      _options?: SignTypedDataOptions,
+        _domain: ethers.TypedDataDomain,
+        _types: Record<string, ethers.TypedDataField[]>,
+        _value: Record<string, unknown>,
+        _options?: SignTypedDataOptions,
     ) => Promise<string>;
 }
 

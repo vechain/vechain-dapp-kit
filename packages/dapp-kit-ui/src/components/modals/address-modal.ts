@@ -36,7 +36,9 @@ export class AddressModal extends LitElement {
                 flex-direction: column;
                 gap: 15px;
                 padding: 20px;
-                transition: width 5s, height 4s;
+                transition:
+                    width 5s,
+                    height 4s;
                 font-family: var(--vdk-font-family, ${Font.Family});
             }
 
@@ -58,7 +60,9 @@ export class AddressModal extends LitElement {
                 justify-content: center;
                 align-items: center;
                 gap: 40px;
-                transition: width 2s, height 4s;
+                transition:
+                    width 2s,
+                    height 4s;
             }
 
             .modal-footer {

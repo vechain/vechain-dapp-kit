@@ -18,7 +18,7 @@ class DAppKit {
         if (typeof node === 'string') {
             this.thor = ThorClient.at(node);
         } else {
-            this.thor = new ThorClient(node)
+            this.thor = new ThorClient(node);
         }
         this.wallet = new WalletManager(options, this.thor);
         this.signer = new VeChainSignerDAppKit(

@@ -41,7 +41,7 @@ describe('createWallet', () => {
 
         it('is installed', () => {
             window.vechain = {
-                newConnexSigner: () => ({} as WalletSigner),
+                newConnexSigner: () => ({}) as WalletSigner,
             };
 
             const wallet = createWallet(createOptions('veworld'));
