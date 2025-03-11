@@ -26,7 +26,7 @@
         "stop-preview": "kill -2 $(ps aux | grep '[t]urbo run preview' | awk '{print $2}')",
         "test": "turbo run test --filter='@vechain/*'",
         "test:e2e": "turbo run preview > /dev/null 2>&1 & turbo run test:e2e; yarn stop-preview",
-        "test:e2e:ci": "turbo run preview & turbo run test:e2e:headless",
+        "test:e2e:ci": "turbo run preview & turbo run test:e2e:headless; yarn stop-preview",
         "test:e2e:headless": "turbo run preview > /dev/null 2>&1 & turbo run test:e2e:headless; yarn stop-preview"
     },
     "husky": {
@@ -49,14 +49,15 @@
         "@commitlint/config-conventional": "^18.0.0",
         "commitlint": "^18.0.0",
         "eslint": "^9.12.0",
-        "typescript-eslint": "^8.11.0",
         "eslint-plugin-prefer-arrow": "1.2.3",
         "husky": "^8.0.0",
         "lint-staged": "^15.0.2",
         "prettier": "^2.5.1",
         "punycode": "^1.4.1",
+        "ts-node": "^10.9.2",
         "turbo": "latest",
-        "typescript": "4.9.5"
+        "typescript": "5.3.3",
+        "typescript-eslint": "^8.11.0"
     },
-    "packageManager": "yarn@1.22.19"
+    "packageManager": "yarn@4.5.1"
 }

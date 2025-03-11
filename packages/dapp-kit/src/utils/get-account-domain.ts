@@ -1,59 +1,32 @@
-import { type DriverNoVendor } from '@vechain/connex-driver';
-import { Framework } from '@vechain/connex-framework';
-import { genesisBlocks } from '../constants';
-
-const VNS_RESOLVER = {
-    main: '0xA11413086e163e41901bb81fdc5617c975Fa5a1A',
-    test: '0xc403b8EA53F707d7d4de095f0A20bC491Cf2bc94',
-};
-
-const getNamesABI = {
-    inputs: [
-        {
-            internalType: 'address[]',
-            name: 'addresses',
-            type: 'address[]',
-        },
-    ],
-    name: 'getNames',
-    outputs: [
-        {
-            internalType: 'string[]',
-            name: 'names',
-            type: 'string[]',
-        },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-};
+import { genesisBlocks, VNS_RESOLVER } from '../constants';
+import { ThorClient } from '@vechain/sdk-network';
+import { ABIContract } from '@vechain/sdk-core';
 
 /**
  * Get the domain of an account
  */
 export const getAccountDomain = async ({
     address,
-    driver,
+    thor,
 }: {
     address: string | null;
-    driver: DriverNoVendor;
+    thor: ThorClient;
 }): Promise<string | null> => {
     if (!address) return null;
 
-    const framework = new Framework(driver);
+    const genesisId = await thor.blocks.getGenesisBlock();
 
     const resolver =
-        driver.genesis.id === genesisBlocks.test.id
+        genesisId?.id === genesisBlocks.test.id
             ? VNS_RESOLVER.test
             : VNS_RESOLVER.main;
 
-    const res = await framework.thor
-        .account(resolver)
-        .method(getNamesABI)
-        .call([address]);
+    const res = await thor.contracts.executeCall(
+        resolver,
+        ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getNames'),
+        [address],
+    );
+    const resArray = res.result.array as string[];
 
-    const {
-        decoded: { names },
-    } = res;
-
-    return (names?.[0] as string) || null;
+    return (resArray[0] as string) || null;
 };

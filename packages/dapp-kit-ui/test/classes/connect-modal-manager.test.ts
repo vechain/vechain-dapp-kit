@@ -1,4 +1,5 @@
 import { ConnectModalManager, DAppKitUI } from '../../src';
+import { describe, expect, it } from 'vitest';
 
 DAppKitUI.configure({
     nodeUrl: 'https://mainnet.vechain.org/',

@@ -1,33 +1,26 @@
 import { describe, it, expect, vi } from 'vitest';
 import { getAccountDomain } from '../../src/utils/get-account-domain';
-import { Framework } from '@vechain/connex-framework';
-import { DriverNoVendor } from '@vechain/connex-driver';
+import { ABIContract } from '@vechain/sdk-core';
+import { VNS_RESOLVER } from '../../src';
 
 vi.mock('@vechain/connex-framework');
 
 describe('getAccountDomain', () => {
-    const mockDriver: DriverNoVendor = {
-        genesis: {
-            id: '0x000000000b2bce3c70bc649a02749e8687721b09ed2e15997f466536b20bb127',
+    const mockThor = {
+        thor: {
+            blocks: {
+                getGenesisBlock: vi.fn(),
+            },
+            contracts: {
+                executeCall: vi.fn(),
+            },
         },
     } as any;
-
-    const mockFramework = {
-        thor: {
-            account: vi.fn().mockReturnThis(),
-            method: vi.fn().mockReturnThis(),
-            call: vi.fn(),
-        },
-    };
-
-    beforeEach(() => {
-        vi.mocked(Framework).mockReturnValue(mockFramework as any);
-    });
 
     it('should return null if address is null', async () => {
         const result = await getAccountDomain({
             address: null,
-            driver: mockDriver,
+            thor: mockThor.thor,
         });
         expect(result).toBeNull();
     });
@@ -36,52 +29,52 @@ describe('getAccountDomain', () => {
         const mockAddress = '0x1234567890123456789012345678901234567890';
         const mockDomain = 'test.vet';
 
-        mockFramework.thor.call.mockResolvedValue({
-            decoded: { names: [mockDomain] },
+        mockThor.thor.contracts.executeCall.mockResolvedValue({
+            result: {
+                array: [mockDomain],
+            },
         });
 
         const result = await getAccountDomain({
             address: mockAddress,
-            driver: mockDriver,
+            thor: mockThor.thor,
         });
 
         expect(result).toBe(mockDomain);
-        expect(mockFramework.thor.account).toHaveBeenCalledWith(
-            '0xc403b8EA53F707d7d4de095f0A20bC491Cf2bc94',
+        expect(mockThor.thor.contracts.executeCall).toHaveBeenCalledWith(
+            VNS_RESOLVER.main,
+            ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getNames'),
+            [mockAddress],
         );
-        expect(mockFramework.thor.method).toHaveBeenCalled();
-        expect(mockFramework.thor.call).toHaveBeenCalledWith([mockAddress]);
     });
 
     it('should return null if no domain is found', async () => {
         const mockAddress = '0x1234567890123456789012345678901234567890';
 
-        mockFramework.thor.call.mockResolvedValue({
-            decoded: { names: [] },
+        mockThor.thor.contracts.executeCall.mockResolvedValue({
+            result: {
+                array: [],
+            },
         });
 
         const result = await getAccountDomain({
             address: mockAddress,
-            driver: mockDriver,
+            thor: mockThor.thor,
         });
 
         expect(result).toBeNull();
     });
 
     it('should use test network resolver if genesis ID matches', async () => {
-        const testDriver: DriverNoVendor = {
-            genesis: {
-                id: '0x000000000b2bce3c70bc649a02749e8687721b09ed2e15997f466536b20bb127',
-            },
-        } as any;
-
         await getAccountDomain({
             address: '0x1234567890123456789012345678901234567890',
-            driver: testDriver,
+            thor: mockThor.thor,
         });
 
-        expect(mockFramework.thor.account).toHaveBeenCalledWith(
-            '0xc403b8EA53F707d7d4de095f0A20bC491Cf2bc94',
+        expect(mockThor.thor.contracts.executeCall).toHaveBeenCalledWith(
+            VNS_RESOLVER.main,
+            ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getNames'),
+            ['0x1234567890123456789012345678901234567890'],
         );
     });
 });

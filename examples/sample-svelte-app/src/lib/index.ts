@@ -10,13 +10,11 @@ const walletConnectOptions = {
     },
 };
 
-const vechainDAppKitOptions = {
+DAppKitUI.configure({
     nodeUrl: 'https://testnet.vechain.org/',
     walletConnectOptions,
     usePersistence: true,
-};
-
-DAppKitUI.configure(vechainDAppKitOptions);
+});
 
 // custom button configuration
 setTimeout(() => {
@@ -41,5 +39,21 @@ setTimeout(() => {
         handleConnected(DAppKitUI.wallet.state.address);
 
         DAppKitUI.modal.onConnectionStatusChange(handleConnected);
+    }
+
+    const sendTxButton = document.getElementById('send-tx-button');
+    if (sendTxButton) {
+        sendTxButton.addEventListener('click', () => {
+            DAppKitUI.signer?.sendTransaction({
+                clauses: [
+                    {
+                        to: '0xf077b491b355E64048cE21E3A6Fc4751eEeA77fa',
+                        value: '0x1',
+                        data: '0x',
+                    },
+                ],
+                comment: 'Send 1 Wei',
+            });
+        });
     }
 }, 100);

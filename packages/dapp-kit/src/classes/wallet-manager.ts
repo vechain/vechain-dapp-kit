@@ -1,27 +1,34 @@
-import { type DriverNoVendor } from '@vechain/connex-driver';
 import { Certificate } from '@vechain/sdk-core';
-import { type ethers } from 'ethers';
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
+import type { ThorClient } from '@vechain/sdk-network';
 import type {
     ConnectResponse,
-    ConnexWallet,
     DAppKitOptions,
+    VeChainWallet,
     WalletManagerState,
     WalletSource,
 } from '../types';
-import { CertificateArgs, type SignTypedDataOptions } from '../types/types';
-import { DAppKitLogger, Storage, createWallet } from '../utils';
+import { createWallet, DAppKitLogger, Storage } from '../utils';
+import type {
+    CertificateMessage,
+    CertificateOptions,
+    CertificateResponse,
+    TransactionMessage,
+    TransactionOptions,
+    TransactionResponse,
+} from '../types/requests';
+import { CertificateArgs } from '../types/types';
 import { getAccountDomain } from '../utils/get-account-domain';
 
 class WalletManager {
     public readonly state: WalletManagerState;
-    private wallets: Record<string, ConnexWallet | undefined> = {};
+    private wallets: Record<string, VeChainWallet | undefined> = {};
 
     constructor(
         private readonly options: DAppKitOptions,
-        private readonly driver: DriverNoVendor,
+        private readonly thor: ThorClient,
     ) {
         this.state = this.initState(options.usePersistence ?? false);
         this.initPersistence(options.usePersistence ?? false);
@@ -34,7 +41,7 @@ class WalletManager {
         }
     }
 
-    private get wallet(): ConnexWallet {
+    private get wallet(): VeChainWallet {
         const source = this.state.source;
 
         DAppKitLogger.debug(
@@ -45,7 +52,7 @@ class WalletManager {
         );
 
         if (!source) {
-            throw new Error('No wallet has been selected');
+            throw new Error('No wallet selected');
         }
 
         let wallet = this.wallets[source];
@@ -66,6 +73,7 @@ class WalletManager {
                 ...this.options,
                 source,
                 onDisconnected: () => this.disconnect(true),
+                thor: this.thor,
             };
             wallet = createWallet(opts);
 
@@ -82,7 +90,7 @@ class WalletManager {
         if (address) {
             this.state.isAccountDomainLoading = true;
 
-            getAccountDomain({ address, driver: this.driver })
+            getAccountDomain({ address, thor: this.thor })
                 .then((domain) => {
                     this.state.accountDomain = domain;
                 })
@@ -144,7 +152,7 @@ class WalletManager {
 
         try {
             Certificate.of(connectionCertificate).verify();
-            this.setAddressAndDomain(signer);
+            this.state.address = signer;
             this.state.connectionCertificate = connectionCertificate;
             return {
                 account: signer,
@@ -218,33 +226,36 @@ class WalletManager {
     };
 
     signTx = (
-        msg: Connex.Vendor.TxMessage,
-        options: Connex.Signer.TxOptions,
-    ): Promise<Connex.Vendor.TxResponse> =>
-        this.wallet.signTx(msg, options).catch((e) => {
-            DAppKitLogger.error('WalletManager', 'signTx', e);
-            throw e;
-        });
+        msg: TransactionMessage[],
+        options: TransactionOptions = {},
+    ): Promise<TransactionResponse> =>
+        this.wallet
+            .signTx(msg, options)
+            .then((res) => {
+                // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
+                this.state.address = res.signer;
+                return res;
+            })
+            .catch((e) => {
+                DAppKitLogger.error('WalletManager', 'signTx', e);
+                throw e;
+            });
 
     signCert = (
-        msg: Connex.Vendor.CertMessage,
-        options: Connex.Signer.CertOptions,
-    ): Promise<Connex.Vendor.CertResponse> =>
-        this.wallet.signCert(msg, options).catch((e) => {
-            DAppKitLogger.error('WalletManager', 'signCert', e);
-            throw e;
-        });
-
-    signTypedData = (
-        domain: ethers.TypedDataDomain,
-        types: Record<string, ethers.TypedDataField[]>,
-        value: Record<string, unknown>,
-        options?: SignTypedDataOptions,
-    ): Promise<string> =>
-        this.wallet.signTypedData(domain, types, value, options).catch((e) => {
-            DAppKitLogger.error('WalletManager', 'signTypedData', e);
-            throw e;
-        });
+        msg: CertificateMessage,
+        options: CertificateOptions = {},
+    ): Promise<CertificateResponse> =>
+        this.wallet
+            .signCert(msg, options)
+            .then((res) => {
+                // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
+                this.state.address = res.annex.signer;
+                return res;
+            })
+            .catch((e) => {
+                DAppKitLogger.error('WalletManager', 'signCert', e);
+                throw e;
+            });
 
     setSource = (src: WalletSource): void => {
         if (this.state.source === src) {
@@ -261,10 +272,6 @@ class WalletManager {
 
         if (src === 'veworld' && !window.vechain) {
             throw new Error('VeWorld Extension is not installed');
-        }
-
-        if (src === 'sync' && !window.connex) {
-            throw new Error('User is not in a Sync wallet');
         }
 
         DAppKitLogger.debug('WalletManager', 'setSource', src);
@@ -365,10 +372,6 @@ class WalletManager {
             this.setSource('veworld');
         } else if (this.options.walletConnectOptions) {
             this.setSource('wallet-connect');
-        } else if (window.connex) {
-            this.setSource('sync');
-        } else {
-            this.setSource('sync2');
         }
     };
 }

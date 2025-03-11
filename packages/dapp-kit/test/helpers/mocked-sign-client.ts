@@ -4,11 +4,15 @@ import type {
     IEngine,
 } from '@walletconnect/types/dist/types/sign-client/engine';
 import type { SessionTypes } from '@walletconnect/types';
-import type { ResolvedSignClient } from '../../src';
+import type {
+    CertificateResponse,
+    ResolvedSignClient,
+    TransactionResponse,
+} from '../../src';
 import { DefaultMethods } from '../../src';
 import { wcSessionStruct } from './wc-fixtures';
 import { address, mockedConnexSigner } from './mocked-signer';
-import { randomUUID } from 'node:crypto';
+import { Blake2b256 } from '@vechain/sdk-core';
 
 const requestHandler: IEngine['request'] = vi.fn();
 const connectHandler: IEngine['connect'] = vi.fn();
@@ -25,11 +29,11 @@ const defaultMockConnectHandler = (): ReturnType<IEngine['connect']> => {
 
 const defaultMockRequestHandler = (
     params: EngineTypes.RequestParams,
-): Promise<Connex.Vendor.CertResponse | Connex.Vendor.TxResponse | string> => {
+): Promise<CertificateResponse | TransactionResponse> => {
     if (params.request.method === DefaultMethods.RequestTransaction) {
         return Promise.resolve({
             txid: '0x123',
-            signer: address,
+            signer: address.toString(),
         });
     } else if (params.request.method === DefaultMethods.SignCertificate) {
         return Promise.resolve(
@@ -59,7 +63,7 @@ const mockedSignClient = {
         keys: [],
         get: vi.fn(),
     },
-    name: randomUUID(),
+    name: Blake2b256.random(12).toString(),
 } as unknown as ResolvedSignClient;
 
 vi.mocked(mockedSignClient.request).mockImplementation(

@@ -18,3 +18,16 @@ Feature: The user can connect to a wallet
       | vue     |
       | angular |
       | vanilla |
+
+  Scenario: the user can send a transaction
+    * The user connect to VeWorld wallet in dapp "<dapp>"
+    * The user sends a transaction
+    Examples:
+      | dapp    |
+      | remix   |
+      | react   |
+      | next    |
+      | svelte  |
+      | vue     |
+      | angular |
+      | vanilla |

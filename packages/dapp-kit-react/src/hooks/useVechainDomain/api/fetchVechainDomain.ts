@@ -1,4 +1,4 @@
-import { addressUtils } from '@vechain/sdk-core';
+import { Address } from '@vechain/sdk-core';
 import type { DAppKitContext } from '../../../types';
 import { getDomain } from './getDomain';
 import { getAddress } from './getAddress';
@@ -14,10 +14,10 @@ export interface VeChainDomainResult {
  */
 export const fetchVechainDomain = async ({
     addressOrDomain,
-    connex,
+    thor,
 }: {
     addressOrDomain?: string | null;
-    connex: DAppKitContext['connex'];
+    thor: DAppKitContext['thor'];
 }): Promise<VeChainDomainResult> => {
     if (!addressOrDomain) {
         return {
@@ -27,13 +27,13 @@ export const fetchVechainDomain = async ({
         };
     }
 
-    const isValidAddress = addressUtils.isAddress(addressOrDomain);
+    const isValidAddress = Address.isValid(addressOrDomain);
 
     if (isValidAddress) {
         try {
             const domainName = await getDomain({
                 address: addressOrDomain,
-                connex,
+                thor,
             });
             return {
                 address: addressOrDomain,
@@ -53,7 +53,7 @@ export const fetchVechainDomain = async ({
     try {
         const domainAddress = await getAddress({
             domain: addressOrDomain,
-            connex,
+            thor,
         });
         if (domainAddress === '0x0000000000000000000000000000000000000000') {
             return {

@@ -1,16 +1,30 @@
 import {
-    WalletButton,
     useWallet,
     useWalletModal,
+    WalletButton,
 } from '@vechain/dapp-kit-react';
 import { friendlyAddress } from '@vechain/dapp-kit-ui';
 import { useEffect, useState } from 'react';
 
 function App() {
-    const { account, accountDomain, isAccountDomainLoading } = useWallet();
+    const { account, signer, accountDomain, isAccountDomainLoading } =
+        useWallet();
 
     const { open } = useWalletModal();
     const [buttonText, setButtonText] = useState('Connect Custom Button');
+
+    const sendTx = () =>
+        signer?.sendTransaction({
+            clauses: [
+                {
+                    to: '0xf077b491b355E64048cE21E3A6Fc4751eEeA77fa',
+                    value: '0x1',
+                    data: '0x',
+
+                },
+            ],
+          comment: 'Send 1 Wei',
+        });
 
     useEffect(() => {
         if (account) {
@@ -31,6 +45,13 @@ function App() {
             <WalletButton />
             <div className="label">custom button:</div>
             <button onClick={open}>{buttonText}</button>
+
+            {signer && (
+                <>
+                    <div className="label">TX</div>
+                    <button onClick={sendTx}>Send</button>
+                </>
+            )}
         </div>
     );
 }

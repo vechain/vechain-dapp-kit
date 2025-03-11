@@ -1,53 +1,57 @@
-import { CertificateData } from '@vechain/sdk-core';
 import type { LogLevel } from '../utils';
 import { WalletConnectOptions } from './wc-types';
+import type { CertificateData } from '@vechain/sdk-core';
+import type { CompressedBlockDetail } from '@vechain/sdk-network';
+import type {
+    CertificateMessage,
+    CertificateOptions,
+    CertificateResponse,
+    TransactionMessage,
+    TransactionOptions,
+    TransactionResponse,
+} from './requests';
 
 declare global {
     interface Window {
         vechain?: {
-            newConnexSigner: (genesisId: string) => ExpandedConnexSigner;
+            newConnexSigner: (genesisId: string) => WalletSigner;
             isInAppBrowser?: boolean;
         };
-        connex?: unknown;
+        connex?: {
+            vendor: {
+                sign: (type: string) => any;
+            };
+        };
     }
 }
 
-interface ExpandedConnexSigner extends Connex.Signer {
-    signTypedData: (
-        _domain: ethers.TypedDataDomain,
-        _types: Record<string, ethers.TypedDataField[]>,
-        _value: Record<string, unknown>,
-        _options?: SignTypedDataOptions,
-    ) => Promise<string>;
-}
-
-type WalletSource = 'wallet-connect' | 'veworld' | 'sync2' | 'sync';
+type WalletSource = 'wallet-connect' | 'veworld' | 'sync' | 'sync2';
 
 interface WalletConfig {
     requiresCertificate: boolean;
 }
 
-type Genesis = 'main' | 'test' | Connex.Thor.Block;
+type Genesis = 'main' | 'test' | CompressedBlockDetail;
 
 /**
  * Simple Certificate Args
  */
 type CertificateArgs = {
-    message: Connex.Vendor.CertMessage;
-    options?: Connex.Signer.CertOptions;
+    message: CertificateMessage;
+    options?: CertificateOptions;
 };
 
 /**
  * Callback used by the DAppKit `connect` function
  */
 type ConnectCallback = (
-    _certificate?: CertificateArgs,
+    _certificate?: CertificateArs,
 ) => Promise<ConnectResponse>;
 
 /**
  * Options for the DAppKit class
  * @param nodeUrl - The URL of the VeChain node to connect to
- * @param genesis - Optional. The genesis block of the VeChain network you want to connect to. Eg, 'main', 'test', or a Connex.Thor.Block object
+ * @param genesis - Optional. The genesis block of the VeChain network you want to connect to. Eg, 'main', 'test', or a genesis block
  * @param onDisconnected - A callback that will be called when the session is disconnected
  * @param walletConnectOptions - Optional. Options for the WalletConnect integration
  * @param usePersistence - Optional. Whether to persist the wallet source/ account
@@ -75,11 +79,23 @@ type BaseWallet = ExpandedConnexSigner & {
     disconnect?: () => Promise<void> | void;
 };
 
+interface WalletSigner {
+    signTx: (
+        msg: TransactionMessage[],
+        options: TransactionOptions,
+    ) => Promise<TransactionResponse>;
+    signCert: (
+        msg: CertificateMessage,
+        options: CertificateOptions,
+    ) => Promise<CertificateResponse>;
+}
+
 /**
- * Modifies the Connex.Signer interface to include a disconnect method
+ * Modifies the WalletSigner interface to include a disconnect method
  */
-type ConnexWallet = BaseWallet & {
+type VeChainWallet = WalletSigner & {
     connect: ConnectCallback;
+    disconnect?: () => void | Promise<void>;
 };
 
 interface ConnectResponse {
@@ -97,22 +113,20 @@ interface WalletManagerState {
     connectionCertificate: CertificateData | null;
 }
 
-interface SignTypedDataOptions {
-    signer?: string;
-}
-
 export type {
     BaseWallet,
     CertificateArgs,
     ConnectCallback,
+    DAppKitOptions,
+    VeChainWallet,
+    WalletConfig,
+    WalletSource,
+    WalletManagerState,
     ConnectResponse,
     ConnexWallet,
-    DAppKitOptions,
     DriverSignedTypedData,
     ExpandedConnexSigner,
     Genesis,
     SignTypedDataOptions,
-    WalletConfig,
-    WalletManagerState,
-    WalletSource,
+    WalletSigner,
 };

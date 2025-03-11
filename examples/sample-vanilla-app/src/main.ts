@@ -7,6 +7,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <vdk-button></vdk-button>
     <div class="label">custom button:</div>
     <button id="custom-button">Connect Custom Button</button>
+    <div class="label">TX</div>
+    <button id="send-tx">Send</button>
     </div>
 `;
 
@@ -20,13 +22,11 @@ const walletConnectOptions = {
     },
 };
 
-const vechainDAppKitOptions = {
-    nodeUrl: 'https://mainnet.vechain.org',
+DAppKitUI.configure({
+    nodeUrl: 'https://mainnet.vechain.org/',
     walletConnectOptions,
     usePersistence: true,
-};
-
-DAppKitUI.configure(vechainDAppKitOptions);
+});
 
 // custom button configuration
 
@@ -61,4 +61,21 @@ if (customButton) {
     DAppKitUI.wallet.subscribeToKey('address', render);
     DAppKitUI.wallet.subscribeToKey('accountDomain', render);
     DAppKitUI.wallet.subscribeToKey('isAccountDomainLoading', render);
+}
+
+const sendTxButton = document.getElementById('send-tx');
+if (sendTxButton) {
+    sendTxButton.addEventListener('click', () => {
+        DAppKitUI.signer?.sendTransaction({
+            clauses: [
+                {
+                    to: '0xf077b491b355E64048cE21E3A6Fc4751eEeA77fa',
+                    value: '0x1',
+                    data: '0x',
+
+                },
+            ],
+            comment: 'Send 1 Wei',
+        });
+    });
 }

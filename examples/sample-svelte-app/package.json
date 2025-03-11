@@ -13,7 +13,7 @@
         "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
-        "@vechain/dapp-kit-ui": "*"
+        "@vechain/dapp-kit-ui": "workspace:^"
     },
     "devDependencies": {
         "@esbuild-plugins/node-globals-polyfill": "^0.2.3",

@@ -1,14 +1,14 @@
 import {
     DAppKitProvider,
-    WalletButton,
-    WalletConnectOptions,
     useWallet,
     useWalletModal,
+    WalletButton,
+    WalletConnectOptions,
 } from '@vechain/dapp-kit-react';
 import { useEffect, useState } from 'react';
 
 const AppContent = () => {
-    const { account } = useWallet();
+    const { account, signer } = useWallet();
     const { open, onConnectionStatusChange } = useWalletModal();
     const [buttonText, setButtonText] = useState('Connect Custom Button');
 
@@ -30,6 +30,19 @@ const AppContent = () => {
         onConnectionStatusChange(handleConnected);
     }, [account, onConnectionStatusChange]);
 
+    const sendTx = () =>
+      signer?.sendTransaction({
+            clauses: [
+                {
+                    to: '0xf077b491b355E64048cE21E3A6Fc4751eEeA77fa',
+                    value: '0x1',
+                    data: '0x',
+
+                },
+            ],
+          comment: 'Send 1 Wei',
+        });
+
     return (
         <div className="container">
             <h2>Remix</h2>
@@ -37,6 +50,8 @@ const AppContent = () => {
             <WalletButton />
             <div className="label">custom button:</div>
             <button onClick={open}>{buttonText}</button>
+            <div className="label">TX</div>
+            <button onClick={sendTx}>Send</button>
         </div>
     );
 };
@@ -58,7 +73,6 @@ const walletConnectOptions: WalletConnectOptions = {
 export const App = () => {
     return (
         <DAppKitProvider
-            genesis="test"
             logLevel="DEBUG"
             nodeUrl="https://testnet.vechain.org/"
             usePersistence

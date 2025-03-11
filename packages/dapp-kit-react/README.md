@@ -1,6 +1,9 @@
 # `@vechain/dapp-kit-react`
 
-The Vechain DApp Kit serves as a sophisticated layer built upon @vechain/connex, providing a simplified and efficient avenue for engaging with a multitude of Vechain wallets. This innovative toolkit enhances the ease of interaction, offering developers a seamless bridge to connect with diverse Vechain wallet functionalities. For more information, please refer to the official [Vechain Docs](https://docs.vechain.org/developer-resources/sdks-and-providers/dapp-kit)
+The Vechain DApp Kit serves as a sophisticated layer built upon @vechain/connex, providing a simplified and efficient
+avenue for engaging with a multitude of Vechain wallets. This innovative toolkit enhances the ease of interaction,
+offering developers a seamless bridge to connect with diverse Vechain wallet functionalities. For more information,
+please refer to the official [Vechain Docs](https://docs.vechain.org/developer-resources/sdks-and-providers/dapp-kit)
 
 ## Installation
 
@@ -37,8 +40,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <DAppKitProvider
             // REQUIRED: The URL of the node you want to connect to
             nodeUrl={'https://testnet.vechain.org/'}
-            // OPTIONAL: Required if you're not connecting to the main net
-            genesis={'test'}
             // OPTIONAL: Whether or not to persist state in local storage (account, wallet source)
             usePersistence={true}
             // OPTIONAL: Options to enable wallet connect
@@ -55,7 +56,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 -   Use the hooks provided by the `DAppKitProvider`
 
 ```typescript jsx
-import { useWallet, useConnex } from '@vechain/dapp-kit-react';
+import { useWallet, useThor } from '@vechain/dapp-kit-react';
 import type { WalletSource } from '@vechain/dapp-kit';
 
 // type WalletSource = 'wallet-connect' | 'veworld' | 'sync2' | 'sync';
@@ -67,8 +68,8 @@ setSource(mySource);
 
 const { account } = await connect();
 
-//Start using Connex thor/ vendor
-const { vendor, thor } = useConnex();
+//Start using Thor vendor
+const thor = useThor();
 ```
 
 ### UI Option 1: Modal + Button
