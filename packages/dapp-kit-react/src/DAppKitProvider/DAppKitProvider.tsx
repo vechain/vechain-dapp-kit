@@ -99,6 +99,8 @@ export const DAppKitProviderData = ({
                 isAccountDomainLoading,
                 source,
                 connectionCertificate,
+                requestCertificate: dAppKit.wallet.signCert,
+                requestTransaction: dAppKit.wallet.signTx,
             },
             modal: {
                 open: openModal,
