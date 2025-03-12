@@ -1,20 +1,20 @@
 import type React from 'react';
 import type {
+    CertificateOptions,
+    CertificateResponse,
     ConnectCallback,
+    TransactionOptions,
+    TransactionResponse,
     VeChainSignerDAppKit,
     WalletSource,
+    CertificateMessage,
+    TransactionMessage,
 } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 import type { CertificateData } from '@vechain/sdk-core';
 import type { ThorClient } from '@vechain/sdk-network';
-
 export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
-
-export interface AccountState {
-    address: string | null;
-    source: WalletSource | null;
-}
 
 /**
  * DAppKit Provider Options
@@ -43,6 +43,14 @@ export interface DAppKitContext {
         signer: VeChainSignerDAppKit;
         source: WalletSource | null;
         connectionCertificate: CertificateData | null;
+        requestCertificate: (
+            message: CertificateMessage,
+            options?: CertificateOptions,
+        ) => Promise<CertificateResponse>;
+        requestTransaction: (
+            clauses: TransactionMessage[],
+            options?: TransactionOptions,
+        ) => Promise<TransactionResponse>;
     };
     modal: {
         open: () => void;
