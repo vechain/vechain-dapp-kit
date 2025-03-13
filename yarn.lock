@@ -8359,7 +8359,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vechain/dapp-kit-react@workspace:^, @vechain/dapp-kit-react@workspace:packages/dapp-kit-react":
+"@vechain/dapp-kit-react@npm:2.0.0-rc.1, @vechain/dapp-kit-react@workspace:^, @vechain/dapp-kit-react@workspace:packages/dapp-kit-react":
   version: 0.0.0-use.local
   resolution: "@vechain/dapp-kit-react@workspace:packages/dapp-kit-react"
   dependencies:
@@ -8367,8 +8367,8 @@ __metadata:
     "@testing-library/react": "npm:^14.1.2"
     "@types/react": "npm:^18.2.28"
     "@types/react-dom": "npm:^18.2.13"
-    "@vechain/dapp-kit": "npm:*"
-    "@vechain/dapp-kit-ui": "npm:*"
+    "@vechain/dapp-kit": "npm:2.0.0-rc.1"
+    "@vechain/dapp-kit-ui": "npm:2.0.0-rc.1"
     "@vechain/sdk-core": "npm:1.0.0"
     eslint: "npm:^9.12.0"
     react: "npm:^18.2.0"
@@ -8398,14 +8398,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vechain/dapp-kit-ui@workspace:^, @vechain/dapp-kit-ui@workspace:packages/dapp-kit-ui":
+"@vechain/dapp-kit-ui@npm:2.0.0-rc.1, @vechain/dapp-kit-ui@workspace:^, @vechain/dapp-kit-ui@workspace:packages/dapp-kit-ui":
   version: 0.0.0-use.local
   resolution: "@vechain/dapp-kit-ui@workspace:packages/dapp-kit-ui"
   dependencies:
     "@types/qrcode": "npm:^1.5.5"
     "@typescript-eslint/eslint-plugin": "npm:^5.25.0"
     "@typescript-eslint/parser": "npm:^5.25.0"
-    "@vechain/dapp-kit": "workspace:^"
+    "@vechain/dapp-kit": "npm:2.0.0-rc.1"
     "@vechain/picasso": "npm:2.1.1"
     "@vechain/sdk-core": "npm:1.0.0"
     "@vechain/sdk-network": "npm:1.0.0"
@@ -8448,7 +8448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vechain/dapp-kit@workspace:^, @vechain/dapp-kit@workspace:packages/dapp-kit":
+"@vechain/dapp-kit@npm:2.0.0-rc.1, @vechain/dapp-kit@workspace:^, @vechain/dapp-kit@workspace:packages/dapp-kit":
   version: 0.0.0-use.local
   resolution: "@vechain/dapp-kit@workspace:packages/dapp-kit"
   dependencies:
@@ -22463,9 +22463,9 @@ __metadata:
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
-    "@vechain/dapp-kit": "npm:*"
-    "@vechain/dapp-kit-react": "npm:*"
-    "@vechain/dapp-kit-ui": "npm:*"
+    "@vechain/dapp-kit": "npm:2.0.0-rc.1"
+    "@vechain/dapp-kit-react": "npm:2.0.0-rc.1"
+    "@vechain/dapp-kit-ui": "npm:2.0.0-rc.1"
     eslint: "npm:^9.12.0"
     eslint-config-next: "npm:14.1.4"
     next: "npm:>=14.2.15"

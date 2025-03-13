@@ -7,9 +7,13 @@ const exec = util.promisify(child_process.exec);
 const publishPackages = async () => {
     const version = process.argv[2];
 
-    if (!version || !version.match(/^\d+\.\d+\.\d+$/)) {
+    if (
+      !version ||
+      (!version.match(/^\d+\.\d+\.\d+$/) &&
+        !version.match(/^\d+\.\d+\.\d+(-rc\.\d+)?$/))
+    ) {
         console.error(
-            `🚨 You must specify a semantic version as the first argument  🚨`,
+          `🚨 You must specify a semantic version as the first argument  🚨`,
         );
         process.exit(1);
     }

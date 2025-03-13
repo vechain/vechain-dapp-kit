@@ -104,8 +104,9 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
         delegator: SignTransactionOptions | null,
     ): Promise<TransactionResponse> {
         // Populate the call, to get proper from and to address (compatible with multi-clause transactions)
-        const populatedTransaction =
-            await this.populateTransaction(transaction);
+        const populatedTransaction = await this.populateTransaction(
+            transaction,
+        );
 
         let clauses: TransactionMessage[] = [];
 

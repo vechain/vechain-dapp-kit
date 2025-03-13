@@ -11,9 +11,9 @@
         "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
-        "@vechain/dapp-kit": "*",
-        "@vechain/dapp-kit-react": "*",
-        "@vechain/dapp-kit-ui": "*",
+        "@vechain/dapp-kit": "2.0.0-rc.1",
+        "@vechain/dapp-kit-react": "2.0.0-rc.1",
+        "@vechain/dapp-kit-ui": "2.0.0-rc.1",
         "next": ">=14.2.15",
         "react": "^18",
         "react-dom": "^18"
