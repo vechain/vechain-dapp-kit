@@ -71,10 +71,6 @@ interface DAppKitOptions {
     allowedWallets?: WalletSource[];
 }
 
-type BaseWallet = ExpandedConnexSigner & {
-    disconnect?: () => Promise<void> | void;
-};
-
 interface WalletSigner {
     signTx: (
         msg: TransactionMessage[],
@@ -122,7 +118,6 @@ interface WalletManagerState {
 }
 
 export type {
-    BaseWallet,
     CertificateArgs,
     ConnectCallback,
     DAppKitOptions,
@@ -131,9 +126,7 @@ export type {
     WalletSource,
     WalletManagerState,
     ConnectResponse,
-    ConnexWallet,
     DriverSignedTypedData,
-    ExpandedConnexSigner,
     Genesis,
     SignTypedDataOptions,
     WalletSigner,

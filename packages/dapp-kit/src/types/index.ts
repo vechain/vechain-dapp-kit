@@ -1,5 +1,4 @@
 export type {
-    BaseWallet,
     CertificateArgs,
     ConnectCallback,
     ConnectResponse,
@@ -9,6 +8,7 @@ export type {
     WalletConfig,
     WalletManagerState,
     WalletSource,
+    WalletSigner,
 } from './types';
 
 export type {
