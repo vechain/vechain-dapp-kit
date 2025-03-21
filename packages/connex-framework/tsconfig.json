@@ -1,0 +1,10 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "outDir": "./dist",
+        "types": ["@vechain/connex-types"]
+    },
+    "include": [
+        "./src"
+    ]
+}

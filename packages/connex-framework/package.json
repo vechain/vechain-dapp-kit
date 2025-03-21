@@ -1,0 +1,41 @@
+{
+    "name": "@vechain/connex-framework",
+    "version": "2.1.0",
+    "description": "A library implements VeChain Connex interface",
+    "main": "dist/index.js",
+    "module": "esm/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist",
+        "esm"
+    ],
+    "scripts": {
+        "build": "rm -rf dist/ esm/ && ../../node_modules/.bin/tsc -d -p . && ../../node_modules/.bin/tsc --module esnext --outDir 'esm' -p .",
+        "lint": "../../node_modules/.bin/tslint -p .",
+        "prepack": "npm run build",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vechain/connex.git"
+    },
+    "keywords": [
+        "Connex",
+        "Framework",
+        "VeChain",
+        "Wallet"
+    ],
+    "author": "qianbin",
+    "license": "LGPL-3.0",
+    "bugs": {
+        "url": "https://github.com/vechain/connex/issues"
+    },
+    "homepage": "https://github.com/vechain/connex/tree/master/packages/framework#readme",
+    "dependencies": {
+        "@vechain/connex-types": "^2.1.0",
+        "bignumber.js": "^7.2.1",
+        "thor-devkit": "*",
+        "validator-ts": "^0.9.1"
+    },
+    "sideEffects": false
+}

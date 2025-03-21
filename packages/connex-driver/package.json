@@ -1,0 +1,48 @@
+{
+    "name": "@vechain/connex-driver",
+    "version": "2.1.0",
+    "description": "Connex framework driver implementation",
+    "main": "dist/index.js",
+    "module": "esm/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist",
+        "esm"
+    ],
+    "scripts": {
+        "build": "rm -rf dist/ esm/ && ../../node_modules/.bin/tsc -d -p . && ../../node_modules/.bin/tsc --module esnext --outDir 'esm' -p .",
+        "lint": "../../node_modules/.bin/tslint -p .",
+        "prepack": "npm run build",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vechain/connex.git"
+    },
+    "keywords": [
+        "Connex",
+        "Driver",
+        "VeChain"
+    ],
+    "author": "qianbin",
+    "license": "LGPL-3.0",
+    "bugs": {
+        "url": "https://github.com/vechain/connex/issues"
+    },
+    "homepage": "https://github.com/vechain/connex/tree/marster/packages/driver/#readme",
+    "devDependencies": {
+        "@types/lru-cache": "^5.1.0",
+        "@types/ws": "^6.0.1"
+    },
+    "dependencies": {
+        "@vechain/connex-framework": "*",
+        "@vechain/connex-types": "^2.1.0",
+        "axios": "^0.21.1",
+        "bignumber.js": "^7.2.1",
+        "isomorphic-ws": "^4.0.1",
+        "lru-cache": "^5.1.1",
+        "thor-devkit": "*",
+        "ws": "^7.1.0"
+    },
+    "sideEffects": false
+}

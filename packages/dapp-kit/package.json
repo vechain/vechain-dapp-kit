@@ -23,9 +23,9 @@
         "watch": "yarn build --watch"
     },
     "dependencies": {
-        "@vechain/connex": "2.1.0",
-        "@vechain/connex-driver": "2.1.0",
-        "@vechain/connex-framework": "2.1.0",
+        "@vechain/connex": "*",
+        "@vechain/connex-driver": "*",
+        "@vechain/connex-framework": "*",
         "@vechain/connex-types": "^2.1.0",
         "@vechain/sdk-core": "1.0.0-beta.32",
         "@walletconnect/modal": "2.6.2",

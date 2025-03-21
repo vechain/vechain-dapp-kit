@@ -1,0 +1,91 @@
+{
+  "name": "thor-devkit",
+  "version": "2.0.9",
+  "description": "Typescript library to aid DApp development on VeChain Thor",
+  "main": "dist/index.js",
+  "module": "esm/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./esm/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "esm"
+  ],
+  "scripts": {
+    "build": "rm -rf dist/ esm/ && tsc -d -p . && tsc --module esnext --outDir 'esm' -p .",
+    "lint": "tslint -p .",
+    "prepack": "npm run build",
+    "test": "tslint -p . && NODE_ENV=test mocha --require ts-node/register --timeout 20000 --recursive  './**/*.test.ts'",
+    "cover": "NODE_ENV=test nyc npm t"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "tests/",
+      "**/*.d.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "lcov",
+      "html",
+      "text-summary"
+    ],
+    "all": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vechain/thor-devkit.js.git"
+  },
+  "keywords": [
+    "vechain",
+    "thor",
+    "blockchain",
+    "dapp",
+    "tx",
+    "transaction",
+    "crypto",
+    "mnemonic",
+    "keystore",
+    "abi"
+  ],
+  "author": "qianbin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vechain/thor-devkit.js/issues"
+  },
+  "homepage": "https://github.com/vechain/thor-devkit.js#readme",
+  "devDependencies": {
+    "@types/chai": "^4.1.3",
+    "@types/elliptic": "^6.4.9",
+    "@types/mocha": "^5.2.1",
+    "@types/node": "^10.5.2",
+    "chai": "^4.1.2",
+    "mocha": "^10.2.0",
+    "nyc": "^17.1.0",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.11.0",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "@vechain/ethers": "^4.0.27-5",
+    "bignumber.js": "^7.2.1",
+    "blakejs": "^1.1.2",
+    "elliptic": "6.6.0",
+    "fast-json-stable-stringify": "^2.1.0",
+    "js-sha3": "0.5.7",
+    "rlp": "^2.0.0"
+  },
+  "sideEffects": false
+}
