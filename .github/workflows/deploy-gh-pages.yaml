@@ -37,8 +37,9 @@ jobs:
               with:
                   node-version: 18
 
-            - name: Build React App
+            - name: Build Apps
               run: |
+                  yarn
                   yarn install:all
                   yarn gh-pages-build
 
