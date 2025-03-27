@@ -40,3 +40,5 @@ yarn-error.log*
 
 veworld-dist
 .reports
+
+.yarn/install-state.gz
