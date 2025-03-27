@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { DAppKit, WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import type { CertificateData } from '@vechain/sdk-core';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import type { DAppKitContext, DAppKitProviderOptions } from '../types';
 import { Context } from './context';
@@ -101,6 +101,7 @@ export const DAppKitProviderData = ({
                 connectionCertificate,
                 requestCertificate: dAppKit.wallet.signCert,
                 requestTransaction: dAppKit.wallet.signTx,
+                requestTypedData: dAppKit.wallet.signTypedData,
             },
             modal: {
                 open: openModal,
