@@ -19211,7 +19211,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:>=14.2.15":
+"next@npm:>=14.2.26":
   version: 15.2.4
   resolution: "next@npm:15.2.4"
   dependencies:
@@ -22368,7 +22368,7 @@ __metadata:
     "@vechain/dapp-kit-ui": "workspace:*"
     eslint: "npm:^9.12.0"
     eslint-config-next: "npm:14.1.4"
-    next: "npm:>=14.2.15"
+    next: "npm:>=14.2.26"
     react: "npm:^18"
     react-dom: "npm:^18"
     typescript: "npm:5.3.3"
