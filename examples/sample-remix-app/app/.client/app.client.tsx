@@ -31,30 +31,28 @@ const AppContent = () => {
     }, [account, onConnectionStatusChange]);
 
     const sendTx = () =>
-      signer?.sendTransaction({
+        signer?.sendTransaction({
             clauses: [
                 {
                     to: '0xf077b491b355E64048cE21E3A6Fc4751eEeA77fa',
                     value: '0x1',
                     data: '0x',
-
                 },
             ],
-          comment: 'Send 1 Wei',
+            comment: 'Send 1 Wei',
         });
 
     const signTypedData = () =>
-      signer?.signTypedData(
-        {
-            name: 'Test Data',
-            version: '1',
-            chainId: 1,
-            verifyingContract: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
-        },
-        { test: [{ name: 'test', type: 'address' }] },
-        { test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68' },
-        {},
-      );
+        signer.signTypedData(
+            {
+                name: 'Test Data',
+                version: '1',
+                chainId: 1,
+                verifyingContract: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+            },
+            { test: [{ name: 'test', type: 'address' }] },
+            { test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68' },
+        );
 
     return (
         <div className="container">

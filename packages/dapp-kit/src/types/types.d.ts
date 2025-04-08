@@ -1,7 +1,13 @@
 import type { LogLevel } from '../utils';
 import { WalletConnectOptions } from './wc-types';
 import type { CertificateData } from '@vechain/sdk-core';
-import type { CompressedBlockDetail, HttpClient } from '@vechain/sdk-network';
+import {
+    CompressedBlockDetail,
+    HttpClient,
+    TypedDataDomain,
+    TypedDataParameter,
+    SignTypedDataOptions,
+} from '@vechain/sdk-network';
 import type {
     CertificateMessage,
     CertificateOptions,
@@ -81,10 +87,10 @@ interface WalletSigner {
         options: CertificateOptions,
     ) => Promise<CertificateResponse>;
     signTypedData?: (
-        _domain: ethers.TypedDataDomain,
-        _types: Record<string, ethers.TypedDataField[]>,
-        _value: Record<string, unknown>,
-        _options?: SignTypedDataOptions,
+        domain: TypedDataDomain,
+        types: Record<string, TypedDataParameter[]>,
+        message: Record<string, unknown>,
+        options?: SignTypedDataOptions,
     ) => Promise<string>;
 }
 
@@ -94,12 +100,6 @@ interface WalletSigner {
 type VeChainWallet = WalletSigner & {
     connect: ConnectCallback;
     disconnect?: () => void | Promise<void>;
-    signTypedData?: (
-        _domain: ethers.TypedDataDomain,
-        _types: Record<string, ethers.TypedDataField[]>,
-        _value: Record<string, unknown>,
-        _options?: SignTypedDataOptions,
-    ) => Promise<string>;
 };
 
 interface ConnectResponse {

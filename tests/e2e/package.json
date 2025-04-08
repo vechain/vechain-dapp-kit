@@ -16,18 +16,18 @@
     },
     "devDependencies": {
         "@cucumber/cucumber": "11.2.0",
-        "@serenity-js/console-reporter": "^3.31.10",
-        "@serenity-js/cucumber": "^3.31.10",
-        "@serenity-js/serenity-bdd": "^3.31.10",
-        "@types/chrome": "^0.0.262",
-        "@types/chromedriver": "^81.0.1",
-        "@types/jest": "^29.5.12",
-        "@types/node": "^16.11.11",
-        "@types/selenium-webdriver": "^4.1.13",
-        "async-mutex": "^0.2.6",
-        "selenium-webdriver": "4.8.2",
-        "testcontainers": "^10.7.2",
+        "@serenity-js/console-reporter": "^3.31.13",
+        "@serenity-js/cucumber": "^3.31.13",
+        "@serenity-js/serenity-bdd": "^3.31.13",
+        "@types/chrome": "^0.0.313",
+        "@types/chromedriver": "^81.0.5",
+        "@types/jest": "^29.5.14",
+        "@types/node": "^22.14.0",
+        "@types/selenium-webdriver": "^4.1.28",
+        "async-mutex": "^0.5.0",
+        "selenium-webdriver": "4.31.0",
+        "testcontainers": "^10.24.0",
         "ts-node": "^10.9.2",
-        "typescript": "5.3.3"
+        "typescript": "5.8.3"
     }
 }

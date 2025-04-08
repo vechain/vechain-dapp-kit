@@ -24,7 +24,7 @@ export const getAccountDomain = async ({
     const res = await thor.contracts.executeCall(
         resolver,
         ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getNames'),
-        [address],
+        [[address]],
     );
     const resArray = res.result.array as string[];
 

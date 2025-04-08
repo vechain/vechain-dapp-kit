@@ -6,7 +6,7 @@ import type {
     WCClient,
     WCModal,
 } from '../types';
-import { CertificateBasedWallet } from '../classes/certificate-wallet';
+import { CertificateBasedWallet } from '../classes';
 import { createWcClient } from './create-wc-client';
 import { createWcModal } from './create-wc-modal';
 import { createWcSigner } from './create-wc-signer';
