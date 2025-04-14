@@ -3,8 +3,10 @@ import {
     AvailableVeChainProviders,
     DelegationHandler,
     SignTransactionOptions,
-    type SignTypedDataOptions,
+    SignTypedDataOptions,
     TransactionRequestInput,
+    TypedDataDomain,
+    TypedDataParameter,
     VeChainAbstractSigner,
 } from '@vechain/sdk-network';
 import type {
@@ -13,7 +15,6 @@ import type {
     TransactionResponse,
 } from '../types';
 import type { WalletManager } from './wallet-manager';
-import ethers from 'ethers';
 
 class VeChainSignerDAppKit extends VeChainAbstractSigner {
     private readonly walletManager: WalletManager;
@@ -91,12 +92,22 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
     }
 
     signTypedData(
-        domain: ethers.TypedDataDomain,
-        types: Record<string, ethers.TypedDataField[]>,
-        value: Record<string, unknown>,
+        domain: TypedDataDomain,
+        types: Record<string, TypedDataParameter[]>,
+        message: Record<string, unknown>,
+        unused?: string,
         options?: SignTypedDataOptions,
     ): Promise<string> {
-        return this.walletManager.signTypedData(domain, types, value, options);
+        return this.walletManager.signTypedData(
+            domain,
+            types,
+            message,
+            options,
+        );
+    }
+
+    signPayload(): Promise<string> {
+        return Promise.reject(new Error('Method not implemented.'));
     }
 
     async _signFlow(
@@ -104,9 +115,8 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
         delegator: SignTransactionOptions | null,
     ): Promise<TransactionResponse> {
         // Populate the call, to get proper from and to address (compatible with multi-clause transactions)
-        const populatedTransaction = await this.populateTransaction(
-            transaction,
-        );
+        const populatedTransaction =
+            await this.populateTransaction(transaction);
 
         let clauses: TransactionMessage[] = [];
 

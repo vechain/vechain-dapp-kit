@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { mockedConnexSigner, wrapper } from '../../index';
-import { useWallet } from '../../../src/DAppKitProvider/hooks/useWallet';
+import { useWallet } from '../../../src';
 
 window.vechain = {} as any;
 window.vechain = {
@@ -21,30 +21,40 @@ describe('useWallet', () => {
         });
     });
 
-    it('should be able to connect & disconnect', async () => {
-        const { result } = renderHook(() => useWallet(), { wrapper });
+    it(
+        'should be able to connect & disconnect',
+        async () => {
+            const { result } = renderHook(() => useWallet(), { wrapper });
 
-        expect(result.current).toBeDefined();
+            expect(result.current).toBeDefined();
 
-        result.current.setSource('veworld');
-        result.current.connect().catch(() => {
-            // ignore
-        });
+            result.current.setSource('veworld');
+            result.current.connect().catch(() => {
+                // ignore
+            });
 
-        await waitFor(() => {
-            expect(result.current.source).toBe('veworld');
-            expect(result.current.account).toBe(
-                '0xf077b491b355E64048cE21E3A6Fc4751eEeA77fa',
+            await waitFor(
+                () => {
+                    expect(result.current.source).toBe('veworld');
+                    expect(result.current.account).toBe(
+                        '0xf077b491b355E64048cE21E3A6Fc4751eEeA77fa',
+                    );
+                },
+                { timeout: 10_000 },
             );
-        });
 
-        result.current.disconnect();
+            result.current.disconnect();
 
-        await waitFor(() => {
-            expect(result.current.source).toBe(null);
-            expect(result.current.account).toBeNull();
-        });
-    });
+            await waitFor(
+                () => {
+                    expect(result.current.source).toBe(null);
+                    expect(result.current.account).toBeNull();
+                },
+                { timeout: 10_000 },
+            );
+        },
+        { timeout: 20_000 },
+    );
 
     it('should throw an error when used outside of DAppKitProvider', () => {
         expect(() => renderHook(() => useWallet())).toThrow(

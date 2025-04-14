@@ -5,8 +5,9 @@ import type {
     WalletConnectOptions,
     WalletSource,
 } from '../src';
-import { WalletSigner } from '../src/types/types';
+import { WalletSigner } from '../src';
 import { ThorClient } from '@vechain/sdk-network';
+import { mockedHttpClient } from './helpers/mocked-http-client';
 
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
@@ -19,11 +20,11 @@ const createOptions = (
     wcOptions?: WalletConnectOptions,
 ): ICreateWallet => {
     return {
-        node: 'https://testnet.veblocks.net/',
+        node: mockedHttpClient.baseURL,
         source,
         walletConnectOptions: wcOptions,
         onDisconnected: () => {},
-        thor: ThorClient.at('https://testnet.vechain.org'),
+        thor: new ThorClient(mockedHttpClient),
     };
 };
 
@@ -41,7 +42,7 @@ describe('createWallet', () => {
 
         it('is installed', () => {
             window.vechain = {
-                newConnexSigner: () => ({} as WalletSigner),
+                newConnexSigner: () => ({}) as WalletSigner,
             };
 
             const wallet = createWallet(createOptions('veworld'));

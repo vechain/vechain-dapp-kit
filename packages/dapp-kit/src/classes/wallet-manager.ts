@@ -2,8 +2,12 @@ import { Certificate } from '@vechain/sdk-core';
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
-import type { SignTypedDataOptions, ThorClient } from '@vechain/sdk-network';
-import ethers from 'ethers';
+import {
+    SignTypedDataOptions,
+    ThorClient,
+    TypedDataDomain,
+    TypedDataParameter,
+} from '@vechain/sdk-network';
 import type {
     ConnectResponse,
     DAppKitOptions,
@@ -19,8 +23,8 @@ import type {
     TransactionMessage,
     TransactionOptions,
     TransactionResponse,
-} from '../types/requests';
-import { CertificateArgs } from '../types/types';
+    CertificateArgs,
+} from '../types';
 import { getAccountDomain } from '../utils/get-account-domain';
 
 class WalletManager {
@@ -258,20 +262,25 @@ class WalletManager {
                 throw e;
             });
 
-    signTypedData = (
-        domain: ethers.TypedDataDomain,
-        types: Record<string, ethers.TypedDataField[]>,
-        value: Record<string, unknown>,
+    signTypedData = async (
+        domain: TypedDataDomain,
+        types: Record<string, TypedDataParameter[]>,
+        message: Record<string, unknown>,
         options?: SignTypedDataOptions,
     ): Promise<string> => {
         if (!this.wallet.signTypedData)
             return Promise.reject(new Error('signTypedData is not supported'));
-        return this.wallet
-            .signTypedData(domain, types, value, options)
-            .catch((e) => {
-                DAppKitLogger.error('WalletManager', 'signTypedData', e);
-                throw e;
-            });
+        try {
+            return await this.wallet.signTypedData(
+                domain,
+                types,
+                message,
+                options,
+            );
+        } catch (e) {
+            DAppKitLogger.error('WalletManager', 'signTypedData', e);
+            throw e;
+        }
     };
 
     setSource = (src: WalletSource): void => {
@@ -328,6 +337,7 @@ class WalletManager {
             });
         }
 
+        Storage.wipeV1();
         const address = Storage.getAccount();
         const accountDomain = Storage.getAccountDomain();
         const source = Storage.getSource();
