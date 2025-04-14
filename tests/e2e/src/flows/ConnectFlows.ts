@@ -36,23 +36,24 @@ export const connectWithCustomButton = async function (dappUrl: string) {
 };
 
 export const sendTransaction = async function (dappUrl: string) {
-    await NavigationUtils.goToUrl(dappUrl);
-
+    // eslint-disable-next-line no-console
+    console.log(`Sending transaction to dapp ${dappUrl}`);
     await extension.driver
         .findElement(Locators.buttonByText('Send TX'))
         .click();
 
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     await NavigationUtils.switchToExtensionIframe();
     await ApproveFlows.signTransaction();
-}
+};
 
-export  const signTypedData = async function (dappUrl: string) {
-    await NavigationUtils.goToUrl(dappUrl);
-
+export const signTypedData = async function (dappUrl: string) {
+    // eslint-disable-next-line no-console
+    console.log(`Signing typed data to dapp ${dappUrl}`);
     await extension.driver
         .findElement(Locators.buttonByText('Sign Typed Data'))
         .click();
 
     await NavigationUtils.switchToExtensionIframe();
     await ApproveFlows.sign();
-}
+};

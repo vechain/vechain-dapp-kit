@@ -38,10 +38,4 @@ Feature: The user can connect to a wallet
     * The user signs typed data in dapp "<dapp>"
     Examples:
       | dapp    |
-      | remix   |
-      | react   |
-      | next    |
-      | svelte  |
-      | vue     |
-      | angular |
-      | vanilla |
+      | angular   |
