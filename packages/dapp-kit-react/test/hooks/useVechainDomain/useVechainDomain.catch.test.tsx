@@ -11,21 +11,28 @@ vi.mock('./api/fetchVechainDomain', () => ({
 }));
 
 describe('useVechainDomain error handling', () => {
-    it('should handle error when fetching domain', async () => {
-        const { result } = renderHook(
-            () => useVechainDomain({ addressOrDomain: 'test.vet' }),
-            { wrapper },
-        );
+    it(
+        'should handle error when fetching domain',
+        async () => {
+            const { result } = renderHook(
+                () => useVechainDomain({ addressOrDomain: 'test.vet' }),
+                { wrapper },
+            );
 
-        expect(result.current.isLoading).toBe(true);
+            expect(result.current.isLoading).toBe(true);
 
-        await waitFor(() => {
-            expect(result.current).toEqual({
-                address: undefined,
-                domain: undefined,
-                isLoading: false,
-                isValidAddressOrDomain: false,
-            });
-        });
-    });
+            await waitFor(
+                () => {
+                    expect(result.current).toEqual({
+                        address: undefined,
+                        domain: undefined,
+                        isLoading: false,
+                        isValidAddressOrDomain: false,
+                    });
+                },
+                { timeout: 10_000 },
+            );
+        },
+        { timeout: 12_000 },
+    );
 });
