@@ -10,13 +10,11 @@ const walletConnectOptions = {
     },
 };
 
-const vechainDAppKitOptions = {
-    nodeUrl: 'https://testnet.vechain.org/',
+DAppKitUI.configure({
+    node: 'https://testnet.vechain.org/',
     walletConnectOptions,
     usePersistence: true,
-};
-
-DAppKitUI.configure(vechainDAppKitOptions);
+});
 
 // custom button configuration
 setTimeout(() => {
@@ -41,5 +39,40 @@ setTimeout(() => {
         handleConnected(DAppKitUI.wallet.state.address);
 
         DAppKitUI.modal.onConnectionStatusChange(handleConnected);
+    }
+
+    const sendTxButton = document.getElementById('send-tx-button');
+    if (sendTxButton) {
+        sendTxButton.addEventListener('click', () => {
+            DAppKitUI.signer?.sendTransaction({
+                clauses: [
+                    {
+                        to: '0xf077b491b355E64048cE21E3A6Fc4751eEeA77fa',
+                        value: '0x1',
+                        data: '0x',
+                    },
+                ],
+                comment: 'Send 1 Wei',
+            });
+        });
+    }
+
+    const signTypedDataButton = document.getElementById(
+        'sign-typed-data-button',
+    );
+    if (signTypedDataButton) {
+        signTypedDataButton.addEventListener('click', () => {
+            DAppKitUI.signer.signTypedData(
+                {
+                    name: 'Test Data',
+                    version: '1',
+                    chainId: 1,
+                    verifyingContract:
+                        '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+                },
+                { test: [{ name: 'test', type: 'address' }] },
+                { test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68' },
+            );
+        });
     }
 }, 100);

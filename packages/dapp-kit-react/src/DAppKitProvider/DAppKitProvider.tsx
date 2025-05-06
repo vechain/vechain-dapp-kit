@@ -1,58 +1,62 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { DAppKit, WalletSource } from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
+import type { CertificateData } from '@vechain/sdk-core';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { subscribeKey } from 'valtio/vanilla/utils';
-import { CertificateData } from '@vechain/sdk-core';
-import type { DAppKitProviderOptions, DAppKitContext } from '../types';
+import type { DAppKitContext, DAppKitProviderOptions } from '../types';
 import { Context } from './context';
 
 export const DAppKitProviderData = ({
     children,
-    connex,
+    dAppKit,
 }: {
     children: React.ReactNode;
-    connex: DAppKit;
+    dAppKit: DAppKit;
 }): React.ReactElement => {
     const [account, setAccount] = useState<string | null>(
-        connex.wallet.state.address,
+        dAppKit.wallet.state.address,
     );
     const [accountDomain, setAccountDomain] = useState<string | null>(
-        connex.wallet.state.accountDomain,
+        dAppKit.wallet.state.accountDomain,
     );
     const [isAccountDomainLoading, setIsAccountDomainLoading] = useState(
-        connex.wallet.state.isAccountDomainLoading,
+        dAppKit.wallet.state.isAccountDomainLoading,
     );
     const [source, setSource] = useState<WalletSource | null>(
-        connex.wallet.state.source,
+        dAppKit.wallet.state.source,
     );
     const [connectionCertificate, setConnectionCertificate] =
         useState<CertificateData | null>(
-            connex.wallet.state.connectionCertificate,
+            dAppKit.wallet.state.connectionCertificate,
         );
 
     useEffect(() => {
-        const addressSub = subscribeKey(connex.wallet.state, 'address', (v) => {
-            setAccount(v);
-        });
+        const addressSub = subscribeKey(
+            dAppKit.wallet.state,
+            'address',
+            (v) => {
+                setAccount(v);
+            },
+        );
         const domainSub = subscribeKey(
-            connex.wallet.state,
+            dAppKit.wallet.state,
             'accountDomain',
             (v) => {
                 setAccountDomain(v);
             },
         );
         const isAccountDomainLoadingSub = subscribeKey(
-            connex.wallet.state,
+            dAppKit.wallet.state,
             'isAccountDomainLoading',
             (v) => {
                 setIsAccountDomainLoading(v);
             },
         );
-        const sourceSub = subscribeKey(connex.wallet.state, 'source', (v) => {
+        const sourceSub = subscribeKey(dAppKit.wallet.state, 'source', (v) => {
             setSource(v);
         });
         const certificateSub = subscribeKey(
-            connex.wallet.state,
+            dAppKit.wallet.state,
             'connectionCertificate',
             (v) => {
                 setConnectionCertificate(v);
@@ -66,7 +70,7 @@ export const DAppKitProviderData = ({
             sourceSub();
             certificateSub();
         };
-    }, [connex.wallet.state]);
+    }, [dAppKit.wallet.state]);
 
     const openModal = useCallback(() => {
         DAppKitUI.modal.open();
@@ -83,21 +87,21 @@ export const DAppKitProviderData = ({
 
     const context: DAppKitContext = useMemo(() => {
         return {
-            connex: {
-                thor: connex.thor,
-                vendor: connex.vendor,
-            },
+            thor: dAppKit.thor,
             wallet: {
-                setSource: connex.wallet.setSource,
-                disconnect: connex.wallet.disconnect,
-                connect: connex.wallet.connect,
-                availableWallets: connex.wallet.state.availableSources,
+                setSource: dAppKit.wallet.setSource,
+                disconnect: dAppKit.wallet.disconnect,
+                connect: dAppKit.wallet.connect,
+                signer: dAppKit.signer,
+                availableWallets: dAppKit.wallet.state.availableSources,
                 account,
                 accountDomain,
                 isAccountDomainLoading,
                 source,
                 connectionCertificate,
-                signTypedData: connex.wallet.signTypedData,
+                requestCertificate: dAppKit.wallet.signCert,
+                requestTransaction: dAppKit.wallet.signTx,
+                requestTypedData: dAppKit.wallet.signTypedData,
             },
             modal: {
                 open: openModal,
@@ -106,7 +110,7 @@ export const DAppKitProviderData = ({
             },
         };
     }, [
-        connex,
+        dAppKit,
         account,
         accountDomain,
         isAccountDomainLoading,
@@ -122,14 +126,13 @@ export const DAppKitProviderData = ({
 
 export const DAppKitProvider = ({
     children,
-    nodeUrl,
-    genesis,
+    node,
     walletConnectOptions,
     usePersistence = false,
     logLevel,
     requireCertificate,
-    themeMode,
     themeVariables,
+    themeMode,
     i18n,
     language,
     modalParent,
@@ -137,12 +140,11 @@ export const DAppKitProvider = ({
     connectionCertificate: connectionCertificateData,
     allowedWallets,
 }: DAppKitProviderOptions): React.ReactElement | null => {
-    const [connex, setConnex] = useState<DAppKit | null>(null);
+    const [dAppKit, setDAppKit] = useState<DAppKit | null>(null);
     useEffect(() => {
-        setConnex(
+        setDAppKit(
             DAppKitUI.configure({
-                nodeUrl,
-                genesis,
+                node,
                 walletConnectOptions,
                 usePersistence,
                 logLevel,
@@ -158,8 +160,7 @@ export const DAppKitProvider = ({
             }),
         );
     }, [
-        nodeUrl,
-        genesis,
+        node,
         walletConnectOptions,
         usePersistence,
         logLevel,
@@ -173,10 +174,10 @@ export const DAppKitProvider = ({
         connectionCertificateData,
         allowedWallets,
     ]);
-    if (!connex) {
+    if (!dAppKit) {
         return null;
     }
     return (
-        <DAppKitProviderData connex={connex}>{children}</DAppKitProviderData>
+        <DAppKitProviderData dAppKit={dAppKit}>{children}</DAppKitProviderData>
     );
 };

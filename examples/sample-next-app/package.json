@@ -11,20 +11,20 @@
         "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
-        "@vechain/dapp-kit": "*",
-        "@vechain/dapp-kit-react": "*",
-        "@vechain/dapp-kit-ui": "*",
-        "next": ">=14.2.15",
-        "react": "^18",
-        "react-dom": "^18"
+        "@vechain/dapp-kit": "workspace:*",
+        "@vechain/dapp-kit-react": "workspace:*",
+        "@vechain/dapp-kit-ui": "workspace:*",
+        "next": "^15.2.4",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0"
     },
     "devDependencies": {
-        "@next/eslint-plugin-next": "^14.1.4",
-        "@types/node": "^20",
-        "@types/react": "^18",
-        "@types/react-dom": "^18",
-        "eslint": "^9.12.0",
-        "eslint-config-next": "14.1.4",
-        "typescript": "5.3.3"
+        "@next/eslint-plugin-next": "^14.2.27",
+        "@types/node": "^22.14.0",
+        "@types/react": "^19.1.0",
+        "@types/react-dom": "^19.1.1",
+        "eslint": "^9.24.0",
+        "eslint-config-next": "15.2.4",
+        "typescript": "5.8.3"
     }
 }

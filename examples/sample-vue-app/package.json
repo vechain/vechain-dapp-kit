@@ -10,15 +10,15 @@
         "preview": "vite preview --mode=development"
     },
     "dependencies": {
-        "@vechain/dapp-kit": "*",
-        "@vechain/dapp-kit-ui": "*",
-        "vue": "^3.4.21"
+        "@vechain/dapp-kit": "workspace:^",
+        "@vechain/dapp-kit-ui": "workspace:^",
+        "vue": "^3.5.13"
     },
     "devDependencies": {
-        "@vitejs/plugin-vue": "^5.0.4",
-        "typescript": "^5.2.2",
-        "vite": "^5.3.6",
-        "vite-plugin-node-polyfills": "^0.17.0",
-        "vue-tsc": "^2.0.6"
+        "@vitejs/plugin-vue": "^5.2.3",
+        "typescript": "^5.8.3",
+        "vite": "^6.2.5",
+        "vite-plugin-node-polyfills": "^0.23.0",
+        "vue-tsc": "^2.2.8"
     }
 }

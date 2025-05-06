@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { Storage } from '../../src/utils/local-storage';
+import { HexUInt, Txt } from '@vechain/sdk-core';
 
 describe('Storage', () => {
     const mockLocalStorage = {
@@ -20,7 +21,7 @@ describe('Storage', () => {
         it('should set the wallet source', () => {
             Storage.setSource('WALLET_CONNECT' as any);
             expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-                'dappkit@vechain/source',
+                'dappkit@vechain/v2/source',
                 'WALLET_CONNECT',
             );
         });
@@ -28,7 +29,7 @@ describe('Storage', () => {
         it('should remove the wallet source when null', () => {
             Storage.setSource(null);
             expect(mockLocalStorage.removeItem).toHaveBeenCalledWith(
-                'dappkit@vechain/source',
+                'dappkit@vechain/v2/source',
             );
         });
     });
@@ -37,7 +38,7 @@ describe('Storage', () => {
         it('should set the account', () => {
             Storage.setAccount('test-account');
             expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-                'dappkit@vechain/account',
+                'dappkit@vechain/v2/account',
                 'test-account',
             );
         });
@@ -45,7 +46,7 @@ describe('Storage', () => {
         it('should remove the account when null', () => {
             Storage.setAccount(null);
             expect(mockLocalStorage.removeItem).toHaveBeenCalledWith(
-                'dappkit@vechain/account',
+                'dappkit@vechain/v2/account',
             );
         });
     });
@@ -54,7 +55,7 @@ describe('Storage', () => {
         it('should set the account domain', () => {
             Storage.setAccountDomain('test-domain');
             expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-                'dappkit@vechain/accountDomain',
+                'dappkit@vechain/v2/accountDomain',
                 'test-domain',
             );
         });
@@ -62,7 +63,7 @@ describe('Storage', () => {
         it('should remove the account domain when null', () => {
             Storage.setAccountDomain(null);
             expect(mockLocalStorage.removeItem).toHaveBeenCalledWith(
-                'dappkit@vechain/accountDomain',
+                'dappkit@vechain/v2/accountDomain',
             );
         });
     });
@@ -72,16 +73,19 @@ describe('Storage', () => {
 
         it('should set the connection certificate', () => {
             Storage.setConnectionCertificate(testCertificate);
+            const bytecode = HexUInt.of(
+                Txt.of(JSON.stringify(testCertificate)).bytes,
+            );
             expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-                'dappkit@vechain/connectionCertificate',
-                JSON.stringify(testCertificate),
+                'dappkit@vechain/v2/connectionCertificate',
+                bytecode.toString(),
             );
         });
 
         it('should remove the connection certificate when null', () => {
             Storage.setConnectionCertificate(null);
             expect(mockLocalStorage.removeItem).toHaveBeenCalledWith(
-                'dappkit@vechain/connectionCertificate',
+                'dappkit@vechain/v2/connectionCertificate',
             );
         });
     });
@@ -126,9 +130,10 @@ describe('Storage', () => {
         const testCertificate = { some: 'data' } as any;
 
         it('should return the connection certificate', () => {
-            mockLocalStorage.getItem.mockReturnValue(
-                JSON.stringify(testCertificate),
+            const hexUInt = HexUInt.of(
+                Txt.of(JSON.stringify(testCertificate)).bytes,
             );
+            mockLocalStorage.getItem.mockReturnValue(hexUInt.toString());
             expect(Storage.getConnectionCertificate()).toEqual(testCertificate);
         });
 

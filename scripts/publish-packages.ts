@@ -1,15 +1,37 @@
 /* eslint-disable no-console */
 import util from 'util';
 import * as child_process from 'child_process';
+import fs from "fs"
+import path from "path"
 
 const exec = util.promisify(child_process.exec);
+
+// variable packages should be all the child folders in the packages folder
+const packages = fs.readdirSync(path.resolve(__dirname, '../packages'));
+
+const updatePackageVersions = (version: string) => {
+    const packageNames = [];
+
+    for (const pkg of packages) {
+        const pkgPath = path.resolve(__dirname, `../packages/${pkg}`);
+        const pkgJsonPath = path.resolve(pkgPath, './package.json');
+        const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
+        pkgJson.version = version;
+        packageNames.push(pkgJson.name);
+        fs.writeFileSync(pkgJsonPath, JSON.stringify(pkgJson, null, 2));
+    }
+};
 
 const publishPackages = async () => {
     const version = process.argv[2];
 
-    if (!version || !version.match(/^\d+\.\d+\.\d+$/)) {
+    if (
+      !version ||
+      (!version.match(/^\d+\.\d+\.\d+$/) &&
+        !version.match(/^\d+\.\d+\.\d+(-rc\.\d+)?$/))
+    ) {
         console.error(
-            `🚨 You must specify a semantic version as the first argument  🚨`,
+          `🚨 You must specify a semantic version as the first argument  🚨`,
         );
         process.exit(1);
     }
@@ -37,6 +59,7 @@ const publishPackages = async () => {
 
     console.log(' Build:');
     console.log('       - 📦 Install dependencies and build packages...');
+    await exec('yarn install');
     await exec('yarn install:all');
     console.log('       - ✅  Built!');
 
@@ -44,6 +67,11 @@ const publishPackages = async () => {
     console.log('       - 🧪 Testing packages...');
     await exec('yarn test');
     console.log('       - ✅  Tested!');
+
+    console.log(' Version:');
+    console.log(`       - 🏷 Updating package versions to ${version}...`);
+    updatePackageVersions(version);
+    console.log('       - ✅  Updated!');
 
     console.log(' Publish:');
     console.log('       - 📦 Publishing packages...');

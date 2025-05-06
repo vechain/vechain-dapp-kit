@@ -16,12 +16,14 @@ jobs:
             contents: read
             packages: write
         steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
               with:
                   node-version: 18
                   registry-url: https://npm.pkg.github.com/
-            - run: yarn install:all
+            - run: |
+                yarn
+                yarn install:all
             - run: yarn build
 
             - name: Publish DApp-Kit

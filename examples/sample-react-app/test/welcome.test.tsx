@@ -1,6 +1,6 @@
 import renderer from 'react-test-renderer';
 import React from 'react';
-import { test, expect } from 'vitest';
+import { expect, test } from 'vitest';
 import App from '../src/App';
 import { DAppKitProvider } from '@vechain/dapp-kit-react';
 import { WalletConnectOptions } from '@vechain/dapp-kit';
@@ -18,8 +18,7 @@ test('Welcome', async () => {
     const component = renderer.create(
         <React.StrictMode>
             <DAppKitProvider
-                nodeUrl={'https://testnet.vechain.org/'}
-                genesis={'test'}
+                node={'https://testnet.vechain.org/'}
                 usePersistence
                 walletConnectOptions={walletConnectOptions}
             >

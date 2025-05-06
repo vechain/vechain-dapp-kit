@@ -12,10 +12,10 @@
         "purge": "yarn clean; rm -rf node_modules"
     },
     "dependencies": {
-        "@vechain/dapp-kit-ui": "*"
+        "@vechain/dapp-kit-ui": "workspace:^"
     },
     "devDependencies": {
-        "typescript": "^5.2.2",
-        "vite": "^5.3.6"
+        "typescript": "^5.8.3",
+        "vite": "^6.2.5"
     }
 }

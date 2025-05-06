@@ -1,14 +1,14 @@
 {
     "name": "@vechain/dapp-kit-react",
-    "version": "1.5.0",
-    "private": false,
+    "version": "2.0.0-rc.2",
     "homepage": "https://github.com/vechain/vechain-dapp-kit",
     "repository": "github:vechain/vechain-dapp-kit",
     "license": "MIT",
     "sideEffects": false,
     "type": "module",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
     "files": [
         "dist",
         "package.json",
@@ -24,23 +24,22 @@
         "watch": "yarn build --watch"
     },
     "dependencies": {
-        "@lit/react": "^1.0.1",
-        "@vechain/connex": "2.1.0",
-        "@vechain/connex-framework": "2.1.0",
-        "@vechain/dapp-kit": "*",
-        "@vechain/dapp-kit-ui": "*",
-        "@vechain/sdk-core": "1.0.0-beta.32",
-        "valtio": "1.11.2"
+        "@lit/react": "^1.0.7",
+        "@vechain/dapp-kit": "workspace:*",
+        "@vechain/dapp-kit-ui": "workspace:*",
+        "@vechain/sdk-core": "1.1.0",
+        "valtio": "2.1.4"
     },
     "devDependencies": {
-        "@testing-library/react": "^14.1.2",
-        "@types/react": "^18.2.28",
-        "@types/react-dom": "^18.2.13",
-        "eslint": "^9.12.0",
-        "react": "^18.2.0",
-        "tsup": "*",
-        "typescript": "*",
-        "vite": "^4.5.5",
-        "vitest": "^0.34.6"
+        "@testing-library/dom": "^10.4.0",
+        "@testing-library/react": "^16.3.0",
+        "@types/react": "^19.1.0",
+        "@types/react-dom": "^19.1.1",
+        "eslint": "^9.24.0",
+        "react": "^19.1.0",
+        "tsup": "^8.4.0",
+        "typescript": "^5.8.3",
+        "vite": "^6.2.5",
+        "vitest": "^3.1.1"
     }
 }

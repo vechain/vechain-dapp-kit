@@ -1,13 +1,14 @@
-/// <reference types="@vechain/connex" />
 import type { DAppKitOptions, WalletManager } from '@vechain/dapp-kit';
 import { DAppKit } from '@vechain/dapp-kit';
-import { CustomWalletConnectModal, ConnectModalManager } from './classes';
+import type { ThorClient } from '@vechain/sdk-network';
+import { ConnectModalManager, CustomWalletConnectModal } from './classes';
 import {
     type CustomizedStyle,
     dispatchCustomEvent,
     initModalAndButton,
 } from './utils';
-import type { SourceInfo, I18n, ThemeMode } from './constants';
+import type { I18n, SourceInfo, ThemeMode } from './constants';
+
 export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
 
 let dappKit: DAppKit | null = null;
@@ -53,16 +54,16 @@ export const DAppKitUI = {
         return initialized;
     },
 
-    get thor(): Connex.Thor {
+    get thor(): ThorClient {
         return this.get().thor;
-    },
-
-    get vendor(): Connex.Vendor {
-        return this.get().vendor;
     },
 
     get wallet(): WalletManager {
         return this.get().wallet;
+    },
+
+    get signer() {
+        return this.get().signer;
     },
 
     get configuration(): DAppKitUIOptions | null {

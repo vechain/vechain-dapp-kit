@@ -1,69 +1,76 @@
-import * as ConnexLib from '@vechain/connex';
+import type { ThorClient } from '@vechain/sdk-network';
 import type {
-    BaseWallet,
-    ConnexWallet,
     DAppKitOptions,
+    VeChainWallet,
     WalletSource,
     WCClient,
     WCModal,
 } from '../types';
-import { CertificateBasedWallet } from '../classes/certificate-wallet';
-import { WCWallet } from '../classes/wc-wallet';
+import { CertificateBasedWallet } from '../classes';
 import { createWcClient } from './create-wc-client';
 import { createWcModal } from './create-wc-modal';
 import { createWcSigner } from './create-wc-signer';
-import { convertVendorToSigner } from './convert-vendor-to-signer';
-import { normalizeGenesisId } from './genesis';
 import { DAppKitLogger } from './logger';
+import { createSync, createSync2 } from './create-sync2';
 
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
     onDisconnected: () => void;
+    thor: ThorClient;
 };
 
 export const createWallet = ({
     source,
-    genesis,
+    thor,
     walletConnectOptions,
     onDisconnected,
     connectionCertificate,
-}: ICreateWallet): ConnexWallet => {
-    const genesisId = normalizeGenesisId(genesis);
-
+}: ICreateWallet): VeChainWallet => {
     DAppKitLogger.debug('createWallet', source);
+
+    const genesisId = thor.blocks.getGenesisBlock().then((block) => {
+        if (!block) {
+            throw new Error('Failed to get genesis block');
+        }
+        return block.id;
+    });
 
     switch (source) {
         case 'sync': {
             if (!window.connex) {
-                throw new Error('User is not in a Sync wallet');
+                throw new Error('Connex is not available');
             }
 
-            const vendor = new ConnexLib.Connex.Vendor(genesisId, 'sync');
-
-            return new CertificateBasedWallet(
-                convertVendorToSigner(vendor),
-                connectionCertificate,
-            );
+            const signer = createSync(genesisId);
+            return new CertificateBasedWallet(signer, connectionCertificate);
         }
         case 'sync2': {
-            const vendor = new ConnexLib.Connex.Vendor(genesisId, 'sync2');
-
-            return new CertificateBasedWallet(
-                convertVendorToSigner(vendor),
-                connectionCertificate,
-            );
+            const signer = createSync2(genesisId);
+            return new CertificateBasedWallet(signer, connectionCertificate);
         }
         case 'veworld': {
             if (!window.vechain) {
                 throw new Error('VeWorld Extension is not installed');
             }
 
-            const signer = window.vechain.newConnexSigner(genesisId);
+            const signer: Promise<VeChainWallet> = genesisId
+                .then((genesis) => {
+                    if (!window.vechain) {
+                        throw new Error('VeWorld Extension is not installed');
+                    }
 
-            return new CertificateBasedWallet(
-                signer as BaseWallet,
-                connectionCertificate,
-            );
+                    const veworld = window.vechain.newConnexSigner(genesis);
+                    return new CertificateBasedWallet(
+                        Promise.resolve(veworld),
+                        connectionCertificate,
+                    );
+                })
+                .catch((e) => {
+                    DAppKitLogger.error('createWallet', 'veworld', e);
+                    throw e;
+                });
+
+            return new CertificateBasedWallet(signer, connectionCertificate);
         }
         case 'wallet-connect': {
             if (!walletConnectOptions) {
@@ -79,14 +86,12 @@ export const createWallet = ({
 
             const web3Modal: WCModal = modal ?? createWcModal(projectId);
 
-            const wallet = createWcSigner({
+            return createWcSigner({
                 genesisId,
                 wcClient,
                 web3Modal,
                 onDisconnected,
             });
-
-            return new WCWallet(wallet);
         }
     }
 };

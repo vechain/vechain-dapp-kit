@@ -30,7 +30,7 @@ export const WalletSources: Record<WalletSource, SourceInfo> = {
     },
     sync2: {
         id: 'sync2',
-        name: 'Sync 2',
+        name: 'Sync2',
         logo: Sync2Logo,
     },
 };

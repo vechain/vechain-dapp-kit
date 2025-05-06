@@ -1,23 +1,24 @@
-/// <reference types="@vechain/connex" />
 import type {
+    CertificateMessage,
+    CertificateOptions,
+    CertificateResponse,
     ConnectCallback,
-    WalletManager,
+    TransactionMessage,
+    TransactionOptions,
+    TransactionResponse,
+    VeChainSignerDAppKit,
+    VeChainWallet,
     WalletSource,
 } from '@vechain/dapp-kit';
 import { type DAppKitUIOptions } from '@vechain/dapp-kit-ui';
-import { CertificateData } from '@vechain/sdk-core';
+import type { CertificateData } from '@vechain/sdk-core';
+import type { ThorClient } from '@vechain/sdk-network';
 import type React from 'react';
-
 export type { DAppKitOptions, WalletConnectOptions } from '@vechain/dapp-kit';
 export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 
-export interface AccountState {
-    address: string | null;
-    source: WalletSource | null;
-}
-
 /**
- * Connex Provider Options
+ * DAppKit Provider Options
  * @param children - React children
  */
 export type DAppKitProviderOptions = DAppKitUIOptions & {
@@ -25,16 +26,13 @@ export type DAppKitProviderOptions = DAppKitUIOptions & {
 };
 
 /**
- * Connex Context
- * This context is used to provide the Connex instance and the Connex Vendor instance
+ * DAppKit Context
+ * This context is used to provide the Wallet and Thor instances
  * to the application.
  */
 
 export interface DAppKitContext {
-    connex: {
-        thor: Connex.Thor;
-        vendor: Connex.Vendor;
-    };
+    thor: ThorClient;
     wallet: {
         setSource: (source: WalletSource) => void;
         availableWallets: WalletSource[];
@@ -43,9 +41,18 @@ export interface DAppKitContext {
         account: string | null;
         accountDomain: string | null;
         isAccountDomainLoading: boolean;
+        signer: VeChainSignerDAppKit;
         source: WalletSource | null;
         connectionCertificate: CertificateData | null;
-        signTypedData: WalletManager['signTypedData'];
+        requestCertificate: (
+            message: CertificateMessage,
+            options?: CertificateOptions,
+        ) => Promise<CertificateResponse>;
+        requestTransaction: (
+            clauses: TransactionMessage[],
+            options?: TransactionOptions,
+        ) => Promise<TransactionResponse>;
+        requestTypedData: NonNullable<VeChainWallet['signTypedData']>;
     };
     modal: {
         open: () => void;

@@ -1,38 +1,49 @@
-import { CertificateData } from '@vechain/sdk-core';
+import { HexUInt, Txt, type CertificateData } from '@vechain/sdk-core';
 import type { WalletSource } from '../types';
 import { DAppKitLogger } from './logger';
 
 const STORAGE_PREFIX = 'dappkit@vechain';
-const WALLET_SOURCE_KEY = `${STORAGE_PREFIX}/source`;
-const ACCOUNT_KEY = `${STORAGE_PREFIX}/account`;
-const CERTIFICATE_KEY = `${STORAGE_PREFIX}/connectionCertificate`;
-const ACCOUNT_DOMAIN_KEY = `${STORAGE_PREFIX}/accountDomain`;
+const keysV1 = {
+    WALLET_SOURCE: `${STORAGE_PREFIX}/source`,
+    ACCOUNT: `${STORAGE_PREFIX}/account`,
+    CERTIFICATE: `${STORAGE_PREFIX}/connectionCertificate`,
+    ACCOUNT_DOMAIN: `${STORAGE_PREFIX}/accountDomain`,
+} as const;
+
+const STORAGE_V2_PREFIX = 'dappkit@vechain/v2';
+
+const keysV2 = {
+    WALLET_SOURCE: `${STORAGE_V2_PREFIX}/source`,
+    ACCOUNT: `${STORAGE_V2_PREFIX}/account`,
+    CERTIFICATE: `${STORAGE_V2_PREFIX}/connectionCertificate`,
+    ACCOUNT_DOMAIN: `${STORAGE_V2_PREFIX}/accountDomain`,
+} as const;
 
 const setSource = (source: WalletSource | null): void => {
     DAppKitLogger.debug('LocalStorage', 'setSource', source);
 
     if (!source) {
-        localStorage.removeItem(WALLET_SOURCE_KEY);
+        localStorage.removeItem(keysV2.WALLET_SOURCE);
     } else {
-        localStorage.setItem(WALLET_SOURCE_KEY, source);
+        localStorage.setItem(keysV2.WALLET_SOURCE, source);
     }
 };
 
 const setAccount = (account: string | null): void => {
     DAppKitLogger.debug('LocalStorage', 'setAccount', account);
     if (!account) {
-        localStorage.removeItem(ACCOUNT_KEY);
+        localStorage.removeItem(keysV2.ACCOUNT);
     } else {
-        localStorage.setItem(ACCOUNT_KEY, account);
+        localStorage.setItem(keysV2.ACCOUNT, account);
     }
 };
 
 const setAccountDomain = (domain: string | null): void => {
     DAppKitLogger.debug('LocalStorage', 'setAccountDomain', domain);
     if (!domain) {
-        localStorage.removeItem(ACCOUNT_DOMAIN_KEY);
+        localStorage.removeItem(keysV2.ACCOUNT_DOMAIN);
     } else {
-        localStorage.setItem(ACCOUNT_DOMAIN_KEY, domain);
+        localStorage.setItem(keysV2.ACCOUNT_DOMAIN, domain);
     }
 };
 
@@ -45,14 +56,15 @@ const setConnectionCertificate = (
         certificate,
     );
     if (!certificate) {
-        localStorage.removeItem(CERTIFICATE_KEY);
+        localStorage.removeItem(keysV2.CERTIFICATE);
     } else {
-        localStorage.setItem(CERTIFICATE_KEY, JSON.stringify(certificate));
+        const bytecode = HexUInt.of(Txt.of(JSON.stringify(certificate)).bytes);
+        localStorage.setItem(keysV2.CERTIFICATE, bytecode.toString());
     }
 };
 
 const getSource = (): WalletSource | null => {
-    const source = localStorage.getItem(WALLET_SOURCE_KEY);
+    const source = localStorage.getItem(keysV2.WALLET_SOURCE);
 
     if (!source) {
         return null;
@@ -62,7 +74,7 @@ const getSource = (): WalletSource | null => {
 };
 
 const getAccount = (): string | null => {
-    const account = localStorage.getItem(ACCOUNT_KEY);
+    const account = localStorage.getItem(keysV2.ACCOUNT);
 
     if (!account) {
         return null;
@@ -72,7 +84,7 @@ const getAccount = (): string | null => {
 };
 
 const getAccountDomain = (): string | null => {
-    const accountDomain = localStorage.getItem(ACCOUNT_DOMAIN_KEY);
+    const accountDomain = localStorage.getItem(keysV2.ACCOUNT_DOMAIN);
     if (!accountDomain) {
         return null;
     }
@@ -81,13 +93,21 @@ const getAccountDomain = (): string | null => {
 };
 
 const getConnectionCertificate = (): CertificateData | null => {
-    const connectionCertificate = localStorage.getItem(CERTIFICATE_KEY);
+    const connectionCertificate = localStorage.getItem(keysV2.CERTIFICATE);
 
     if (!connectionCertificate) {
         return null;
     }
 
-    return JSON.parse(connectionCertificate) as CertificateData;
+    const json = Txt.of(HexUInt.of(connectionCertificate).bytes);
+    return JSON.parse(json.toString()) as CertificateData;
+};
+
+const wipeV1 = () => {
+    localStorage.removeItem(keysV1.WALLET_SOURCE);
+    localStorage.removeItem(keysV1.ACCOUNT);
+    localStorage.removeItem(keysV1.CERTIFICATE);
+    localStorage.removeItem(keysV1.ACCOUNT_DOMAIN);
 };
 
 export const Storage = {
@@ -99,4 +119,5 @@ export const Storage = {
     getAccount,
     getSource,
     getConnectionCertificate,
+    wipeV1,
 };

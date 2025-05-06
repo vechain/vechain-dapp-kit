@@ -1,4 +1,4 @@
-import { AfterAll, BeforeAll, setDefaultTimeout } from '@cucumber/cucumber';
+import * as cucumber from '@cucumber/cucumber';
 import {
     DockerComposeEnvironment,
     StartedDockerComposeEnvironment,
@@ -7,8 +7,6 @@ import {
 import path from 'path';
 import { DappUrl } from '../../constants/dapp';
 import axios from 'axios';
-
-setDefaultTimeout(180_000);
 
 let dockerEnvironment: StartedDockerComposeEnvironment;
 
@@ -38,7 +36,10 @@ const appHealthCheck = async () => {
     }
 };
 
-BeforeAll(async function () {
+cucumber.setDefaultTimeout(180_000);
+
+cucumber.BeforeAll(async function () {
+
     console.log('Starting docker compose environment...');
 
     if (process.env.DOCKER_RUNNING) {
@@ -68,7 +69,7 @@ BeforeAll(async function () {
     console.log('Docker compose environment started');
 });
 
-AfterAll(async function () {
+cucumber.AfterAll(async function () {
     try {
         if (dockerEnvironment && !process.env.DOCKER_RUNNING) {
             console.log('\nStopping docker compose environment');

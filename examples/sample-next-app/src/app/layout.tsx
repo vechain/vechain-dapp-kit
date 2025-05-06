@@ -46,9 +46,8 @@ export default function RootLayout({
             </head>
             <body className={inter.className}>
                 <DAppKitProvider
-                    genesis="test"
                     logLevel="DEBUG"
-                    nodeUrl="https://testnet.vechain.org/"
+                    node="https://testnet.vechain.org/"
                     usePersistence
                     walletConnectOptions={walletConnectOptions}
                 >
