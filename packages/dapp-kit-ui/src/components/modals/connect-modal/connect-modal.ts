@@ -135,6 +135,7 @@ export class ConnectModal extends LitElement {
     onSourceClick = (source?: SourceInfo): void => {
         if (source) {
             if (source.id === 'veworld' && !window.vechain) {
+                DAppKitLogger.debug('ConnectModal', 'Opening VeWorld website');
                 window.open(
                     `${VEWORLD_WEBSITE}${encodeURIComponent(location.href)}`,
                     '_self',
@@ -142,6 +143,10 @@ export class ConnectModal extends LitElement {
                 return;
             }
             if (source.id !== 'wallet-connect') {
+                DAppKitLogger.debug(
+                    'ConnectModal',
+                    'Initiating signature request',
+                );
                 this.setWaitingForTheSignature(true);
                 this.requestForConnectionCertificate = true;
             }
@@ -157,6 +162,8 @@ export class ConnectModal extends LitElement {
                         'error trying to connect',
                         err,
                     );
+                    this.setWaitingForTheSignature(false);
+                    this.requestForConnectionCertificate = false;
                 });
         }
     };
@@ -194,6 +201,10 @@ export class ConnectModal extends LitElement {
 
     private renderContent(): TemplateResult | TemplateResult[] {
         if (this.requestForConnectionCertificate) {
+            DAppKitLogger.debug(
+                'ConnectModal',
+                'Rendering certificate signing view',
+            );
             return html`<vdk-sign-connection-certificate
                 .mode=${this.mode}
                 .i18n=${this.i18n}
