@@ -7905,7 +7905,7 @@ __metadata:
     tsup: "npm:^8.4.0"
     typescript: "npm:^5.8.3"
     valtio: "npm:2.1.4"
-    vite: "npm:^6.2.5"
+    vite: "npm:^6.2.6"
     vitest: "npm:^3.1.1"
   languageName: unknown
   linkType: soft
@@ -7936,7 +7936,7 @@ __metadata:
     typescript: "npm:~5.8.3"
     typescript-eslint: "npm:^8.29.1"
     valtio: "npm:2.1.4"
-    vite: "npm:^6.2.5"
+    vite: "npm:^6.2.6"
     vitest: "npm:^3.1.1"
   languageName: unknown
   linkType: soft
@@ -7962,7 +7962,7 @@ __metadata:
     tsup: "npm:^8.4.0"
     typescript: "npm:^5.8.3"
     valtio: "npm:2.1.4"
-    vite: "npm:^6.2.5"
+    vite: "npm:^6.2.6"
     vitest: "npm:^3.1.1"
   languageName: unknown
   linkType: soft
@@ -21452,7 +21452,7 @@ __metadata:
     react-dom: "npm:^19.1.0"
     react-test-renderer: "npm:^19.1.0"
     typescript: "npm:5.8.3"
-    vite: "npm:^6.2.5"
+    vite: "npm:^6.2.6"
     vite-plugin-node-polyfills: "npm:^0.23.0"
     vitest: "npm:^3.1.1"
   languageName: unknown
@@ -21483,7 +21483,7 @@ __metadata:
     react-dom: "npm:^19.1.0"
     remix-utils: "npm:^8.5.0"
     typescript: "npm:^5.8.3"
-    vite: "npm:^6.2.5"
+    vite: "npm:^6.2.6"
     vite-plugin-node-polyfills: "npm:^0.23.0"
     vite-tsconfig-paths: "npm:^5.1.4"
   languageName: unknown
@@ -21511,7 +21511,7 @@ __metadata:
     svelte-check: "npm:^4.1.5"
     tslib: "npm:^2.8.1"
     typescript: "npm:^5.8.3"
-    vite: "npm:^6.2.5"
+    vite: "npm:^6.2.6"
     vite-plugin-node-polyfills: "npm:^0.23.0"
   languageName: unknown
   linkType: soft
@@ -21522,7 +21522,7 @@ __metadata:
   dependencies:
     "@vechain/dapp-kit-ui": "workspace:^"
     typescript: "npm:^5.8.3"
-    vite: "npm:^6.2.5"
+    vite: "npm:^6.2.6"
   languageName: unknown
   linkType: soft
 
@@ -21534,7 +21534,7 @@ __metadata:
     "@vechain/dapp-kit-ui": "workspace:^"
     "@vitejs/plugin-vue": "npm:^5.2.3"
     typescript: "npm:^5.8.3"
-    vite: "npm:^6.2.5"
+    vite: "npm:^6.2.6"
     vite-plugin-node-polyfills: "npm:^0.23.0"
     vue: "npm:^3.5.13"
     vue-tsc: "npm:^2.2.8"
@@ -24769,9 +24769,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^6.2.5":
-  version: 6.2.5
-  resolution: "vite@npm:6.2.5"
+"vite@npm:^6.2.6":
+  version: 6.2.6
+  resolution: "vite@npm:6.2.6"
   dependencies:
     esbuild: "npm:^0.25.0"
     fsevents: "npm:~2.3.3"
@@ -24817,7 +24817,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/226bb3c1875e1982559007007580e8d083b81f5289f18e28841d622ba030599e1bd9926adccc8264879e319e9f9e4f48a38a0dc52a5dfcdf2a9cb7313bfc1816
+  checksum: 10c0/68a2ed3e61bdd654c59b817b4f3203065241c66d1739faa707499130f3007bc3a666c7a8320a4198e275e62b5e4d34d9b78a6533f69e321d366e76f5093b2071
   languageName: node
   linkType: hard
 
