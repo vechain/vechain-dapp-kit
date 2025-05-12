@@ -18,22 +18,22 @@ and dApps, enhancing user experience and developer convenience. Please refer to 
 
 ## Table of Contents
 
--   [Why ?](#why-)
--   [Key features](#key-features)
--   [Contributing](#contributing)
--   [Sample Projects](#sample-projects)
--   [Branching Strategy](#branching-strategy)
--   [Setting up for local development](#setting-up-for-local-development)
-    -   [Prerequisites](#prerequisites)
-    -   [Install & build dependencies](#install--build-dependencies)
-    -   [Run in Dev Mode](#run-in-dev-mode)
--   [Further Documentation & Usage](#further-documentation--usage)
+- [Why ?](#why-)
+- [Key features](#key-features)
+- [Contributing](#contributing)
+- [Sample Projects](#sample-projects)
+- [Branching Strategy](#branching-strategy)
+- [Setting up for local development](#setting-up-for-local-development)
+    - [Prerequisites](#prerequisites)
+    - [Install & build dependencies](#install--build-dependencies)
+    - [Run in Dev Mode](#run-in-dev-mode)
+- [Further Documentation & Usage](#further-documentation--usage)
 
 ## Why ?
 
--   Allow easy interaction with all wallets.
--   Currently, Connex only plays nice with Sync / Sync2
--   Enable a better UX for users
+- Allow easy interaction with all wallets.
+- Currently, Connex only plays nice with Sync / Sync2
+- Enable a better UX for users
 
 ## Key features
 
@@ -57,10 +57,10 @@ Please refer to the [Contributing Guide](./CONTRIBUTING.md) for more information
 
 https://github.com/vechain/vechain-dapp-kit/assets/150018882/5cc133ae-4c6b-4e08-8cff-0e09b6ca43aa
 
--   Look at some live demos here:
-    -   [VueJs Demo](https://vechain.github.io/vechain-dapp-kit/vue/)
-    -   [VanillaJS Demo](https://vechain.github.io/vechain-dapp-kit/vanilla/)
--   Refer to the [apps](./examples) folder for sample projects.
+- Look at some live demos here:
+    - [VueJs Demo](https://vechain.github.io/vechain-dapp-kit/vue/)
+    - [VanillaJS Demo](https://vechain.github.io/vechain-dapp-kit/vanilla/)
+- Refer to the [apps](./examples) folder for sample projects.
 
 ---
 
@@ -72,8 +72,8 @@ Welcome to our project! Here's an overview of our branching strategy.
 
 ### Branch Types
 
--   **main**: The main branch represents the production-ready code. Only stable and tested features should be merged into
-    this branch. Once ready for publishing, a new tag should be created from this branch.
+- **main**: The main branch represents the production-ready code. Only stable and tested features should be merged into
+  this branch. Once ready for publishing, a new tag should be created from this branch.
 
 ---
 
@@ -81,8 +81,8 @@ Welcome to our project! Here's an overview of our branching strategy.
 
 ### Prerequisites
 
--   Node.js >= 18.17
--   Yarn >= 1.22.10
+- Node.js >= 18.17
+- Yarn >= 1.22.10
 
 ### Install & build dependencies
 
@@ -112,7 +112,7 @@ yarn clean
 
 ### Purge project
 
--   Runs yarn clean and removes all node_modules
+- Runs yarn clean and removes all node_modules
 
 ```bash
 yarn purge
@@ -166,8 +166,8 @@ yarn test:e2e:headless
 
 ## Further Documentation & Usage
 
--   Please refer to [VeChain Docs](https://docs.vechain.org/developer-resources/sdks-and-providers) for more information
-    on how to use the library.
+- Please refer to [VeChain Docs](https://docs.vechain.org/developer-resources/sdks-and-providers) for more information
+  on how to use the library.
 
 ---
 
@@ -180,9 +180,4 @@ yarn prepare:release X.Y.Z
 
 Create the PR for the release branch `vX.Y.Z`.
 
-When the PR is merged, create the release on github called `X.Y.Z`, it will automatically tag the commit with the version `X.Y.Z`.
-
-```bash
-# publish the release
-yarn publish:release X.Y.Z
-```
+When the PR is merged, create the release on github called `X.Y.Z`, it will automatically publish the packages to npm.
