@@ -15,37 +15,22 @@ jobs:
         permissions:
             contents: read
             packages: write
+        environment: npm-publish
         steps:
             - uses: actions/checkout@v4
+
             - uses: actions/setup-node@v4
               with:
-                  node-version: 18
-                  registry-url: https://npm.pkg.github.com/
-            - run: |
-                yarn
-                yarn install:all
-            - run: yarn build
+                  node-version-file: .nvmrc
+                  registry-url: 'https://registry.npmjs.org'
 
-            - name: Publish DApp-Kit
-              run: |
-                  cd packages/dapp-kit
-                  yarn version --no-git-tag-version --new-version ${{ github.ref_name }}
-                  yarn publish
-              env:
-                  NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+            - name: Install dependencies
+              run: yarn install
 
-            - name: Publish DApp-Kit-UI
-              run: |
-                  cd packages/dapp-kit-ui
-                  yarn version --no-git-tag-version --new-version ${{ github.ref_name }}
-                  yarn publish
-              env:
-                  NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+            - name: Build
+              run: yarn install:all
 
-            - name: Publish DApp-Kit-React
-              run: |
-                  cd packages/dapp-kit-react
-                  yarn version --no-git-tag-version --new-version ${{ github.ref_name }}
-                  yarn publish
+            - name: Publish
+              run: yarn publish:release
               env:
-                  NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+                NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
