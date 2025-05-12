@@ -28,39 +28,31 @@ const updatePackageVersions = (version: string) => {
 };
 
 const publishPackages = async () => {
-    const version = process.argv[2];
-
-    if (!process.env.NPM_TOKEN) {
-        console.error(`🚨 You must set the NPM_TOKEN environment variable 🚨`);
+    if (!process.env.NODE_AUTH_TOKEN) {
+        console.error(
+            `🚨 You must set the NODE_AUTH_TOKEN environment variable 🚨`,
+        );
         process.exit(1);
     }
+
+    const { stdout } = await exec('git rev-parse --abbrev-ref HEAD');
+
+    const version = stdout.trim();
+
+    console.log(`Version: ${version}`);
 
     if (
         !version ||
         (!version.match(/^\d+\.\d+\.\d+$/) &&
             !version.match(/^\d+\.\d+\.\d+(-rc\.\d+)?$/))
     ) {
-        console.error(
-            `🚨 You must specify a semantic version as the first argument  🚨`,
-        );
+        console.error(`🚨 Branch name is not a valid tag (${version}) 🚨\n`);
         process.exit(1);
     }
 
     console.log('\n______________________________________________________\n\n');
     console.log(`   🚀🚀🚀 Publishing ${version}  🚀🚀🚀`);
     console.log('\n______________________________________________________\n\n');
-
-    console.log(' Checkout to main:');
-    await exec('git checkout main');
-    console.log('       - ✅  Checked out!');
-
-    console.log(' Pull the tag:');
-    await exec('git pull');
-    console.log('       - ✅  Pulled!');
-
-    console.log(' Checkout the tag:');
-    await exec(`git checkout ${version}`);
-    console.log('       - ✅  Checked out!');
 
     console.log(' Clean:');
     console.log('       - 🚮 Purging node_modules...');
@@ -94,7 +86,7 @@ const publishPackages = async () => {
                 shell: true, // Enables shell features if needed
                 env: {
                     ...process.env,
-                    NPM_TOKEN: process.env.NPM_TOKEN,
+                    NODE_AUTH_TOKEN: process.env.NODE_AUTH_TOKEN,
                 },
             },
         );
