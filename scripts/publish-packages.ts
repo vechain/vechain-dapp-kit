@@ -34,6 +34,8 @@ const publishPackages = async () => {
         process.exit(1);
     }
 
+    console.log(process.env);
+
     const { stdout } = await exec('git rev-parse --abbrev-ref HEAD');
 
     const version = stdout.trim();
