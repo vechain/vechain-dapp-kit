@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import util from 'util';
 import * as child_process from 'child_process';
-import fs from "fs"
-import path from "path"
+import fs from 'fs';
+import path from 'path';
 
 const exec = util.promisify(child_process.exec);
 
@@ -18,6 +18,11 @@ const updatePackageVersions = (version: string) => {
         const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
         pkgJson.version = version;
         packageNames.push(pkgJson.name);
+        for (const dep of Object.keys(pkgJson.dependencies || {})) {
+            if (dep.includes('@vechain/dapp-kit')) {
+                pkgJson.dependencies[dep] = version;
+            }
+        }
         fs.writeFileSync(pkgJsonPath, JSON.stringify(pkgJson, null, 2));
     }
 };
@@ -25,13 +30,18 @@ const updatePackageVersions = (version: string) => {
 const publishPackages = async () => {
     const version = process.argv[2];
 
+    if (!process.env.NPM_TOKEN) {
+        console.error(`🚨 You must set the NPM_TOKEN environment variable 🚨`);
+        process.exit(1);
+    }
+
     if (
-      !version ||
-      (!version.match(/^\d+\.\d+\.\d+$/) &&
-        !version.match(/^\d+\.\d+\.\d+(-rc\.\d+)?$/))
+        !version ||
+        (!version.match(/^\d+\.\d+\.\d+$/) &&
+            !version.match(/^\d+\.\d+\.\d+(-rc\.\d+)?$/))
     ) {
         console.error(
-          `🚨 You must specify a semantic version as the first argument  🚨`,
+            `🚨 You must specify a semantic version as the first argument  🚨`,
         );
         process.exit(1);
     }
@@ -57,6 +67,11 @@ const publishPackages = async () => {
     await exec('yarn purge');
     console.log('       - ✅  Purged!');
 
+    console.log(' Version:');
+    console.log(`       - 🏷 Updating package versions to ${version}...`);
+    updatePackageVersions(version);
+    console.log('       - ✅  Updated!');
+
     console.log(' Build:');
     console.log('       - 📦 Install dependencies and build packages...');
     await exec('yarn install');
@@ -68,11 +83,6 @@ const publishPackages = async () => {
     await exec('yarn test');
     console.log('       - ✅  Tested!');
 
-    console.log(' Version:');
-    console.log(`       - 🏷 Updating package versions to ${version}...`);
-    updatePackageVersions(version);
-    console.log('       - ✅  Updated!');
-
     console.log(' Publish:');
     console.log('       - 📦 Publishing packages...');
     await new Promise((resolve, reject) => {
@@ -82,6 +92,10 @@ const publishPackages = async () => {
             {
                 stdio: 'inherit', // This allows interaction with the process's stdio
                 shell: true, // Enables shell features if needed
+                env: {
+                    ...process.env,
+                    NPM_TOKEN: process.env.NPM_TOKEN,
+                },
             },
         );
 
