@@ -10,14 +10,13 @@ const exec = util.promisify(child_process.exec);
 const packages = fs.readdirSync(path.resolve(__dirname, '../packages'));
 
 const updatePackageVersions = (version: string) => {
-    const packageNames = [];
-
     for (const pkg of packages) {
         const pkgPath = path.resolve(__dirname, `../packages/${pkg}`);
         const pkgJsonPath = path.resolve(pkgPath, './package.json');
         const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
-        pkgJson.version = version;
-        packageNames.push(pkgJson.name);
+        if (pkgJson.version !== version) {
+            throw new Error(`Tag/ package.json mismatch ${pkgJsonPath}`);
+        }
         for (const dep of Object.keys(pkgJson.dependencies || {})) {
             if (dep.includes('@vechain/dapp-kit')) {
                 pkgJson.dependencies[dep] = version;
@@ -59,11 +58,6 @@ const publishPackages = async () => {
     await exec('yarn purge');
     console.log('       - ✅  Purged!');
 
-    console.log(' Version:');
-    console.log(`       - 🏷 Updating package versions to ${version}...`);
-    updatePackageVersions(version);
-    console.log('       - ✅  Updated!');
-
     console.log(' Build:');
     console.log('       - 📦 Install dependencies and build packages...');
     await exec('yarn install');
@@ -74,6 +68,11 @@ const publishPackages = async () => {
     console.log('       - 🧪 Testing packages...');
     await exec('yarn test');
     console.log('       - ✅  Tested!');
+
+    console.log(' Version:');
+    console.log(`       - 🏷 Updating package versions to ${version}...`);
+    updatePackageVersions(version);
+    console.log('       - ✅  Updated!');
 
     console.log(' Publish:');
     console.log('       - 📦 Publishing packages...');
