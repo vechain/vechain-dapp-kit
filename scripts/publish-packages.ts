@@ -27,6 +27,11 @@ const updatePackageVersions = (version: string) => {
 };
 
 const publishPackages = async () => {
+    if (process.env.GITHUB_ACTIONS !== 'true') {
+        console.error(`🚨 This script should only be run in GitHub Actions 🚨`);
+        process.exit(1);
+    }
+
     if (!process.env.NODE_AUTH_TOKEN) {
         console.error(
             `🚨 You must set the NODE_AUTH_TOKEN environment variable 🚨`,
@@ -34,9 +39,7 @@ const publishPackages = async () => {
         process.exit(1);
     }
 
-    console.log(process.env);
-
-    const { stdout } = await exec('git rev-parse --abbrev-ref HEAD');
+    const { stdout } = await exec('git describe --exact-match --tags HEAD');
 
     const version = stdout.trim();
 
@@ -98,6 +101,18 @@ const publishPackages = async () => {
             } else {
                 reject(new Error(`Publish process exited with code ${code}`));
             }
+        });
+
+        publishProcess.on('message', (data) => {
+            console.log(data);
+        });
+
+        publishProcess.stdout?.on('data', (data) => {
+            console.log(data);
+        });
+
+        publishProcess.stderr?.on('data', (data) => {
+            console.error(data);
         });
 
         publishProcess.on('error', (err) => {
