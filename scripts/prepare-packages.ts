@@ -11,15 +11,25 @@ const packages = fs.readdirSync(path.resolve(__dirname, '../packages'));
 
 const updatePackageVersions = (version: string) => {
     const packageNames = [];
+    const internalPackageNames = [@vechain/dapp-kit-ui, @vechain/dapp-kit-react];
 
     for (const pkg of packages) {
         const pkgPath = path.resolve(__dirname, `../packages/${pkg}`);
         const pkgJsonPath = path.resolve(pkgPath, './package.json');
         const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
         pkgJson.version = version;
+        if (pkgJson['dependencies']) {
+            for (const dependencyName of internalPackages) {
+                if (pkgJson['dependencies'][dependencyName]) {
+                    pkgJson['dependencies'][dependencyName] = version
+                }
+            }
+        }
         packageNames.push(pkgJson.name);
         fs.writeFileSync(pkgJsonPath, JSON.stringify(pkgJson, null, 2));
     }
+
+   
 };
 
 const preparePackages = async () => {
