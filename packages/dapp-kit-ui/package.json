@@ -35,8 +35,8 @@
     "dependencies": {
         "@vechain/dapp-kit": "workspace:*",
         "@vechain/picasso": "2.1.1",
-        "@vechain/sdk-core": "1.1.0",
-        "@vechain/sdk-network": "1.1.0",
+        "@vechain/sdk-core": "1.2.0-rc.3",
+        "@vechain/sdk-network": "1.2.0-rc.3",
         "@wagmi/core": "^2.16.7",
         "@web3modal/ethereum": "^2.7.1",
         "@web3modal/html": "^2.7.1",
