@@ -28,7 +28,7 @@
         "@vechain/dapp-kit": "workspace:*",
         "@vechain/dapp-kit-ui": "workspace:*",
         "@vechain/sdk-core": "1.1.0",
-        "valtio": "2.1.4"
+        "valtio": "1.13.2"
     },
     "devDependencies": {
         "@testing-library/dom": "^10.4.0",

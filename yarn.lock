@@ -7904,7 +7904,7 @@ __metadata:
     react: "npm:^19.1.0"
     tsup: "npm:^8.4.0"
     typescript: "npm:^5.8.3"
-    valtio: "npm:2.1.4"
+    valtio: "npm:1.13.2"
     vite: "npm:^6.2.5"
     vitest: "npm:^3.1.1"
   languageName: unknown
@@ -7935,7 +7935,7 @@ __metadata:
     typechain: "npm:^8.3.2"
     typescript: "npm:~5.8.3"
     typescript-eslint: "npm:^8.29.1"
-    valtio: "npm:2.1.4"
+    valtio: "npm:1.13.2"
     vite: "npm:^6.2.5"
     vitest: "npm:^3.1.1"
   languageName: unknown
@@ -7961,7 +7961,7 @@ __metadata:
     lokijs: "npm:^1.5.12"
     tsup: "npm:^8.4.0"
     typescript: "npm:^5.8.3"
-    valtio: "npm:2.1.4"
+    valtio: "npm:1.13.2"
     vite: "npm:^6.2.5"
     vitest: "npm:^3.1.1"
   languageName: unknown
@@ -11468,6 +11468,15 @@ __metadata:
   version: 2.0.3
   resolution: "dequal@npm:2.0.3"
   checksum: 10c0/f98860cdf58b64991ae10205137c0e97d384c3a4edc7f807603887b7c4b850af1224a33d88012009f150861cbee4fa2d322c4cc04b9313bee312e47f6ecaa888
+  languageName: node
+  linkType: hard
+
+"derive-valtio@npm:0.1.0":
+  version: 0.1.0
+  resolution: "derive-valtio@npm:0.1.0"
+  peerDependencies:
+    valtio: "*"
+  checksum: 10c0/c64ed74e2bc140dafe080a58fd499f803cebaa89774b5d2bd0fea8054728912f1c715c5c370b4ff01ab9908b64828a7f8f0c968dc9efd0aee037e5679dd804d8
   languageName: node
   linkType: hard
 
@@ -20176,10 +20185,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"proxy-compare@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "proxy-compare@npm:3.0.1"
-  checksum: 10c0/1e3631ef32603d4de263860ce02d84b48384dce9b62238b2148b3c58a4e4ec5b06644615dcc196a339f73b9695443317099d55a9173e02ce8492088c9330c00b
+"proxy-compare@npm:2.6.0":
+  version: 2.6.0
+  resolution: "proxy-compare@npm:2.6.0"
+  checksum: 10c0/afd82ddc83f34af6116a5e222399fb7e626a1a443feb9d70e7a1af65561c97f670c5c8c4bde53bfe12a7cda7ef00f9863d265f3a0e949ff031a9869ecc5feb0c
   languageName: node
   linkType: hard
 
@@ -24449,20 +24458,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"valtio@npm:2.1.4":
-  version: 2.1.4
-  resolution: "valtio@npm:2.1.4"
+"valtio@npm:1.13.2":
+  version: 1.13.2
+  resolution: "valtio@npm:1.13.2"
   dependencies:
-    proxy-compare: "npm:^3.0.1"
+    derive-valtio: "npm:0.1.0"
+    proxy-compare: "npm:2.6.0"
+    use-sync-external-store: "npm:1.2.0"
   peerDependencies:
-    "@types/react": ">=18.0.0"
-    react: ">=18.0.0"
+    "@types/react": ">=16.8"
+    react: ">=16.8"
   peerDependenciesMeta:
     "@types/react":
       optional: true
     react:
       optional: true
-  checksum: 10c0/d61588a3d6c66052d72ef00bc6f6245a56cf9008c262acfea4688a27852713b520e5c7fd1917df17e69e326181e03da097ec0f585b4106409c63fe63ad59cf5d
+  checksum: 10c0/514b8509308056e474c7d3ccfbbd6ac8e589740a92c53c53c78591a217e14da0694bd67f54195d8ec46920b6aab89eebab3c78c98c33d814b3606cdaacb6489b
   languageName: node
   linkType: hard
 
