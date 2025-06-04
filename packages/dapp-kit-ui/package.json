@@ -33,7 +33,7 @@
         "watch": "yarn build --watch"
     },
     "dependencies": {
-        "@vechain/connex": "2.1.0",
+        "@vechain/connex": "2.2.1",
         "@vechain/dapp-kit": "*",
         "@vechain/picasso": "2.1.1",
         "@wagmi/core": "^2.13.4",

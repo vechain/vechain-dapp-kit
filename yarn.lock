@@ -5684,43 +5684,43 @@
   resolved "https://registry.npmjs.org/@vanilla-extract/private/-/private-1.0.5.tgz"
   integrity sha512-6YXeOEKYTA3UV+RC8DeAjFk+/okoNz/h88R+McnzA2zpaVqTR/Ep+vszkWYlGBcMNO7vEkqbq5nT/JMMvhi+tw==
 
-"@vechain/connex-driver@2.1.0", "@vechain/connex-driver@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/@vechain/connex-driver/-/connex-driver-2.1.0.tgz"
-  integrity sha512-wFTakrFwsjJPq/9e+USGl5QKnoy6+FeZG4h+/wEITw5IaIAzujtTR8m7wqJFdto/gLZbP8j3puR4ZU9LrdfpkA==
+"@vechain/connex-driver@2.2.1", "@vechain/connex-driver@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@vechain/connex-driver/-/connex-driver-2.2.1.tgz#918eac7bbe7603f141e703799f7ab8fa35c77170"
+  integrity sha512-q58JMGlb9V5jS85iAznqeo23XDX5AUFohXWLOTPn0bvSAp4OOu+NVLHoCFFu3FE6+NSSibuchiNN+PK/TkKqmQ==
   dependencies:
-    "@vechain/connex-types" "^2.1.0"
+    "@vechain/connex-types" "^2.2.1"
     axios "^0.21.1"
     bignumber.js "^7.2.1"
     isomorphic-ws "^4.0.1"
     lru-cache "^5.1.1"
-    thor-devkit "^2.0.5"
+    thor-devkit "^2.1.0"
     ws "^7.1.0"
 
-"@vechain/connex-framework@2.1.0", "@vechain/connex-framework@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/@vechain/connex-framework/-/connex-framework-2.1.0.tgz"
-  integrity sha512-FaQgkNKPHY9PqAV5YTMb6Mpbun97jprn0rW1b198XKF2rj3U8xGV3UWdOM8+dCOCL9hBGfYIt2RzjBtAMb95xg==
+"@vechain/connex-framework@2.2.1", "@vechain/connex-framework@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@vechain/connex-framework/-/connex-framework-2.2.1.tgz#df4f692bc09e10b7ac4cb0966ae054bb44781049"
+  integrity sha512-c57jxcpR+Nh+dEvR+5b47azH43yUBVAf+q8acLFoJ187QAx55eDqevxb3wvoEDE29dGmW1WnCqRPLVeg6DStHw==
   dependencies:
-    "@vechain/connex-types" "^2.1.0"
+    "@vechain/connex-types" "^2.2.1"
     bignumber.js "^7.2.1"
-    thor-devkit "^2.0.5"
+    thor-devkit "^2.1.0"
     validator-ts "^0.9.1"
 
-"@vechain/connex-types@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/@vechain/connex-types/-/connex-types-2.1.0.tgz"
-  integrity sha512-8NtOHAO+idy5llrYEmuArWTkwYbwG/FEWqkRScz1f6QuaGvkkj+93IuAnp9E89Pi+kV3t2DKBTaF6mpPjjTmHg==
+"@vechain/connex-types@2.2.1", "@vechain/connex-types@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@vechain/connex-types/-/connex-types-2.2.1.tgz#a8bb367e002f64891b48c2b1e87ade7801eacce4"
+  integrity sha512-jSicxZQznD+UZN0lmxdmIHdruVqTc2b0xDChePIzki/m4AabELJpSrmq7ynu7kEqM1sU9qXZ9KiWkdkBQmWuRw==
 
-"@vechain/connex@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/@vechain/connex/-/connex-2.1.0.tgz"
-  integrity sha512-7jPhmvn26pOF7x/f+4dWj0BxsLbEu/tbQ7nweQHtfBMXP4AF9lk21guf1mFC0pezqIovXcFNecxVhg0Z1SrAJw==
+"@vechain/connex@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@vechain/connex/-/connex-2.2.1.tgz#bb064895f45e49f6ac82c977c7bd2e9efd89c350"
+  integrity sha512-YEnqC0d5nSfQrF7cqtbfS7nPj7u0mD5QoSzF/6MznbL/JFmu+jPEJ34gCSsXnTmivBHzfmgH1/EzAsST7I2Mxw==
   dependencies:
-    "@vechain/connex-driver" "^2.1.0"
-    "@vechain/connex-framework" "^2.1.0"
+    "@vechain/connex-driver" "^2.2.1"
+    "@vechain/connex-framework" "^2.2.1"
     randombytes "^2.1.0"
-    thor-devkit "^2.0.5"
+    thor-devkit "^2.1.0"
 
 "@vechain/ethers@^4.0.27-5":
   version "4.0.27-5"
@@ -8924,6 +8924,19 @@ elliptic@^6.5.3, elliptic@^6.5.5:
   version "6.5.6"
   resolved "https://registry.npmjs.org/elliptic/-/elliptic-6.5.6.tgz"
   integrity sha512-mpzdtpeCLuS3BmE3pO3Cpp5bbjlOPY2Q0PgoF+Od1XZrHLYI28Xe3ossCmYCQt11FQKEYd9+PF8jymTvtWJSHQ==
+  dependencies:
+    bn.js "^4.11.9"
+    brorand "^1.1.0"
+    hash.js "^1.0.0"
+    hmac-drbg "^1.0.1"
+    inherits "^2.0.4"
+    minimalistic-assert "^1.0.1"
+    minimalistic-crypto-utils "^1.0.1"
+
+elliptic@^6.6.1:
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.6.1.tgz#3b8ffb02670bf69e382c7f65bf524c97c5405c06"
+  integrity sha512-RaddvvMatK2LJHqFJ+YA4WysVN5Ita9E35botqIYspQ4TkRAlCicdzKOjlyv/1Za5RyTNn7di//eEV0uTAfe3g==
   dependencies:
     bn.js "^4.11.9"
     brorand "^1.1.0"
@@ -17076,15 +17089,15 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
-thor-devkit@^2.0.5:
-  version "2.0.9"
-  resolved "https://registry.npmjs.org/thor-devkit/-/thor-devkit-2.0.9.tgz"
-  integrity sha512-qCbkjAFhlLq4Tb7YIQokEryPb9pCCGUX0gRIBGJr+sBNlyOFO8TGJFZ8d7+VXWpdDhcWerpFdekB55lD43GiGQ==
+thor-devkit@^2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/thor-devkit/-/thor-devkit-2.1.1.tgz#74d80c5c800cc5febda36220730a1c4446b91438"
+  integrity sha512-hkXCS3sUy0v6WvUBEARRRIUpVUD+0pNvYOyY05iEoyEbpTOTI1J5+h/0ixdOxM0W5lOKa55PfCtGLVOK0JaZpA==
   dependencies:
     "@vechain/ethers" "^4.0.27-5"
     bignumber.js "^7.2.1"
     blakejs "^1.1.2"
-    elliptic "6.5.4"
+    elliptic "^6.6.1"
     fast-json-stable-stringify "^2.1.0"
     js-sha3 "0.5.7"
     rlp "^2.0.0"
