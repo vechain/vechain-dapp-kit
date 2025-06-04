@@ -42,7 +42,7 @@
         "@web3modal/html": "^2.7.1",
         "lit": "3.2.1",
         "qrcode": "1.5.4",
-        "valtio": "2.1.4"
+        "valtio": "1.13.2"
     },
     "devDependencies": {
         "@types/qrcode": "^1.5.5",
