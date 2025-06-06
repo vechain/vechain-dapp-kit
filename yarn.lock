@@ -4769,22 +4769,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-upgradeable@npm:5.0.2":
-  version: 5.0.2
-  resolution: "@openzeppelin/contracts-upgradeable@npm:5.0.2"
-  peerDependencies:
-    "@openzeppelin/contracts": 5.0.2
-  checksum: 10c0/0bd47a4fa0ba8084c1df9573968ff02387bc21514d846b5feb4ad42f90f3ba26bb1e40f17f03e4fa24ffbe473b9ea06c137283297884ab7d5b98d2c112904dc9
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/contracts@npm:5.0.2":
-  version: 5.0.2
-  resolution: "@openzeppelin/contracts@npm:5.0.2"
-  checksum: 10c0/d042661db7bb2f3a4b9ef30bba332e86ac20907d171f2ebfccdc9255cc69b62786fead8d6904b8148a8f26946bc7c15eead91b95f75db0c193a99d52e528663e
-  languageName: node
-  linkType: hard
-
 "@originjs/vite-plugin-commonjs@npm:^1.0.3":
   version: 1.0.3
   resolution: "@originjs/vite-plugin-commonjs@npm:1.0.3"
@@ -6331,7 +6315,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scure/base@npm:^1.1.9, @scure/base@npm:~1.2.2, @scure/base@npm:~1.2.4":
+"@scure/base@npm:^1.2.4":
+  version: 1.2.6
+  resolution: "@scure/base@npm:1.2.6"
+  checksum: 10c0/49bd5293371c4e062cb6ba689c8fe3ea3981b7bb9c000400dc4eafa29f56814cdcdd27c04311c2fec34de26bc373c593a1d6ca6d754398a488d587943b7c128a
+  languageName: node
+  linkType: hard
+
+"@scure/base@npm:~1.2.2, @scure/base@npm:~1.2.4":
   version: 1.2.4
   resolution: "@scure/base@npm:1.2.4"
   checksum: 10c0/469c8aee80d6d6973e1aac6184befa04568f1b4016e40c889025f4a721575db9c1ca0c2ead80613896cce929392740322a18da585a427f157157e797dc0a42a9
@@ -7899,7 +7890,7 @@ __metadata:
     "@types/react-dom": "npm:^19.1.1"
     "@vechain/dapp-kit": "workspace:*"
     "@vechain/dapp-kit-ui": "workspace:*"
-    "@vechain/sdk-core": "npm:1.1.0"
+    "@vechain/sdk-core": "npm:1.2.0"
     eslint: "npm:^9.24.0"
     react: "npm:^19.1.0"
     tsup: "npm:^8.4.0"
@@ -7919,8 +7910,8 @@ __metadata:
     "@typescript-eslint/parser": "npm:^8.29.1"
     "@vechain/dapp-kit": "workspace:*"
     "@vechain/picasso": "npm:2.1.1"
-    "@vechain/sdk-core": "npm:1.1.0"
-    "@vechain/sdk-network": "npm:1.1.0"
+    "@vechain/sdk-core": "npm:1.2.0"
+    "@vechain/sdk-network": "npm:1.2.0"
     "@vitest/coverage-v8": "npm:^3.1.1"
     "@wagmi/core": "npm:^2.16.7"
     "@web3modal/ethereum": "npm:^2.7.1"
@@ -7947,9 +7938,9 @@ __metadata:
   dependencies:
     "@types/react": "npm:^19.1.0"
     "@types/react-dom": "npm:^19.1.1"
-    "@vechain/sdk-core": "npm:1.1.0"
-    "@vechain/sdk-errors": "npm:1.1.0"
-    "@vechain/sdk-network": "npm:1.1.0"
+    "@vechain/sdk-core": "npm:1.2.0"
+    "@vechain/sdk-errors": "npm:1.2.0"
+    "@vechain/sdk-network": "npm:1.2.0"
     "@vitest/coverage-v8": "npm:^3.1.1"
     "@walletconnect/modal": "npm:2.7.0"
     "@walletconnect/sign-client": "npm:2.19.2"
@@ -7976,69 +7967,55 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vechain/sdk-core@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@vechain/sdk-core@npm:1.1.0"
+"@vechain/sdk-core@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@vechain/sdk-core@npm:1.2.0"
   dependencies:
     "@ethereumjs/rlp": "npm:^5.0.2"
     "@noble/ciphers": "npm:^1.1.1"
     "@noble/curves": "npm:^1.6.0"
     "@noble/hashes": "npm:^1.5.0"
-    "@scure/base": "npm:^1.1.9"
+    "@scure/base": "npm:^1.2.4"
     "@scure/bip32": "npm:^1.4.0"
     "@scure/bip39": "npm:^1.5.1"
-    "@vechain/sdk-errors": "npm:1.1.0"
-    "@vechain/sdk-logging": "npm:1.1.0"
+    "@vechain/sdk-errors": "npm:1.2.0"
+    "@vechain/sdk-logging": "npm:1.2.0"
     abitype: "npm:^1.0.6"
     ethers: "npm:6.13.4"
     fast-json-stable-stringify: "npm:^2.1.0"
     viem: "npm:^2.21.45"
-  checksum: 10c0/e963d256dc947d332b57594c07056c238a5f756bfad93f475544de13852d07c51ee7578cbaa84920ae1b8bf6a0812d936b2cdba78e47114b32aeda8587b94444
+  checksum: 10c0/4b4f588f54e896e58e80d767dac5b19a22c1db57c30e3f709a7f3cbc0487b8f4187620ef59f0b7ce96b91f484960f14da138c1fcc65ed5a4866f655f3b8344ec
   languageName: node
   linkType: hard
 
-"@vechain/sdk-errors@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@vechain/sdk-errors@npm:1.1.0"
-  checksum: 10c0/e83fbb4f8254e5b534693f45dacf5adb8163ce5c291e5a6db5d69a67aa5e927bb2cb92d981ac2dcd03cd89ceb420efcfff7305e963ab6eff10536465b8994c8f
+"@vechain/sdk-errors@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@vechain/sdk-errors@npm:1.2.0"
+  checksum: 10c0/2d4adcfc2c8af27bd55246ebcbf2f945402c4c20887a2ac67a35aad39d45f85dd70890d25305a8de9b0d4f1fc9cb74758d1f9ed172bbc614511a3dda14ed1ab2
   languageName: node
   linkType: hard
 
-"@vechain/sdk-logging@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@vechain/sdk-logging@npm:1.1.0"
+"@vechain/sdk-logging@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@vechain/sdk-logging@npm:1.2.0"
   dependencies:
-    "@vechain/sdk-errors": "npm:1.1.0"
-  checksum: 10c0/66376a418107f5fa78a9ce7095cb556a128143b860356808ac6f398f80c1ead7f67029c436ab60ad9dd9a4297a291f0981f6f1457cd02be45c6efbe09ba8953c
+    "@vechain/sdk-errors": "npm:1.2.0"
+  checksum: 10c0/8d79cdc73fcf69793abf75ed8c23e73c77d9c727cfbb78619c1434e43d7f8e7922a2d8f0023bce4541415a2df63645cf0f2eb742c17e9df12b41ab4b060883ae
   languageName: node
   linkType: hard
 
-"@vechain/sdk-network@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@vechain/sdk-network@npm:1.1.0"
+"@vechain/sdk-network@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@vechain/sdk-network@npm:1.2.0"
   dependencies:
     "@noble/curves": "npm:^1.6.0"
-    "@vechain/sdk-core": "npm:1.1.0"
-    "@vechain/sdk-errors": "npm:1.1.0"
-    "@vechain/sdk-logging": "npm:1.1.0"
-    "@vechain/vebetterdao-contracts": "npm:^4.0.0"
+    "@vechain/sdk-core": "npm:1.2.0"
+    "@vechain/sdk-errors": "npm:1.2.0"
+    "@vechain/sdk-logging": "npm:1.2.0"
     abitype: "npm:^1.0.6"
     ethers: "npm:6.13.4"
-    isomorphic-ws: "npm:^5.0.0"
     viem: "npm:^2.21.45"
-    ws: "npm:^8.18.0"
-  checksum: 10c0/ba6b14e7b5add4c4d6549f744da57fa01e282d94ef9f5b77a795a60cb32231cfececcb47a7192f788a46f3b32238112f54d93df6017e6ede38e4f8ff47ebe00f
-  languageName: node
-  linkType: hard
-
-"@vechain/vebetterdao-contracts@npm:^4.0.0":
-  version: 4.1.0
-  resolution: "@vechain/vebetterdao-contracts@npm:4.1.0"
-  dependencies:
-    "@openzeppelin/contracts": "npm:5.0.2"
-    "@openzeppelin/contracts-upgradeable": "npm:5.0.2"
-    ethers: "npm:^6.9.0"
-  checksum: 10c0/ec0034b61df4bbc7ad186bc6168bd8fc68722eb9452dd2df4c418ae89f41c03c8488e7eb26a2e218be5f1856ca11eba90932f47ced250f240d91cfb104306ade
+  checksum: 10c0/977f8ac523691ffa65db012bd0574dc04bdd355b5009a4b0562f406ec98e365db71c7c4db46603e552524a218944fab7b5759008eb1ecaf507f10412a26405d5
   languageName: node
   linkType: hard
 
@@ -13459,21 +13436,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^6.9.0":
-  version: 6.13.6
-  resolution: "ethers@npm:6.13.6"
-  dependencies:
-    "@adraffy/ens-normalize": "npm:1.10.1"
-    "@noble/curves": "npm:1.2.0"
-    "@noble/hashes": "npm:1.3.2"
-    "@types/node": "npm:22.7.5"
-    aes-js: "npm:4.0.0-beta.5"
-    tslib: "npm:2.7.0"
-    ws: "npm:8.17.1"
-  checksum: 10c0/e757b2995e1298396d120e9cb92a07c4308e93ea28eedb577d4e7a43b0b1cdf4be2460a6722294e42c1da9a9b1dddd9f2c885c9e6120fa845ccdd1b706e0ec04
-  languageName: node
-  linkType: hard
-
 "eval@npm:0.1.8":
   version: 0.1.8
   resolution: "eval@npm:0.1.8"
@@ -15773,15 +15735,6 @@ __metadata:
   version: 1.0.1
   resolution: "isomorphic-timers-promises@npm:1.0.1"
   checksum: 10c0/3b4761d0012ebe6b6382246079fc667f3513f36fe4042638f2bfb7db1557e4f1acd33a9c9907706c04270890ec6434120f132f3f300161a42a7dd8628926c8a4
-  languageName: node
-  linkType: hard
-
-"isomorphic-ws@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "isomorphic-ws@npm:5.0.0"
-  peerDependencies:
-    ws: "*"
-  checksum: 10c0/a058ac8b5e6efe9e46252cb0bc67fd325005d7216451d1a51238bc62d7da8486f828ef017df54ddf742e0fffcbe4b1bcc2a66cc115b027ed0180334cd18df252
   languageName: node
   linkType: hard
 
@@ -21451,8 +21404,8 @@ __metadata:
     "@vechain/dapp-kit": "workspace:^"
     "@vechain/dapp-kit-react": "workspace:*"
     "@vechain/dapp-kit-ui": "workspace:^"
-    "@vechain/sdk-core": "npm:1.1.0"
-    "@vechain/sdk-network": "npm:1.1.0"
+    "@vechain/sdk-core": "npm:1.2.0"
+    "@vechain/sdk-network": "npm:1.2.0"
     "@vitejs/plugin-react": "npm:^4.3.4"
     eslint: "npm:^9.24.0"
     eslint-plugin-react-hooks: "npm:^5.2.0"

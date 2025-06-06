@@ -1,6 +1,6 @@
 {
     "name": "@vechain/dapp-kit",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "homepage": "https://github.com/vechain/vechain-dapp-kit",
     "repository": "github:vechain/vechain-dapp-kit",
     "license": "MIT",
@@ -23,9 +23,9 @@
         "watch": "yarn build --watch"
     },
     "dependencies": {
-        "@vechain/sdk-core": "1.1.0",
-        "@vechain/sdk-errors": "1.1.0",
-        "@vechain/sdk-network": "1.1.0",
+        "@vechain/sdk-core": "1.2.0",
+        "@vechain/sdk-errors": "1.2.0",
+        "@vechain/sdk-network": "1.2.0",
         "@walletconnect/modal": "2.7.0",
         "@walletconnect/sign-client": "2.19.2",
         "@walletconnect/utils": "2.19.2",
