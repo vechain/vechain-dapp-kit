@@ -27,7 +27,7 @@
         "@lit/react": "^1.0.7",
         "@vechain/dapp-kit": "workspace:*",
         "@vechain/dapp-kit-ui": "workspace:*",
-        "@vechain/sdk-core": "1.2.0-rc.3",
+        "@vechain/sdk-core": "1.2.0",
         "valtio": "2.1.4"
     },
     "devDependencies": {
