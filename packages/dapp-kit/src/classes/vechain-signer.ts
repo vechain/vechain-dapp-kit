@@ -16,6 +16,17 @@ import type {
 } from '../types';
 import type { WalletManager } from './wallet-manager';
 
+const safeJsonParseAbi = (value: unknown) => {
+    if (value === undefined) return undefined;
+    if (typeof value === 'object') return value;
+    if (typeof value !== 'string') return undefined;
+    try {
+        return JSON.parse(value);
+    } catch {
+        return undefined;
+    }
+};
+
 class VeChainSignerDAppKit extends VeChainAbstractSigner {
     private readonly walletManager: WalletManager;
 
@@ -126,8 +137,8 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
                     to: clause.to,
                     value: clause.value,
                     data: clause.data,
-                    comment: '',
-                    abi: undefined,
+                    comment: clause.comment ?? '',
+                    abi: safeJsonParseAbi(clause.abi),
                 };
             });
         }
