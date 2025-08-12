@@ -1,10 +1,10 @@
+import type { SignClient } from '@walletconnect/sign-client/dist/types/client';
 import type {
     EngineTypes,
     ProposalTypes,
     SessionTypes,
 } from '@walletconnect/types';
 import { getSdkError } from '@walletconnect/utils';
-import type { SignClient } from '@walletconnect/sign-client/dist/types/client';
 import { DefaultMethods } from '../constants';
 import type {
     CertificateMessage,
@@ -41,14 +41,13 @@ export const createWcSigner = ({
     });
 
     let session: SessionTypes.Struct | undefined;
+    let signClient: SignClient;
 
     wcClient
         .get()
         .then((clientInstance) => {
+            signClient = clientInstance;
             listenToEvents(clientInstance);
-            restoreSession(clientInstance).catch((e) => {
-                throw e;
-            });
         })
         .catch(() => {
             throw new Error(`Failed to get the wallet connect sign client`);
@@ -58,7 +57,7 @@ export const createWcSigner = ({
      * Ping the session when the window is focused
      * if (window) to prevent SSR errors
      */
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
     if (window) {
         window.onfocus = async (): Promise<void> => {
             if (session) {
@@ -117,6 +116,12 @@ export const createWcSigner = ({
     const validateSession = async (
         requestedAddress?: string,
     ): Promise<SessionAccount | undefined> => {
+        // Always restore the session before validating it, in order to be 100% sure that if the first request is send transaction, it works
+        try {
+            const clientInstance = signClient ?? (await wcClient.get());
+            await restoreSession(clientInstance);
+        } catch {}
+
         if (!session) return;
         DAppKitLogger.debug('wallet connect signer', 'validate session');
 
