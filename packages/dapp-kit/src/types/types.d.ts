@@ -1,13 +1,12 @@
-import type { LogLevel } from '../utils';
-import { WalletConnectOptions } from './wc-types';
 import type { CertificateData } from '@vechain/sdk-core';
 import {
     CompressedBlockDetail,
     HttpClient,
+    SignTypedDataOptions,
     TypedDataDomain,
     TypedDataParameter,
-    SignTypedDataOptions,
 } from '@vechain/sdk-network';
+import type { LogLevel } from '../utils';
 import type {
     CertificateMessage,
     CertificateOptions,
@@ -16,12 +15,78 @@ import type {
     TransactionOptions,
     TransactionResponse,
 } from './requests';
+import { WalletConnectOptions } from './wc-types';
 
 declare global {
     interface Window {
         vechain?: {
             newConnexSigner: (genesisId: string) => WalletSigner;
             isInAppBrowser?: boolean;
+            request(args: {
+                method: 'thor_connect';
+                params: {
+                    value:
+                        | {
+                              domain: TypedDataDomain;
+                              types: Record<string, TypedDataParameter[]>;
+                              value: Record<string, unknown>;
+                          }
+                        | CertificateMessage
+                        | null;
+                    external?: boolean;
+                };
+                genesisId: string;
+            }): Promise<
+                | CertificateResponse
+                | { signer: string; signature: string }
+                | { signer: string }
+            >;
+            request(args: {
+                method: 'thor_wallet';
+                params?: undefined;
+                genesisId: string;
+            }): Promise<string>;
+            request(args: {
+                method: 'thor_disconnect';
+                params?: undefined;
+                genesisId: string;
+            }): Promise<void>;
+            request(args: {
+                method: 'thor_switchWallet';
+                params?: undefined;
+                genesisId: string;
+            }): Promise<string>;
+            request(args: {
+                method: 'thor_methods';
+                params?: undefined;
+                genesisId: string;
+            }): Promise<string[]>;
+            request(args: {
+                method: 'thor_signTypedData';
+                params: {
+                    domain: TypedDataDomain;
+                    types: Record<string, TypedDataParameter[]>;
+                    value: Record<string, unknown>;
+                    options?: SignTypedDataOptions;
+                };
+                genesisId: string;
+            }): Promise<string>;
+            request(args: {
+                method: 'thor_signCertificate';
+                params: {
+                    message: CertificateMessage;
+                    options: CertificateOptions;
+                };
+                genesisId: string;
+            }): Promise<string>;
+            request(args: {
+                method: 'thor_sendTransaction';
+                params: {
+                    clauses: TransactionMessage;
+                    options?: TransactionOptions;
+                };
+                genesisId: string;
+            }): Promise<string>;
         };
         connex?: {
             vendor: {
@@ -120,14 +185,14 @@ interface WalletManagerState {
 export type {
     CertificateArgs,
     ConnectCallback,
-    DAppKitOptions,
-    VeChainWallet,
-    WalletConfig,
-    WalletSource,
-    WalletManagerState,
     ConnectResponse,
+    DAppKitOptions,
     DriverSignedTypedData,
     Genesis,
     SignTypedDataOptions,
+    VeChainWallet,
+    WalletConfig,
+    WalletManagerState,
     WalletSigner,
+    WalletSource,
 };
