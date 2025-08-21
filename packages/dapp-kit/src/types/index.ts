@@ -2,13 +2,14 @@ export type {
     CertificateArgs,
     ConnectCallback,
     ConnectResponse,
-    VeChainWallet,
     DAppKitOptions,
     Genesis,
+    VeChainWallet,
     WalletConfig,
     WalletManagerState,
-    WalletSource,
+    WalletProvider,
     WalletSigner,
+    WalletSource,
 } from './types';
 
 export type {

@@ -23,6 +23,7 @@
         "watch": "yarn build --watch"
     },
     "dependencies": {
+        "@vechain/connex-wallet-buddy": "^0.1.11",
         "@vechain/sdk-core": "1.2.0",
         "@vechain/sdk-errors": "1.2.0",
         "@vechain/sdk-network": "1.2.0",

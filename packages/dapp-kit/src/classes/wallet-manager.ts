@@ -1,30 +1,28 @@
 import { Certificate } from '@vechain/sdk-core';
-import { proxy, subscribe } from 'valtio/vanilla';
-import { subscribeKey } from 'valtio/vanilla/utils';
-import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
 import {
     SignTypedDataOptions,
     ThorClient,
     TypedDataDomain,
     TypedDataParameter,
 } from '@vechain/sdk-network';
+import { proxy, subscribe } from 'valtio/vanilla';
+import { subscribeKey } from 'valtio/vanilla/utils';
+import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
 import type {
+    CertificateArgs,
+    CertificateMessage,
+    CertificateOptions,
+    CertificateResponse,
     ConnectResponse,
     DAppKitOptions,
+    TransactionMessage,
+    TransactionOptions,
+    TransactionResponse,
     VeChainWallet,
     WalletManagerState,
     WalletSource,
 } from '../types';
 import { createWallet, DAppKitLogger, Storage } from '../utils';
-import type {
-    CertificateMessage,
-    CertificateOptions,
-    CertificateResponse,
-    TransactionMessage,
-    TransactionOptions,
-    TransactionResponse,
-    CertificateArgs,
-} from '../types';
 import { getAccountDomain } from '../utils/get-account-domain';
 
 class WalletManager {
@@ -35,7 +33,7 @@ class WalletManager {
         private readonly options: DAppKitOptions,
         private readonly thor: ThorClient,
     ) {
-        this.state = this.initState(options.usePersistence ?? false);
+        this.state = this.initialize(options.usePersistence ?? false);
         this.initPersistence(options.usePersistence ?? false);
         DAppKitLogger.debug('WalletManager', 'constructor', this.state);
 
@@ -323,7 +321,7 @@ class WalletManager {
         });
     };
 
-    private initState = (usePersistent: boolean): WalletManagerState => {
+    initialize = (usePersistent: boolean): WalletManagerState => {
         const availableSources = this.getAvailableSources();
 
         if (!usePersistent) {

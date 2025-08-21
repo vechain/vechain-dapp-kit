@@ -1,5 +1,5 @@
-import type { SignClientTypes } from '@walletconnect/types';
 import type { SignClient } from '@walletconnect/sign-client';
+import type { SignClientTypes } from '@walletconnect/types';
 import type { ConnectResponse, WalletSigner } from './types';
 
 export type ResolvedSignClient = Awaited<ReturnType<typeof SignClient.init>>;
@@ -18,6 +18,12 @@ export type WCSigner = WalletSigner & {
      * Connects to the Wallet and return the account address
      */
     connect: () => Promise<ConnectResponse>;
+
+    /**
+     *
+     * @returns The current selected address
+     */
+    getAddress: () => string | null | Promise<string | null>;
 };
 
 export interface WCClient {
@@ -84,5 +90,5 @@ export interface WCSignerOptions {
     wcClient: WCClient;
     web3Modal: WCModal;
     onDisconnected: () => void;
-    genesisId: Promise<string>;
+    genesisId: string;
 }
