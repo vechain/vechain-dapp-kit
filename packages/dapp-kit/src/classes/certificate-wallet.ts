@@ -9,7 +9,7 @@ import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
 import type {
     CertificateArgs,
     ConnectResponse,
-    NewConnectResponse,
+    ConnectV2Response,
     TypedDataMessage,
     VeChainWallet,
     WalletProvider,
@@ -44,12 +44,12 @@ class CertificateBasedWallet implements VeChainWallet {
             options: connectionCertificateData?.options ?? {},
         };
     }
-    newConnect = async <
+    connectV2 = async <
         TValue extends null | CertificateMessage | TypedDataMessage,
     >(
         value: TValue,
         external?: boolean,
-    ): Promise<NewConnectResponse<TValue>> => {
+    ): Promise<ConnectV2Response<TValue>> => {
         if (!this.walletProvider) {
             if (value === null)
                 throw new Error(

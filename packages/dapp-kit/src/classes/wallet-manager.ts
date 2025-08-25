@@ -15,8 +15,8 @@ import type {
     CertificateOptions,
     CertificateResponse,
     ConnectResponse,
+    ConnectV2Response,
     DAppKitOptions,
-    NewConnectResponse,
     TransactionMessage,
     TransactionOptions,
     TransactionResponse,
@@ -237,12 +237,12 @@ class WalletManager {
         }
     };
 
-    newConnect = async <
+    connectV2 = async <
         TValue extends null | CertificateMessage | TypedDataMessage,
     >(
         value: TValue,
         external?: boolean,
-    ): Promise<NewConnectResponse<TValue>> => {
+    ): Promise<ConnectV2Response<TValue>> => {
         assertState(this.state, 'newConnect');
         if (value === null && this.state.source !== 'veworld') {
             throw new Error(
@@ -250,7 +250,7 @@ class WalletManager {
             );
         }
         if (this.state.source === 'veworld')
-            return this.wallet.newConnect(value, external);
+            return this.wallet.connectV2(value, external);
         assertNotNull(
             value,
             'WalletManager',

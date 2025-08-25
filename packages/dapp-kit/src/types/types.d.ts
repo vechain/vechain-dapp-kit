@@ -60,7 +60,7 @@ type ConnectCallback = (
     _certificate?: CertificateArs,
 ) => Promise<ConnectResponse>;
 
-type NewConnectResponse<
+type ConnectV2Response<
     TValue extends null | CertificateMessage | TypedDataMessage,
 > = TValue extends null
     ? { signer: string }
@@ -71,7 +71,7 @@ type NewConnectResponse<
 /**
  * Callback used by the DAppKit `newConnect` function
  */
-type NewConnectCallback = <
+type ConnectV2Callback = <
     TValue extends null | CertificateMessage | TypedDataMessage,
 >(
     value: TValue,
@@ -80,7 +80,7 @@ type NewConnectCallback = <
      * Keep me logged in toggle will be disabled when this option is set to true
      */
     external?: boolean,
-) => Promise<NewConnectResponse<TValue>>;
+) => Promise<ConnectV2Response<TValue>>;
 
 /**
  * Options for the DAppKit class
@@ -219,7 +219,7 @@ type VeChainWallet = WalletSigner & {
     disconnect?: () => void | Promise<void>;
     getAddress: () => string | null | Promise<string | null>;
     getAvailableMethods: () => string[] | null | Promise<string[] | null>;
-    newConnect: NewConnectCallback;
+    connectV2: ConnectV2Callback;
 };
 
 interface ConnectResponse {
@@ -242,10 +242,10 @@ export type {
     CertificateArgs,
     ConnectCallback,
     ConnectResponse,
+    ConnectV2Response,
     DAppKitOptions,
     DriverSignedTypedData,
     Genesis,
-    NewConnectResponse,
     SignTypedDataOptions,
     TypedDataMessage,
     VeChainWallet,
