@@ -24,6 +24,15 @@ export type WCSigner = WalletSigner & {
      * @returns The current selected address
      */
     getAddress: () => string | null | Promise<string | null>;
+    /**
+     *
+     * @returns null. Always
+     */
+    getAvailableMethods: () => string[] | null | Promise<string[] | null>;
+    /**
+     * @throws Error. This method is not implemented for WC
+     */
+    connectV2: ConnectV2Callback;
 };
 
 export interface WCClient {

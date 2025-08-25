@@ -26,7 +26,7 @@ import type {
 } from '../types';
 import { TypedDataMessage } from '../types/types';
 import { createWallet, DAppKitLogger, Storage } from '../utils';
-import { assertDefined, assertNotNull } from '../utils/assert';
+import { assertDefined } from '../utils/assert';
 import { getAccountDomain } from '../utils/get-account-domain';
 import { getPrimaryType } from '../utils/typed-data';
 
@@ -63,7 +63,7 @@ class WalletManager {
         private readonly options: DAppKitOptions,
         private readonly thor: ThorClient,
     ) {
-        if (options.supportNewMethods) return;
+        if (options.v2Api.enabled) return;
         this.state = this.initializeStateSync(options.usePersistence ?? false);
         this.initPersistence(options.usePersistence ?? false);
         DAppKitLogger.debug('WalletManager', 'constructor', this.state);
@@ -241,22 +241,31 @@ class WalletManager {
         TValue extends null | CertificateMessage | TypedDataMessage,
     >(
         value: TValue,
-        external?: boolean,
     ): Promise<ConnectV2Response<TValue>> => {
         assertState(this.state, 'newConnect');
-        if (value === null && this.state.source !== 'veworld') {
-            throw new Error(
-                'WalletManager: newConnect -> Value is null and user cannot use the new method',
+
+        if (this.state.source === 'veworld') {
+            const result = await this.wallet.connectV2(
+                value,
+                this.options.v2Api.external,
             );
+            if (value === null)
+                this.setAddress((result as ConnectV2Response<null>).signer);
+            else if ('domain' in value)
+                this.setAddress(
+                    (result as ConnectV2Response<TypedDataMessage>).signer,
+                );
+            else
+                this.setAddress(
+                    (result as ConnectV2Response<CertificateMessage>).annex
+                        .signer,
+                );
+            return result;
         }
-        if (this.state.source === 'veworld')
-            return this.wallet.connectV2(value, external);
-        assertNotNull(
-            value,
-            'WalletManager',
-            'newConnect',
-            'State has not been initialized. Call DAppKit.initialize() to do so.',
-        );
+
+        const connection = await this.connect();
+        if (value === null)
+            return { signer: connection.account } as ConnectV2Response<TValue>;
         if ('purpose' in value) {
             const cert = await this.signCert(value as any, {});
             return cert as any;
@@ -439,7 +448,7 @@ class WalletManager {
     };
 
     initializeStateAsync = async (): Promise<void> => {
-        if (!this.options.supportNewMethods)
+        if (!this.options.v2Api.enabled)
             throw new Error(
                 `This method should only be called if 'supportNewMethods' options is active`,
             );
@@ -576,6 +585,19 @@ class WalletManager {
             this.setSource('sync');
         } else {
             this.setSource('sync2');
+        }
+    };
+
+    getAddress = async (): Promise<string | null> => {
+        assertState(this.state, 'getAddress');
+        if (this.state.source === null) return null;
+        switch (this.state.source) {
+            case 'wallet-connect':
+            case 'veworld':
+                return this.wallet.getAddress();
+            case 'sync':
+            case 'sync2':
+                return this.state.address;
         }
     };
 }

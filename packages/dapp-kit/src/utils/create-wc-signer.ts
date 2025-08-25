@@ -11,9 +11,11 @@ import type {
     CertificateOptions,
     CertificateResponse,
     ConnectResponse,
+    ConnectV2Response,
     TransactionMessage,
     TransactionOptions,
     TransactionResponse,
+    TypedDataMessage,
     WCSigner,
     WCSignerOptions,
 } from '../types';
@@ -295,11 +297,23 @@ export const createWcSigner = ({
         return fullAccount.split(':')[2];
     };
 
+    const getAvailableMethods = () => null;
+
+    const connectV2 = async <
+        TValue extends null | CertificateMessage | TypedDataMessage,
+    >(
+        _value: TValue,
+    ): Promise<ConnectV2Response<TValue>> => {
+        throw new Error('Method not implemented');
+    };
+
     return {
         signTx,
         signCert,
         disconnect,
         connect: connectAccount,
         getAddress,
+        getAvailableMethods,
+        connectV2,
     };
 };

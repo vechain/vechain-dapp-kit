@@ -123,10 +123,21 @@ interface DAppKitOptions {
      */
     allowedWallets?: WalletSource[];
     /**
-     * Whether to support the new methods.
-     * @default false
+     * V2 APIs
      */
-    supportNewMethods?: boolean;
+    v2Api: {
+        /**
+         * Whether to support the new methods.
+         * @default false
+         */
+        enabled?: boolean;
+        /**
+         * Whether the dapp uses external authentication
+         * @default false
+         */
+        external?: boolean;
+    };
+
     /**
      * ID of the genesis block. It is the `id` property of the block #0, <node>/blocks/0 is the HTTP call to perform.
      */

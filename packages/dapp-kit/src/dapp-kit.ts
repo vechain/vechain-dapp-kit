@@ -7,9 +7,8 @@ class DAppKit {
     public readonly thor: ThorClient;
     public readonly wallet: WalletManager;
     public readonly signer: VeChainSignerDAppKit;
-    public readonly options: DAppKitOptions;
 
-    constructor(options: DAppKitOptions) {
+    constructor(public readonly options: DAppKitOptions) {
         this.options = options;
         if (options.logLevel) {
             DAppKitLogger.configure(options.logLevel);
@@ -30,7 +29,7 @@ class DAppKit {
     }
 
     async initialize() {
-        if (!this.options.supportNewMethods) {
+        if (!this.options.v2Api.enabled) {
             DAppKitLogger.debug(
                 'DAppKit',
                 'initialize',
