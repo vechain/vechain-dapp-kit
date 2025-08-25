@@ -40,6 +40,17 @@ class CertificateBasedWallet implements VeChainWallet {
             options: connectionCertificateData?.options ?? {},
         };
     }
+    getAvailableMethods = async (): Promise<string[] | null> => {
+        if (!this.walletProvider) return null;
+        try {
+            return await this.walletProvider.request({
+                method: 'thor_methods',
+                genesisId: this.genesisId,
+            });
+        } catch {
+            return null;
+        }
+    };
 
     getAddress = async (): Promise<string | null> => {
         if (!this.walletProvider) return null;

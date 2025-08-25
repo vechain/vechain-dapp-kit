@@ -25,15 +25,45 @@ import type {
 import { createWallet, DAppKitLogger, Storage } from '../utils';
 import { getAccountDomain } from '../utils/get-account-domain';
 
+function assertState(
+    state: WalletManagerState | undefined,
+    fnName: string,
+): asserts state is WalletManagerState {
+    if (typeof state === 'undefined') {
+        DAppKitLogger.error(
+            'WalletManager',
+            fnName,
+            'State has not been initialized. Call DAppKit.initialize() to do so.',
+        );
+        throw new Error(
+            'State has not been initialized. Call DAppKit.initialize() to do so.',
+        );
+    }
+}
+
+const buildState = (state: Partial<WalletManagerState>) =>
+    proxy({
+        source: null,
+        address: null,
+        accountDomain: null,
+        isAccountDomainLoading: false,
+        availableSources: [],
+        connectionCertificate: null,
+        availableMethods: [],
+        ...state,
+    });
+
 class WalletManager {
-    public readonly state: WalletManagerState;
+    public state: WalletManagerState | undefined;
     private wallets: Record<string, VeChainWallet | undefined> = {};
+    private initialized: boolean = false;
 
     constructor(
         private readonly options: DAppKitOptions,
         private readonly thor: ThorClient,
     ) {
-        this.state = this.initialize(options.usePersistence ?? false);
+        if (options.supportNewMethods) return;
+        this.state = this.initializeStateSync(options.usePersistence ?? false);
         this.initPersistence(options.usePersistence ?? false);
         DAppKitLogger.debug('WalletManager', 'constructor', this.state);
 
@@ -42,9 +72,11 @@ class WalletManager {
         } else if (options.useFirstDetectedSource) {
             this.setFirstDetectedSource();
         }
+        this.initialized = true;
     }
 
     private get wallet(): VeChainWallet {
+        assertState(this.state, 'get wallet');
         const source = this.state.source;
 
         DAppKitLogger.debug(
@@ -90,18 +122,22 @@ class WalletManager {
      * Set the account domain
      */
     setAccountDomain = (address: string | null): void => {
+        assertState(this.state, 'setAccountDomain');
         if (address) {
             this.state.isAccountDomainLoading = true;
 
             getAccountDomain({ address, thor: this.thor })
                 .then((domain) => {
+                    assertState(this.state, 'getAccountDomain');
                     this.state.accountDomain = domain;
                 })
                 .catch((e) => {
                     console.error('Error getting account domain', e);
+                    if (!this.state) return;
                     this.state.accountDomain = null;
                 })
                 .finally(() => {
+                    if (!this.state) return;
                     this.state.isAccountDomainLoading = false;
                 });
         } else {
@@ -114,6 +150,7 @@ class WalletManager {
      * Set the address
      */
     setAddress = (address: string | null): void => {
+        assertState(this.state, 'setAddress');
         this.state.address = address;
     };
 
@@ -132,6 +169,7 @@ class WalletManager {
     signConnectionCertificate = async (
         _certificate?: CertificateArgs,
     ): Promise<ConnectResponse> => {
+        assertState(this.state, 'signConnectionCertificate');
         const certificateMessage =
             _certificate?.message ||
             this.options.connectionCertificate?.message ||
@@ -173,30 +211,33 @@ class WalletManager {
         }
     };
 
-    connect = (_certificate?: CertificateArgs): Promise<ConnectResponse> =>
-        this.wallet
-            .connect(_certificate)
-            .then((res) => {
-                if (
-                    this.state.source === 'wallet-connect' &&
-                    this.options.requireCertificate &&
-                    this.options.walletConnectOptions?.modal
-                        ?.askForConnectionCertificate
-                ) {
-                    this.options.walletConnectOptions.modal.askForConnectionCertificate();
-                } else {
-                    this.setAddressAndDomain(res.account);
-                    this.state.connectionCertificate =
-                        res.connectionCertificate ?? null;
-                }
-                return res;
-            })
-            .catch((e) => {
-                DAppKitLogger.error('WalletManager', 'connect', e);
-                throw e;
-            });
+    connect = async (
+        _certificate?: CertificateArgs,
+    ): Promise<ConnectResponse> => {
+        assertState(this.state, 'connect');
+        try {
+            const res = await this.wallet.connect(_certificate);
+            if (
+                this.state.source === 'wallet-connect' &&
+                this.options.requireCertificate &&
+                this.options.walletConnectOptions?.modal
+                    ?.askForConnectionCertificate
+            ) {
+                this.options.walletConnectOptions.modal.askForConnectionCertificate();
+            } else {
+                this.setAddressAndDomain(res.account);
+                this.state.connectionCertificate =
+                    res.connectionCertificate ?? null;
+            }
+            return res;
+        } catch (e) {
+            DAppKitLogger.error('WalletManager', 'connect', e);
+            throw e;
+        }
+    };
 
     disconnect = (remote = false): void => {
+        assertState(this.state, 'disconnect');
         if (!this.state.source) {
             this.state.source = null;
             this.setAddressAndDomain(null);
@@ -228,37 +269,36 @@ class WalletManager {
         this.state.connectionCertificate = null;
     };
 
-    signTx = (
+    signTx = async (
         msg: TransactionMessage[],
         options: TransactionOptions = {},
-    ): Promise<TransactionResponse> =>
-        this.wallet
-            .signTx(msg, options)
-            .then((res) => {
-                // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
-                this.state.address = res.signer;
-                return res;
-            })
-            .catch((e) => {
-                DAppKitLogger.error('WalletManager', 'signTx', e);
-                throw e;
-            });
+    ): Promise<TransactionResponse> => {
+        assertState(this.state, 'signTx');
+        try {
+            const res = await this.wallet.signTx(msg, options);
+            this.state.address = res.signer;
+            return res;
+        } catch (e) {
+            DAppKitLogger.error('WalletManager', 'signTx', e);
+            throw e;
+        }
+    };
 
-    signCert = (
+    signCert = async (
         msg: CertificateMessage,
         options: CertificateOptions = {},
-    ): Promise<CertificateResponse> =>
-        this.wallet
-            .signCert(msg, options)
-            .then((res) => {
-                // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
-                this.state.address = res.annex.signer;
-                return res;
-            })
-            .catch((e) => {
-                DAppKitLogger.error('WalletManager', 'signCert', e);
-                throw e;
-            });
+    ): Promise<CertificateResponse> => {
+        assertState(this.state, 'signCert');
+        try {
+            const res = await this.wallet.signCert(msg, options);
+            // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
+            this.state.address = res.annex.signer;
+            return res;
+        } catch (e) {
+            DAppKitLogger.error('WalletManager', 'signCert', e);
+            throw e;
+        }
+    };
 
     signTypedData = async (
         domain: TypedDataDomain,
@@ -267,7 +307,9 @@ class WalletManager {
         options?: SignTypedDataOptions,
     ): Promise<string> => {
         if (!this.wallet.signTypedData)
-            return Promise.reject(new Error('signTypedData is not supported'));
+            throw new Error('signTypedData is not supported');
+
+        assertState(this.state, 'signTypedData');
         try {
             return await this.wallet.signTypedData(
                 domain,
@@ -282,12 +324,9 @@ class WalletManager {
     };
 
     setSource = (src: WalletSource): void => {
+        assertState(this.state, 'setSource');
         if (this.state.source === src) {
             return;
-        }
-
-        if (this.state.source && this.state.source !== src) {
-            this.disconnect();
         }
 
         if (src === 'wallet-connect' && !this.options.walletConnectOptions) {
@@ -307,7 +346,9 @@ class WalletManager {
     subscribe = (
         listener: (state: WalletManagerState) => void,
     ): (() => void) => {
+        assertState(this.state, 'subscribe');
         return subscribe(this.state, () => {
+            if (!this.state) return;
             listener(this.state);
         });
     };
@@ -316,12 +357,15 @@ class WalletManager {
         key: T,
         listener: (value: WalletManagerState[T]) => void,
     ): (() => void) => {
+        assertState(this.state, 'subscribeToKey');
         return subscribeKey(this.state, key, (value) => {
             listener(value);
         });
     };
 
-    initialize = (usePersistent: boolean): WalletManagerState => {
+    private initializeStateSync = (
+        usePersistent: boolean,
+    ): WalletManagerState => {
         const availableSources = this.getAvailableSources();
 
         if (!usePersistent) {
@@ -332,6 +376,7 @@ class WalletManager {
                 isAccountDomainLoading: false,
                 availableSources,
                 connectionCertificate: null,
+                availableMethods: [],
             });
         }
 
@@ -348,6 +393,83 @@ class WalletManager {
             isAccountDomainLoading: false,
             availableSources,
             connectionCertificate,
+            availableMethods: [],
+        });
+    };
+
+    initializeStateAsync = async (): Promise<void> => {
+        if (!this.options.supportNewMethods)
+            throw new Error(
+                `This method should only be called if 'supportNewMethods' options is active`,
+            );
+        const availableSources = this.getAvailableSources();
+
+        Storage.wipeV1();
+        let source = Storage.getSource();
+        if (source !== null && source !== 'veworld') {
+            const address = Storage.getAccount();
+            const accountDomain = Storage.getAccountDomain();
+            const connectionCertificate = Storage.getConnectionCertificate();
+            this.state = proxy({
+                source,
+                address,
+                accountDomain,
+                isAccountDomainLoading: false,
+                availableSources,
+                connectionCertificate,
+                availableMethods: [],
+            });
+            return;
+        }
+
+        if (window.vechain?.isInAppBrowser === true) {
+            source = 'veworld';
+        } else if (this.options.useFirstDetectedSource) {
+            source = this.getFirstDetectedSource();
+        }
+
+        //TODO: This shouldn't happen btw
+        if (!source) throw new Error('No source found');
+        if (source !== 'veworld') {
+            this.state = buildState({ source, availableSources });
+            return;
+        }
+        const opts = {
+            ...this.options,
+            source,
+            onDisconnected: () => this.disconnect(true),
+            thor: this.thor,
+        };
+        const wallet = createWallet(opts);
+        const methods = await wallet.getAvailableMethods();
+        if (!methods || methods.length === 0) {
+            DAppKitLogger.debug(
+                'WalletManager',
+                'initializeStateAsync',
+                'Current version of VeWorld does not support the method',
+            );
+            this.state = buildState({ source, availableSources });
+            return;
+        }
+        const address = await wallet.getAddress();
+        if (!address) {
+            DAppKitLogger.debug(
+                'WalletManager',
+                'initializeStateAsync',
+                'Current version of VeWorld either does not support the method or user has no session.',
+            );
+            this.state = buildState({
+                source,
+                availableSources,
+                availableMethods: methods,
+            });
+            return;
+        }
+        this.state = buildState({
+            source,
+            address,
+            availableSources,
+            availableMethods: methods,
         });
     };
 
@@ -390,6 +512,18 @@ class WalletManager {
         }
 
         return wallets;
+    };
+
+    private getFirstDetectedSource = (): WalletSource => {
+        if (window.vechain) {
+            return 'veworld';
+        } else if (this.options.walletConnectOptions) {
+            return 'wallet-connect';
+        } else if (window.connex) {
+            return 'sync';
+        } else {
+            return 'sync2';
+        }
     };
 
     private setFirstDetectedSource = (): void => {

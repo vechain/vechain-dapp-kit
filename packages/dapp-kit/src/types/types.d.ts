@@ -197,6 +197,7 @@ type VeChainWallet = WalletSigner & {
     connect: ConnectCallback;
     disconnect?: () => void | Promise<void>;
     getAddress: () => string | null | Promise<string | null>;
+    getAvailableMethods: () => string[] | null | Promise<string[] | null>;
 };
 
 interface ConnectResponse {
@@ -212,6 +213,7 @@ interface WalletManagerState {
     isAccountDomainLoading: boolean;
     availableSources: WalletSource[];
     connectionCertificate: CertificateData | null;
+    availableMethods: string[] | null;
 }
 
 export type {

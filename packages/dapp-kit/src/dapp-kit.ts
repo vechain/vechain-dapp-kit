@@ -28,6 +28,18 @@ class DAppKit {
             new VeChainProvider(this.thor),
         );
     }
+
+    async initializeAsync() {
+        if (!this.options.supportNewMethods) {
+            DAppKitLogger.debug(
+                'DAppKit',
+                'initializeAsync',
+                'tried to call DAppKit.initializeAsync when supportNewMethods is set to off. Skipping',
+            );
+            return;
+        }
+        await this.wallet.initializeStateAsync();
+    }
 }
 
 export { DAppKit };
