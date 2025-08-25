@@ -39,6 +39,12 @@ interface WalletConfig {
 
 type Genesis = 'main' | 'test' | CompressedBlockDetail;
 
+type TypedDataMessage = {
+    domain: TypedDataDomain;
+    types: Record<string, TypedDataParameter[]>;
+    value: Record<string, unknown>;
+};
+
 /**
  * Simple Certificate Args
  */
@@ -53,6 +59,28 @@ type CertificateArgs = {
 type ConnectCallback = (
     _certificate?: CertificateArs,
 ) => Promise<ConnectResponse>;
+
+type NewConnectResponse<
+    TValue extends null | CertificateMessage | TypedDataMessage,
+> = TValue extends null
+    ? { signer: string }
+    : TValue extends { purpose: string }
+      ? CertificateResponse
+      : { signer: string; signature: string };
+
+/**
+ * Callback used by the DAppKit `newConnect` function
+ */
+type NewConnectCallback = <
+    TValue extends null | CertificateMessage | TypedDataMessage,
+>(
+    value: TValue,
+    /**
+     * Indicate that the dApp uses an external authentication service.
+     * Keep me logged in toggle will be disabled when this option is set to true
+     */
+    external?: boolean,
+) => Promise<NewConnectResponse<TValue>>;
 
 /**
  * Options for the DAppKit class
@@ -126,14 +154,7 @@ interface WalletProvider {
     request(args: {
         method: 'thor_connect';
         params: {
-            value:
-                | {
-                      domain: TypedDataDomain;
-                      types: Record<string, TypedDataParameter[]>;
-                      value: Record<string, unknown>;
-                  }
-                | CertificateMessage
-                | null;
+            value: TypedDataMessage | CertificateMessage | null;
             external?: boolean;
         };
         genesisId: string;
@@ -198,6 +219,7 @@ type VeChainWallet = WalletSigner & {
     disconnect?: () => void | Promise<void>;
     getAddress: () => string | null | Promise<string | null>;
     getAvailableMethods: () => string[] | null | Promise<string[] | null>;
+    newConnect: NewConnectCallback;
 };
 
 interface ConnectResponse {
@@ -223,7 +245,9 @@ export type {
     DAppKitOptions,
     DriverSignedTypedData,
     Genesis,
+    NewConnectResponse,
     SignTypedDataOptions,
+    TypedDataMessage,
     VeChainWallet,
     WalletConfig,
     WalletManagerState,

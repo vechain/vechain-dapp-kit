@@ -7,6 +7,7 @@ import {
 } from '@vechain/sdk-network';
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
+import { recoverTypedDataAddress } from 'viem';
 import { DEFAULT_CONNECT_CERT_MESSAGE, WalletSources } from '../constants';
 import type {
     CertificateArgs,
@@ -15,6 +16,7 @@ import type {
     CertificateResponse,
     ConnectResponse,
     DAppKitOptions,
+    NewConnectResponse,
     TransactionMessage,
     TransactionOptions,
     TransactionResponse,
@@ -22,23 +24,22 @@ import type {
     WalletManagerState,
     WalletSource,
 } from '../types';
+import { TypedDataMessage } from '../types/types';
 import { createWallet, DAppKitLogger, Storage } from '../utils';
+import { assertDefined, assertNotNull } from '../utils/assert';
 import { getAccountDomain } from '../utils/get-account-domain';
+import { getPrimaryType } from '../utils/typed-data';
 
 function assertState(
     state: WalletManagerState | undefined,
     fnName: string,
 ): asserts state is WalletManagerState {
-    if (typeof state === 'undefined') {
-        DAppKitLogger.error(
-            'WalletManager',
-            fnName,
-            'State has not been initialized. Call DAppKit.initialize() to do so.',
-        );
-        throw new Error(
-            'State has not been initialized. Call DAppKit.initialize() to do so.',
-        );
-    }
+    assertDefined(
+        state,
+        'WalletManager',
+        fnName,
+        'State has not been initialized. Call DAppKit.initialize() to do so.',
+    );
 }
 
 const buildState = (state: Partial<WalletManagerState>) =>
@@ -234,6 +235,46 @@ class WalletManager {
             DAppKitLogger.error('WalletManager', 'connect', e);
             throw e;
         }
+    };
+
+    newConnect = async <
+        TValue extends null | CertificateMessage | TypedDataMessage,
+    >(
+        value: TValue,
+        external?: boolean,
+    ): Promise<NewConnectResponse<TValue>> => {
+        assertState(this.state, 'newConnect');
+        if (value === null && this.state.source !== 'veworld') {
+            throw new Error(
+                'WalletManager: newConnect -> Value is null and user cannot use the new method',
+            );
+        }
+        if (this.state.source === 'veworld')
+            return this.wallet.newConnect(value, external);
+        assertNotNull(
+            value,
+            'WalletManager',
+            'newConnect',
+            'State has not been initialized. Call DAppKit.initialize() to do so.',
+        );
+        if ('purpose' in value) {
+            const cert = await this.signCert(value as any, {});
+            return cert as any;
+        }
+        const typedMessage = value as TypedDataMessage;
+        const res = await this.signTypedData(
+            typedMessage.domain,
+            typedMessage.types,
+            typedMessage.value,
+        );
+        const signer = await recoverTypedDataAddress({
+            signature: res as `0x${string}`,
+            message: typedMessage.value,
+            domain: typedMessage.domain,
+            types: typedMessage.types,
+            primaryType: getPrimaryType(typedMessage.types),
+        });
+        return { signer, signature: res } as any;
     };
 
     disconnect = (remote = false): void => {

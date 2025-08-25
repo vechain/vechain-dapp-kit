@@ -29,12 +29,12 @@ class DAppKit {
         );
     }
 
-    async initializeAsync() {
+    async initialize() {
         if (!this.options.supportNewMethods) {
             DAppKitLogger.debug(
                 'DAppKit',
-                'initializeAsync',
-                'tried to call DAppKit.initializeAsync when supportNewMethods is set to off. Skipping',
+                'initialize',
+                'tried to call DAppKit.initialize when supportNewMethods is set to off. Skipping',
             );
             return;
         }

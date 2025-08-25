@@ -4,6 +4,8 @@ export type {
     ConnectResponse,
     DAppKitOptions,
     Genesis,
+    NewConnectResponse,
+    TypedDataMessage,
     VeChainWallet,
     WalletConfig,
     WalletManagerState,

@@ -4,10 +4,13 @@ import {
     TypedDataDomain,
     TypedDataParameter,
 } from '@vechain/sdk-network';
+import { recoverTypedDataAddress } from 'viem';
 import { DEFAULT_CONNECT_CERT_MESSAGE } from '../constants';
 import type {
     CertificateArgs,
     ConnectResponse,
+    NewConnectResponse,
+    TypedDataMessage,
     VeChainWallet,
     WalletProvider,
     WalletSigner,
@@ -20,6 +23,7 @@ import type {
     TransactionOptions,
     TransactionResponse,
 } from '../types/requests';
+import { getPrimaryType } from '../utils/typed-data';
 
 /**
  * A `VechainWallet` for wallet's that use a certificate connection
@@ -40,6 +44,44 @@ class CertificateBasedWallet implements VeChainWallet {
             options: connectionCertificateData?.options ?? {},
         };
     }
+    newConnect = async <
+        TValue extends null | CertificateMessage | TypedDataMessage,
+    >(
+        value: TValue,
+        external?: boolean,
+    ): Promise<NewConnectResponse<TValue>> => {
+        if (!this.walletProvider) {
+            if (value === null)
+                throw new Error(
+                    'CertificateBasedWallet: newConnect -> Value is null and user cannot use the new method',
+                );
+            if ('purpose' in value) {
+                const cert = await this.signCert(value, {});
+                return cert as any;
+            }
+            const res = await this.signTypedData(
+                value.domain,
+                value.types,
+                value.value,
+            );
+            const signer = await recoverTypedDataAddress({
+                signature: res as `0x${string}`,
+                message: value.value,
+                domain: value.domain,
+                types: value.types,
+                primaryType: getPrimaryType(value.types),
+            });
+            return { signer, signature: res } as any;
+        }
+        return this.walletProvider.request({
+            method: 'thor_connect',
+            genesisId: this.genesisId,
+            params: {
+                value: value,
+                external,
+            },
+        }) as any;
+    };
     getAvailableMethods = async (): Promise<string[] | null> => {
         if (!this.walletProvider) return null;
         try {
@@ -54,10 +96,14 @@ class CertificateBasedWallet implements VeChainWallet {
 
     getAddress = async (): Promise<string | null> => {
         if (!this.walletProvider) return null;
-        return this.walletProvider.request({
-            method: 'thor_wallet',
-            genesisId: this.genesisId,
-        });
+        try {
+            return await this.walletProvider.request({
+                method: 'thor_wallet',
+                genesisId: this.genesisId,
+            });
+        } catch {
+            return null;
+        }
     };
 
     connect = async (
@@ -137,7 +183,20 @@ class CertificateBasedWallet implements VeChainWallet {
         return this.wallet?.signTypedData(domain, types, message, options);
     };
 
-    disconnect = () => Promise.resolve();
+    disconnect = async () => {
+        const methods = await this.getAvailableMethods();
+        if (
+            !methods ||
+            methods.length === 0 ||
+            !methods.find((method) => method === 'thor_disconnect')
+        )
+            return;
+
+        await this.walletProvider!.request({
+            genesisId: this.genesisId,
+            method: 'thor_disconnect',
+        });
+    };
 }
 
 export { CertificateBasedWallet };
