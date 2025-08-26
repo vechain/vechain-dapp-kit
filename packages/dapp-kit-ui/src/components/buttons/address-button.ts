@@ -1,4 +1,4 @@
-import { DAppKitLogger, shortenedDomain } from '@vechain/dapp-kit';
+import { shortenedDomain } from '@vechain/dapp-kit';
 import { css, html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { buttonStyle } from '../../assets/styles';
@@ -71,13 +71,6 @@ export class AddressButton extends LitElement {
     mobile = false;
 
     render(): TemplateResult {
-        DAppKitLogger.debug(
-            'Address Button',
-            'render',
-            this.address ?? '',
-            this.mobile,
-            Date.now(),
-        );
         if (this.mobile) {
             return html` <vdk-fonts></vdk-fonts>
                 <button

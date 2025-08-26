@@ -112,12 +112,6 @@ export class Button extends LitElement {
     mobile = false;
 
     override render(): TemplateResult {
-        DAppKitLogger.debug(
-            'Wallet Button',
-            'render',
-            this.address ?? '',
-            Date.now(),
-        );
         return this.address
             ? html`<vdk-address-button
                   .mode=${this.mode}
