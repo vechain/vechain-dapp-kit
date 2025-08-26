@@ -231,6 +231,7 @@ type VeChainWallet = WalletSigner & {
     getAddress: () => string | null | Promise<string | null>;
     getAvailableMethods: () => string[] | null | Promise<string[] | null>;
     connectV2: ConnectV2Callback;
+    switchWallet: () => string | null | Promise<string | null>;
 };
 
 interface ConnectResponse {

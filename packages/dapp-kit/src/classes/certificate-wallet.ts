@@ -44,6 +44,18 @@ class CertificateBasedWallet implements VeChainWallet {
             options: connectionCertificateData?.options ?? {},
         };
     }
+
+    switchWallet = async (): Promise<string | null> => {
+        if (!this.walletProvider)
+            throw new Error(
+                'CertificateBasedWallet: switchWallet -> Switch wallet is not supported',
+            );
+        return this.walletProvider.request({
+            method: 'thor_switchWallet',
+            genesisId: this.genesisId,
+        });
+    };
+
     connectV2 = async <
         TValue extends null | CertificateMessage | TypedDataMessage,
     >(

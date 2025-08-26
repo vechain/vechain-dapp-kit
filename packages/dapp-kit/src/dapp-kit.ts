@@ -38,6 +38,7 @@ class DAppKit {
             return;
         }
         await this.wallet.initializeStateAsync();
+        await this.wallet.populateAvailableMethods();
     }
 }
 

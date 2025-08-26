@@ -102,6 +102,10 @@ class WalletManager {
         return wallet;
     }
 
+    get availableMethods(): string[] {
+        return this.state.availableMethods ?? [];
+    }
+
     /**
      * Set the account domain
      */
@@ -262,6 +266,16 @@ class WalletManager {
         return { signer, signature: res } as any;
     };
 
+    switchWallet = async (): Promise<void> => {
+        try {
+            if (this.state.source === 'veworld') {
+                const newWallet = await this.wallet.switchWallet();
+                if (!newWallet) return;
+                this.state.address = newWallet;
+            }
+        } catch {}
+    };
+
     disconnect = (remote = false): void => {
         if (!this.state.source) {
             this.state.source = null;
@@ -362,6 +376,7 @@ class WalletManager {
 
         this.disconnect();
         this.state.source = src;
+        this.populateAvailableMethods();
     };
 
     subscribe = (
@@ -462,8 +477,7 @@ class WalletManager {
             'detected source',
             source,
         );
-        //TODO: This should be fixed in case a user doesn't have anything to connect to
-        if (!source) throw new Error('No source found');
+        if (!source) return;
         if (source !== 'veworld') {
             this.state.source = source;
             return;
@@ -596,6 +610,15 @@ class WalletManager {
             case 'sync':
             case 'sync2':
                 return this.state.address;
+        }
+    };
+
+    populateAvailableMethods = async (): Promise<void> => {
+        try {
+            this.state.availableMethods =
+                (await this.wallet.getAvailableMethods()) ?? [];
+        } catch {
+            this.state.availableMethods = [];
         }
     };
 }

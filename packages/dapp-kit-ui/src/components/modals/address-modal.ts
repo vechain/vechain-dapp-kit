@@ -1,27 +1,29 @@
+import { shortenedDomain } from '@vechain/dapp-kit';
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { I18n } from '../../constants';
-import { defaultI18n, Font } from '../../constants';
-import { buttonStyle, iconButtonStyle } from '../../assets/styles';
-import type { ThemeMode } from '../../constants/theme';
-import {
-    friendlyAddress,
-    getPicassoImage,
-    useTranslate,
-    subscribeToCustomEvent,
-} from '../../utils';
 import {
     CheckSvg,
     DarkCloseSvg,
     DarkCopySvg,
     DarkDisconnectSvg,
+    DarkSwitchWalletSvg,
     LightCloseSvg,
     LightCopySvg,
     LightDisconnectSvg,
+    LightSwitchWalletSvg,
 } from '../../assets/icons';
+import { buttonStyle, iconButtonStyle } from '../../assets/styles';
 import { DAppKitUI } from '../../client';
-import { shortenedDomain } from '@vechain/dapp-kit';
+import type { I18n } from '../../constants';
+import { defaultI18n, Font } from '../../constants';
+import type { ThemeMode } from '../../constants/theme';
+import {
+    friendlyAddress,
+    getPicassoImage,
+    subscribeToCustomEvent,
+    useTranslate,
+} from '../../utils';
 
 let openWalletModalListener: () => void;
 let closeWalletModalListener: () => void;
@@ -36,7 +38,9 @@ export class AddressModal extends LitElement {
                 flex-direction: column;
                 gap: 15px;
                 padding: 20px;
-                transition: width 5s, height 4s;
+                transition:
+                    width 5s,
+                    height 4s;
                 font-family: var(--vdk-font-family, ${Font.Family});
             }
 
@@ -58,7 +62,9 @@ export class AddressModal extends LitElement {
                 justify-content: center;
                 align-items: center;
                 gap: 40px;
-                transition: width 2s, height 4s;
+                transition:
+                    width 2s,
+                    height 4s;
             }
 
             .modal-footer {
@@ -151,6 +157,9 @@ export class AddressModal extends LitElement {
     @property({ type: Function })
     onDisconnectClick?: () => void = undefined;
 
+    @property({ type: Function })
+    onSwitchWalletClick?: () => void = undefined;
+
     @property()
     mode: ThemeMode = 'LIGHT';
 
@@ -168,6 +177,12 @@ export class AddressModal extends LitElement {
 
     @property()
     showCopiedSecondaryIcon = false;
+
+    private get switchWalletAvailable(): boolean {
+        return DAppKitUI.get().wallet.availableMethods.includes(
+            'thor_switchWallet',
+        );
+    }
 
     constructor() {
         super();
@@ -257,6 +272,23 @@ export class AddressModal extends LitElement {
                     </div>
                 </div>
                 <div class="modal-footer">
+                    ${
+                        this.switchWalletAvailable
+                            ? html`<button
+                                  class="${this.mode}"
+                                  @click=${this.onSwitchWalletClick}
+                                  data-testid="Switch wallet"
+                              >
+                                  <div class="switch-wallet-icon ${this.mode}">
+                                      ${this.mode === 'LIGHT'
+                                          ? LightSwitchWalletSvg
+                                          : DarkSwitchWalletSvg}
+                                  </div>
+                                  ${translate('switch-wallet')}
+                              </button>`
+                            : nothing
+                    }
+                    
                     <button
                             class="${this.mode}"
                             @click=${this.onDisconnectClick}

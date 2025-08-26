@@ -298,6 +298,7 @@ export const createWcSigner = ({
     };
 
     const getAvailableMethods = () => null;
+    const switchWallet = () => null;
 
     const connectV2 = async <
         TValue extends null | CertificateMessage | TypedDataMessage,
@@ -315,5 +316,6 @@ export const createWcSigner = ({
         getAddress,
         getAvailableMethods,
         connectV2,
+        switchWallet,
     };
 };

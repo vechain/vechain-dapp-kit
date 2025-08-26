@@ -33,6 +33,10 @@ export type WCSigner = WalletSigner & {
      * @throws Error. This method is not implemented for WC
      */
     connectV2: ConnectV2Callback;
+    /**
+     * @throws Error. This method is not implemented for WC
+     */
+    switchWallet: () => string | null | Promise<string | null>;
 };
 
 export interface WCClient {
