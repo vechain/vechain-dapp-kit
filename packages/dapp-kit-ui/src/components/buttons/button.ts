@@ -1,3 +1,4 @@
+import { DAppKitLogger } from '@vechain/dapp-kit';
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { DAppKitUI } from '../../client';
@@ -61,6 +62,12 @@ export class Button extends LitElement {
             'address',
             (_address: string | null) => {
                 this.address = _address ?? '';
+                DAppKitLogger.debug(
+                    'Address update',
+                    'new address received',
+                    _address ?? '',
+                    Date.now(),
+                );
                 this.requestUpdate();
             },
         );
@@ -105,6 +112,12 @@ export class Button extends LitElement {
     mobile = false;
 
     override render(): TemplateResult {
+        DAppKitLogger.debug(
+            'Wallet Button',
+            'render',
+            this.address ?? '',
+            Date.now(),
+        );
         return this.address
             ? html`<vdk-address-button
                   .mode=${this.mode}
