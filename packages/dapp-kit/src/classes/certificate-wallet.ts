@@ -50,7 +50,7 @@ class CertificateBasedWallet implements VeChainWallet {
             throw new Error(
                 'CertificateBasedWallet: switchWallet -> Switch wallet is not supported',
             );
-        return this.walletProvider.request({
+        return this.walletProvider.send({
             method: 'thor_switchWallet',
             genesisId: this.genesisId,
         });
@@ -85,7 +85,7 @@ class CertificateBasedWallet implements VeChainWallet {
             });
             return { signer, signature: res } as any;
         }
-        return this.walletProvider.request({
+        return this.walletProvider.send({
             method: 'thor_connect',
             genesisId: this.genesisId,
             params: {
@@ -97,7 +97,7 @@ class CertificateBasedWallet implements VeChainWallet {
     getAvailableMethods = async (): Promise<string[] | null> => {
         if (!this.walletProvider) return null;
         try {
-            return await this.walletProvider.request({
+            return await this.walletProvider.send({
                 method: 'thor_methods',
                 genesisId: this.genesisId,
             });
@@ -109,7 +109,7 @@ class CertificateBasedWallet implements VeChainWallet {
     getAddress = async (): Promise<string | null> => {
         if (!this.walletProvider) return null;
         try {
-            return await this.walletProvider.request({
+            return await this.walletProvider.send({
                 method: 'thor_wallet',
                 genesisId: this.genesisId,
             });
@@ -204,7 +204,7 @@ class CertificateBasedWallet implements VeChainWallet {
         )
             return;
 
-        await this.walletProvider!.request({
+        await this.walletProvider?.send({
             genesisId: this.genesisId,
             method: 'thor_disconnect',
         });

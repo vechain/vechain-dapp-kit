@@ -57,8 +57,8 @@ export const createWallet = ({
                 const veworld = window.vechain.newConnexSigner(genesisId);
                 return new CertificateBasedWallet(
                     veworld,
-                    'request' in window.vechain
-                        ? { request: window.vechain.request }
+                    'send' in window.vechain
+                        ? { send: window.vechain.send }
                         : null,
                     genesisId,
                     connectionCertificate,
