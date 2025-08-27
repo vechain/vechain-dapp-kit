@@ -73,6 +73,8 @@ export class AddressModal extends LitElement {
                 align-items: center;
                 padding-top: 20px;
                 font-family: var(--vdk-font-family, ${Font.Family});
+                flex-direction: column;
+                gap: 16px;
             }
 
             .address-icon {
@@ -82,6 +84,11 @@ export class AddressModal extends LitElement {
             }
 
             .disconnect-icon {
+                width: 18px;
+                height: 18px;
+            }
+
+            .switch-wallet-icon {
                 width: 18px;
                 height: 18px;
             }
