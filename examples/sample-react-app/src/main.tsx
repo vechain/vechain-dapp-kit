@@ -21,7 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <DAppKitProvider
             node={'https://testnet.vechain.org'}
-            usePersistence={false}
+            usePersistence
             walletConnectOptions={walletConnectOptions}
             logLevel={'DEBUG'}
             v2Api={{ enabled: true }}

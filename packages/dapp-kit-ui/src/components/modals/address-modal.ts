@@ -293,23 +293,19 @@ export class AddressModal extends LitElement {
                                   </div>
                                   ${translate('switch-wallet')}
                               </button>`
-                            : nothing
+                            : html`<button
+                                  class="${this.mode}"
+                                  @click=${this.onDisconnectClick}
+                                  data-testid="Disconnect"
+                              >
+                                  <div class="disconnect-icon ${this.mode}">
+                                      ${this.mode === 'LIGHT'
+                                          ? LightDisconnectSvg
+                                          : DarkDisconnectSvg}
+                                  </div>
+                                  ${translate('disconnect')}
+                              </button>`
                     }
-                    
-                    <button
-                            class="${this.mode}"
-                            @click=${this.onDisconnectClick}
-                            data-testid="Disconnect"
-                    >
-                        <div class="disconnect-icon ${this.mode}">
-                            ${
-                                this.mode === 'LIGHT'
-                                    ? LightDisconnectSvg
-                                    : DarkDisconnectSvg
-                            }
-                        </div>
-                        ${translate('disconnect')}
-                    </button>
                 </div>
         </vdk-base-modal>
     `;

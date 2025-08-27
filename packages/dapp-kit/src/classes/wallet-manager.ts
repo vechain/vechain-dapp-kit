@@ -224,11 +224,15 @@ class WalletManager {
     >(
         value: TValue,
     ): Promise<ConnectV2Response<TValue>> => {
-        if (this.state.source === 'veworld') {
+        if (
+            this.state.source === 'veworld' &&
+            this.availableMethods.includes('thor_connect')
+        ) {
             const result = await this.wallet.connectV2(
                 value,
                 this.options.v2Api.external,
             );
+            await this.populateAvailableMethods();
             if (value === null)
                 this.setAddress((result as ConnectV2Response<null>).signer);
             else if ('domain' in value)
@@ -244,8 +248,10 @@ class WalletManager {
         }
 
         const connection = await this.connect();
-        if (value === null)
+        await this.populateAvailableMethods();
+        if (value === null) {
             return { signer: connection.account } as ConnectV2Response<TValue>;
+        }
         if ('purpose' in value) {
             const cert = await this.signCert(value as any, {});
             return cert as any;
@@ -437,6 +443,7 @@ class WalletManager {
                 `This method should only be called if 'supportNewMethods' options is active`,
             );
         const availableSources = this.getAvailableSources();
+        this.initPersistence(this.options.usePersistence ?? false);
 
         Storage.wipeV1();
         let source = Storage.getSource();
@@ -446,22 +453,12 @@ class WalletManager {
             'source',
             source,
         );
-        if (source !== null && source !== 'veworld') {
-            DAppKitLogger.debug(
-                'WalletManager',
-                'initializeStateAsync',
-                'persistent',
-            );
-            const address = Storage.getAccount();
-            const accountDomain = Storage.getAccountDomain();
-            const connectionCertificate = Storage.getConnectionCertificate();
-            this.state.source = source;
-            this.state.address = address;
-            this.state.accountDomain = accountDomain;
-            this.state.isAccountDomainLoading = false;
-            this.state.availableSources = availableSources;
-            this.state.connectionCertificate = connectionCertificate;
-            this.state.availableMethods = [];
+        if (
+            source !== null &&
+            source !== 'veworld' &&
+            this.options.usePersistence
+        ) {
+            this.initFromPersistentStore({ source, availableSources });
             return;
         }
 
@@ -503,6 +500,11 @@ class WalletManager {
             methods,
         );
         if (!methods || methods.length === 0) {
+            if (this.options.usePersistence)
+                return this.initFromPersistentStore({
+                    source,
+                    availableSources,
+                });
             DAppKitLogger.debug(
                 'WalletManager',
                 'initializeStateAsync',
@@ -534,6 +536,26 @@ class WalletManager {
         this.state.address = address;
         this.state.availableSources = availableSources;
         this.state.availableMethods = methods;
+    };
+
+    private initFromPersistentStore = ({
+        source,
+        availableSources,
+    }: {
+        source: WalletSource | null;
+        availableSources: WalletSource[];
+    }): void => {
+        DAppKitLogger.debug('WalletManager', 'initFromPersistentStore');
+        const address = Storage.getAccount();
+        const accountDomain = Storage.getAccountDomain();
+        const connectionCertificate = Storage.getConnectionCertificate();
+        this.state.source = source;
+        this.state.address = address;
+        this.state.accountDomain = accountDomain;
+        this.state.isAccountDomainLoading = false;
+        this.state.availableSources = availableSources;
+        this.state.connectionCertificate = connectionCertificate;
+        this.state.availableMethods = [];
     };
 
     private initPersistence = (usePersistence: boolean): void => {

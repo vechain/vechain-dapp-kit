@@ -102,7 +102,7 @@ export class Modal extends LitElement {
 
     @property({ type: Function })
     onSwitchWalletClick = (): void => {
-        DAppKitUI.wallet.switchWallet();
+        DAppKitUI.wallet.switchWallet().then(() => DAppKitUI.modal.close());
     };
 
     override render(): TemplateResult {
