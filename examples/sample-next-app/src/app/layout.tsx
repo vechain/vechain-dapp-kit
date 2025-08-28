@@ -1,9 +1,9 @@
 'use client'; // This is a client component
 
-import { Inter } from 'next/font/google';
-import './globals.css';
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
 import dynamic from 'next/dynamic';
+import { Inter } from 'next/font/google';
+import './globals.css';
 
 const DAppKitProvider = dynamic(
     async () => {
@@ -50,6 +50,8 @@ export default function RootLayout({
                     node="https://testnet.vechain.org/"
                     usePersistence
                     walletConnectOptions={walletConnectOptions}
+                    v2Api={{ enabled: true }}
+                    genesisId="0x000000000b2bce3c70bc649a02749e8687721b09ed2e15997f466536b20bb127"
                 >
                     {children}
                 </DAppKitProvider>
