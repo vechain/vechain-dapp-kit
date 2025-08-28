@@ -1,15 +1,19 @@
+import { TESTNET_NETWORK } from '@vechain/sdk-core';
+import { ThorClient } from '@vechain/sdk-network';
 import { describe, expect, it, vi } from 'vitest';
 import type { WalletConnectOptions } from '../src';
 import { WalletManager } from '../src';
 import { mockedConnexSigner } from './helpers/mocked-signer';
-import { ThorClient } from '@vechain/sdk-network';
 
 const newWalletManager = (wcOptions?: WalletConnectOptions): WalletManager => {
     return new WalletManager(
         {
             node: 'https://testnet.veblocks.net/',
             walletConnectOptions: wcOptions,
-            genesis: 'test',
+            genesisId: TESTNET_NETWORK.genesisBlock.id,
+            v2Api: {
+                enabled: false,
+            },
         },
         ThorClient.at('https://testnet.vechain.org'),
     );
@@ -32,7 +36,9 @@ describe('WalletManager', () => {
     describe('connect', () => {
         it('no source set', async () => {
             const walletManager = newWalletManager();
-            expect(() => walletManager.connect()).throws();
+            await expect(() => walletManager.connect()).rejects.toThrow(
+                'No wallet selected',
+            );
         });
         it('connect with custom message', async () => {
             const walletManager = newWalletManager();
@@ -116,7 +122,7 @@ describe('WalletManager', () => {
 
             await new Promise((resolve) => setTimeout(resolve, 2000));
 
-            expect(subscription).toHaveBeenCalledTimes(1);
+            expect(subscription).toHaveBeenCalledTimes(2);
         });
 
         it('add key listener', async () => {

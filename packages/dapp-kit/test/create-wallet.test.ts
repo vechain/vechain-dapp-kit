@@ -1,12 +1,12 @@
+import { TESTNET_NETWORK } from '@vechain/sdk-core';
+import { ThorClient } from '@vechain/sdk-network';
 import { describe, expect, it, vi } from 'vitest';
-import { createWallet } from '../src';
 import type {
     DAppKitOptions,
     WalletConnectOptions,
     WalletSource,
 } from '../src';
-import { WalletSigner } from '../src';
-import { ThorClient } from '@vechain/sdk-network';
+import { createWallet, WalletSigner } from '../src';
 import { mockedHttpClient } from './helpers/mocked-http-client';
 
 type ICreateWallet = DAppKitOptions & {
@@ -25,6 +25,10 @@ const createOptions = (
         walletConnectOptions: wcOptions,
         onDisconnected: () => {},
         thor: new ThorClient(mockedHttpClient),
+        v2Api: {
+            enabled: true,
+        },
+        genesisId: TESTNET_NETWORK.genesisBlock.id,
     };
 };
 

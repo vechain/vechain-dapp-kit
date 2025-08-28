@@ -1,3 +1,4 @@
+import { MAINNET_NETWORK } from '@vechain/sdk-core';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
     Button,
@@ -23,6 +24,10 @@ describe('qr-code-modal', () => {
                     icons: ['https://vechain.org/images/logo.svg'],
                     url: 'https://vechain.org',
                 },
+            },
+            genesisId: MAINNET_NETWORK.genesisBlock.id,
+            v2Api: {
+                enabled: true,
             },
         });
     });

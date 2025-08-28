@@ -162,7 +162,7 @@ interface WalletSigner {
 }
 
 interface WalletProvider {
-    send(args: {
+    send?(args: {
         method: 'thor_connect';
         params: {
             value: TypedDataMessage | CertificateMessage | null;
@@ -174,27 +174,27 @@ interface WalletProvider {
         | { signer: string; signature: string }
         | { signer: string }
     >;
-    send(args: {
+    send?(args: {
         method: 'thor_wallet';
         params?: undefined;
         genesisId: string;
     }): Promise<string>;
-    send(args: {
+    send?(args: {
         method: 'thor_disconnect';
         params?: undefined;
         genesisId: string;
     }): Promise<void>;
-    send(args: {
+    send?(args: {
         method: 'thor_switchWallet';
         params?: undefined;
         genesisId: string;
     }): Promise<string>;
-    send(args: {
+    send?(args: {
         method: 'thor_methods';
         params?: undefined;
         genesisId: string;
     }): Promise<string[]>;
-    send(args: {
+    send?(args: {
         method: 'thor_signTypedData';
         params: {
             domain: TypedDataDomain;
@@ -204,7 +204,7 @@ interface WalletProvider {
         };
         genesisId: string;
     }): Promise<string>;
-    send(args: {
+    send?(args: {
         method: 'thor_signCertificate';
         params: {
             message: CertificateMessage;
@@ -212,7 +212,7 @@ interface WalletProvider {
         };
         genesisId: string;
     }): Promise<string>;
-    send(args: {
+    send?(args: {
         method: 'thor_sendTransaction';
         params: {
             clauses: TransactionMessage;
