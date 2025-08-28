@@ -628,7 +628,8 @@ class WalletManager {
         switch (this.state.source) {
             case 'wallet-connect':
             case 'veworld':
-                return this.wallet.getAddress();
+                if (this.availableMethods.includes('thor_wallet'))
+                    return this.wallet.getAddress();
             case 'sync':
             case 'sync2':
                 return this.state.address;
