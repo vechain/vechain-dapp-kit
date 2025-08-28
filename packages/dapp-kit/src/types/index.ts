@@ -2,6 +2,7 @@ export type {
     CertificateArgs,
     ConnectCallback,
     ConnectResponse,
+    ConnectV2Callback,
     ConnectV2Response,
     DAppKitOptions,
     Genesis,

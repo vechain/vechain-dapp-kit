@@ -108,6 +108,9 @@ export const DAppKitProviderData = ({
                 requestCertificate: dAppKit.wallet.signCert,
                 requestTransaction: dAppKit.wallet.signTx,
                 requestTypedData: dAppKit.wallet.signTypedData,
+                switchWallet: dAppKit.wallet.switchWallet,
+                initializeAsync: dAppKit.wallet.initializeStateAsync,
+                connectV2: dAppKit.wallet.connectV2,
             },
             modal: {
                 open: openModal,
@@ -151,6 +154,7 @@ export const DAppKitProvider = ({
     allowedWallets,
     v2Api,
     genesisId,
+    autoInitialize = true,
 }: DAppKitProviderOptions): React.ReactElement | null => {
     const [dAppKit, setDAppKit] = useState<DAppKit | null>(null);
     const [_initialized, setInitialized] = useState(false);
@@ -173,7 +177,7 @@ export const DAppKitProvider = ({
             genesisId,
         });
         setDAppKit(kit);
-        if (v2Api.enabled)
+        if (v2Api.enabled && autoInitialize)
             kit.initialize()
                 .then(() => {
                     DAppKitLogger.debug(
@@ -184,12 +188,7 @@ export const DAppKitProvider = ({
                     setInitialized(true);
                 })
                 .catch((e) => {
-                    DAppKitLogger.debug(
-                        'DAppKitProvider',
-                        'v2 initialize',
-                        'error',
-                        e,
-                    );
+                    DAppKitLogger.error('DAppKitProvider', 'v2 initialize', e);
                 });
     }, [
         node,
@@ -205,6 +204,8 @@ export const DAppKitProvider = ({
         onSourceClick,
         connectionCertificateData,
         allowedWallets,
+        v2Api.enabled,
+        autoInitialize,
     ]);
 
     const initialized = useMemo(
