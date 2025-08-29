@@ -31,7 +31,8 @@
         "@walletconnect/sign-client": "2.19.2",
         "@walletconnect/utils": "2.19.2",
         "events": "^3.3.0",
-        "valtio": "1.13.2"
+        "valtio": "1.13.2",
+        "viem": "2.23.2"
     },
     "devDependencies": {
         "@types/react": "^19.1.0",

@@ -7963,6 +7963,7 @@ __metadata:
     tsup: "npm:^8.4.0"
     typescript: "npm:^5.8.3"
     valtio: "npm:1.13.2"
+    viem: "npm:2.23.2"
     vite: "npm:^6.2.5"
     vitest: "npm:^3.1.1"
   languageName: unknown
