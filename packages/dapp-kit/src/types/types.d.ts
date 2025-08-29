@@ -65,7 +65,7 @@ type CertificateArgs = {
  * Callback used by the DAppKit `connect` function
  */
 type ConnectCallback = (
-    _certificate?: CertificateArs,
+    _certificate?: CertificateArgs,
 ) => Promise<ConnectResponse>;
 
 type ConnectV2Response<
