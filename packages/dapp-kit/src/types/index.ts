@@ -4,7 +4,6 @@ export type {
     ConnectResponse,
     ConnectV2Callback,
     ConnectV2Response,
-    DAppKitOptions,
     Genesis,
     TypedDataMessage,
     VeChainWallet,
@@ -25,5 +24,7 @@ export type {
     WCSigner,
     WCSignerOptions,
 } from './wc-types';
+
+export type { DAppKitOptions } from './options';
 
 export * from './requests';

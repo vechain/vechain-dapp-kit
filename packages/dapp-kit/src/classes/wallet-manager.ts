@@ -1,9 +1,9 @@
 import { Certificate } from '@vechain/sdk-core';
 import {
-    SignTypedDataOptions,
+    type SignTypedDataOptions,
     ThorClient,
-    TypedDataDomain,
-    TypedDataParameter,
+    type TypedDataDomain,
+    type TypedDataParameter,
 } from '@vechain/sdk-network';
 import { proxy, subscribe } from 'valtio/vanilla';
 import { subscribeKey } from 'valtio/vanilla/utils';
@@ -24,7 +24,7 @@ import type {
     WalletManagerState,
     WalletSource,
 } from '../types';
-import { TypedDataMessage } from '../types/types';
+import type { TypedDataMessage } from '../types/types';
 import { createWallet, DAppKitLogger, Storage } from '../utils';
 import { getAccountDomain } from '../utils/get-account-domain';
 import { getPrimaryType } from '../utils/typed-data';

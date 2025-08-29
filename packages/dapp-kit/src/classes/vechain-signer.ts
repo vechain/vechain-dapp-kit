@@ -1,12 +1,12 @@
 import { JSONRPCInvalidParams } from '@vechain/sdk-errors';
 import {
-    AvailableVeChainProviders,
+    type AvailableVeChainProviders,
     DelegationHandler,
-    SignTransactionOptions,
-    SignTypedDataOptions,
-    TransactionRequestInput,
-    TypedDataDomain,
-    TypedDataParameter,
+    type SignTransactionOptions,
+    type SignTypedDataOptions,
+    type TransactionRequestInput,
+    type TypedDataDomain,
+    type TypedDataParameter,
     VeChainAbstractSigner,
 } from '@vechain/sdk-network';
 import type {

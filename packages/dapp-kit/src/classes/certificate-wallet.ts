@@ -1,5 +1,5 @@
 import { Certificate } from '@vechain/sdk-core';
-import {
+import type {
     SignTypedDataOptions,
     TypedDataDomain,
     TypedDataParameter,

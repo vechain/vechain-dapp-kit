@@ -1,4 +1,4 @@
-import { TypedDataMessage } from '../types';
+import type { TypedDataMessage } from '../types';
 
 /**
  *
