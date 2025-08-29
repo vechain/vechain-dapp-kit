@@ -1,31 +1,55 @@
 import { TESTNET_NETWORK } from '@vechain/sdk-core';
-import { ThorClient } from '@vechain/sdk-network';
-import { describe, expect, it, vi } from 'vitest';
-import type { WalletConnectOptions } from '../src';
-import { WalletManager } from '../src';
-import { mockedConnexSigner } from './helpers/mocked-signer';
+import { ThorClient, VeChainPrivateKeySigner } from '@vechain/sdk-network';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-const newWalletManager = (wcOptions?: WalletConnectOptions): WalletManager => {
+import type { DAppKitOptions } from '../src';
+import { CertificateBasedWallet, createWallet, WalletManager } from '../src';
+import {
+    address,
+    mockedConnexSigner,
+    privateKey,
+} from './helpers/mocked-signer';
+import { certMessage, typedDataMessage } from './helpers/request-data';
+
+const newWalletManager = (options?: Partial<DAppKitOptions>): WalletManager => {
     return new WalletManager(
         {
             node: 'https://testnet.veblocks.net/',
-            walletConnectOptions: wcOptions,
             genesisId: TESTNET_NETWORK.genesisBlock.id,
             v2Api: {
                 enabled: false,
             },
+            ...options,
         },
         ThorClient.at('https://testnet.vechain.org'),
     );
 };
 
-window.vechain = {
-    newConnexSigner: () => mockedConnexSigner as any,
+window.vechain = {} as any;
+vi.mock('../src/utils/create-wallet', async (importOriginal) => ({
+    ...(await importOriginal()),
+    createWallet: vi.fn(),
+}));
+
+const mockDefaultWallet = () => {
+    vi.mocked(createWallet).mockImplementation(
+        (args) =>
+            new CertificateBasedWallet(
+                mockedConnexSigner,
+                null,
+                args.genesisId,
+                undefined,
+            ),
+    );
 };
 
 describe('WalletManager', () => {
+    afterEach(() => {
+        vi.clearAllMocks();
+    });
     describe('setSource', () => {
         it('no wc options provided', () => {
+            mockDefaultWallet();
             const walletManager = newWalletManager();
             expect(() => {
                 walletManager.setSource('wallet-connect');
@@ -35,12 +59,14 @@ describe('WalletManager', () => {
 
     describe('connect', () => {
         it('no source set', async () => {
+            mockDefaultWallet();
             const walletManager = newWalletManager();
             await expect(() => walletManager.connect()).rejects.toThrow(
                 'No wallet selected',
             );
         });
         it('connect with custom message', async () => {
+            mockDefaultWallet();
             const walletManager = newWalletManager();
             walletManager.setSource('veworld');
             await walletManager.connect({
@@ -64,8 +90,129 @@ describe('WalletManager', () => {
         });
     });
 
+    describe.only('connectV2', () => {
+        it.each([
+            { kind: 'simple', value: null },
+            { kind: 'certificate', value: certMessage },
+            { kind: 'typed-data', value: typedDataMessage },
+        ])('VeWorld with new methods. Kind: $kind', async ({ value }) => {
+            const sendFn = vi.fn().mockImplementation(({ method, params }) => {
+                switch (method) {
+                    case 'thor_methods':
+                        return ['thor_connect', 'thor_wallet'];
+                    case 'thor_wallet':
+                        return address.toString();
+                    case 'thor_connect': {
+                        if (params.value === null)
+                            return { signer: address.toString() };
+                        if ('purpose' in params.value)
+                            return { annex: { signer: address.toString() } };
+                        else return { signer: address.toString() };
+                    }
+                }
+            });
+            vi.mocked(createWallet).mockImplementation(
+                (args) =>
+                    new CertificateBasedWallet(
+                        mockedConnexSigner,
+                        { send: sendFn },
+                        args.genesisId,
+                        undefined,
+                    ),
+            );
+            const walletManager = newWalletManager({
+                v2Api: { enabled: true },
+            });
+            await walletManager.initializeStateAsync();
+            const subscription = vi.fn();
+
+            walletManager.subscribe(subscription);
+            walletManager.setSource('veworld');
+
+            //Poll since it's an async OP started from a sync function
+            await expect
+                .poll(() => subscription)
+                .toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        availableMethods: ['thor_connect', 'thor_wallet'],
+                    }),
+                );
+
+            await walletManager.connectV2(value);
+
+            expect(subscription).toHaveBeenNthCalledWith(
+                3,
+                expect.objectContaining({
+                    availableMethods: ['thor_connect', 'thor_wallet'],
+                }),
+            );
+            expect(subscription).toHaveBeenNthCalledWith(
+                4,
+                expect.objectContaining({ address: address.toString() }),
+            );
+        });
+
+        it.each([
+            { kind: 'simple', value: null },
+            { kind: 'certificate', value: certMessage },
+            { kind: 'typed-data', value: typedDataMessage },
+        ])('VeWorld with old methods. Kind: $kind', async ({ value }) => {
+            vi.mocked(createWallet).mockImplementation(
+                (args) =>
+                    new CertificateBasedWallet(
+                        {
+                            ...mockedConnexSigner,
+                            signTypedData(domain, types, message) {
+                                return new VeChainPrivateKeySigner(
+                                    privateKey,
+                                ).signTypedData(domain, types, message);
+                            },
+                        },
+                        null,
+                        args.genesisId,
+                        undefined,
+                    ),
+            );
+            const walletManager = newWalletManager({
+                v2Api: { enabled: true },
+            });
+            await walletManager.initializeStateAsync();
+            const subscription = vi.fn();
+
+            walletManager.subscribe(subscription);
+            walletManager.setSource('veworld');
+
+            //Poll since it's an async OP started from a sync function
+            await expect
+                .poll(() => subscription)
+                .toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({ availableMethods: [] }),
+                );
+
+            const result = await walletManager.connectV2(value);
+
+            expect(subscription).toHaveBeenNthCalledWith(
+                3,
+                expect.objectContaining({ address: address.toString() }),
+            );
+            expect(subscription).toHaveBeenNthCalledWith(
+                4,
+                expect.objectContaining({ availableMethods: [] }),
+            );
+
+            if (value === null)
+                expect((result as any).signer).toBe(address.toString());
+            else if ('purpose' in value)
+                expect((result as any).annex.signer).toBe(address.toString());
+            else expect((result as any).signer).toBe(address.toString());
+        });
+    });
+
     describe('signTx', () => {
         it('should sign the tx', async () => {
+            mockDefaultWallet();
             const walletManager = newWalletManager();
             walletManager.setSource('veworld');
             const res = await walletManager.signTx([], {});
@@ -76,6 +223,7 @@ describe('WalletManager', () => {
 
     describe('signCert', () => {
         it('should sign the cert', async () => {
+            mockDefaultWallet();
             const walletManager = newWalletManager();
             walletManager.setSource('veworld');
             const res = await walletManager.signCert(
@@ -92,6 +240,7 @@ describe('WalletManager', () => {
 
     describe('disconnect', () => {
         it('is not connected', async () => {
+            mockDefaultWallet();
             const walletManager = newWalletManager();
 
             await walletManager.disconnect();
@@ -100,6 +249,7 @@ describe('WalletManager', () => {
         });
 
         it('from remote', async () => {
+            mockDefaultWallet();
             const walletManager = newWalletManager();
 
             walletManager.setSource('veworld');
@@ -112,6 +262,7 @@ describe('WalletManager', () => {
 
     describe('listeners', () => {
         it('add state listener', async () => {
+            mockDefaultWallet();
             const walletManager = newWalletManager();
 
             const subscription = vi.fn();
@@ -126,6 +277,7 @@ describe('WalletManager', () => {
         });
 
         it('add key listener', async () => {
+            mockDefaultWallet();
             const walletManager = newWalletManager();
 
             const subscription = vi.fn();
