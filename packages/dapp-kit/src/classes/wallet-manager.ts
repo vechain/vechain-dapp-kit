@@ -499,6 +499,7 @@ class WalletManager {
             'available methods',
             methods,
         );
+        this.state.availableMethods = methods ?? [];
         if (!methods || methods.length === 0) {
             if (this.options.usePersistence)
                 return this.initFromPersistentStore({
@@ -513,6 +514,8 @@ class WalletManager {
             this.state.source = source;
             return;
         }
+        this.state.source = source;
+        this.state.availableSources = availableSources;
         const address = await wallet.getAddress();
         DAppKitLogger.debug(
             'WalletManager',
@@ -520,22 +523,8 @@ class WalletManager {
             'address retrieved',
             address,
         );
-        if (!address) {
-            DAppKitLogger.debug(
-                'WalletManager',
-                'initializeStateAsync',
-                'Current version of VeWorld either does not support the method or user has no session.',
-            );
-            this.state.source = source;
-            this.state.availableSources = availableSources;
-            this.state.availableMethods = methods;
-            return;
-        }
-
-        this.state.source = source;
+        if (!address) return;
         this.state.address = address;
-        this.state.availableSources = availableSources;
-        this.state.availableMethods = methods;
     };
 
     private initFromPersistentStore = ({
@@ -626,10 +615,10 @@ class WalletManager {
     getAddress = async (): Promise<string | null> => {
         if (this.state.source === null) return null;
         switch (this.state.source) {
-            case 'wallet-connect':
             case 'veworld':
                 if (this.availableMethods.includes('thor_wallet'))
                     return this.wallet.getAddress();
+            case 'wallet-connect':
             case 'sync':
             case 'sync2':
                 return this.state.address;

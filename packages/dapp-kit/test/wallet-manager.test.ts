@@ -1,9 +1,15 @@
-import { TESTNET_NETWORK } from '@vechain/sdk-core';
+import { Address, TESTNET_NETWORK } from '@vechain/sdk-core';
 import { ThorClient, VeChainPrivateKeySigner } from '@vechain/sdk-network';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import type { DAppKitOptions } from '../src';
+import { SignClient } from '@walletconnect/sign-client';
+import type {
+    DAppKitOptions,
+    WalletConnectOptions,
+    WalletSource,
+} from '../src';
 import { CertificateBasedWallet, createWallet, WalletManager } from '../src';
+import { mockedSignClient } from './helpers/mocked-sign-client';
 import {
     address,
     mockedConnexSigner,
@@ -24,6 +30,18 @@ const newWalletManager = (options?: Partial<DAppKitOptions>): WalletManager => {
         ThorClient.at('https://testnet.vechain.org'),
     );
 };
+
+const wcOptions: WalletConnectOptions = {
+    projectId: 'test1234',
+    metadata: {
+        name: 'Test',
+        description: 'Test wallet',
+        url: 'https://test.com',
+        icons: ['https://test.com/icon.png'],
+    },
+};
+
+vi.spyOn(SignClient, 'init').mockResolvedValue(mockedSignClient);
 
 window.vechain = {} as any;
 vi.mock('../src/utils/create-wallet', async (importOriginal) => ({
@@ -90,7 +108,7 @@ describe('WalletManager', () => {
         });
     });
 
-    describe.only('connectV2', () => {
+    describe('connectV2', () => {
         it.each([
             { kind: 'simple', value: null },
             { kind: 'certificate', value: certMessage },
@@ -290,5 +308,124 @@ describe('WalletManager', () => {
 
             expect(subscription).toHaveBeenCalledTimes(1);
         });
+    });
+
+    describe('populateAvailableMethods', () => {
+        it.each([
+            {
+                label: 'populated',
+                value: ['thor_connect', 'thor_wallet'],
+                result: ['thor_connect', 'thor_wallet'],
+            },
+            { label: 'null', value: null, result: [] },
+            { label: 'error', value: new Error(), result: [] },
+        ])(
+            'should populate methods correctly. Kind: $label',
+            async ({ value, result }) => {
+                const sendFn = vi.fn().mockImplementation(({ method }) => {
+                    switch (method) {
+                        case 'thor_methods':
+                            return ['thor_connect', 'thor_wallet'];
+                    }
+                });
+                vi.mocked(createWallet).mockImplementation(
+                    (args) =>
+                        new CertificateBasedWallet(
+                            mockedConnexSigner,
+                            { send: sendFn },
+                            args.genesisId,
+                            undefined,
+                        ),
+                );
+
+                const walletManager = newWalletManager({
+                    v2Api: { enabled: true },
+                });
+
+                await walletManager.initializeStateAsync();
+                const subscription = vi.fn();
+
+                walletManager.subscribe(subscription);
+                walletManager.setSource('veworld');
+
+                //Poll since it's an async OP started from a sync function
+                await expect
+                    .poll(() => subscription)
+                    .toHaveBeenNthCalledWith(
+                        1,
+                        expect.objectContaining({
+                            availableMethods: ['thor_connect', 'thor_wallet'],
+                        }),
+                    );
+
+                if (value instanceof Error) sendFn.mockRejectedValue(value);
+                else sendFn.mockReturnValue(value);
+
+                await walletManager.populateAvailableMethods();
+
+                expect(walletManager.state.availableMethods).toStrictEqual(
+                    result,
+                );
+            },
+        );
+    });
+
+    describe('getAddress', () => {
+        const randomAddress = Address.random(20).toString();
+        it.each([
+            { label: 'no-source', source: null, address: null },
+            {
+                label: 'wallet-connect',
+                source: 'wallet-connect',
+                address: address.toString(),
+            },
+            { label: 'sync', source: 'sync', address: address.toString() },
+            { label: 'sync2', source: 'sync2', address: address.toString() },
+            {
+                label: 'veworld-extension',
+                source: 'veworld',
+                address: address.toString(),
+            },
+            { label: 'veworld', source: 'veworld', address: randomAddress },
+        ])(
+            'should get the correct address. Kind: $label',
+            async ({ source, address, label }) => {
+                const sendFn = vi.fn().mockImplementation(({ method }) => {
+                    switch (method) {
+                        case 'thor_methods':
+                            return label === 'veworld' ? ['thor_wallet'] : [];
+                        case 'thor_wallet':
+                            return randomAddress;
+                    }
+                });
+                vi.mocked(createWallet).mockImplementation(
+                    (args) =>
+                        new CertificateBasedWallet(
+                            mockedConnexSigner,
+                            { send: sendFn },
+                            args.genesisId,
+                            undefined,
+                        ),
+                );
+
+                const walletManager = newWalletManager({
+                    v2Api: { enabled: true },
+                    ...(source === 'wallet-connect' && {
+                        walletConnectOptions: wcOptions,
+                    }),
+                });
+
+                await walletManager.initializeStateAsync();
+                if (source !== null) {
+                    walletManager.state.source = source as WalletSource;
+                    await walletManager.populateAvailableMethods();
+                }
+                walletManager.state.address = address;
+
+                const result = await walletManager.getAddress();
+
+                expect(result).toStrictEqual(address);
+            },
+        );
     });
 });
