@@ -1,10 +1,8 @@
-import { MAINNET_NETWORK } from '@vechain/sdk-core';
 import { describe, expect, it } from 'vitest';
 import { ConnectModalManager, DAppKitUI } from '../../src';
 
 DAppKitUI.configure({
     node: 'https://mainnet.vechain.org/',
-    genesisId: MAINNET_NETWORK.genesisBlock.id,
     v2Api: {
         enabled: true,
     },

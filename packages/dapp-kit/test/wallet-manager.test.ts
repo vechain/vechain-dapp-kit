@@ -1,4 +1,4 @@
-import { Address, TESTNET_NETWORK } from '@vechain/sdk-core';
+import { Address } from '@vechain/sdk-core';
 import { ThorClient, VeChainPrivateKeySigner } from '@vechain/sdk-network';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -21,7 +21,6 @@ const newWalletManager = (options?: Partial<DAppKitOptions>): WalletManager => {
     return new WalletManager(
         {
             node: 'https://testnet.veblocks.net/',
-            genesisId: TESTNET_NETWORK.genesisBlock.id,
             v2Api: {
                 enabled: false,
             },
@@ -51,11 +50,11 @@ vi.mock('../src/utils/create-wallet', async (importOriginal) => ({
 
 const mockDefaultWallet = () => {
     vi.mocked(createWallet).mockImplementation(
-        (args) =>
+        async (args) =>
             new CertificateBasedWallet(
                 mockedConnexSigner,
                 null,
-                args.genesisId,
+                await args.thor.blocks.getGenesisBlock().then((res) => res!.id),
                 undefined,
             ),
     );
@@ -130,11 +129,13 @@ describe('WalletManager', () => {
                 }
             });
             vi.mocked(createWallet).mockImplementation(
-                (args) =>
+                async (args) =>
                     new CertificateBasedWallet(
                         mockedConnexSigner,
                         { send: sendFn },
-                        args.genesisId,
+                        await args.thor.blocks
+                            .getGenesisBlock()
+                            .then((res) => res!.id),
                         undefined,
                     ),
             );
@@ -177,7 +178,7 @@ describe('WalletManager', () => {
             { kind: 'typed-data', value: typedDataMessage },
         ])('VeWorld with old methods. Kind: $kind', async ({ value }) => {
             vi.mocked(createWallet).mockImplementation(
-                (args) =>
+                async (args) =>
                     new CertificateBasedWallet(
                         {
                             ...mockedConnexSigner,
@@ -188,7 +189,9 @@ describe('WalletManager', () => {
                             },
                         },
                         null,
-                        args.genesisId,
+                        await args.thor.blocks
+                            .getGenesisBlock()
+                            .then((res) => res!.id),
                         undefined,
                     ),
             );
@@ -329,11 +332,13 @@ describe('WalletManager', () => {
                     }
                 });
                 vi.mocked(createWallet).mockImplementation(
-                    (args) =>
+                    async (args) =>
                         new CertificateBasedWallet(
                             mockedConnexSigner,
                             { send: sendFn },
-                            args.genesisId,
+                            await args.thor.blocks
+                                .getGenesisBlock()
+                                .then((res) => res!.id),
                             undefined,
                         ),
                 );
@@ -399,11 +404,13 @@ describe('WalletManager', () => {
                     }
                 });
                 vi.mocked(createWallet).mockImplementation(
-                    (args) =>
+                    async (args) =>
                         new CertificateBasedWallet(
                             mockedConnexSigner,
                             { send: sendFn },
-                            args.genesisId,
+                            await args.thor.blocks
+                                .getGenesisBlock()
+                                .then((res) => res!.id),
                             undefined,
                         ),
                 );

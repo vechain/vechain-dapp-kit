@@ -1,3 +1,4 @@
+import { ThorClient } from '@vechain/sdk-network';
 import { CertificateBasedWallet } from '../classes';
 import type {
     DAppKitOptions,
@@ -15,16 +16,22 @@ import { DAppKitLogger } from './logger';
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
     onDisconnected: () => void;
+    thor: ThorClient;
 };
 
-export const createWallet = ({
+export const createWallet = async ({
     source,
-    genesisId,
+    thor,
     walletConnectOptions,
     onDisconnected,
     connectionCertificate,
-}: ICreateWallet): VeChainWallet => {
+}: ICreateWallet): Promise<VeChainWallet> => {
     DAppKitLogger.debug('createWallet', source);
+
+    const genesisId = await thor.blocks
+        .getGenesisBlock()
+        .then((block) => block?.id);
+    if (!genesisId) throw new Error('Failed to get genesis block');
 
     switch (source) {
         case 'sync': {

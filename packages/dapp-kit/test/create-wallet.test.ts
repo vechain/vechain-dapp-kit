@@ -1,4 +1,3 @@
-import { TESTNET_NETWORK } from '@vechain/sdk-core';
 import { ThorClient } from '@vechain/sdk-network';
 import { describe, expect, it, vi } from 'vitest';
 import type {
@@ -28,7 +27,6 @@ const createOptions = (
         v2Api: {
             enabled: true,
         },
-        genesisId: TESTNET_NETWORK.genesisBlock.id,
     };
 };
 

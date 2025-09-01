@@ -1,7 +1,6 @@
 import type { WalletConnectOptions } from '@vechain/dapp-kit';
 import { DAppKitProvider } from '@vechain/dapp-kit-react';
 import '@vechain/dapp-kit-ui';
-import { TESTNET_NETWORK } from '@vechain/sdk-core';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
@@ -25,7 +24,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             walletConnectOptions={walletConnectOptions}
             logLevel={'DEBUG'}
             v2Api={{ enabled: true }}
-            genesisId={TESTNET_NETWORK.genesisBlock.id}
         >
             <App />
         </DAppKitProvider>

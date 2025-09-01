@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { WalletSource } from '@vechain/dapp-kit';
-import { MAINNET_NETWORK } from '@vechain/sdk-core';
 import {
     AddressButton,
     AddressModal,
@@ -23,7 +22,6 @@ describe('button', () => {
         DAppKitUI.configure({
             node: 'https://mainnet.vechain.org/',
             themeVariables,
-            genesisId: MAINNET_NETWORK.genesisBlock.id,
             v2Api: {
                 enabled: true,
             },

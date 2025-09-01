@@ -56,9 +56,4 @@ export interface DAppKitOptions {
          */
         external?: boolean;
     };
-
-    /**
-     * ID of the genesis block. It is the `id` property of the block #0, <node>/blocks/0 is the HTTP call to perform.
-     */
-    genesisId: string;
 }

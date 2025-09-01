@@ -14,8 +14,6 @@ DAppKitUI.configure({
     node: 'https://testnet.vechain.org/',
     walletConnectOptions,
     usePersistence: true,
-    genesisId:
-        '0x000000000b2bce3c70bc649a02749e8687721b09ed2e15997f466536b20bb127',
     v2Api: {
         enabled: true,
     },

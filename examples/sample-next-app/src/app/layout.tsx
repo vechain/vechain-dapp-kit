@@ -33,7 +33,6 @@ const walletConnectOptions: WalletConnectOptions = {
     },
 };
 
-// eslint-disable-next-line import/no-default-export
 export default function RootLayout({
     children,
 }: {
@@ -51,7 +50,6 @@ export default function RootLayout({
                     usePersistence
                     walletConnectOptions={walletConnectOptions}
                     v2Api={{ enabled: true }}
-                    genesisId="0x000000000b2bce3c70bc649a02749e8687721b09ed2e15997f466536b20bb127"
                 >
                     {children}
                 </DAppKitProvider>

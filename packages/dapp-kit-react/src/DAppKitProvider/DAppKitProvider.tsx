@@ -153,7 +153,6 @@ export const DAppKitProvider = ({
     connectionCertificate: connectionCertificateData,
     allowedWallets,
     v2Api,
-    genesisId,
     autoInitialize = true,
 }: DAppKitProviderOptions): React.ReactElement | null => {
     const [dAppKit, setDAppKit] = useState<DAppKit | null>(null);
@@ -174,7 +173,6 @@ export const DAppKitProvider = ({
             connectionCertificate: connectionCertificateData,
             allowedWallets,
             v2Api,
-            genesisId,
         });
         setDAppKit(kit);
         if (v2Api.enabled && autoInitialize)

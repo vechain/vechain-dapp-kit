@@ -60,7 +60,7 @@ class WalletManager {
         }
     }
 
-    private get wallet(): VeChainWallet {
+    private async getWallet(): Promise<VeChainWallet> {
         const source = this.state.source;
 
         DAppKitLogger.debug(
@@ -94,12 +94,17 @@ class WalletManager {
                 onDisconnected: () => this.disconnect(true),
                 thor: this.thor,
             };
-            wallet = createWallet(opts);
+            wallet = await createWallet(opts);
 
             this.wallets[source] = wallet;
         }
 
         return wallet;
+    }
+
+    private async withWallet<TResult>(cb: (w: VeChainWallet) => TResult) {
+        const wallet = await this.getWallet();
+        return cb(wallet);
     }
 
     get availableMethods(): string[] {
@@ -165,7 +170,9 @@ class WalletManager {
         const {
             annex: { domain, signer, timestamp },
             signature,
-        } = await this.wallet.signCert(certificateMessage, certificateOptions);
+        } = await this.withWallet((wallet) =>
+            wallet.signCert(certificateMessage, certificateOptions),
+        );
 
         const connectionCertificate = {
             ...certificateMessage,
@@ -199,7 +206,9 @@ class WalletManager {
         _certificate?: CertificateArgs,
     ): Promise<ConnectResponse> => {
         try {
-            const res = await this.wallet.connect(_certificate);
+            const res = await this.withWallet((wallet) =>
+                wallet.connect(_certificate),
+            );
             if (
                 this.state.source === 'wallet-connect' &&
                 this.options.requireCertificate &&
@@ -228,9 +237,8 @@ class WalletManager {
             this.state.source === 'veworld' &&
             this.availableMethods.includes('thor_connect')
         ) {
-            const result = await this.wallet.connectV2(
-                value,
-                this.options.v2Api.external,
+            const result = await this.withWallet((wallet) =>
+                wallet.connectV2(value, this.options.v2Api.external),
             );
             await this.populateAvailableMethods();
             if (value === null)
@@ -275,7 +283,9 @@ class WalletManager {
     switchWallet = async (): Promise<void> => {
         try {
             if (this.state.source === 'veworld') {
-                const newWallet = await this.wallet.switchWallet();
+                const newWallet = await this.withWallet((wallet) =>
+                    wallet.switchWallet(),
+                );
                 if (!newWallet) return;
                 this.state.address = newWallet;
             }
@@ -319,7 +329,9 @@ class WalletManager {
         options: TransactionOptions = {},
     ): Promise<TransactionResponse> => {
         try {
-            const res = await this.wallet.signTx(msg, options);
+            const res = await this.withWallet((wallet) =>
+                wallet.signTx(msg, options),
+            );
             this.state.address = res.signer;
             return res;
         } catch (e) {
@@ -333,7 +345,9 @@ class WalletManager {
         options: CertificateOptions = {},
     ): Promise<CertificateResponse> => {
         try {
-            const res = await this.wallet.signCert(msg, options);
+            const res = await this.withWallet((wallet) =>
+                wallet.signCert(msg, options),
+            );
             // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
             this.state.address = res.annex.signer;
             return res;
@@ -349,16 +363,12 @@ class WalletManager {
         message: Record<string, unknown>,
         options?: SignTypedDataOptions,
     ): Promise<string> => {
-        if (!this.wallet.signTypedData)
+        const wallet = await this.getWallet();
+        if (!wallet.signTypedData)
             throw new Error('signTypedData is not supported');
 
         try {
-            return await this.wallet.signTypedData(
-                domain,
-                types,
-                message,
-                options,
-            );
+            return await wallet.signTypedData(domain, types, message, options);
         } catch (e) {
             DAppKitLogger.error('WalletManager', 'signTypedData', e);
             throw e;
@@ -485,7 +495,7 @@ class WalletManager {
             onDisconnected: () => this.disconnect(true),
             thor: this.thor,
         };
-        const wallet = createWallet(opts);
+        const wallet = await createWallet(opts);
         DAppKitLogger.debug(
             'WalletManager',
             'initializeStateAsync',
@@ -617,7 +627,7 @@ class WalletManager {
         switch (this.state.source) {
             case 'veworld':
                 if (this.availableMethods.includes('thor_wallet'))
-                    return this.wallet.getAddress();
+                    return this.withWallet((wallet) => wallet.getAddress());
             case 'wallet-connect':
             case 'sync':
             case 'sync2':
@@ -628,7 +638,9 @@ class WalletManager {
     populateAvailableMethods = async (): Promise<void> => {
         try {
             this.state.availableMethods =
-                (await this.wallet.getAvailableMethods()) ?? [];
+                (await this.withWallet((wallet) =>
+                    wallet.getAvailableMethods(),
+                )) ?? [];
         } catch {
             this.state.availableMethods = [];
         }
