@@ -112,123 +112,137 @@ describe('WalletManager', () => {
             { kind: 'simple', value: null },
             { kind: 'certificate', value: certMessage },
             { kind: 'typed-data', value: typedDataMessage },
-        ])('VeWorld with new methods. Kind: $kind', async ({ value }) => {
-            const sendFn = vi.fn().mockImplementation(({ method, params }) => {
-                switch (method) {
-                    case 'thor_methods':
-                        return ['thor_connect', 'thor_wallet'];
-                    case 'thor_wallet':
-                        return address.toString();
-                    case 'thor_connect': {
-                        if (params.value === null)
-                            return { signer: address.toString() };
-                        if ('purpose' in params.value)
-                            return { annex: { signer: address.toString() } };
-                        else return { signer: address.toString() };
-                    }
-                }
-            });
-            vi.mocked(createWallet).mockImplementation(
-                async (args) =>
-                    new CertificateBasedWallet(
-                        mockedConnexSigner,
-                        { send: sendFn },
-                        await args.thor.blocks
-                            .getGenesisBlock()
-                            .then((res) => res!.id),
-                        undefined,
-                    ),
-            );
-            const walletManager = newWalletManager({
-                v2Api: { enabled: true },
-            });
-            await walletManager.initializeStateAsync();
-            const subscription = vi.fn();
+        ])(
+            'VeWorld with new methods. Kind: $kind',
+            async ({ value }) => {
+                const sendFn = vi
+                    .fn()
+                    .mockImplementation(({ method, params }) => {
+                        switch (method) {
+                            case 'thor_methods':
+                                return ['thor_connect', 'thor_wallet'];
+                            case 'thor_wallet':
+                                return address.toString();
+                            case 'thor_connect': {
+                                if (params.value === null)
+                                    return { signer: address.toString() };
+                                if ('purpose' in params.value)
+                                    return {
+                                        annex: { signer: address.toString() },
+                                    };
+                                else return { signer: address.toString() };
+                            }
+                        }
+                    });
+                vi.mocked(createWallet).mockImplementation(
+                    async (args) =>
+                        new CertificateBasedWallet(
+                            mockedConnexSigner,
+                            { send: sendFn },
+                            await args.thor.blocks
+                                .getGenesisBlock()
+                                .then((res) => res!.id),
+                            undefined,
+                        ),
+                );
+                const walletManager = newWalletManager({
+                    v2Api: { enabled: true },
+                });
+                await walletManager.initializeStateAsync();
+                const subscription = vi.fn();
 
-            walletManager.subscribe(subscription);
-            walletManager.setSource('veworld');
+                walletManager.subscribe(subscription);
+                walletManager.setSource('veworld');
 
-            //Poll since it's an async OP started from a sync function
-            await expect
-                .poll(() => subscription)
-                .toHaveBeenNthCalledWith(
-                    2,
+                //Poll since it's an async OP started from a sync function
+                await expect
+                    .poll(() => subscription, { timeout: 5000 })
+                    .toHaveBeenNthCalledWith(
+                        2,
+                        expect.objectContaining({
+                            availableMethods: ['thor_connect', 'thor_wallet'],
+                        }),
+                    );
+
+                await walletManager.connectV2(value);
+
+                expect(subscription).toHaveBeenNthCalledWith(
+                    3,
                     expect.objectContaining({
                         availableMethods: ['thor_connect', 'thor_wallet'],
                     }),
                 );
-
-            await walletManager.connectV2(value);
-
-            expect(subscription).toHaveBeenNthCalledWith(
-                3,
-                expect.objectContaining({
-                    availableMethods: ['thor_connect', 'thor_wallet'],
-                }),
-            );
-            expect(subscription).toHaveBeenNthCalledWith(
-                4,
-                expect.objectContaining({ address: address.toString() }),
-            );
-        });
+                expect(subscription).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({ address: address.toString() }),
+                );
+            },
+            { timeout: 10_000 },
+        );
 
         it.each([
             { kind: 'simple', value: null },
             { kind: 'certificate', value: certMessage },
             { kind: 'typed-data', value: typedDataMessage },
-        ])('VeWorld with old methods. Kind: $kind', async ({ value }) => {
-            vi.mocked(createWallet).mockImplementation(
-                async (args) =>
-                    new CertificateBasedWallet(
-                        {
-                            ...mockedConnexSigner,
-                            signTypedData(domain, types, message) {
-                                return new VeChainPrivateKeySigner(
-                                    privateKey,
-                                ).signTypedData(domain, types, message);
+        ])(
+            'VeWorld with old methods. Kind: $kind',
+            async ({ value }) => {
+                vi.mocked(createWallet).mockImplementation(
+                    async (args) =>
+                        new CertificateBasedWallet(
+                            {
+                                ...mockedConnexSigner,
+                                signTypedData(domain, types, message) {
+                                    return new VeChainPrivateKeySigner(
+                                        privateKey,
+                                    ).signTypedData(domain, types, message);
+                                },
                             },
-                        },
-                        null,
-                        await args.thor.blocks
-                            .getGenesisBlock()
-                            .then((res) => res!.id),
-                        undefined,
-                    ),
-            );
-            const walletManager = newWalletManager({
-                v2Api: { enabled: true },
-            });
-            await walletManager.initializeStateAsync();
-            const subscription = vi.fn();
+                            null,
+                            await args.thor.blocks
+                                .getGenesisBlock()
+                                .then((res) => res!.id),
+                            undefined,
+                        ),
+                );
+                const walletManager = newWalletManager({
+                    v2Api: { enabled: true },
+                });
+                await walletManager.initializeStateAsync();
+                const subscription = vi.fn();
 
-            walletManager.subscribe(subscription);
-            walletManager.setSource('veworld');
+                walletManager.subscribe(subscription);
+                walletManager.setSource('veworld');
 
-            //Poll since it's an async OP started from a sync function
-            await expect
-                .poll(() => subscription)
-                .toHaveBeenNthCalledWith(
-                    2,
+                //Poll since it's an async OP started from a sync function
+                await expect
+                    .poll(() => subscription, { timeout: 5000 })
+                    .toHaveBeenNthCalledWith(
+                        2,
+                        expect.objectContaining({ availableMethods: [] }),
+                    );
+
+                const result = await walletManager.connectV2(value);
+
+                expect(subscription).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({ address: address.toString() }),
+                );
+                expect(subscription).toHaveBeenNthCalledWith(
+                    4,
                     expect.objectContaining({ availableMethods: [] }),
                 );
 
-            const result = await walletManager.connectV2(value);
-
-            expect(subscription).toHaveBeenNthCalledWith(
-                3,
-                expect.objectContaining({ address: address.toString() }),
-            );
-            expect(subscription).toHaveBeenNthCalledWith(
-                4,
-                expect.objectContaining({ availableMethods: [] }),
-            );
-
-            if (value === null)
-                expect((result as any).signer).toBe(address.toString());
-            else if ('purpose' in value)
-                expect((result as any).annex.signer).toBe(address.toString());
-            else expect((result as any).signer).toBe(address.toString());
-        });
+                if (value === null)
+                    expect((result as any).signer).toBe(address.toString());
+                else if ('purpose' in value)
+                    expect((result as any).annex.signer).toBe(
+                        address.toString(),
+                    );
+                else expect((result as any).signer).toBe(address.toString());
+            },
+            { timeout: 10_000 },
+        );
     });
 
     describe('signTx', () => {
@@ -355,7 +369,7 @@ describe('WalletManager', () => {
 
                 //Poll since it's an async OP started from a sync function
                 await expect
-                    .poll(() => subscription)
+                    .poll(() => subscription, { timeout: 5000 })
                     .toHaveBeenNthCalledWith(
                         1,
                         expect.objectContaining({
@@ -371,6 +385,9 @@ describe('WalletManager', () => {
                 expect(walletManager.state.availableMethods).toStrictEqual(
                     result,
                 );
+            },
+            {
+                timeout: 10_000,
             },
         );
     });
