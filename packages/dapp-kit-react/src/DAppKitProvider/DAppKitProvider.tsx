@@ -156,7 +156,7 @@ export const DAppKitProvider = ({
     autoInitialize = true,
 }: DAppKitProviderOptions): React.ReactElement | null => {
     const [dAppKit, setDAppKit] = useState<DAppKit | null>(null);
-    const [_initialized, setInitialized] = useState(false);
+    const [_initialized, setInitialized] = useState(!autoInitialize);
     useEffect(() => {
         const kit = DAppKitUI.configure({
             node,
