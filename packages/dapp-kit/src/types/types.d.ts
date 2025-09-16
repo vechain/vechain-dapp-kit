@@ -1,11 +1,6 @@
-import type { LogLevel } from '../utils';
-import { WalletConnectOptions } from './wc-types';
 import type { CertificateData } from '@vechain/sdk-core';
-import {
+import type {
     CompressedBlockDetail,
-    HttpClient,
-    TypedDataDomain,
-    TypedDataParameter,
     SignTypedDataOptions,
 } from '@vechain/sdk-network';
 import type {
@@ -22,7 +17,7 @@ declare global {
         vechain?: {
             newConnexSigner: (genesisId: string) => WalletSigner;
             isInAppBrowser?: boolean;
-        };
+        } & WalletProvider;
         connex?: {
             vendor: {
                 sign: (type: string) => any;
@@ -33,11 +28,30 @@ declare global {
 
 type WalletSource = 'wallet-connect' | 'veworld' | 'sync' | 'sync2';
 
+type TypedDataDomain = {
+    chainId?: number | bigint | undefined;
+    name?: string | undefined;
+    salt?: `0x${string}` | undefined;
+    verifyingContract?: string | undefined;
+    version?: string | undefined;
+};
+
+type TypedDataParameter = {
+    name: string;
+    type: string;
+};
+
 interface WalletConfig {
     requiresCertificate: boolean;
 }
 
 type Genesis = 'main' | 'test' | CompressedBlockDetail;
+
+type TypedDataMessage = {
+    domain: TypedDataDomain;
+    types: Record<string, TypedDataParameter[]>;
+    value: Record<string, unknown>;
+};
 
 /**
  * Simple Certificate Args
@@ -51,31 +65,30 @@ type CertificateArgs = {
  * Callback used by the DAppKit `connect` function
  */
 type ConnectCallback = (
-    _certificate?: CertificateArs,
+    _certificate?: CertificateArgs,
 ) => Promise<ConnectResponse>;
 
+type ConnectV2Response<
+    TValue extends null | CertificateMessage | TypedDataMessage,
+> = TValue extends null
+    ? { signer: string }
+    : TValue extends { purpose: string }
+      ? CertificateResponse
+      : { signer: string; signature: string };
+
 /**
- * Options for the DAppKit class
- * @param node - The URL of the Node, or the {@link HttpClient} instance
- * @param onDisconnected - A callback that will be called when the session is disconnected
- * @param walletConnectOptions - Optional. Options for the WalletConnect integration
- * @param usePersistence - Optional. Whether to persist the wallet source/ account
- * @param useFirstDetectedSource - Optional. Whether to use the first detected wallet source. Defaults to false
- * @param logLevel - Optional. The log level to use for the DAppKitUI logger
- * @param requireCertificate - Optional. Whether to require a connection certificate. Defaults to true
- * @param connectionCertificate - Optional. Options for the connection certificate
- * @param allowedWallets - Optional. An array of wallet sources to allow. Defaults to all sources
+ * Callback used by the DAppKit `newConnect` function
  */
-interface DAppKitOptions {
-    node: string | HttpClient;
-    walletConnectOptions?: WalletConnectOptions;
-    usePersistence?: boolean;
-    useFirstDetectedSource?: boolean;
-    logLevel?: LogLevel;
-    requireCertificate?: boolean;
-    connectionCertificate?: CertificateArgs;
-    allowedWallets?: WalletSource[];
-}
+type ConnectV2Callback = <
+    TValue extends null | CertificateMessage | TypedDataMessage,
+>(
+    value: TValue,
+    /**
+     * Indicate that the dApp uses an external authentication service.
+     * Keep me logged in toggle will be disabled when this option is set to true
+     */
+    external?: boolean,
+) => Promise<ConnectV2Response<TValue>>;
 
 interface WalletSigner {
     signTx: (
@@ -94,12 +107,77 @@ interface WalletSigner {
     ) => Promise<string>;
 }
 
+interface WalletProvider {
+    send?(args: {
+        method: 'thor_connect';
+        params: {
+            value: TypedDataMessage | CertificateMessage | null;
+            external?: boolean;
+        };
+        genesisId: string;
+    }): Promise<
+        | CertificateResponse
+        | { signer: string; signature: string }
+        | { signer: string }
+    >;
+    send?(args: {
+        method: 'thor_wallet';
+        params?: undefined;
+        genesisId: string;
+    }): Promise<string>;
+    send?(args: {
+        method: 'thor_disconnect';
+        params?: undefined;
+        genesisId: string;
+    }): Promise<void>;
+    send?(args: {
+        method: 'thor_switchWallet';
+        params?: undefined;
+        genesisId: string;
+    }): Promise<string>;
+    send?(args: {
+        method: 'thor_methods';
+        params?: undefined;
+        genesisId: string;
+    }): Promise<string[]>;
+    send?(args: {
+        method: 'thor_signTypedData';
+        params: {
+            domain: TypedDataDomain;
+            types: Record<string, TypedDataParameter[]>;
+            value: Record<string, unknown>;
+            options?: SignTypedDataOptions;
+        };
+        genesisId: string;
+    }): Promise<string>;
+    send?(args: {
+        method: 'thor_signCertificate';
+        params: {
+            message: CertificateMessage;
+            options: CertificateOptions;
+        };
+        genesisId: string;
+    }): Promise<string>;
+    send?(args: {
+        method: 'thor_sendTransaction';
+        params: {
+            clauses: TransactionMessage;
+            options?: TransactionOptions;
+        };
+        genesisId: string;
+    }): Promise<string>;
+}
+
 /**
  * Modifies the WalletSigner interface to include a disconnect method
  */
 type VeChainWallet = WalletSigner & {
     connect: ConnectCallback;
     disconnect?: () => void | Promise<void>;
+    getAddress: () => string | null | Promise<string | null>;
+    getAvailableMethods: () => string[] | null | Promise<string[] | null>;
+    connectV2: ConnectV2Callback;
+    switchWallet: () => string | null | Promise<string | null>;
 };
 
 interface ConnectResponse {
@@ -115,19 +193,22 @@ interface WalletManagerState {
     isAccountDomainLoading: boolean;
     availableSources: WalletSource[];
     connectionCertificate: CertificateData | null;
+    availableMethods: string[] | null;
 }
 
 export type {
     CertificateArgs,
     ConnectCallback,
-    DAppKitOptions,
-    VeChainWallet,
-    WalletConfig,
-    WalletSource,
-    WalletManagerState,
     ConnectResponse,
-    DriverSignedTypedData,
+    ConnectV2Callback,
+    ConnectV2Response,
     Genesis,
     SignTypedDataOptions,
+    TypedDataMessage,
+    VeChainWallet,
+    WalletConfig,
+    WalletManagerState,
+    WalletProvider,
     WalletSigner,
+    WalletSource,
 };

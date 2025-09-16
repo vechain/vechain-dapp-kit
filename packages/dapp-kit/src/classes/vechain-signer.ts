@@ -1,12 +1,12 @@
 import { JSONRPCInvalidParams } from '@vechain/sdk-errors';
 import {
-    AvailableVeChainProviders,
+    type AvailableVeChainProviders,
     DelegationHandler,
-    SignTransactionOptions,
-    SignTypedDataOptions,
-    TransactionRequestInput,
-    TypedDataDomain,
-    TypedDataParameter,
+    type SignTransactionOptions,
+    type SignTypedDataOptions,
+    type TransactionRequestInput,
+    type TypedDataDomain,
+    type TypedDataParameter,
     VeChainAbstractSigner,
 } from '@vechain/sdk-network';
 import type {
@@ -40,7 +40,7 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
     }
 
     get address(): string | null {
-        return this.walletManager.state.address;
+        return this.walletManager.state?.address ?? null;
     }
 
     connect(provider: AvailableVeChainProviders): this {
@@ -48,7 +48,7 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
     }
 
     async getAddress(): Promise<string> {
-        const addr = this.walletManager.state.address;
+        const addr = await this.walletManager.getAddress();
         if (addr === null) {
             throw new JSONRPCInvalidParams(
                 'VeChainPrivateKeySigner.getAddress()',
@@ -56,7 +56,7 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
                 {},
             );
         }
-        return Promise.resolve(addr);
+        return addr;
     }
 
     async signTransaction(

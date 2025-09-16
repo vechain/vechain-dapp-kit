@@ -1,25 +1,25 @@
+import { DAppKitLogger, type WalletManager } from '@vechain/dapp-kit';
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { DAppKitLogger, type WalletManager } from '@vechain/dapp-kit';
-import {
-    type I18n,
-    type SourceInfo,
-    type ThemeMode,
-    defaultI18n,
-    Font,
-    WalletSources,
-    VEWORLD_WEBSITE,
-} from '../../../constants';
 import {
     DarkChevronLeftSvg,
     DarkCloseSvg,
     LightChevronLeftSvg,
     LightCloseSvg,
 } from '../../../assets/icons';
-import { isMobile, subscribeToCustomEvent, useTranslate } from '../../../utils';
-import { DAppKitUI } from '../../../client';
 import { iconButtonStyle } from '../../../assets/styles';
+import { DAppKitUI } from '../../../client';
+import {
+    defaultI18n,
+    Font,
+    VEWORLD_WEBSITE,
+    WalletSources,
+    type I18n,
+    type SourceInfo,
+    type ThemeMode,
+} from '../../../constants';
+import { isMobile, subscribeToCustomEvent, useTranslate } from '../../../utils';
 
 let openWcQrcodeListener: () => void;
 let closeWcQrcodeListener: () => void;
@@ -122,8 +122,10 @@ export class ConnectModal extends LitElement {
     }
 
     private get availableSources(): SourceInfo[] {
-        return DAppKitUI.wallet.state.availableSources.map(
-            (source) => WalletSources[source],
+        return (
+            DAppKitUI.wallet.state?.availableSources.map(
+                (source) => WalletSources[source],
+            ) ?? []
         );
     }
 
@@ -131,29 +133,36 @@ export class ConnectModal extends LitElement {
         return DAppKitUI.wallet;
     }
 
+    private get v2ApiEnabled(): boolean {
+        return DAppKitUI.get().options.v2Api.enabled ?? false;
+    }
+
     @property({ type: Function })
     onSourceClick = (source?: SourceInfo): void => {
-        if (source) {
-            if (source.id === 'veworld' && !window.vechain) {
-                DAppKitLogger.debug('ConnectModal', 'Opening VeWorld website');
-                window.open(
-                    `${VEWORLD_WEBSITE}${encodeURIComponent(location.href)}`,
-                    '_self',
-                );
-                return;
-            }
-            if (source.id !== 'wallet-connect') {
-                DAppKitLogger.debug(
-                    'ConnectModal',
-                    'Initiating signature request',
-                );
-                this.setWaitingForTheSignature(true);
-                this.requestForConnectionCertificate = true;
-            }
-            this.wallet.setSource(source.id);
+        if (!source) return;
+        if (source.id === 'veworld' && !window.vechain) {
+            DAppKitLogger.debug('ConnectModal', 'Opening VeWorld website');
+            window.open(
+                `${VEWORLD_WEBSITE}${encodeURIComponent(location.href)}`,
+                '_self',
+            );
+            return;
+        }
+        if (source.id !== 'wallet-connect') {
+            DAppKitLogger.debug('ConnectModal', 'Initiating signature request');
+            this.setWaitingForTheSignature(true);
+            this.requestForConnectionCertificate = true;
+        }
+        this.wallet.setSource(source.id);
+        if (this.v2ApiEnabled) {
             this.wallet
-                .connect()
+                .connectV2(null)
                 .then(() => {
+                    DAppKitLogger.debug(
+                        'Connection Attempt',
+                        'connected successfully',
+                        Date.now(),
+                    );
                     this.requestUpdate();
                 })
                 .catch((err): void => {
@@ -165,7 +174,22 @@ export class ConnectModal extends LitElement {
                     this.setWaitingForTheSignature(false);
                     this.requestForConnectionCertificate = false;
                 });
+            return;
         }
+        this.wallet
+            .connect()
+            .then(() => {
+                this.requestUpdate();
+            })
+            .catch((err): void => {
+                DAppKitLogger.error(
+                    'Connection Attempt',
+                    'error trying to connect',
+                    err,
+                );
+                this.setWaitingForTheSignature(false);
+                this.requestForConnectionCertificate = false;
+            });
     };
 
     @property({ type: Function })

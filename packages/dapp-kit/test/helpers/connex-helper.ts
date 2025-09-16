@@ -18,5 +18,8 @@ export const createUnitTestConnex = (
     return new DAppKit({
         node: 'https://mainnet.vechain.org/',
         walletConnectOptions,
+        v2Api: {
+            enabled: true,
+        },
     });
 };

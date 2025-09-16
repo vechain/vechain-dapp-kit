@@ -1,8 +1,11 @@
-import { ConnectModalManager, DAppKitUI } from '../../src';
 import { describe, expect, it } from 'vitest';
+import { ConnectModalManager, DAppKitUI } from '../../src';
 
 DAppKitUI.configure({
     node: 'https://mainnet.vechain.org/',
+    v2Api: {
+        enabled: true,
+    },
 });
 
 describe('ConnectModalManager', () => {

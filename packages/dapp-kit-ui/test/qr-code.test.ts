@@ -24,6 +24,9 @@ describe('qr-code-modal', () => {
                     url: 'https://vechain.org',
                 },
             },
+            v2Api: {
+                enabled: true,
+            },
         });
     });
 

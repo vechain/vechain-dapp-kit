@@ -1,10 +1,10 @@
-import { describe, expect, it, vi } from 'vitest';
+import { TransactionBody } from '@vechain/sdk-core';
 import {
     AvailableVeChainProviders,
     TransactionRequestInput,
 } from '@vechain/sdk-network';
+import { describe, expect, it, vi } from 'vitest';
 import { VeChainSignerDAppKit, WalletManager } from '../../src';
-import { TransactionBody } from '@vechain/sdk-core';
 
 describe('VeChainSignerDAppKit', () => {
     const mockWallet = {
@@ -13,6 +13,7 @@ describe('VeChainSignerDAppKit', () => {
         state: {
             address: '0x456',
         },
+        getAddress: vi.fn().mockResolvedValue('0x456'),
     } as unknown as WalletManager;
 
     const mockProvider = {

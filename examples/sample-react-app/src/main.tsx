@@ -1,10 +1,10 @@
+import type { WalletConnectOptions } from '@vechain/dapp-kit';
+import { DAppKitProvider } from '@vechain/dapp-kit-react';
+import '@vechain/dapp-kit-ui';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
+import App from './App';
 import './index.css';
-import type { WalletConnectOptions } from '@vechain/dapp-kit';
-import '@vechain/dapp-kit-ui';
-import { DAppKitProvider } from '@vechain/dapp-kit-react';
 
 const walletConnectOptions: WalletConnectOptions = {
     projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
@@ -23,6 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             usePersistence
             walletConnectOptions={walletConnectOptions}
             logLevel={'DEBUG'}
+            v2Api={{ enabled: true }}
         >
             <App />
         </DAppKitProvider>

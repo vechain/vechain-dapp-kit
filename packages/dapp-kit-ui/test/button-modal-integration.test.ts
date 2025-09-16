@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
+import { WalletSource } from '@vechain/dapp-kit';
 import {
     AddressButton,
     AddressModal,
@@ -11,7 +12,6 @@ import {
     SourceInfo,
 } from '../src';
 import { elementQueries } from './helpers/element-queries';
-import { WalletSource } from '@vechain/dapp-kit';
 
 const themeVariables = {
     '--vdk-color-dark-primary': '#000000',
@@ -22,6 +22,9 @@ describe('button', () => {
         DAppKitUI.configure({
             node: 'https://mainnet.vechain.org/',
             themeVariables,
+            v2Api: {
+                enabled: true,
+            },
         });
     });
 

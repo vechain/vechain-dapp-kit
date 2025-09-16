@@ -3,6 +3,7 @@ import type {
     CertificateOptions,
     CertificateResponse,
     ConnectCallback,
+    ConnectV2Callback,
     TransactionMessage,
     TransactionOptions,
     TransactionResponse,
@@ -23,6 +24,11 @@ export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
  */
 export type DAppKitProviderOptions = DAppKitUIOptions & {
     children: React.ReactNode;
+    /**
+     * Automatically initialize the dAppKit.
+     * It will not render any child until everything has been initialized
+     */
+    autoInitialize?: boolean;
 };
 
 /**
@@ -53,6 +59,9 @@ export interface DAppKitContext {
             options?: TransactionOptions,
         ) => Promise<TransactionResponse>;
         requestTypedData: NonNullable<VeChainWallet['signTypedData']>;
+        switchWallet: () => Promise<void>;
+        initializeAsync: () => Promise<void>;
+        connectV2: ConnectV2Callback;
     };
     modal: {
         open: () => void;

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return */
+import { create } from '@vechain/connex-wallet-buddy';
 import { Blake2b256, Secp256k1 } from '@vechain/sdk-core';
 import type {
     CertificateMessage,
@@ -10,56 +10,32 @@ import type {
 } from '../types';
 import type { WalletSigner } from '../types/types';
 
-export type NewSignerFunc = (
-    genesisID: Promise<string>,
-) => Promise<WalletSigner>;
+export type NewSignerFunc = (genesisID: string) => WalletSigner;
 
-const BUDDY_SRC = 'https://unpkg.com/@vechain/connex-wallet-buddy@0.1';
-const BUDDY_LIB_NAME = 'ConnexWalletBuddy';
-
-const cache: Record<string, Promise<unknown> | undefined> = {};
-
-const loadLibrary = <T>(src: string, libName: string): Promise<T> => {
-    if (!cache[src]) {
-        const script = document.createElement('script');
-        const lib = new Promise((resolve, reject) => {
-            script.onload = () => resolve((window as never)[libName]);
-            script.onerror = (err) => reject(new Error(err.toString()));
-        });
-        cache[src] = lib;
-        script.src = src;
-        document.body.appendChild(script);
-    }
-    return cache[src] as Promise<T>;
+export const createSync2: NewSignerFunc = (genesisID) => {
+    const randomBytes = () =>
+        Buffer.from(Secp256k1.randomBytes(16))
+            .toString('hex')
+            .replace('0x', '');
+    const encoder = new TextEncoder();
+    const hashFunc = (val: string | Uint8Array) => {
+        let data: Uint8Array;
+        if (typeof val === 'string') {
+            data = encoder.encode(val);
+        } else {
+            data = val;
+        }
+        return Blake2b256.of(data).toString().replace('0x', '');
+    };
+    return create(genesisID, randomBytes, hashFunc);
 };
 
-export const createSync2: NewSignerFunc = async (genesisID) => {
-    const genesis = await genesisID;
-    return loadLibrary(BUDDY_SRC, BUDDY_LIB_NAME).then((lib: any) => {
-        const randomBytes = () =>
-            Buffer.from(Secp256k1.randomBytes(16))
-                .toString('hex')
-                .replace('0x', '');
-        const encoder = new TextEncoder();
-        const hashFunc = (val: string | Uint8Array) => {
-            let data: Uint8Array;
-            if (typeof val === 'string') {
-                data = encoder.encode(val);
-            } else {
-                data = val;
-            }
-            return Blake2b256.of(data).toString().replace('0x', '');
-        };
-        return lib.create(genesis, randomBytes, hashFunc);
-    });
-};
-
-export const createSync: NewSignerFunc = async () => {
+export const createSync = () => {
     if (!window.connex) {
         throw new Error('Connex is not available');
     }
     const v1 = window.connex.vendor;
-    return Promise.resolve({
+    return {
         signTx: (
             msg: TransactionMessage[],
             options: TransactionOptions = {},
@@ -99,5 +75,5 @@ export const createSync: NewSignerFunc = async () => {
 
             return s1.request(msg);
         },
-    });
+    };
 };

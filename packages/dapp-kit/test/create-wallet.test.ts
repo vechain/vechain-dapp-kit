@@ -1,12 +1,11 @@
+import { ThorClient } from '@vechain/sdk-network';
 import { describe, expect, it, vi } from 'vitest';
-import { createWallet } from '../src';
 import type {
     DAppKitOptions,
     WalletConnectOptions,
     WalletSource,
 } from '../src';
-import { WalletSigner } from '../src';
-import { ThorClient } from '@vechain/sdk-network';
+import { createWallet, WalletSigner } from '../src';
 import { mockedHttpClient } from './helpers/mocked-http-client';
 
 type ICreateWallet = DAppKitOptions & {
@@ -25,6 +24,9 @@ const createOptions = (
         walletConnectOptions: wcOptions,
         onDisconnected: () => {},
         thor: new ThorClient(mockedHttpClient),
+        v2Api: {
+            enabled: true,
+        },
     };
 };
 
@@ -32,34 +34,34 @@ vi.mock('@walletconnect/modal');
 
 describe('createWallet', () => {
     describe('veworld', () => {
-        it('is not installed', () => {
+        it('is not installed', async () => {
             window.vechain = undefined;
 
-            expect(() => {
-                createWallet(createOptions('veworld'));
-            }).toThrowError('VeWorld Extension is not installed');
+            await expect(
+                createWallet(createOptions('veworld')),
+            ).rejects.toThrowError('VeWorld Extension is not installed');
         });
 
-        it('is installed', () => {
+        it('is installed', async () => {
             window.vechain = {
                 newConnexSigner: () => ({}) as WalletSigner,
             };
 
-            const wallet = createWallet(createOptions('veworld'));
+            const wallet = await createWallet(createOptions('veworld'));
 
             expect(wallet).toBeDefined();
         });
     });
 
     describe('wallet-connect', () => {
-        it('no options provided', () => {
-            expect(() => {
-                createWallet(createOptions('wallet-connect'));
-            }).toThrowError('WalletConnect options are not provided');
+        it('no options provided', async () => {
+            await expect(
+                createWallet(createOptions('wallet-connect')),
+            ).rejects.toThrowError('WalletConnect options are not provided');
         });
 
-        it('options provided', () => {
-            const wallet = createWallet(
+        it('options provided', async () => {
+            const wallet = await createWallet(
                 createOptions('wallet-connect', {
                     projectId: '123',
                     metadata: {

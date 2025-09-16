@@ -1,10 +1,10 @@
+import { shortenedDomain } from '@vechain/dapp-kit';
 import { css, html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Font, type ThemeMode } from '../../constants';
-import { friendlyAddress, getPicassoImage } from '../../utils/account';
 import { buttonStyle } from '../../assets/styles';
 import { DAppKitUI } from '../../client';
-import { shortenedDomain } from '@vechain/dapp-kit';
+import { Font, type ThemeMode } from '../../constants';
+import { friendlyAddress, getPicassoImage } from '../../utils/account';
 
 @customElement('vdk-address-button')
 export class AddressButton extends LitElement {

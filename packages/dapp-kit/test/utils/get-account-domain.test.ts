@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
-import { getAccountDomain } from '../../src/utils/get-account-domain';
 import { ABIContract } from '@vechain/sdk-core';
+import { describe, expect, it, vi } from 'vitest';
 import { VNS_RESOLVER } from '../../src';
+import { getAccountDomain } from '../../src/utils/get-account-domain';
 
 describe('getAccountDomain', () => {
     const mockThor = {
@@ -29,7 +29,7 @@ describe('getAccountDomain', () => {
 
         mockThor.thor.contracts.executeCall.mockResolvedValue({
             result: {
-                array: [mockDomain],
+                array: [[mockDomain]],
             },
         });
 

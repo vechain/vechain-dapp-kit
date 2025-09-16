@@ -1,9 +1,9 @@
-import renderer from 'react-test-renderer';
+import { WalletConnectOptions } from '@vechain/dapp-kit';
+import { DAppKitProvider } from '@vechain/dapp-kit-react';
 import React from 'react';
+import renderer from 'react-test-renderer';
 import { expect, test } from 'vitest';
 import App from '../src/App';
-import { DAppKitProvider } from '@vechain/dapp-kit-react';
-import { WalletConnectOptions } from '@vechain/dapp-kit';
 
 test('Welcome', async () => {
     const walletConnectOptions: WalletConnectOptions = {
@@ -21,6 +21,7 @@ test('Welcome', async () => {
                 node={'https://testnet.vechain.org/'}
                 usePersistence
                 walletConnectOptions={walletConnectOptions}
+                v2Api={{ enabled: true }}
             >
                 <App />
             </DAppKitProvider>

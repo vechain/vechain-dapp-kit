@@ -11,9 +11,11 @@ import type {
     CertificateOptions,
     CertificateResponse,
     ConnectResponse,
+    ConnectV2Response,
     TransactionMessage,
     TransactionOptions,
     TransactionResponse,
+    TypedDataMessage,
     WCSigner,
     WCSignerOptions,
 } from '../types';
@@ -36,9 +38,7 @@ export const createWcSigner = ({
     web3Modal,
     onDisconnected,
 }: WCSignerOptions): WCSigner => {
-    const chainId = genesisId.then((id) => {
-        return `vechain:${id.slice(-32)}`;
-    });
+    const chainId = `vechain:${genesisId.slice(-32)}`;
 
     let session: SessionTypes.Struct | undefined;
     let signClient: SignClient;
@@ -290,10 +290,32 @@ export const createWcSigner = ({
         }
     };
 
+    const getAddress = () => {
+        if (!session) return null;
+        const fullAccount = session.namespaces.vechain?.accounts?.[0];
+        if (!fullAccount) return null;
+        return fullAccount.split(':')[2];
+    };
+
+    const getAvailableMethods = () => null;
+    const switchWallet = () => null;
+
+    const connectV2 = async <
+        TValue extends null | CertificateMessage | TypedDataMessage,
+    >(
+        _value: TValue,
+    ): Promise<ConnectV2Response<TValue>> => {
+        throw new Error('Method not implemented');
+    };
+
     return {
         signTx,
         signCert,
         disconnect,
         connect: connectAccount,
+        getAddress,
+        getAvailableMethods,
+        connectV2,
+        switchWallet,
     };
 };

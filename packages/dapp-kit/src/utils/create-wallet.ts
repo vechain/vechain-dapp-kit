@@ -1,4 +1,5 @@
-import type { ThorClient } from '@vechain/sdk-network';
+import { ThorClient } from '@vechain/sdk-network';
+import { CertificateBasedWallet } from '../classes';
 import type {
     DAppKitOptions,
     VeChainWallet,
@@ -6,12 +7,11 @@ import type {
     WCClient,
     WCModal,
 } from '../types';
-import { CertificateBasedWallet } from '../classes';
+import { createSync, createSync2 } from './create-sync2';
 import { createWcClient } from './create-wc-client';
 import { createWcModal } from './create-wc-modal';
 import { createWcSigner } from './create-wc-signer';
 import { DAppKitLogger } from './logger';
-import { createSync, createSync2 } from './create-sync2';
 
 type ICreateWallet = DAppKitOptions & {
     source: WalletSource;
@@ -19,21 +19,19 @@ type ICreateWallet = DAppKitOptions & {
     thor: ThorClient;
 };
 
-export const createWallet = ({
+export const createWallet = async ({
     source,
     thor,
     walletConnectOptions,
     onDisconnected,
     connectionCertificate,
-}: ICreateWallet): VeChainWallet => {
+}: ICreateWallet): Promise<VeChainWallet> => {
     DAppKitLogger.debug('createWallet', source);
 
-    const genesisId = thor.blocks.getGenesisBlock().then((block) => {
-        if (!block) {
-            throw new Error('Failed to get genesis block');
-        }
-        return block.id;
-    });
+    const genesisId = await thor.blocks
+        .getGenesisBlock()
+        .then((block) => block?.id);
+    if (!genesisId) throw new Error('Failed to get genesis block');
 
     switch (source) {
         case 'sync': {
@@ -41,36 +39,41 @@ export const createWallet = ({
                 throw new Error('Connex is not available');
             }
 
-            const signer = createSync(genesisId);
-            return new CertificateBasedWallet(signer, connectionCertificate);
+            const signer = createSync();
+            return new CertificateBasedWallet(
+                signer,
+                null,
+                genesisId,
+                connectionCertificate,
+            );
         }
         case 'sync2': {
             const signer = createSync2(genesisId);
-            return new CertificateBasedWallet(signer, connectionCertificate);
+            return new CertificateBasedWallet(
+                signer,
+                null,
+                genesisId,
+                connectionCertificate,
+            );
         }
         case 'veworld': {
-            if (!window.vechain) {
-                throw new Error('VeWorld Extension is not installed');
+            try {
+                if (!window.vechain) {
+                    throw new Error('VeWorld Extension is not installed');
+                }
+                const veworld = window.vechain.newConnexSigner(genesisId);
+                return new CertificateBasedWallet(
+                    veworld,
+                    'send' in window.vechain
+                        ? { send: window.vechain.send }
+                        : null,
+                    genesisId,
+                    connectionCertificate,
+                );
+            } catch (e) {
+                DAppKitLogger.error('createWallet', 'veworld', e);
+                throw e;
             }
-
-            const signer: Promise<VeChainWallet> = genesisId
-                .then((genesis) => {
-                    if (!window.vechain) {
-                        throw new Error('VeWorld Extension is not installed');
-                    }
-
-                    const veworld = window.vechain.newConnexSigner(genesis);
-                    return new CertificateBasedWallet(
-                        Promise.resolve(veworld),
-                        connectionCertificate,
-                    );
-                })
-                .catch((e) => {
-                    DAppKitLogger.error('createWallet', 'veworld', e);
-                    throw e;
-                });
-
-            return new CertificateBasedWallet(signer, connectionCertificate);
         }
         case 'wallet-connect': {
             if (!walletConnectOptions) {

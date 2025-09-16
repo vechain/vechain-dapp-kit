@@ -1,6 +1,7 @@
-import { describe, expect, it, vi } from 'vitest';
+import { MAINNET_NETWORK } from '@vechain/sdk-core';
 import { SignClient } from '@walletconnect/sign-client';
 import type { SignClientTypes } from '@walletconnect/types';
+import { describe, expect, it, vi } from 'vitest';
 import type { WCModal, WCSigner } from '../../src';
 import { createWcClient, createWcSigner } from '../../src';
 import { mockedSignClient } from '../helpers/mocked-sign-client';
@@ -26,7 +27,7 @@ const customModal: WCModal = {
 
 const createNewSignClient = (): WCSigner =>
     createWcSigner({
-        genesisId: Promise.resolve('main'),
+        genesisId: MAINNET_NETWORK.genesisBlock.id,
         wcClient: createWcClient({ projectId, metadata }),
         onDisconnected: () => {
             // eslint-disable-next-line no-console

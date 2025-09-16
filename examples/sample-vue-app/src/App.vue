@@ -32,6 +32,9 @@ const vechainDAppKitOptions = {
     node: 'https://testnet.vechain.org/',
     walletConnectOptions,
     usePersistence: true,
+    v2Api: {
+        enabled: true
+    }
 };
 
 DAppKitUI.configure(vechainDAppKitOptions);

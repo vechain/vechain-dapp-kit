@@ -2,13 +2,16 @@ export type {
     CertificateArgs,
     ConnectCallback,
     ConnectResponse,
-    VeChainWallet,
-    DAppKitOptions,
+    ConnectV2Callback,
+    ConnectV2Response,
     Genesis,
+    TypedDataMessage,
+    VeChainWallet,
     WalletConfig,
     WalletManagerState,
-    WalletSource,
+    WalletProvider,
     WalletSigner,
+    WalletSource,
 } from './types';
 
 export type {
@@ -21,5 +24,7 @@ export type {
     WCSigner,
     WCSignerOptions,
 } from './wc-types';
+
+export type { DAppKitOptions } from './options';
 
 export * from './requests';

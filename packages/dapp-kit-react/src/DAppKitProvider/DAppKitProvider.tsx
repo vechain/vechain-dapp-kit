@@ -1,4 +1,8 @@
-import type { DAppKit, WalletSource } from '@vechain/dapp-kit';
+import {
+    DAppKitLogger,
+    type DAppKit,
+    type WalletSource,
+} from '@vechain/dapp-kit';
 import { DAppKitUI } from '@vechain/dapp-kit-ui';
 import type { CertificateData } from '@vechain/sdk-core';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -9,9 +13,11 @@ import { Context } from './context';
 export const DAppKitProviderData = ({
     children,
     dAppKit,
+    initialized,
 }: {
     children: React.ReactNode;
     dAppKit: DAppKit;
+    initialized: boolean;
 }): React.ReactElement => {
     const [account, setAccount] = useState<string | null>(
         dAppKit.wallet.state.address,
@@ -102,6 +108,9 @@ export const DAppKitProviderData = ({
                 requestCertificate: dAppKit.wallet.signCert,
                 requestTransaction: dAppKit.wallet.signTx,
                 requestTypedData: dAppKit.wallet.signTypedData,
+                switchWallet: dAppKit.wallet.switchWallet,
+                initializeAsync: dAppKit.wallet.initializeStateAsync,
+                connectV2: dAppKit.wallet.connectV2,
             },
             modal: {
                 open: openModal,
@@ -121,7 +130,11 @@ export const DAppKitProviderData = ({
         onModalConnected,
     ]);
 
-    return <Context.Provider value={context}>{children}</Context.Provider>;
+    return (
+        <Context.Provider value={context}>
+            {initialized ? children : null}
+        </Context.Provider>
+    );
 };
 
 export const DAppKitProvider = ({
@@ -139,26 +152,42 @@ export const DAppKitProvider = ({
     onSourceClick,
     connectionCertificate: connectionCertificateData,
     allowedWallets,
+    v2Api,
+    autoInitialize = true,
 }: DAppKitProviderOptions): React.ReactElement | null => {
     const [dAppKit, setDAppKit] = useState<DAppKit | null>(null);
+    const [_initialized, setInitialized] = useState(!autoInitialize);
     useEffect(() => {
-        setDAppKit(
-            DAppKitUI.configure({
-                node,
-                walletConnectOptions,
-                usePersistence,
-                logLevel,
-                requireCertificate,
-                themeVariables,
-                themeMode,
-                i18n,
-                language,
-                modalParent,
-                onSourceClick,
-                connectionCertificate: connectionCertificateData,
-                allowedWallets,
-            }),
-        );
+        const kit = DAppKitUI.configure({
+            node,
+            walletConnectOptions,
+            usePersistence,
+            logLevel,
+            requireCertificate,
+            themeVariables,
+            themeMode,
+            i18n,
+            language,
+            modalParent,
+            onSourceClick,
+            connectionCertificate: connectionCertificateData,
+            allowedWallets,
+            v2Api,
+        });
+        setDAppKit(kit);
+        if (v2Api.enabled && autoInitialize)
+            kit.initialize()
+                .then(() => {
+                    DAppKitLogger.debug(
+                        'DAppKitProvider',
+                        'v2 initialize',
+                        'initialized',
+                    );
+                    setInitialized(true);
+                })
+                .catch((e) => {
+                    DAppKitLogger.error('DAppKitProvider', 'v2 initialize', e);
+                });
     }, [
         node,
         walletConnectOptions,
@@ -173,11 +202,21 @@ export const DAppKitProvider = ({
         onSourceClick,
         connectionCertificateData,
         allowedWallets,
+        v2Api.enabled,
+        autoInitialize,
     ]);
+
+    const initialized = useMemo(
+        () => (v2Api.enabled ? _initialized : true),
+        [_initialized],
+    );
+
     if (!dAppKit) {
         return null;
     }
     return (
-        <DAppKitProviderData dAppKit={dAppKit}>{children}</DAppKitProviderData>
+        <DAppKitProviderData dAppKit={dAppKit} initialized={initialized}>
+            {children}
+        </DAppKitProviderData>
     );
 };

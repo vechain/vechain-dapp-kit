@@ -28,6 +28,9 @@ DAppKitUI.configure({
     node: 'https://testnet.vechain.org/',
     walletConnectOptions,
     usePersistence: true,
+    v2Api: {
+        enabled: true,
+    },
 });
 
 // custom button configuration

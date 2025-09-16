@@ -1,4 +1,4 @@
-import { html, LitElement, type TemplateResult, nothing } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { DAppKitUI } from '../../client';
 import {
@@ -100,6 +100,11 @@ export class Modal extends LitElement {
         DAppKitUI.wallet.disconnect();
     };
 
+    @property({ type: Function })
+    onSwitchWalletClick = (): void => {
+        DAppKitUI.wallet.switchWallet().then(() => DAppKitUI.modal.close());
+    };
+
     override render(): TemplateResult {
         if (!DAppKitUI.initialized) {
             return html``;
@@ -116,6 +121,7 @@ export class Modal extends LitElement {
                           .accountDomain=${this.accountDomain}
                           .isAccountDomainLoading=${this.isAccountDomainLoading}
                           .onDisconnectClick=${this.onDisconnectClick}
+                          .onSwitchWalletClick=${this.onSwitchWalletClick}
                       ></vdk-address-modal>`
                     : html` <vdk-connect-modal
                           .mode=${this.mode}

@@ -90,6 +90,7 @@ export const App = () => {
             node="https://testnet.vechain.org/"
             usePersistence
             walletConnectOptions={walletConnectOptions}
+            v2Api={{ enabled: true }}
         >
             <AppContent />
         </DAppKitProvider>

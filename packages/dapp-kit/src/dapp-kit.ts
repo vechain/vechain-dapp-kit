@@ -1,14 +1,15 @@
 import { ThorClient, VeChainProvider } from '@vechain/sdk-network';
 import { VeChainSignerDAppKit, WalletManager } from './classes';
-import { DAppKitLogger } from './utils';
 import type { DAppKitOptions } from './types';
+import { DAppKitLogger } from './utils';
 
 class DAppKit {
     public readonly thor: ThorClient;
     public readonly wallet: WalletManager;
     public readonly signer: VeChainSignerDAppKit;
 
-    constructor(options: DAppKitOptions) {
+    constructor(public readonly options: DAppKitOptions) {
+        this.options = options;
         if (options.logLevel) {
             DAppKitLogger.configure(options.logLevel);
             DAppKitLogger.debug('DAppKit', 'constructor', options);
@@ -25,6 +26,19 @@ class DAppKit {
             this.wallet,
             new VeChainProvider(this.thor),
         );
+    }
+
+    async initialize() {
+        if (!this.options.v2Api.enabled) {
+            DAppKitLogger.debug(
+                'DAppKit',
+                'initialize',
+                'tried to call DAppKit.initialize when supportNewMethods is set to off. Skipping',
+            );
+            return;
+        }
+        await this.wallet.initializeStateAsync();
+        await this.wallet.populateAvailableMethods();
     }
 }
 

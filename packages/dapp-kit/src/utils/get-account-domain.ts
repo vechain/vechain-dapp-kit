@@ -1,6 +1,6 @@
-import { genesisBlocks, VNS_RESOLVER } from '../constants';
-import { ThorClient } from '@vechain/sdk-network';
 import { ABIContract } from '@vechain/sdk-core';
+import { ThorClient } from '@vechain/sdk-network';
+import { genesisBlocks, VNS_RESOLVER } from '../constants';
 
 /**
  * Get the domain of an account
@@ -28,5 +28,5 @@ export const getAccountDomain = async ({
     );
     const resArray = res.result.array as string[];
 
-    return (resArray[0] as string) || null;
+    return (resArray[0]?.[0] as string) || null;
 };

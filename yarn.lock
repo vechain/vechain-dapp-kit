@@ -7879,6 +7879,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vechain/connex-wallet-buddy@npm:^0.1.11":
+  version: 0.1.11
+  resolution: "@vechain/connex-wallet-buddy@npm:0.1.11"
+  dependencies:
+    detect-browser: "npm:^5.2.0"
+  checksum: 10c0/dfb782226b421f1234452f532cd8eaaa861d2c42b3574d3aa544f088887faea836800b5420ce0546a27f1ade5765123176596f4d6072fb0d2be41405ef3f476a
+  languageName: node
+  linkType: hard
+
 "@vechain/dapp-kit-react@workspace:*, @vechain/dapp-kit-react@workspace:packages/dapp-kit-react":
   version: 0.0.0-use.local
   resolution: "@vechain/dapp-kit-react@workspace:packages/dapp-kit-react"
@@ -7938,6 +7947,7 @@ __metadata:
   dependencies:
     "@types/react": "npm:^19.1.0"
     "@types/react-dom": "npm:^19.1.1"
+    "@vechain/connex-wallet-buddy": "npm:^0.1.11"
     "@vechain/sdk-core": "npm:1.2.0"
     "@vechain/sdk-errors": "npm:1.2.0"
     "@vechain/sdk-network": "npm:1.2.0"
@@ -7953,6 +7963,7 @@ __metadata:
     tsup: "npm:^8.4.0"
     typescript: "npm:^5.8.3"
     valtio: "npm:1.13.2"
+    viem: "npm:2.23.2"
     vite: "npm:^6.2.5"
     vitest: "npm:^3.1.1"
   languageName: unknown
@@ -11481,7 +11492,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"detect-browser@npm:5.3.0":
+"detect-browser@npm:5.3.0, detect-browser@npm:^5.2.0":
   version: 5.3.0
   resolution: "detect-browser@npm:5.3.0"
   checksum: 10c0/88d49b70ce3836e7971345b2ebdd486ad0d457d1e4f066540d0c12f9210c8f731ccbed955fcc9af2f048f5d4629702a8e46bedf5bcad42ad49a3a0927bfd5a76

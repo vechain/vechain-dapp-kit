@@ -12,6 +12,7 @@ export const defaultI18n: I18n = {
         'sign-connection-certificate-description':
             'Proof address is required, please sign a certificate to continue',
         'waiting-signature': 'Waiting for signature...',
+        'switch-wallet': 'Switch wallet',
     },
     it: {
         'connect-wallet': 'Connetti il Wallet',
@@ -24,6 +25,7 @@ export const defaultI18n: I18n = {
         'sign-connection-certificate-description':
             'È richiesta una firma di certificato per connettersi al wallet.',
         'waiting-signature': 'Attendo firma...',
+        'switch-wallet': 'Cambia wallet',
     },
     fr: {
         'connect-wallet': 'Connecter le portefeuille',
