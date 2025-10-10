@@ -155,16 +155,21 @@ export class ConnectModal extends LitElement {
         }
         this.wallet.setSource(source.id);
         if (this.v2ApiEnabled) {
-            this.wallet
-                .connectV2(null)
-                .then(() => {
+            DAppKitUI.configuration?.v2Api
+                .onConnectRequest(source)
+                .then((value) => this.wallet.connectV2(value))
+                .then((result) => {
                     DAppKitLogger.debug(
                         'Connection Attempt',
                         'connected successfully',
                         Date.now(),
                     );
-                    this.requestUpdate();
+                    return DAppKitUI.configuration?.v2Api.onConnectResponse(
+                        source,
+                        result,
+                    );
                 })
+                .then(() => this.requestUpdate())
                 .catch((err): void => {
                     DAppKitLogger.error(
                         'Connection Attempt',
