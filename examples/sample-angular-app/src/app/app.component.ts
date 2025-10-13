@@ -1,6 +1,14 @@
 // Angular modules
 import { Component, CUSTOM_ELEMENTS_SCHEMA, type OnInit } from '@angular/core';
-import { DAppKitUI } from '@vechain/dapp-kit-ui';
+import { CertificateMessage, TypedDataMessage } from '@vechain/dapp-kit';
+import { DAppKitUI, DAppKitUIOptions } from '@vechain/dapp-kit-ui';
+
+type OnConnectRequest = NonNullable<
+    DAppKitUIOptions['v2Api']['onConnectRequest']
+>;
+type OnConnectResponse = NonNullable<
+    DAppKitUIOptions['v2Api']['onConnectResponse']
+>;
 
 @Component({
     selector: 'app-root',
@@ -12,6 +20,9 @@ export class AppComponent implements OnInit {
     // -------------------------------------------------------------------------------
     // NOTE Init ---------------------------------------------------------------------
     // -------------------------------------------------------------------------------
+
+    private onConnectRequest: OnConnectRequest = () => Promise.resolve(null);
+    private onConnectResponse: OnConnectResponse = () => Promise.resolve();
 
     public ngOnInit(): void {
         const walletConnectOptions = {
@@ -30,6 +41,8 @@ export class AppComponent implements OnInit {
             usePersistence: true,
             v2Api: {
                 enabled: true,
+                onConnectRequest: (...args) => this.onConnectRequest(...args),
+                onConnectResponse: (...args) => this.onConnectResponse(...args),
             },
         });
 
@@ -81,4 +94,42 @@ export class AppComponent implements OnInit {
             { test: [{ name: 'test', type: 'address' }] },
             { test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68' },
         );
+
+    public triggerCertificate = () =>
+        (this.onConnectRequest = () =>
+            Promise.resolve({
+                payload: {
+                    //<<veworld_address>> will be replaced by the user's wallet on VeWorld mobile
+                    content:
+                        'Test Message. Here is the user wallet: <<veworld_address>>',
+                    type: 'text',
+                },
+                purpose: 'identification',
+            } satisfies CertificateMessage));
+
+    public triggerNull = () =>
+        (this.onConnectRequest = () => Promise.resolve(null));
+    public triggerSignTypedData = () =>
+        (this.onConnectRequest = () =>
+            Promise.resolve({
+                domain: {
+                    name: 'Test Data',
+                    version: '1',
+                    chainId: 1,
+                    verifyingContract:
+                        '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+                },
+                types: {
+                    test: [
+                        { name: 'test', type: 'address' },
+                        { name: 'veworld_login_address', type: 'address' },
+                    ],
+                },
+                value: {
+                    test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+                    //This will be replaced by the user's wallet on VeWorld mobile.
+                    veworld_login_address:
+                        '0x0000000000000000000000000000000000000000',
+                },
+            } satisfies TypedDataMessage));
 }
