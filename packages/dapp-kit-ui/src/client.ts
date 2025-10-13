@@ -81,8 +81,14 @@ export const DAppKitUI = {
             options.v2Api.onConnectRequest = () => Promise.resolve(null);
         if (!options.v2Api.onConnectResponse)
             options.v2Api.onConnectResponse = () => Promise.resolve();
+        if (options.v2Api.autoInitialize === undefined)
+            options.v2Api.autoInitialize = true;
         dappKitOptions = options as ParsedOptions;
         dappKit = new DAppKit(options);
+
+        if (options.v2Api.autoInitialize) {
+            dappKit.initialize();
+        }
 
         // init modal so that on the first opening it doesn't have to create it
         ConnectModalManager.getInstance(this.wallet, {
