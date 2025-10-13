@@ -64,6 +64,7 @@ export const Provider = ({ children }: PropsWithChildren) => {
         (source, value) => {
             if (onConnectResponseRef.current)
                 return onConnectResponseRef.current(source, value);
+            alert(JSON.stringify(value));
             return Promise.resolve();
         },
         [],
