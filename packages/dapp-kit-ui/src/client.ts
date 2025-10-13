@@ -40,8 +40,18 @@ type OnConnectV2Callbacks = {
     ) => Promise<void>;
 };
 
+type DappKitUIV2ApiOptions = DAppKitOptions['v2Api'] &
+    OnConnectV2Callbacks & {
+        /**
+         * Initialize the DappKit instance automatically (`DappKit.initialize()`). Function is a Promise but should resolve immediately.
+         * If you're seeing any issues with SSR, disable it.
+         * @default true
+         */
+        autoInitialize?: boolean;
+    };
+
 type ParsedOptions = Omit<DAppKitUIOptions, 'v2Api'> & {
-    v2Api: DAppKitOptions['v2Api'] & Required<OnConnectV2Callbacks>;
+    v2Api: DappKitUIV2ApiOptions & Required<OnConnectV2Callbacks>;
 };
 
 let dappKit: DAppKit | null = null;
@@ -55,7 +65,7 @@ export type DAppKitUIOptions = DAppKitOptions & {
     language?: string;
     modalParent?: HTMLElement;
     onSourceClick?: (source?: SourceInfo) => void;
-    v2Api: DAppKitOptions['v2Api'] & OnConnectV2Callbacks;
+    v2Api: DappKitUIV2ApiOptions;
 };
 
 export const DAppKitUI = {

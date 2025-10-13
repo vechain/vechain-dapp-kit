@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
             },
         };
 
-        const dappKit = DAppKitUI.configure({
+        DAppKitUI.configure({
             node: 'https://testnet.vechain.org/',
             walletConnectOptions,
             usePersistence: true,
@@ -45,8 +45,6 @@ export class AppComponent implements OnInit {
                 onConnectResponse: (...args) => this.onConnectResponse(...args),
             },
         });
-
-        dappKit.initialize();
 
         // custom button configuration
         const customButton = document.getElementById('custom-button');

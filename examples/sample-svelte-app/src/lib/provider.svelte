@@ -27,7 +27,6 @@
                     context.onConnectResponse(...args),
             },
         });
-        context.dappKit.initialize();
     });
 
     setDappKitFunctionsContext(context);

@@ -62,8 +62,7 @@ const vechainDAppKitOptions: DAppKitUIOptions = {
     },
 };
 
-const dappKit = DAppKitUI.configure(vechainDAppKitOptions);
-dappKit.initialize()
+DAppKitUI.configure(vechainDAppKitOptions);
 
 // custom button configuration
 

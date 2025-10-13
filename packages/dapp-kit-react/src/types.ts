@@ -24,11 +24,6 @@ export type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
  */
 export type DAppKitProviderOptions = DAppKitUIOptions & {
     children: React.ReactNode;
-    /**
-     * Automatically initialize the dAppKit.
-     * It will not render any child until everything has been initialized
-     */
-    autoInitialize?: boolean;
 };
 
 /**
