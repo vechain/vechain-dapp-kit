@@ -1,15 +1,18 @@
 'use client'; // This is a client component
-import { type ReactElement, useEffect, useState } from 'react';
+import { useDappKitFunctions } from '@/providers/provider';
+import { CertificateMessage, TypedDataMessage } from '@vechain/dapp-kit';
 import {
     useWallet,
     useWalletModal,
     WalletButton,
 } from '@vechain/dapp-kit-react';
+import { type ReactElement, useEffect, useState } from 'react';
 
 const Button = (): ReactElement => {
     const { account, signer } = useWallet();
     const { open, onConnectionStatusChange } = useWalletModal();
     const [buttonText, setButtonText] = useState('Connect Custom Button');
+    const { onConnectRequest } = useDappKitFunctions();
 
     const sendTx = () =>
         signer?.sendTransaction({
@@ -34,6 +37,48 @@ const Button = (): ReactElement => {
             { test: [{ name: 'test', type: 'address' }] },
             { test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68' },
         );
+
+    const triggerCertificate = () => {
+        onConnectRequest.current = () =>
+            Promise.resolve({
+                payload: {
+                    //<<veworld_address>> will be replaced by the user's wallet on VeWorld mobile
+                    content:
+                        'Test Message. Here is the user wallet: <<veworld_address>>',
+                    type: 'text',
+                },
+                purpose: 'identification',
+            } satisfies CertificateMessage);
+    };
+
+    const triggerNull = () => {
+        onConnectRequest.current = () => Promise.resolve(null);
+    };
+
+    const triggerSignTypedData = () => {
+        onConnectRequest.current = () =>
+            Promise.resolve({
+                domain: {
+                    name: 'Test Data',
+                    version: '1',
+                    chainId: 1,
+                    verifyingContract:
+                        '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+                },
+                types: {
+                    test: [
+                        { name: 'test', type: 'address' },
+                        { name: 'veworld_login_address', type: 'address' },
+                    ],
+                },
+                value: {
+                    test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+                    //This will be replaced by the user's wallet on VeWorld mobile.
+                    veworld_login_address:
+                        '0x0000000000000000000000000000000000000000',
+                },
+            } satisfies TypedDataMessage);
+    };
 
     useEffect(() => {
         const handleConnected = (address: string | null): void => {
@@ -66,6 +111,19 @@ const Button = (): ReactElement => {
             <button onClick={sendTx}>Send TX</button>
             <div className="label">Typed Data</div>
             <button onClick={signTypedData}>Sign Typed Data</button>
+            {!account && (
+                <>
+                    <button onClick={triggerNull}>
+                        Trigger connection with no signature
+                    </button>
+                    <button onClick={triggerSignTypedData}>
+                        Trigger connection with typed data
+                    </button>
+                    <button onClick={triggerCertificate}>
+                        Trigger connection with certificate
+                    </button>
+                </>
+            )}
         </div>
     );
 };
