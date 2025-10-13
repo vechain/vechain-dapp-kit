@@ -11,12 +11,31 @@
         <button v-on:click="sendTx">Send TX</button>
         <div class="label">Typed Data</div>
         <button v-on:click="signTypedData">Sign Typed Data</button>
+        <template v-if="!Boolean(address)">
+            <button v-on:click="triggerNull">
+                Trigger connection with no signature
+            </button>
+            <button v-on:click="triggerSignTypedData">
+                Trigger connection with typed data
+            </button>
+            <button v-on:click="triggerCertificate">
+                Trigger connection with certificate
+            </button>
+        </template>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { DAppKitUI } from '@vechain/dapp-kit-ui';
+import { defineComponent, ref } from 'vue';
+import { DAppKitUI, DAppKitUIOptions } from '@vechain/dapp-kit-ui';
+import { CertificateMessage, TypedDataMessage } from '@vechain/dapp-kit';
+
+type OnConnectRequest = NonNullable<
+    DAppKitUIOptions['v2Api']['onConnectRequest']
+>;
+type OnConnectResponse = NonNullable<
+    DAppKitUIOptions['v2Api']['onConnectResponse']
+>;
 
 const walletConnectOptions = {
     projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
@@ -28,16 +47,23 @@ const walletConnectOptions = {
     },
 };
 
-const vechainDAppKitOptions = {
+let onConnectRequest = ref<OnConnectRequest>(() => Promise.resolve(null));
+let onConnectResponse = ref<OnConnectResponse>(() => Promise.resolve());
+let address = ref('');
+
+const vechainDAppKitOptions: DAppKitUIOptions = {
     node: 'https://testnet.vechain.org/',
     walletConnectOptions,
     usePersistence: true,
     v2Api: {
-        enabled: true
-    }
+        enabled: true,
+        onConnectRequest: (...args) => onConnectRequest.value(...args),
+        onConnectResponse: (...args) => onConnectResponse.value(...args),
+    },
 };
 
-DAppKitUI.configure(vechainDAppKitOptions);
+const dappKit = DAppKitUI.configure(vechainDAppKitOptions);
+dappKit.initialize()
 
 // custom button configuration
 
@@ -48,12 +74,13 @@ setTimeout(() => {
             DAppKitUI.modal.open();
         });
 
-        const handleConnected = (address: string | null) => {
-            if (address) {
-                const formattedAddress = `${address.slice(
+        const handleConnected = (_address: string | null) => {
+            address.value = _address ?? '';
+            if (_address) {
+                const formattedAddress = `${_address.slice(
                     0,
                     6,
-                )}...${address.slice(-4)}`;
+                )}...${_address.slice(-4)}`;
                 customButton.innerText = `Disconnect from ${formattedAddress}`;
             } else {
                 customButton.innerText = 'Connect Custom Button';
@@ -76,9 +103,9 @@ export default defineComponent({
                 clauses: [
                     {
                         to: DAppKitUI.wallet.state.address,
-                       value: '01',
+                        value: '01',
                         data: '0x',
-                   },
+                    },
                 ],
                 comment: 'Send 1 Wei',
             });
@@ -88,14 +115,58 @@ export default defineComponent({
                 {
                     name: 'Test Data',
                     version: '1',
-                   chainId: 1,
+                    chainId: 1,
                     verifyingContract:
                         '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
                 },
-               { test: [{ name: 'test', type: 'address' }] },
+                { test: [{ name: 'test', type: 'address' }] },
                 { test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68' },
             );
         },
+        triggerNull: () => {
+            onConnectRequest.value = () => Promise.resolve(null);
+        },
+        triggerCertificate: () => {
+            onConnectRequest.value = () =>
+                Promise.resolve({
+                    payload: {
+                        //<<veworld_address>> will be replaced by the user's wallet on VeWorld mobile
+                        content:
+                            'Test Message. Here is the user wallet: <<veworld_address>>',
+                        type: 'text',
+                    },
+                    purpose: 'identification',
+                } satisfies CertificateMessage);
+        },
+        triggerSignTypedData: () => {
+            onConnectRequest.value = () =>
+                Promise.resolve({
+                    domain: {
+                        name: 'Test Data',
+                        version: '1',
+                        chainId: 1,
+                        verifyingContract:
+                            '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+                    },
+                    types: {
+                        test: [
+                            { name: 'test', type: 'address' },
+                            { name: 'veworld_login_address', type: 'address' },
+                        ],
+                    },
+                    value: {
+                        test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+                        //This will be replaced by the user's wallet on VeWorld mobile.
+                        veworld_login_address:
+                            '0x0000000000000000000000000000000000000000',
+                    },
+                } satisfies TypedDataMessage);
+        },
+    },
+    data() {
+        return {
+            address,
+        };
     },
 });
 </script>
