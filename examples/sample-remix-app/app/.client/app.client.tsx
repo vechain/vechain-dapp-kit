@@ -1,16 +1,17 @@
+import { CertificateMessage, TypedDataMessage } from '@vechain/dapp-kit';
 import {
-    DAppKitProvider,
     useWallet,
     useWalletModal,
     WalletButton,
-    WalletConnectOptions,
 } from '@vechain/dapp-kit-react';
 import { useEffect, useState } from 'react';
+import { Provider, useDappKitFunctions } from './provider';
 
 const AppContent = () => {
     const { account, signer } = useWallet();
     const { open, onConnectionStatusChange } = useWalletModal();
     const [buttonText, setButtonText] = useState('Connect Custom Button');
+    const { onConnectRequest } = useDappKitFunctions();
 
     useEffect(() => {
         const handleConnected = (address: string | null) => {
@@ -54,6 +55,48 @@ const AppContent = () => {
             { test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68' },
         );
 
+    const triggerCertificate = () => {
+        onConnectRequest.current = () =>
+            Promise.resolve({
+                payload: {
+                    //<<veworld_address>> will be replaced by the user's wallet on VeWorld mobile
+                    content:
+                        'Test Message. Here is the user wallet: <<veworld_address>>',
+                    type: 'text',
+                },
+                purpose: 'identification',
+            } satisfies CertificateMessage);
+    };
+
+    const triggerNull = () => {
+        onConnectRequest.current = () => Promise.resolve(null);
+    };
+
+    const triggerSignTypedData = () => {
+        onConnectRequest.current = () =>
+            Promise.resolve({
+                domain: {
+                    name: 'Test Data',
+                    version: '1',
+                    chainId: 1,
+                    verifyingContract:
+                        '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+                },
+                types: {
+                    test: [
+                        { name: 'test', type: 'address' },
+                        { name: 'veworld_login_address', type: 'address' },
+                    ],
+                },
+                value: {
+                    test: '0x435933c8064b4Ae76bE665428e0307eF2cCFBD68',
+                    //This will be replaced by the user's wallet on VeWorld mobile.
+                    veworld_login_address:
+                        '0x0000000000000000000000000000000000000000',
+                },
+            } satisfies TypedDataMessage);
+    };
+
     return (
         <div className="container">
             <h2>Remix</h2>
@@ -65,34 +108,27 @@ const AppContent = () => {
             <button onClick={sendTx}>Send TX</button>
             <div className="label">Typed Data</div>
             <button onClick={signTypedData}>Sign Typed Data</button>
+            {!account && (
+                <>
+                    <button onClick={triggerNull}>
+                        Trigger connection with no signature
+                    </button>
+                    <button onClick={triggerSignTypedData}>
+                        Trigger connection with typed data
+                    </button>
+                    <button onClick={triggerCertificate}>
+                        Trigger connection with certificate
+                    </button>
+                </>
+            )}
         </div>
     );
 };
 
-const walletConnectOptions: WalletConnectOptions = {
-    projectId: 'a0b855ceaf109dbc8426479a4c3d38d8',
-    metadata: {
-        name: 'Sample VeChain dApp',
-        description: 'A sample VeChain dApp',
-        url: typeof window !== 'undefined' ? window.location.origin : '',
-        icons: [
-            typeof window !== 'undefined'
-                ? `${window.location.origin}/images/logo/my-dapp.png`
-                : '',
-        ],
-    },
-};
-
 export const App = () => {
     return (
-        <DAppKitProvider
-            logLevel="DEBUG"
-            node="https://testnet.vechain.org/"
-            usePersistence
-            walletConnectOptions={walletConnectOptions}
-            v2Api={{ enabled: true }}
-        >
+        <Provider>
             <AppContent />
-        </DAppKitProvider>
+        </Provider>
     );
 };
