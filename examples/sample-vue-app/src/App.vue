@@ -66,6 +66,7 @@ DAppKitUI.configure(vechainDAppKitOptions);
 
 // custom button configuration
 
+
 setTimeout(() => {
     const customButton = document.getElementById('custom-button');
     if (customButton) {
