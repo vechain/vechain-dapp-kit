@@ -23,7 +23,11 @@ import type {
     TransactionOptions,
     TransactionResponse,
 } from '../types/requests';
-import { getPrimaryType } from '../utils/typed-data';
+import {
+    getPrimaryType,
+    parseChainId,
+    stringifyChainId,
+} from '../utils/typed-data';
 
 /**
  * A `VechainWallet` for wallet's that use a certificate connection
@@ -79,7 +83,10 @@ class CertificateBasedWallet implements VeChainWallet {
             const signer = await recoverTypedDataAddress({
                 signature: res as `0x${string}`,
                 message: value.value,
-                domain: value.domain,
+                domain: {
+                    ...value.domain,
+                    chainId: parseChainId(value.domain.chainId),
+                },
                 types: value.types,
                 primaryType: getPrimaryType(value.types),
             });
@@ -192,7 +199,12 @@ class CertificateBasedWallet implements VeChainWallet {
         if (!this.wallet.signTypedData) {
             throw new Error('signTypedData is not implemented');
         }
-        return this.wallet?.signTypedData(domain, types, message, options);
+        return this.wallet?.signTypedData(
+            { ...domain, chainId: stringifyChainId(domain.chainId) },
+            types,
+            message,
+            options,
+        );
     };
 
     disconnect = async () => {

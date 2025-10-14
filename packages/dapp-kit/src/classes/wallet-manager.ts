@@ -27,7 +27,7 @@ import type {
 import type { TypedDataMessage } from '../types/types';
 import { createWallet, DAppKitLogger, Storage } from '../utils';
 import { getAccountDomain } from '../utils/get-account-domain';
-import { getPrimaryType } from '../utils/typed-data';
+import { getPrimaryType, parseChainId } from '../utils/typed-data';
 
 class WalletManager {
     public state: WalletManagerState;
@@ -273,7 +273,10 @@ class WalletManager {
         const signer = await recoverTypedDataAddress({
             signature: res as `0x${string}`,
             message: typedMessage.value,
-            domain: typedMessage.domain,
+            domain: {
+                ...value.domain,
+                chainId: parseChainId(value.domain.chainId),
+            },
             types: typedMessage.types,
             primaryType: getPrimaryType(typedMessage.types),
         });

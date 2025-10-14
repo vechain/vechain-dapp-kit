@@ -29,7 +29,7 @@ declare global {
 type WalletSource = 'wallet-connect' | 'veworld' | 'sync' | 'sync2';
 
 type TypedDataDomain = {
-    chainId?: number | bigint | undefined;
+    chainId?: number | bigint | string | undefined;
     name?: string | undefined;
     salt?: `0x${string}` | undefined;
     verifyingContract?: string | undefined;
