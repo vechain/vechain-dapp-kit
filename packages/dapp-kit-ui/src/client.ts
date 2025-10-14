@@ -1,18 +1,61 @@
-import type { DAppKitOptions, WalletManager } from '@vechain/dapp-kit';
+import type {
+    CertificateMessage,
+    ConnectV2Response,
+    DAppKitOptions,
+    TypedDataMessage,
+    WalletManager,
+} from '@vechain/dapp-kit';
 import { DAppKit } from '@vechain/dapp-kit';
 import type { ThorClient } from '@vechain/sdk-network';
 import { ConnectModalManager, CustomWalletConnectModal } from './classes';
+import type { I18n, SourceInfo, ThemeMode } from './constants';
 import {
     type CustomizedStyle,
     dispatchCustomEvent,
     initModalAndButton,
 } from './utils';
-import type { I18n, SourceInfo, ThemeMode } from './constants';
 
-export type { WalletConnectOptions, DAppKitOptions } from '@vechain/dapp-kit';
+export type { DAppKitOptions, WalletConnectOptions } from '@vechain/dapp-kit';
+
+type OnConnectV2Callbacks = {
+    /**
+     * Callback that is called before `connectV2` is called.
+     * The value returned from this function will be passed to `connectV2`
+     * @default () => Promise.resolve(null)
+     * @param source Source that triggered the connection request
+     * @returns A value that can be passed to `connectV2`
+     */
+    onConnectRequest?: (
+        source: SourceInfo,
+    ) => Promise<null | CertificateMessage | TypedDataMessage>;
+    /**
+     * Callback that is called after `connectV2` is called.
+     * @default () => Promise.resolve()
+     * @param source Source that triggered the connection request
+     * @param response Response from the `connectV2` function
+     */
+    onConnectResponse?: (
+        source: SourceInfo,
+        response: ConnectV2Response<any>,
+    ) => Promise<void>;
+};
+
+type DappKitUIV2ApiOptions = DAppKitOptions['v2Api'] &
+    OnConnectV2Callbacks & {
+        /**
+         * Initialize the DappKit instance automatically (`DappKit.initialize()`). Function is a Promise but should resolve immediately.
+         * If you're seeing any issues with SSR, disable it.
+         * @default true
+         */
+        autoInitialize?: boolean;
+    };
+
+type ParsedOptions = Omit<DAppKitUIOptions, 'v2Api'> & {
+    v2Api: DappKitUIV2ApiOptions & Required<OnConnectV2Callbacks>;
+};
 
 let dappKit: DAppKit | null = null;
-let dappKitOptions: DAppKitUIOptions | null = null;
+let dappKitOptions: ParsedOptions | null = null;
 let initialized = false;
 
 export type DAppKitUIOptions = DAppKitOptions & {
@@ -22,6 +65,7 @@ export type DAppKitUIOptions = DAppKitOptions & {
     language?: string;
     modalParent?: HTMLElement;
     onSourceClick?: (source?: SourceInfo) => void;
+    v2Api: DappKitUIV2ApiOptions;
 };
 
 export const DAppKitUI = {
@@ -33,8 +77,18 @@ export const DAppKitUI = {
             options.walletConnectOptions.modal =
                 CustomWalletConnectModal.getInstance();
         }
-        dappKitOptions = options;
+        if (!options.v2Api.onConnectRequest)
+            options.v2Api.onConnectRequest = () => Promise.resolve(null);
+        if (!options.v2Api.onConnectResponse)
+            options.v2Api.onConnectResponse = () => Promise.resolve();
+        if (options.v2Api.autoInitialize === undefined)
+            options.v2Api.autoInitialize = true;
+        dappKitOptions = options as ParsedOptions;
         dappKit = new DAppKit(options);
+
+        if (options.v2Api.autoInitialize) {
+            dappKit.initialize();
+        }
 
         // init modal so that on the first opening it doesn't have to create it
         ConnectModalManager.getInstance(this.wallet, {
@@ -66,7 +120,7 @@ export const DAppKitUI = {
         return this.get().signer;
     },
 
-    get configuration(): DAppKitUIOptions | null {
+    get configuration(): ParsedOptions | null {
         return dappKitOptions;
     },
 
