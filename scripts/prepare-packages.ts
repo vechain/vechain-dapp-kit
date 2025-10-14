@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
+import util from 'util';
 import * as child_process from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
-import util from 'util';
 
 const exec = util.promisify(child_process.exec);
 
@@ -46,13 +46,13 @@ const preparePackages = async () => {
 
     console.log(' Clean:');
     console.log('       - 🚮 Removing existing packages & builds...');
-    // await exec('yarn purge');
+    await exec('yarn purge');
     console.log('       - ✅  Removed!');
 
     console.log(' Build:');
     console.log('       - 📦 Install dependencies and build packages...');
-    // await exec('yarn install');
-    // await exec('yarn install:all');
+    await exec('yarn install');
+    await exec('yarn install:all');
     console.log('       - ✅  Built!');
 
     console.log(' Test:');
