@@ -1,3 +1,4 @@
+import type { TypedDataDomain } from 'viem';
 import type { TypedDataMessage } from '../types';
 
 /**
@@ -108,4 +109,20 @@ const hasBaseEncoder = (type: string) => {
     }
 
     return false;
+};
+
+export const parseChainId = (
+    chainId: TypedDataMessage['domain']['chainId'],
+): TypedDataDomain['chainId'] => {
+    if (chainId === undefined) return undefined;
+    if (typeof chainId === 'string') return BigInt(chainId);
+    return chainId;
+};
+
+export const stringifyChainId = (
+    chainId: TypedDataMessage['domain']['chainId'],
+): string | undefined => {
+    if (chainId === undefined) return undefined;
+    if (typeof chainId === 'string') return chainId;
+    return chainId.toString();
 };
