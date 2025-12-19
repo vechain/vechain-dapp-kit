@@ -74,7 +74,13 @@ class VeChainSignerDAppKit extends VeChainAbstractSigner {
         const tx = await this._signFlow(
             transactionToSign,
             DelegationHandler(
-                await this.provider?.wallet?.getGasPayer(),
+                (await this.provider?.wallet?.getGasPayer()) ??
+                    (transactionToSign.delegationUrl?.trim()
+                        ? {
+                              gasPayerServiceUrl:
+                                  transactionToSign.delegationUrl?.trim(),
+                          }
+                        : null),
             ).gasPayerOrNull(),
         );
 
