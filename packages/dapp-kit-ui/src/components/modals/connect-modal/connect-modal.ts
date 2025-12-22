@@ -137,6 +137,10 @@ export class ConnectModal extends LitElement {
         return DAppKitUI.get().options.v2Api.enabled ?? false;
     }
 
+    private get alwaysShowConnect(): boolean {
+        return DAppKitUI.configuration?.alwaysShowConnect ?? false;
+    }
+
     @property({ type: Function })
     onSourceClick = (source?: SourceInfo): void => {
         if (!source) return;
@@ -169,7 +173,15 @@ export class ConnectModal extends LitElement {
                         result,
                     );
                 })
-                .then(() => this.requestUpdate())
+                .then(() => {
+                    if (this.alwaysShowConnect) {
+                        this.setWaitingForTheSignature(false);
+                        this.requestForConnectionCertificate = false;
+                        DAppKitUI.modal.close();
+                    }
+
+                    this.requestUpdate();
+                })
                 .catch((err): void => {
                     DAppKitLogger.error(
                         'Connection Attempt',
@@ -184,6 +196,11 @@ export class ConnectModal extends LitElement {
         this.wallet
             .connect()
             .then(() => {
+                if (this.alwaysShowConnect) {
+                    this.setWaitingForTheSignature(false);
+                    this.requestForConnectionCertificate = false;
+                    DAppKitUI.modal.close();
+                }
                 this.requestUpdate();
             })
             .catch((err): void => {
