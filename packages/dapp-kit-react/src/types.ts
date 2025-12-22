@@ -57,6 +57,8 @@ export interface DAppKitContext {
         switchWallet: () => Promise<void>;
         initializeAsync: () => Promise<void>;
         connectV2: ConnectV2Callback;
+        availableMethods: string[];
+        isSwitchWalletEnabled: boolean;
     };
     modal: {
         open: () => void;

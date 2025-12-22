@@ -85,6 +85,11 @@ export const DAppKitProviderData = ({
         [],
     );
 
+    const isSwitchWalletEnabled = useMemo(() => {
+        if (!dAppKit.wallet.availableMethods) return false;
+        return dAppKit.wallet.availableMethods.includes('thor_switchWallet');
+    }, [dAppKit.wallet.availableMethods]);
+
     const context: DAppKitContext = useMemo(() => {
         return {
             thor: dAppKit.thor,
@@ -105,6 +110,8 @@ export const DAppKitProviderData = ({
                 switchWallet: dAppKit.wallet.switchWallet,
                 initializeAsync: dAppKit.wallet.initializeStateAsync,
                 connectV2: dAppKit.wallet.connectV2,
+                availableMethods: dAppKit.wallet.availableMethods,
+                isSwitchWalletEnabled: isSwitchWalletEnabled,
             },
             modal: {
                 open: openModal,
@@ -122,6 +129,7 @@ export const DAppKitProviderData = ({
         openModal,
         closeModal,
         onModalConnected,
+        isSwitchWalletEnabled,
     ]);
 
     return <Context.Provider value={context}>{children}</Context.Provider>;
