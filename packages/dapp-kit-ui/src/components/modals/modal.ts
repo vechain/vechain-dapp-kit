@@ -72,6 +72,10 @@ export class Modal extends LitElement {
         );
     }
 
+    private get alwaysShowConnect(): boolean {
+        return DAppKitUI.configuration?.alwaysShowConnect ?? false;
+    }
+
     @property()
     address = DAppKitUI.wallet.state.address ?? '';
 
@@ -112,7 +116,7 @@ export class Modal extends LitElement {
 
         return html`
             <div>
-                ${this.address
+                ${this.address && !this.alwaysShowConnect
                     ? html` <vdk-address-modal
                           .mode=${this.mode}
                           .i18n=${this.i18n}

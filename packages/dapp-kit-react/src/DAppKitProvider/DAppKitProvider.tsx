@@ -151,6 +151,7 @@ export const DAppKitProvider = ({
     connectionCertificate: connectionCertificateData,
     allowedWallets,
     v2Api,
+    alwaysShowConnect,
 }: DAppKitProviderOptions): React.ReactElement | null => {
     const [dAppKit, setDAppKit] = useState<DAppKit | null>(null);
     useEffect(() => {
@@ -169,6 +170,7 @@ export const DAppKitProvider = ({
             connectionCertificate: connectionCertificateData,
             allowedWallets,
             v2Api,
+            alwaysShowConnect,
         });
         setDAppKit(kit);
     }, [
@@ -186,6 +188,7 @@ export const DAppKitProvider = ({
         connectionCertificateData,
         allowedWallets,
         v2Api.enabled,
+        alwaysShowConnect,
     ]);
 
     if (!dAppKit) {
