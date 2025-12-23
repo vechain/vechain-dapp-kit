@@ -66,6 +66,12 @@ export type DAppKitUIOptions = DAppKitOptions & {
     modalParent?: HTMLElement;
     onSourceClick?: (source?: SourceInfo) => void;
     v2Api: DappKitUIV2ApiOptions;
+    /**
+     * Always show the connect Modal, even if the user is connected.
+     * **This feature should not be used unless you really know what you need it for**
+     * @default false
+     */
+    alwaysShowConnect?: boolean;
 };
 
 export const DAppKitUI = {
@@ -83,6 +89,8 @@ export const DAppKitUI = {
             options.v2Api.onConnectResponse = () => Promise.resolve();
         if (options.v2Api.autoInitialize === undefined)
             options.v2Api.autoInitialize = true;
+        if (options.alwaysShowConnect === undefined)
+            options.alwaysShowConnect = false;
         dappKitOptions = options as ParsedOptions;
         dappKit = new DAppKit(options);
 
