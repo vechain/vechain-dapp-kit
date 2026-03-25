@@ -7414,12 +7414,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vechain/connex-wallet-buddy@npm:^0.1.11":
-  version: 0.1.11
-  resolution: "@vechain/connex-wallet-buddy@npm:0.1.11"
+"@vechain/connex-wallet-buddy@npm:^0.1.12":
+  version: 0.1.12
+  resolution: "@vechain/connex-wallet-buddy@npm:0.1.12"
   dependencies:
     detect-browser: "npm:^5.2.0"
-  checksum: 10c0/dfb782226b421f1234452f532cd8eaaa861d2c42b3574d3aa544f088887faea836800b5420ce0546a27f1ade5765123176596f4d6072fb0d2be41405ef3f476a
+  checksum: 10c0/36bdc51ed11685090c0690a02fb836da29ae302b2d342d025ec6c4443139cee08d4d11f0700f57d51cb0b45a04ae172308ca866d7cbaa860239aa7f5afec73e6
   languageName: node
   linkType: hard
 
@@ -7482,7 +7482,7 @@ __metadata:
   dependencies:
     "@types/react": "npm:^19.1.0"
     "@types/react-dom": "npm:^19.1.1"
-    "@vechain/connex-wallet-buddy": "npm:^0.1.11"
+    "@vechain/connex-wallet-buddy": "npm:^0.1.12"
     "@vechain/sdk-core": "npm:^2.0.0"
     "@vechain/sdk-errors": "npm:^2.0.0"
     "@vechain/sdk-network": "npm:^2.0.0"
