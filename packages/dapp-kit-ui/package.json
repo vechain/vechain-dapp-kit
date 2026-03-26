@@ -1,6 +1,6 @@
 {
     "name": "@vechain/dapp-kit-ui",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "description": "Vanilla JS DAppKit",
     "keywords": [
         "web-components",
