@@ -71,6 +71,6 @@
         "esbuild": "0.25.0",
         "webpack-dev-server": "5.2.1",
         "on-headers": "1.1.0",
-        "happy-dom": "20.0.0"
+        "happy-dom": "20.0.2"
     }
 }
