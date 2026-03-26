@@ -1,13 +1,12 @@
 name: Publish GitHub NPM Packages
-
 on:
     push:
         tags:
             - '*'
-
 permissions:
     contents: read
     packages: write
+    id-token: write
 
 jobs:
     publish:
@@ -15,22 +14,22 @@ jobs:
         permissions:
             contents: read
             packages: write
+            id-token: write
         environment: npm-publish
         steps:
             - uses: actions/checkout@v4
-
             - uses: actions/setup-node@v4
               with:
                   node-version-file: .nvmrc
                   registry-url: 'https://registry.npmjs.org'
-
+            - name: Upgrade npm
+              run: npm install -g npm@11.5.1
             - name: Install dependencies
               run: yarn install
-
             - name: Build
               run: yarn install:all
-
             - name: Publish
               run: yarn publish:release
               env:
                 NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+                NPM_CONFIG_PROVENANCE: true
