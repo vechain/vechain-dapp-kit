@@ -70,6 +70,7 @@
         "@fastify/busboy": "3.2.0",
         "esbuild": "0.25.0",
         "webpack-dev-server": "5.2.1",
-        "on-headers": "1.1.0"
+        "on-headers": "1.1.0",
+        "h3": "1.15.9"
     }
 }
