@@ -31,7 +31,7 @@
         "@vechain/dapp-kit-ui": "workspace:^",
         "angular-svg-icon": "^16.1.0",
         "assert": "2.1.0",
-        "axios": "^1.8.4",
+        "axios": "^1.15.0",
         "bootstrap": "^5.3.5",
         "buffer": "6.0.3",
         "crypto-browserify": "3.12.1",
