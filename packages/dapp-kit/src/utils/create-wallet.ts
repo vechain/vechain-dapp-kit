@@ -8,6 +8,7 @@ import type {
     WCModal,
 } from '../types';
 import { createSync, createSync2 } from './create-sync2';
+import { createVeWorldV2Wallet } from './create-veworld-v2-wallet';
 import { createWcClient } from './create-wc-client';
 import { createWcModal } from './create-wc-modal';
 import { createWcSigner } from './create-wc-signer';
@@ -61,15 +62,49 @@ export const createWallet = async ({
                 if (!window.vechain) {
                     throw new Error('VeWorld Extension is not installed');
                 }
-                const veworld = window.vechain.newConnexSigner(genesisId);
-                return new CertificateBasedWallet(
-                    veworld,
-                    'send' in window.vechain
-                        ? { send: window.vechain.send }
-                        : null,
-                    genesisId,
-                    connectionCertificate,
-                );
+
+                // Prefer the v2 EIP-1193-style `request` API when the extension
+                // exposes it. This avoids the legacy certificate-based connect
+                // and keeps subsequent signing on the v2 channel
+                // (`thor_signCertificate`, `thor_signTypedData`,
+                // `thor_sendTransaction`), which VeWorld would otherwise reject
+                // for a v2-connected app.
+                const ext = window.vechain as unknown as {
+                    request?: (args: {
+                        method: string;
+                        params?: unknown;
+                    }) => Promise<unknown>;
+                };
+                if (typeof ext.request === 'function') {
+                    const { walletSigner, walletProvider } =
+                        createVeWorldV2Wallet(ext.request.bind(ext), genesisId);
+                    return new CertificateBasedWallet(
+                        walletSigner,
+                        walletProvider,
+                        genesisId,
+                        connectionCertificate,
+                    );
+                }
+
+                // Legacy fallback for hosts that only expose the Connex-style
+                // surface (`newConnexSigner` + optional `send`). Currently this
+                // is veworld-mobile's in-app browser, which injects
+                // `window.vechain` without an EIP-1193 `request` method. The
+                // legacy path is also kept for older VeWorld extension builds
+                // that haven't shipped the v2 API yet.
+                if (typeof window.vechain.newConnexSigner === 'function') {
+                    const veworld = window.vechain.newConnexSigner(genesisId);
+                    return new CertificateBasedWallet(
+                        veworld,
+                        'send' in window.vechain
+                            ? { send: window.vechain.send }
+                            : null,
+                        genesisId,
+                        connectionCertificate,
+                    );
+                }
+
+                throw new Error('VeWorld v2 API is not available');
             } catch (e) {
                 DAppKitLogger.error('createWallet', 'veworld', e);
                 throw e;

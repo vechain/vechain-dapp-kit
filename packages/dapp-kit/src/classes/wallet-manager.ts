@@ -41,6 +41,7 @@ class WalletManager {
             this.state = proxy({
                 source: null,
                 address: null,
+                addresses: [],
                 accountDomain: null,
                 isAccountDomainLoading: false,
                 availableSources: this.getAvailableSources(),
@@ -145,6 +146,33 @@ class WalletManager {
     };
 
     /**
+     * Set the full set of approved addresses. The first entry is treated as
+     * the primary (active) signer when populated by v2 `thor_connect`.
+     */
+    setAddresses = (addresses: string[]): void => {
+        this.state.addresses = addresses;
+    };
+
+    /**
+     * Switch the active address to one already present in `state.addresses`
+     * WITHOUT reopening the wallet picker (cf. `switchWallet`). Throws if the
+     * given address has not been approved by the user in this session.
+     */
+    setActiveAccount = (address: string): void => {
+        const lower = address.toLowerCase();
+        const match = this.state.addresses.find(
+            (a) => a.toLowerCase() === lower,
+        );
+        if (!match) {
+            throw new Error(
+                `setActiveAccount: address ${address} is not in the approved list`,
+            );
+        }
+        this.setAddress(match);
+        this.setAccountDomain(match);
+    };
+
+    /**
      * Set the address and check for the vechain domain, if present set it as well
      */
     setAddressAndDomain = (address: string | null): void => {
@@ -218,6 +246,7 @@ class WalletManager {
                 this.options.walletConnectOptions.modal.askForConnectionCertificate();
             } else {
                 this.setAddressAndDomain(res.account);
+                this.setAddresses(res.account ? [res.account] : []);
                 this.state.connectionCertificate =
                     res.connectionCertificate ?? null;
             }
@@ -233,6 +262,19 @@ class WalletManager {
     >(
         value: TValue,
     ): Promise<ConnectV2Response<TValue>> => {
+        // `setSource('veworld')` triggers `populateAvailableMethods()` in a
+        // fire-and-forget fashion, so a `connectV2` call that immediately
+        // follows `setSource` would see an empty `availableMethods` and fall
+        // back to the legacy certificate-based `connect()`. Re-populate
+        // synchronously when needed so the V2 path is taken whenever the
+        // installed extension actually supports it.
+        if (
+            this.state.source === 'veworld' &&
+            this.availableMethods.length === 0
+        ) {
+            await this.populateAvailableMethods();
+        }
+
         if (
             this.state.source === 'veworld' &&
             this.availableMethods.includes('thor_connect')
@@ -241,27 +283,44 @@ class WalletManager {
                 wallet.connectV2(value, this.options.v2Api.external),
             );
             await this.populateAvailableMethods();
-            if (value === null)
-                this.setAddress((result as ConnectV2Response<null>).signer);
-            else if ('domain' in value)
-                this.setAddress(
-                    (result as ConnectV2Response<TypedDataMessage>).signer,
-                );
-            else
-                this.setAddress(
-                    (result as ConnectV2Response<CertificateMessage>).annex
-                        .signer,
-                );
+
+            let primary: string;
+            if (value === null) {
+                primary = (result as ConnectV2Response<null>).signer;
+            } else if ('domain' in value) {
+                primary = (result as ConnectV2Response<TypedDataMessage>)
+                    .signer;
+            } else {
+                primary = (result as ConnectV2Response<CertificateMessage>)
+                    .annex.signer;
+            }
+
+            this.setAddress(primary);
+            const accountsFromWallet = (result as { accounts?: string[] })
+                .accounts;
+            this.setAddresses(
+                accountsFromWallet && accountsFromWallet.length > 0
+                    ? accountsFromWallet
+                    : primary
+                      ? [primary]
+                      : [],
+            );
             return result;
+        }
+
+        if (this.state.source === 'veworld' && this.options.v2Api.enabled) {
+            throw new Error('VeWorld v2 API is not available');
         }
 
         const connection = await this.connect();
         await this.populateAvailableMethods();
         if (value === null) {
+            this.setAddresses(connection.account ? [connection.account] : []);
             return { signer: connection.account } as ConnectV2Response<TValue>;
         }
         if ('purpose' in value) {
             const cert = await this.signCert(value as any, {});
+            this.setAddresses(cert.annex.signer ? [cert.annex.signer] : []);
             return cert as any;
         }
         const typedMessage = value as TypedDataMessage;
@@ -280,7 +339,116 @@ class WalletManager {
             types: typedMessage.types,
             primaryType: getPrimaryType(typedMessage.types),
         });
+        this.setAddresses(signer ? [signer] : []);
         return { signer, signature: res } as any;
+    };
+
+    /**
+     * Ask the wallet to (re-)display its account approval picker so the
+     * user can approve additional accounts without first disconnecting.
+     * Uses EIP-2255 `wallet_requestPermissions` when the connected wallet
+     * advertises it (VeWorld v2). Updates `state.addresses` (and
+     * `state.address` if it was unset) with the new approved set.
+     */
+    requestPermissions = async (): Promise<string[]> => {
+        // Only VeWorld v2 advertises EIP-2255 permissions. For any other
+        // source (or older VeWorld builds), short-circuit and return what we
+        // already know so callers don't have to special-case it.
+        if (
+            this.state.source !== 'veworld' ||
+            !this.availableMethods.includes('wallet_requestPermissions')
+        ) {
+            DAppKitLogger.warn(
+                'WalletManager',
+                'requestPermissions',
+                'wallet does not advertise wallet_requestPermissions',
+            );
+            return this.state.addresses;
+        }
+        try {
+            const wallet = await this.getWallet();
+            // Double-check at the wallet instance level: `availableMethods`
+            // is wallet-advertised metadata, but the adapter could still lack
+            // the implementation (e.g. legacy `CertificateBasedWallet` built
+            // without a `walletProvider`). Bail out silently in that case.
+            if (typeof wallet.requestPermissions !== 'function') {
+                return this.state.addresses;
+            }
+            // Opens VeWorld's account picker. Returns the FULL new approved
+            // set (not just the delta), so we can replace `state.addresses`
+            // wholesale instead of merging.
+            const next = await wallet.requestPermissions();
+            if (!Array.isArray(next)) return this.state.addresses;
+            this.setAddresses(next);
+            // The user may have unchecked the previously-active account in
+            // the picker. Detect that case (case-insensitive: VeWorld may
+            // return checksummed addresses while we stored lowercase, or
+            // vice-versa) and promote `next[0]` as the new active signer so
+            // the dApp doesn't end up holding an `address` that is no longer
+            // authorized. Domain is re-resolved because it depends on which
+            // account is active.
+            const activeStillApproved =
+                !!this.state.address &&
+                next.some(
+                    (address) =>
+                        address.toLowerCase() ===
+                        this.state.address?.toLowerCase(),
+                );
+            if (next.length > 0 && !activeStillApproved) {
+                this.setAddress(next[0]);
+                this.setAccountDomain(next[0]);
+            }
+            return next;
+        } catch (e) {
+            // Swallow and return the existing approved set. Common causes:
+            // user dismissed the VeWorld picker (USER_REJECTED) or the
+            // extension threw because the dApp isn't connected yet. Callers
+            // get back a valid array either way and can compare lengths to
+            // detect "nothing changed".
+            DAppKitLogger.error('WalletManager', 'requestPermissions', e);
+            return this.state.addresses;
+        }
+    };
+
+    revokeAccount = async (address: string): Promise<string[]> => {
+        if (
+            this.state.source !== 'veworld' ||
+            !this.availableMethods.includes('wallet_revokeAccountPermission')
+        ) {
+            DAppKitLogger.warn(
+                'WalletManager',
+                'revokeAccount',
+                'wallet does not advertise wallet_revokeAccountPermission',
+            );
+            return this.state.addresses;
+        }
+        try {
+            const wallet = await this.getWallet();
+            if (typeof wallet.revokeAccount !== 'function') {
+                return this.state.addresses;
+            }
+            await wallet.revokeAccount(address);
+            const lower = address.toLowerCase();
+            const next = this.state.addresses.filter(
+                (account) => account.toLowerCase() !== lower,
+            );
+            this.setAddresses(next);
+
+            const activeWasRevoked =
+                this.state.address?.toLowerCase() === lower;
+            if (activeWasRevoked) {
+                if (next.length > 0) {
+                    this.setAddress(next[0]);
+                    this.setAccountDomain(next[0]);
+                } else {
+                    this.disconnect(true);
+                }
+            }
+            return next;
+        } catch (e) {
+            DAppKitLogger.error('WalletManager', 'revokeAccount', e);
+            return this.state.addresses;
+        }
     };
 
     switchWallet = async (): Promise<void> => {
@@ -291,6 +459,16 @@ class WalletManager {
                 );
                 if (!newWallet) return;
                 this.state.address = newWallet;
+                // Make sure the newly-active address is reflected in the
+                // approved set. Mobile `thor_switchWallet` returns a single
+                // address, so we don't know if other approved accounts were
+                // revoked — promoting it to head of list while preserving
+                // existing entries is the conservative choice.
+                const lower = newWallet.toLowerCase();
+                const existing = this.state.addresses.filter(
+                    (a) => a.toLowerCase() !== lower,
+                );
+                this.setAddresses([newWallet, ...existing]);
             }
         } catch {}
     };
@@ -299,6 +477,7 @@ class WalletManager {
         if (!this.state.source) {
             this.state.source = null;
             this.setAddressAndDomain(null);
+            this.setAddresses([]);
             this.state.connectionCertificate = null;
             return;
         }
@@ -324,6 +503,7 @@ class WalletManager {
 
         this.state.source = null;
         this.setAddressAndDomain(null);
+        this.setAddresses([]);
         this.state.connectionCertificate = null;
     };
 
@@ -425,6 +605,7 @@ class WalletManager {
             return proxy({
                 source: null,
                 address: null,
+                addresses: [],
                 accountDomain: null,
                 isAccountDomainLoading: false,
                 availableSources,
@@ -435,6 +616,7 @@ class WalletManager {
 
         Storage.wipeV1();
         const address = Storage.getAccount();
+        const addresses = Storage.getAccounts();
         const accountDomain = Storage.getAccountDomain();
         const source = Storage.getSource();
         const connectionCertificate = Storage.getConnectionCertificate();
@@ -442,6 +624,7 @@ class WalletManager {
         return proxy({
             source,
             address,
+            addresses,
             accountDomain,
             isAccountDomainLoading: false,
             availableSources,
@@ -536,8 +719,23 @@ class WalletManager {
             'address retrieved',
             address,
         );
-        if (!address) return;
-        this.state.address = address;
+
+        // The v2 adapter intentionally returns `null` for `thor_wallet` /
+        // `thor_switchWallet` (VeWorld has no silent way to read the active
+        // address). Fall back to the persisted account so a page refresh
+        // doesn't drop the connection.
+        const effectiveAddress =
+            address ??
+            (this.options.usePersistence ? Storage.getAccount() : null);
+        if (!effectiveAddress) return;
+        this.state.address = effectiveAddress;
+        const persistedAddresses = this.options.usePersistence
+            ? Storage.getAccounts()
+            : [];
+        this.state.addresses =
+            persistedAddresses.length > 0
+                ? persistedAddresses
+                : [effectiveAddress];
     };
 
     private initFromPersistentStore = ({
@@ -549,10 +747,12 @@ class WalletManager {
     }): void => {
         DAppKitLogger.debug('WalletManager', 'initFromPersistentStore');
         const address = Storage.getAccount();
+        const addresses = Storage.getAccounts();
         const accountDomain = Storage.getAccountDomain();
         const connectionCertificate = Storage.getConnectionCertificate();
         this.state.source = source;
         this.state.address = address;
+        this.state.addresses = addresses;
         this.state.accountDomain = accountDomain;
         this.state.isAccountDomainLoading = false;
         this.state.availableSources = availableSources;
@@ -565,6 +765,7 @@ class WalletManager {
             return;
         }
         this.subscribeToKey('address', Storage.setAccount);
+        this.subscribeToKey('addresses', Storage.setAccounts);
         this.subscribeToKey('accountDomain', Storage.setAccountDomain);
         this.subscribeToKey('source', Storage.setSource);
         this.subscribeToKey(

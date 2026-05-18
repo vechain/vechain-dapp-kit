@@ -15,6 +15,7 @@ const STORAGE_V2_PREFIX = 'dappkit@vechain/v2';
 const keysV2 = {
     WALLET_SOURCE: `${STORAGE_V2_PREFIX}/source`,
     ACCOUNT: `${STORAGE_V2_PREFIX}/account`,
+    ACCOUNTS: `${STORAGE_V2_PREFIX}/accounts`,
     CERTIFICATE: `${STORAGE_V2_PREFIX}/connectionCertificate`,
     ACCOUNT_DOMAIN: `${STORAGE_V2_PREFIX}/accountDomain`,
 } as const;
@@ -35,6 +36,15 @@ const setAccount = (account: string | null): void => {
         localStorage.removeItem(keysV2.ACCOUNT);
     } else {
         localStorage.setItem(keysV2.ACCOUNT, account);
+    }
+};
+
+const setAccounts = (accounts: string[]): void => {
+    DAppKitLogger.debug('LocalStorage', 'setAccounts', accounts);
+    if (!accounts || accounts.length === 0) {
+        localStorage.removeItem(keysV2.ACCOUNTS);
+    } else {
+        localStorage.setItem(keysV2.ACCOUNTS, JSON.stringify(accounts));
     }
 };
 
@@ -83,6 +93,19 @@ const getAccount = (): string | null => {
     return account;
 };
 
+const getAccounts = (): string[] => {
+    const raw = localStorage.getItem(keysV2.ACCOUNTS);
+    if (!raw) return [];
+    try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed)
+            ? parsed.filter((a) => typeof a === 'string')
+            : [];
+    } catch {
+        return [];
+    }
+};
+
 const getAccountDomain = (): string | null => {
     const accountDomain = localStorage.getItem(keysV2.ACCOUNT_DOMAIN);
     if (!accountDomain) {
@@ -112,11 +135,13 @@ const wipeV1 = () => {
 
 export const Storage = {
     setAccount,
+    setAccounts,
     setSource,
     setConnectionCertificate,
     setAccountDomain,
     getAccountDomain,
     getAccount,
+    getAccounts,
     getSource,
     getConnectionCertificate,
     wipeV1,

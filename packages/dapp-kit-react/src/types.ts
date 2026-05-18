@@ -40,6 +40,31 @@ export interface DAppKitContext {
         disconnect: () => void;
         connect: ConnectCallback;
         account: string | null;
+        /**
+         * Full set of addresses the user has approved for this dApp in the
+         * connected wallet (currently only populated by VeWorld v2). First
+         * entry mirrors `account` when populated; otherwise `[]`.
+         */
+        accounts: string[];
+        /**
+         * Switch the active account to one already in `accounts` WITHOUT
+         * reopening the wallet picker. Throws if the address has not been
+         * approved.
+         */
+        setActiveAccount: (address: string) => void;
+        /**
+         * Ask the wallet to (re-)display its approval picker so the user
+         * can grant access to additional accounts. Returns the new approved
+         * set (also written to `accounts`). Currently only meaningful for
+         * VeWorld v2 (`wallet_requestPermissions`).
+         */
+        requestPermissions: () => Promise<string[]>;
+        /**
+         * Revoke this dApp's permission for one approved account. Returns the
+         * remaining approved account set and switches away if the active account
+         * was revoked.
+         */
+        revokeAccount: (address: string) => Promise<string[]>;
         accountDomain: string | null;
         isAccountDomainLoading: boolean;
         signer: VeChainSignerDAppKit;
