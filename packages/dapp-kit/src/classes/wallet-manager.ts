@@ -249,6 +249,15 @@ class WalletManager {
                 this.setAddresses(res.account ? [res.account] : []);
                 this.state.connectionCertificate =
                     res.connectionCertificate ?? null;
+                // Successful wallet-connect connection without a required
+                // certificate: close the QR + wallet modal explicitly. The
+                // wallet manager doesn't otherwise close it (the dapp-kit-ui
+                // connect-modal only auto-swaps to the address modal when
+                // `alwaysShowConnect` is false), so without this the source
+                // list stays visible after approval on the wallet.
+                if (this.state.source === 'wallet-connect') {
+                    this.options.walletConnectOptions?.modal?.onConnected?.();
+                }
             }
             return res;
         } catch (e) {

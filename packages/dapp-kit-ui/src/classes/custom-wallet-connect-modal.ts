@@ -64,6 +64,12 @@ export class CustomWalletConnectModal implements WCModal {
         dispatchCustomEvent('vdk-close-connection-certificate-request');
     }
 
+    onConnected(): void {
+        DAppKitLogger.debug('CustomWalletConnectModal', 'connected');
+        dispatchCustomEvent('vdk-close-wallet-modal');
+        dispatchCustomEvent('vdk-close-wc-qrcode');
+    }
+
     subscribeModal(
         callback: (newState: SubscribeModalState) => void,
     ): () => void {

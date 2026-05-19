@@ -15,6 +15,7 @@ describe('CustomWalletConnectModal', () => {
         modal.closeModal();
         modal.askForConnectionCertificate();
         modal.onConnectionCertificateSigned();
+        modal.onConnected();
 
         modal.subscribeModal((newState) => {
             // eslint-disable-next-line no-console
