@@ -518,11 +518,19 @@ class WalletManager {
 
     /**
      * Best-effort silent re-fetch of the approved accounts list after a sign
-     * operation on VeWorld. When the user authorizes additional accounts via
-     * VeWorld's permission prompt at sign time, the wallet returns only the
-     * signer in the sign response — `state.addresses` stays stale unless we
-     * round-trip through `thor_connect` (which uses `eth_requestAccounts`,
-     * EIP-1102, and is silent when the dApp is already authorized).
+     * operation on the VeWorld desktop extension. When the user authorizes
+     * additional accounts via the extension's permission prompt at sign
+     * time, the wallet returns only the signer in the sign response —
+     * `state.addresses` stays stale unless we round-trip through
+     * `thor_connect`, which on the v2 EIP-1193 adapter resolves to
+     * `eth_requestAccounts` (EIP-1102, silent when already authorized).
+     *
+     * Restricted to the desktop extension (detected via
+     * `window.vechain.request`) because veworld-mobile's in-app browser
+     * exposes a Connex-style `send` channel where `thor_connect` with
+     * `value: null` is interpreted as a fresh connect intent and re-opens
+     * the account picker.
+     *
      * Failures are non-fatal: the sign result is already returned to the
      * caller and any error here is logged only.
      */
@@ -531,6 +539,14 @@ class WalletManager {
             this.state.source !== 'veworld' ||
             !this.availableMethods.includes('thor_connect')
         )
+            return;
+        const ext = (typeof window !== 'undefined' ? window.vechain : null) as
+            | (Window['vechain'] & {
+                  request?: unknown;
+                  isInAppBrowser?: boolean;
+              })
+            | null;
+        if (!ext || ext.isInAppBrowser || typeof ext.request !== 'function')
             return;
         try {
             const wallet = await this.getWallet();
