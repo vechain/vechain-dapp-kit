@@ -516,6 +516,53 @@ class WalletManager {
         this.state.connectionCertificate = null;
     };
 
+    /**
+     * Best-effort silent re-fetch of the approved accounts list after a sign
+     * operation on VeWorld. When the user authorizes additional accounts via
+     * VeWorld's permission prompt at sign time, the wallet returns only the
+     * signer in the sign response — `state.addresses` stays stale unless we
+     * round-trip through `thor_connect` (which uses `eth_requestAccounts`,
+     * EIP-1102, and is silent when the dApp is already authorized).
+     * Failures are non-fatal: the sign result is already returned to the
+     * caller and any error here is logged only.
+     */
+    private refreshApprovedAccounts = async (): Promise<void> => {
+        if (
+            this.state.source !== 'veworld' ||
+            !this.availableMethods.includes('thor_connect')
+        )
+            return;
+        try {
+            const wallet = await this.getWallet();
+            if (!wallet || typeof wallet.connectV2 !== 'function') return;
+            const res = await wallet.connectV2(
+                null,
+                this.options.v2Api?.external,
+            );
+            if (
+                res &&
+                Array.isArray((res as { accounts?: unknown }).accounts)
+            ) {
+                const accounts = (res as { accounts: string[] }).accounts;
+                if (accounts.length > 0) {
+                    this.setAddresses(accounts);
+                    const current = this.state.address;
+                    if (
+                        current &&
+                        !accounts.some(
+                            (a) => a.toLowerCase() === current.toLowerCase(),
+                        )
+                    ) {
+                        this.setAddress(accounts[0]);
+                        this.setAccountDomain(accounts[0]);
+                    }
+                }
+            }
+        } catch (e) {
+            DAppKitLogger.warn('WalletManager', 'refreshApprovedAccounts', e);
+        }
+    };
+
     signTx = async (
         msg: TransactionMessage[],
         options: TransactionOptions = {},
@@ -525,6 +572,7 @@ class WalletManager {
                 wallet.signTx(msg, options),
             );
             this.state.address = res.signer;
+            void this.refreshApprovedAccounts();
             return res;
         } catch (e) {
             DAppKitLogger.error('WalletManager', 'signTx', e);
@@ -542,6 +590,7 @@ class WalletManager {
             );
             // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
             this.state.address = res.annex.signer;
+            void this.refreshApprovedAccounts();
             return res;
         } catch (e) {
             DAppKitLogger.error('WalletManager', 'signCert', e);
@@ -560,7 +609,14 @@ class WalletManager {
             throw new Error('signTypedData is not supported');
 
         try {
-            return await wallet.signTypedData(domain, types, message, options);
+            const res = await wallet.signTypedData(
+                domain,
+                types,
+                message,
+                options,
+            );
+            void this.refreshApprovedAccounts();
+            return res;
         } catch (e) {
             DAppKitLogger.error('WalletManager', 'signTypedData', e);
             throw e;
