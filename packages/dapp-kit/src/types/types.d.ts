@@ -71,10 +71,10 @@ type ConnectCallback = (
 type ConnectV2Response<
     TValue extends null | CertificateMessage | TypedDataMessage,
 > = TValue extends null
-    ? { signer: string }
+    ? { signer: string; accounts?: string[] }
     : TValue extends { purpose: string }
-      ? CertificateResponse
-      : { signer: string; signature: string };
+      ? CertificateResponse & { accounts?: string[] }
+      : { signer: string; signature: string; accounts?: string[] };
 
 /**
  * Callback used by the DAppKit `newConnect` function
@@ -116,9 +116,9 @@ interface WalletProvider {
         };
         genesisId: string;
     }): Promise<
-        | CertificateResponse
-        | { signer: string; signature: string }
-        | { signer: string }
+        | (CertificateResponse & { accounts?: string[] })
+        | { signer: string; signature: string; accounts?: string[] }
+        | { signer: string; accounts?: string[] }
     >;
     send?(args: {
         method: 'thor_wallet';
@@ -130,6 +130,16 @@ interface WalletProvider {
         params?: undefined;
         genesisId: string;
     }): Promise<void>;
+    send?(args: {
+        method: 'wallet_revokeAccountPermission';
+        params: [{ eth_accounts: { addresses: string[] } }];
+        genesisId: string;
+    }): Promise<boolean>;
+    send?(args: {
+        method: 'wallet_requestPermissions';
+        params?: unknown;
+        genesisId: string;
+    }): Promise<string[]>;
     send?(args: {
         method: 'thor_switchWallet';
         params?: undefined;
@@ -178,6 +188,12 @@ type VeChainWallet = WalletSigner & {
     getAvailableMethods: () => string[] | null | Promise<string[] | null>;
     connectV2: ConnectV2Callback;
     switchWallet: () => string | null | Promise<string | null>;
+    /**
+     * Ask the wallet to (re-)display the account approval picker. Returns
+     * the new approved address set. Only implemented by VeWorld in v2 mode.
+     */
+    requestPermissions?: () => Promise<string[]>;
+    revokeAccount?: (address: string) => Promise<boolean>;
 };
 
 interface ConnectResponse {
@@ -189,6 +205,12 @@ interface ConnectResponse {
 interface WalletManagerState {
     source: WalletSource | null;
     address: string | null;
+    /**
+     * Full set of addresses the user has approved for this dApp in the
+     * connected wallet (currently only populated by VeWorld v2). The first
+     * entry is the active `address` when present. Empty array if not known.
+     */
+    addresses: string[];
     accountDomain: string | null;
     isAccountDomainLoading: boolean;
     availableSources: WalletSource[];

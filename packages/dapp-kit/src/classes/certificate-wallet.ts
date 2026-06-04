@@ -60,6 +60,37 @@ class CertificateBasedWallet implements VeChainWallet {
         });
     };
 
+    /**
+     * EIP-2255 style: ask the wallet to (re-)display its account approval
+     * picker so the user can grant access to additional accounts without
+     * first revoking the existing ones. Returns the full approved address
+     * list. Throws if the underlying provider doesn't expose `send`.
+     */
+    requestPermissions = async (): Promise<string[]> => {
+        if (!this.walletProvider)
+            throw new Error(
+                'CertificateBasedWallet: requestPermissions -> not supported',
+            );
+        const res = await this.walletProvider.send!({
+            method: 'wallet_requestPermissions',
+            params: [{ eth_accounts: {} }],
+            genesisId: this.genesisId,
+        });
+        return Array.isArray(res) ? res : [];
+    };
+
+    revokeAccount = async (address: string): Promise<boolean> => {
+        if (!this.walletProvider)
+            throw new Error(
+                'CertificateBasedWallet: revokeAccount -> not supported',
+            );
+        return this.walletProvider.send!({
+            method: 'wallet_revokeAccountPermission',
+            params: [{ eth_accounts: { addresses: [address] } }],
+            genesisId: this.genesisId,
+        });
+    };
+
     connectV2 = async <
         TValue extends null | CertificateMessage | TypedDataMessage,
     >(
@@ -175,7 +206,12 @@ class CertificateBasedWallet implements VeChainWallet {
             options.delegator = undefined;
         }
 
-        if (options.gas === 0) {
+        // `Number(undefined)` produces NaN upstream, which serializes to
+        // `null` over the v2 messaging channel and is rejected by VeWorld's
+        // `thor_sendTransaction` zod schema (`gas: z.number().optional()`).
+        // Drop any zero / non-finite gas so the field is omitted and the
+        // wallet estimates it.
+        if (!options.gas || !Number.isFinite(options.gas)) {
             options.gas = undefined;
         }
 

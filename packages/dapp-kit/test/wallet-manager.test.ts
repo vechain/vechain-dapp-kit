@@ -222,27 +222,150 @@ describe('WalletManager', () => {
                         expect.objectContaining({ availableMethods: [] }),
                     );
 
-                const result = await walletManager.connectV2(value);
-
-                expect(subscription).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({ address: address.toString() }),
+                await expect(walletManager.connectV2(value)).rejects.toThrow(
+                    'VeWorld v2 API is not available',
                 );
-                expect(subscription).toHaveBeenNthCalledWith(
-                    4,
-                    expect.objectContaining({ availableMethods: [] }),
-                );
-
-                if (value === null)
-                    expect((result as any).signer).toBe(address.toString());
-                else if ('purpose' in value)
-                    expect((result as any).annex.signer).toBe(
-                        address.toString(),
-                    );
-                else expect((result as any).signer).toBe(address.toString());
             },
             { timeout: 10_000 },
         );
+    });
+
+    describe('requestPermissions', () => {
+        it('switches to an approved account when the active account is removed', async () => {
+            const oldAddress = Address.random(20).toString();
+            const nextAddress = Address.random(20).toString();
+            const sendFn = vi.fn().mockImplementation(({ method }) => {
+                switch (method) {
+                    case 'wallet_requestPermissions':
+                        return [nextAddress];
+                    case 'thor_methods':
+                        return ['wallet_requestPermissions'];
+                }
+            });
+            vi.mocked(createWallet).mockImplementation(
+                async (args) =>
+                    new CertificateBasedWallet(
+                        mockedConnexSigner,
+                        { send: sendFn },
+                        await args.thor.blocks
+                            .getGenesisBlock()
+                            .then((res) => res!.id),
+                        undefined,
+                    ),
+            );
+
+            const walletManager = newWalletManager({
+                v2Api: { enabled: true },
+            });
+            walletManager.state.source = 'veworld';
+            walletManager.state.address = oldAddress;
+            walletManager.state.addresses = [oldAddress];
+            walletManager.state.availableMethods = [
+                'wallet_requestPermissions',
+            ];
+
+            const approvedAccounts = await walletManager.requestPermissions();
+
+            expect(approvedAccounts).toStrictEqual([nextAddress]);
+            expect(walletManager.state.address).toBe(nextAddress);
+            expect(walletManager.state.addresses).toStrictEqual([nextAddress]);
+        });
+    });
+
+    describe('revokeAccount', () => {
+        it('revokes one approved account and keeps the active account when possible', async () => {
+            const activeAddress = Address.random(20).toString();
+            const revokedAddress = Address.random(20).toString();
+            const sendFn = vi.fn().mockImplementation(({ method }) => {
+                switch (method) {
+                    case 'wallet_revokeAccountPermission':
+                        return true;
+                    case 'thor_methods':
+                        return ['wallet_revokeAccountPermission'];
+                }
+            });
+            vi.mocked(createWallet).mockImplementation(
+                async (args) =>
+                    new CertificateBasedWallet(
+                        mockedConnexSigner,
+                        { send: sendFn },
+                        await args.thor.blocks
+                            .getGenesisBlock()
+                            .then((res) => res!.id),
+                        undefined,
+                    ),
+            );
+
+            const walletManager = newWalletManager({
+                v2Api: { enabled: true },
+            });
+            walletManager.state.source = 'veworld';
+            walletManager.state.address = activeAddress;
+            walletManager.state.addresses = [activeAddress, revokedAddress];
+            walletManager.state.availableMethods = [
+                'wallet_revokeAccountPermission',
+            ];
+
+            const approvedAccounts =
+                await walletManager.revokeAccount(revokedAddress);
+
+            expect(sendFn).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    method: 'wallet_revokeAccountPermission',
+                    params: [
+                        {
+                            eth_accounts: { addresses: [revokedAddress] },
+                        },
+                    ],
+                }),
+            );
+            expect(approvedAccounts).toStrictEqual([activeAddress]);
+            expect(walletManager.state.address).toBe(activeAddress);
+            expect(walletManager.state.addresses).toStrictEqual([
+                activeAddress,
+            ]);
+        });
+
+        it('switches active account after revoking the selected account', async () => {
+            const revokedAddress = Address.random(20).toString();
+            const nextAddress = Address.random(20).toString();
+            const sendFn = vi.fn().mockImplementation(({ method }) => {
+                switch (method) {
+                    case 'wallet_revokeAccountPermission':
+                        return true;
+                    case 'thor_methods':
+                        return ['wallet_revokeAccountPermission'];
+                }
+            });
+            vi.mocked(createWallet).mockImplementation(
+                async (args) =>
+                    new CertificateBasedWallet(
+                        mockedConnexSigner,
+                        { send: sendFn },
+                        await args.thor.blocks
+                            .getGenesisBlock()
+                            .then((res) => res!.id),
+                        undefined,
+                    ),
+            );
+
+            const walletManager = newWalletManager({
+                v2Api: { enabled: true },
+            });
+            walletManager.state.source = 'veworld';
+            walletManager.state.address = revokedAddress;
+            walletManager.state.addresses = [revokedAddress, nextAddress];
+            walletManager.state.availableMethods = [
+                'wallet_revokeAccountPermission',
+            ];
+
+            const approvedAccounts =
+                await walletManager.revokeAccount(revokedAddress);
+
+            expect(approvedAccounts).toStrictEqual([nextAddress]);
+            expect(walletManager.state.address).toBe(nextAddress);
+            expect(walletManager.state.addresses).toStrictEqual([nextAddress]);
+        });
     });
 
     describe('signTx', () => {

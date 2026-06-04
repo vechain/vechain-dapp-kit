@@ -60,6 +60,12 @@ export interface WCModal {
     ) => () => void;
     askForConnectionCertificate?: () => void;
     onConnectionCertificateSigned?: () => void;
+    /**
+     * Called after a successful WalletConnect connection that did NOT
+     * require signing a connection certificate. Should close both the
+     * QR view and the surrounding wallet modal.
+     */
+    onConnected?: () => void;
 }
 
 /**
