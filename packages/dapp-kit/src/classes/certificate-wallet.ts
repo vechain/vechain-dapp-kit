@@ -206,7 +206,12 @@ class CertificateBasedWallet implements VeChainWallet {
             options.delegator = undefined;
         }
 
-        if (options.gas === 0) {
+        // `Number(undefined)` produces NaN upstream, which serializes to
+        // `null` over the v2 messaging channel and is rejected by VeWorld's
+        // `thor_sendTransaction` zod schema (`gas: z.number().optional()`).
+        // Drop any zero / non-finite gas so the field is omitted and the
+        // wallet estimates it.
+        if (!options.gas || !Number.isFinite(options.gas)) {
             options.gas = undefined;
         }
 
