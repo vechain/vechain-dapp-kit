@@ -43,6 +43,7 @@ export class Modal extends LitElement {
     private setAddressFromState(): void {
         this.address = DAppKitUI.wallet.state.address ?? '';
         this.accountDomain = DAppKitUI.wallet.state.accountDomain ?? '';
+        this.accountDomains = DAppKitUI.wallet.state.accountDomains ?? {};
         this.isAccountDomainLoading = Boolean(
             DAppKitUI.wallet.state.isAccountDomainLoading,
         );
@@ -64,6 +65,13 @@ export class Modal extends LitElement {
             'accountDomain',
             (_accountDomain: string | null) => {
                 this.accountDomain = _accountDomain ?? '';
+                this.requestUpdate();
+            },
+        );
+        DAppKitUI.wallet.subscribeToKey(
+            'accountDomains',
+            (_accountDomains: Record<string, string | null>) => {
+                this.accountDomains = { ..._accountDomains };
                 this.requestUpdate();
             },
         );
@@ -103,6 +111,10 @@ export class Modal extends LitElement {
 
     @property()
     accountDomain = DAppKitUI.wallet.state.accountDomain ?? '';
+
+    @property({ type: Object })
+    accountDomains: Record<string, string | null> =
+        DAppKitUI.wallet.state.accountDomains ?? {};
 
     @property()
     isAccountDomainLoading = Boolean(
@@ -170,6 +182,7 @@ export class Modal extends LitElement {
                           .language=${this.language}
                           .address=${this.address}
                           .accountDomain=${this.accountDomain}
+                          .accountDomains=${this.accountDomains}
                           .isAccountDomainLoading=${this.isAccountDomainLoading}
                           .addresses=${this.addresses}
                           .source=${this.source ?? ''}

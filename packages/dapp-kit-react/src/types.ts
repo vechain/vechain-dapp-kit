@@ -66,6 +66,7 @@ export interface DAppKitContext {
          */
         revokeAccount: (address: string) => Promise<string[]>;
         accountDomain: string | null;
+        accountDomains: Record<string, string | null>;
         isAccountDomainLoading: boolean;
         signer: VeChainSignerDAppKit;
         source: WalletSource | null;

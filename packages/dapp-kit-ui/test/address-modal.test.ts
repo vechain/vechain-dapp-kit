@@ -32,6 +32,9 @@ describe('vdk-address-modal account manager', () => {
             'wallet_revokeAccountPermission',
         ];
         modal.addresses = [ACCOUNT_A, ACCOUNT_B];
+        modal.accountDomains = {
+            [ACCOUNT_B.toLowerCase()]: 'account-b.vet',
+        };
         modal.onSelectAccount = onSelectAccount;
         await modal.updateComplete;
 
@@ -43,6 +46,11 @@ describe('vdk-address-modal account manager', () => {
         const inactiveCard = cards.find((card) => card.address === ACCOUNT_B);
         expect(inactiveCard).toBeTruthy();
         await inactiveCard!.updateComplete;
+        expect(
+            inactiveCard!.shadowRoot
+                ?.querySelector('.account-address')
+                ?.textContent?.trim(),
+        ).toBe('account-b.vet');
 
         inactiveCard!.shadowRoot?.querySelector('button')?.click();
         expect(onSelectAccount).toHaveBeenCalledWith(ACCOUNT_B);

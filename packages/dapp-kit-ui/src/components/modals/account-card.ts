@@ -1,3 +1,4 @@
+import { shortenedDomain } from '@vechain/dapp-kit';
 import type { TemplateResult } from 'lit';
 import { css, html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -64,6 +65,9 @@ export class AccountCard extends LitElement {
     @property()
     address = '';
 
+    @property()
+    domain = '';
+
     @property({ type: Boolean })
     active = false;
 
@@ -93,6 +97,9 @@ export class AccountCard extends LitElement {
 
     override render(): TemplateResult {
         const trashIcon = this.mode === 'LIGHT' ? LightTrashSvg : DarkTrashSvg;
+        const accountLabel = this.domain
+            ? shortenedDomain(this.domain)
+            : friendlyAddress(this.address);
         return html`
             <div class="account-card">
                 <button
@@ -107,9 +114,7 @@ export class AccountCard extends LitElement {
                             class="account-icon"
                             src=${getPicassoImage(this.address)}
                         />
-                        <span class="account-address"
-                            >${friendlyAddress(this.address)}</span
-                        >
+                        <span class="account-address">${accountLabel}</span>
                     </div>
                     ${this.active
                         ? html`<div class="check-icon">${CheckSvg}</div>`

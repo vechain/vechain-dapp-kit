@@ -246,6 +246,9 @@ export class AddressModal extends LitElement {
     @property()
     accountDomain = '';
 
+    @property({ type: Object })
+    accountDomains: Record<string, string | null> = {};
+
     @property()
     isAccountDomainLoading = false;
 
@@ -418,6 +421,9 @@ export class AddressModal extends LitElement {
                                           html`<vdk-account-card
                                               .mode=${this.mode}
                                               .address=${account}
+                                              .domain=${this.accountDomains[
+                                                  account.toLowerCase()
+                                              ] ?? ''}
                                               .active=${account.toLowerCase() ===
                                               this.address.toLowerCase()}
                                               .canRevoke=${this.canRevoke}

@@ -5,5 +5,6 @@ export * from './create-wc-signer';
 export * from './genesis';
 export * from './local-storage';
 export * from './logger';
+export * from './get-account-domain';
 export * from './shortened-domain';
 export * from './typed-data';
