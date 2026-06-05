@@ -56,7 +56,7 @@ describe('vdk-address-modal account manager', () => {
         expect(onSelectAccount).toHaveBeenCalledWith(ACCOUNT_B);
     });
 
-    it('exposes an add-account action for VeWorld when permissions are supported', async () => {
+    it('exposes a change-connected-accounts action for VeWorld when permissions are supported', async () => {
         const onAddAccount = vi.fn();
         const modal = createAddressModal();
         modal.source = 'veworld';
@@ -66,10 +66,15 @@ describe('vdk-address-modal account manager', () => {
         await modal.updateComplete;
 
         const addButton = modal.shadowRoot?.querySelector(
-            'button[data-testid="Add account"]',
+            'button[data-testid="Change connected accounts"]',
         ) as HTMLButtonElement | null;
         expect(addButton).toBeTruthy();
-        expect(addButton?.querySelector('.add-account-icon svg')).toBeTruthy();
+        expect(
+            addButton?.querySelector('.change-connected-accounts-icon svg'),
+        ).toBeTruthy();
+        expect(addButton?.textContent?.trim()).toBe(
+            'Change connected accounts',
+        );
         addButton?.click();
         expect(onAddAccount).toHaveBeenCalled();
     });

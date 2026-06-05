@@ -7,12 +7,10 @@ import {
     DarkCloseSvg,
     DarkCopySvg,
     DarkDisconnectSvg,
-    DarkPlusSvg,
     DarkSwitchWalletSvg,
     LightCloseSvg,
     LightCopySvg,
     LightDisconnectSvg,
-    LightPlusSvg,
     LightSwitchWalletSvg,
 } from '../../assets/icons';
 import { buttonStyle, iconButtonStyle } from '../../assets/styles';
@@ -100,7 +98,7 @@ export class AddressModal extends LitElement {
                 height: 18px;
             }
 
-            .add-account-icon {
+            .change-connected-accounts-icon {
                 width: 18px;
                 height: 18px;
             }
@@ -439,17 +437,19 @@ export class AddressModal extends LitElement {
                                   ? html`<button
                                         class="${this.mode}"
                                         @click=${this.onAddAccount}
-                                        data-testid="Add account"
+                                        data-testid="Change connected accounts"
                                     >
                                         <div
-                                            class="add-account-icon ${this
+                                            class="change-connected-accounts-icon ${this
                                                 .mode}"
                                         >
                                             ${this.mode === 'LIGHT'
-                                                ? LightPlusSvg
-                                                : DarkPlusSvg}
+                                                ? LightSwitchWalletSvg
+                                                : DarkSwitchWalletSvg}
                                         </div>
-                                        ${translate('add-account')}
+                                        ${translate(
+                                            'change-connected-accounts',
+                                        )}
                                     </button>`
                                   : nothing}
                           </div>`

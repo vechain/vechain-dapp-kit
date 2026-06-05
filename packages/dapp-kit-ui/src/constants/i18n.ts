@@ -14,7 +14,7 @@ export const defaultI18n: I18n = {
         'waiting-signature': 'Waiting for signature...',
         'switch-wallet': 'Switch wallet',
         accounts: 'Accounts',
-        'add-account': 'Add account',
+        'change-connected-accounts': 'Change connected accounts',
         'revoke-account': 'Remove account',
     },
     it: {
@@ -30,7 +30,7 @@ export const defaultI18n: I18n = {
         'waiting-signature': 'Attendo firma...',
         'switch-wallet': 'Cambia wallet',
         accounts: 'Account',
-        'add-account': 'Aggiungi account',
+        'change-connected-accounts': 'Modifica account connessi',
         'revoke-account': 'Rimuovi account',
     },
     fr: {
