@@ -7,16 +7,18 @@ import {
     DarkCloseSvg,
     DarkCopySvg,
     DarkDisconnectSvg,
+    DarkPlusSvg,
     DarkSwitchWalletSvg,
     LightCloseSvg,
     LightCopySvg,
     LightDisconnectSvg,
+    LightPlusSvg,
     LightSwitchWalletSvg,
 } from '../../assets/icons';
 import { buttonStyle, iconButtonStyle } from '../../assets/styles';
 import { DAppKitUI } from '../../client';
 import type { I18n } from '../../constants';
-import { defaultI18n, Font } from '../../constants';
+import { Colors, defaultI18n, Font } from '../../constants';
 import type { ThemeMode } from '../../constants/theme';
 import {
     friendlyAddress,
@@ -24,6 +26,7 @@ import {
     subscribeToCustomEvent,
     useTranslate,
 } from '../../utils';
+import './account-card';
 
 let openWalletModalListener: () => void;
 let closeWalletModalListener: () => void;
@@ -77,6 +80,10 @@ export class AddressModal extends LitElement {
                 gap: 16px;
             }
 
+            .modal-footer.compact {
+                padding-top: 0;
+            }
+
             .address-icon {
                 width: 30%;
                 margin-right: 4px;
@@ -89,6 +96,11 @@ export class AddressModal extends LitElement {
             }
 
             .switch-wallet-icon {
+                width: 18px;
+                height: 18px;
+            }
+
+            .add-account-icon {
                 width: 18px;
                 height: 18px;
             }
@@ -146,6 +158,82 @@ export class AddressModal extends LitElement {
                 height: 15px;
                 margin-left: 8px;
             }
+
+            .accounts-section {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .accounts-title {
+                font-family: var(--vdk-font-family, ${Font.Family});
+                font-size: var(--vdk-font-size-medium, ${Font.Size.Medium});
+                font-weight: var(
+                    --vdk-font-weight-medium,
+                    ${Font.Weight.Medium}
+                );
+            }
+
+            .accounts-list {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                max-height: 220px;
+                overflow-y: scroll;
+                padding: 8px;
+                border-radius: 12px;
+                scrollbar-width: thin;
+            }
+
+            .accounts-list.LIGHT {
+                border: 1px solid
+                    var(
+                        --vdk-color-light-primary-active,
+                        ${Colors.Light.PrimaryActive}
+                    );
+                scrollbar-color: var(
+                        --vdk-color-light-quaternary,
+                        ${Colors.Light.Quaternary}
+                    )
+                    transparent;
+            }
+
+            .accounts-list.DARK {
+                border: 1px solid
+                    var(--vdk-color-dark-primary, ${Colors.Dark.Primary});
+                scrollbar-color: var(
+                        --vdk-color-dark-quaternary,
+                        ${Colors.Dark.Quaternary}
+                    )
+                    transparent;
+            }
+
+            .accounts-list::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            .accounts-list::-webkit-scrollbar-track {
+                background: transparent;
+                margin: 4px 0;
+            }
+
+            .accounts-list::-webkit-scrollbar-thumb {
+                border-radius: 4px;
+            }
+
+            .accounts-list.LIGHT::-webkit-scrollbar-thumb {
+                background: var(
+                    --vdk-color-light-quaternary,
+                    ${Colors.Light.Quaternary}
+                );
+            }
+
+            .accounts-list.DARK::-webkit-scrollbar-thumb {
+                background: var(
+                    --vdk-color-dark-quaternary,
+                    ${Colors.Dark.Quaternary}
+                );
+            }
         `,
     ];
 
@@ -185,9 +273,49 @@ export class AddressModal extends LitElement {
     @property()
     showCopiedSecondaryIcon = false;
 
+    @property()
+    addresses: string[] = [];
+
+    @property()
+    source = '';
+
+    @property()
+    availableMethods: string[] = [];
+
+    @property({ type: Function })
+    onSelectAccount?: (address: string) => void = undefined;
+
+    @property({ type: Function })
+    onAddAccount?: () => void = undefined;
+
+    @property({ type: Function })
+    onRevokeAccount?: (address: string) => void = undefined;
+
     private get switchWalletAvailable(): boolean {
         return DAppKitUI.get().wallet.availableMethods.includes(
             'thor_switchWallet',
+        );
+    }
+
+    private get canAddAccount(): boolean {
+        return (
+            this.source === 'veworld' &&
+            this.availableMethods.includes('wallet_requestPermissions')
+        );
+    }
+
+    private get canRevoke(): boolean {
+        return (
+            this.source === 'veworld' &&
+            this.availableMethods.includes('wallet_revokeAccountPermission') &&
+            this.addresses.length > 1
+        );
+    }
+
+    private get showAccountManager(): boolean {
+        return (
+            this.source === 'veworld' &&
+            (this.addresses.length > 1 || this.canAddAccount)
         );
     }
 
@@ -278,7 +406,54 @@ export class AddressModal extends LitElement {
                     }
                     </div>
                 </div>
-                <div class="modal-footer">
+                ${
+                    this.showAccountManager
+                        ? html`<div class="accounts-section">
+                              <div class="accounts-title">
+                                  ${translate('accounts')}
+                              </div>
+                              <div class="accounts-list ${this.mode}">
+                                  ${this.addresses.map(
+                                      (account) =>
+                                          html`<vdk-account-card
+                                              .mode=${this.mode}
+                                              .address=${account}
+                                              .active=${account.toLowerCase() ===
+                                              this.address.toLowerCase()}
+                                              .canRevoke=${this.canRevoke}
+                                              .revokeLabel=${translate(
+                                                  'revoke-account',
+                                              )}
+                                              .onSelect=${this.onSelectAccount}
+                                              .onRevoke=${this.onRevokeAccount}
+                                          ></vdk-account-card>`,
+                                  )}
+                              </div>
+                              ${this.canAddAccount
+                                  ? html`<button
+                                        class="${this.mode}"
+                                        @click=${this.onAddAccount}
+                                        data-testid="Add account"
+                                    >
+                                        <div
+                                            class="add-account-icon ${this
+                                                .mode}"
+                                        >
+                                            ${this.mode === 'LIGHT'
+                                                ? LightPlusSvg
+                                                : DarkPlusSvg}
+                                        </div>
+                                        ${translate('add-account')}
+                                    </button>`
+                                  : nothing}
+                          </div>`
+                        : nothing
+                }
+                <div
+                    class="modal-footer ${
+                        this.showAccountManager ? 'compact' : ''
+                    }"
+                >
                     ${
                         this.switchWalletAvailable
                             ? html`<button

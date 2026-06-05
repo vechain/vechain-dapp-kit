@@ -1,3 +1,4 @@
+import type { WalletSource } from '@vechain/dapp-kit';
 import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { DAppKitUI } from '../../client';
@@ -45,6 +46,9 @@ export class Modal extends LitElement {
         this.isAccountDomainLoading = Boolean(
             DAppKitUI.wallet.state.isAccountDomainLoading,
         );
+        this.addresses = DAppKitUI.wallet.state.addresses ?? [];
+        this.source = DAppKitUI.wallet.state.source;
+        this.availableMethods = DAppKitUI.wallet.availableMethods;
         this.requestUpdate();
     }
 
@@ -70,6 +74,24 @@ export class Modal extends LitElement {
                 this.requestUpdate();
             },
         );
+        DAppKitUI.wallet.subscribeToKey('addresses', (_addresses: string[]) => {
+            this.addresses = [..._addresses];
+            this.requestUpdate();
+        });
+        DAppKitUI.wallet.subscribeToKey(
+            'source',
+            (_source: WalletSource | null) => {
+                this.source = _source;
+                this.requestUpdate();
+            },
+        );
+        DAppKitUI.wallet.subscribeToKey(
+            'availableMethods',
+            (_availableMethods: string[] | null) => {
+                this.availableMethods = _availableMethods ?? [];
+                this.requestUpdate();
+            },
+        );
     }
 
     private get alwaysShowConnect(): boolean {
@@ -86,6 +108,15 @@ export class Modal extends LitElement {
     isAccountDomainLoading = Boolean(
         DAppKitUI.wallet.state.isAccountDomainLoading,
     );
+
+    @property()
+    addresses: string[] = DAppKitUI.wallet.state.addresses ?? [];
+
+    @property()
+    source: WalletSource | null = DAppKitUI.wallet.state.source;
+
+    @property()
+    availableMethods: string[] = DAppKitUI.wallet.availableMethods;
 
     @property()
     mode: ThemeMode = 'LIGHT';
@@ -109,6 +140,22 @@ export class Modal extends LitElement {
         DAppKitUI.wallet.switchWallet().then(() => DAppKitUI.modal.close());
     };
 
+    @property({ type: Function })
+    onSelectAccount = (address: string): void => {
+        DAppKitUI.wallet.setActiveAccount(address);
+        DAppKitUI.modal.close();
+    };
+
+    @property({ type: Function })
+    onAddAccount = (): void => {
+        void DAppKitUI.wallet.requestPermissions();
+    };
+
+    @property({ type: Function })
+    onRevokeAccount = (address: string): void => {
+        void DAppKitUI.wallet.revokeAccount(address);
+    };
+
     override render(): TemplateResult {
         if (!DAppKitUI.initialized) {
             return html``;
@@ -124,8 +171,14 @@ export class Modal extends LitElement {
                           .address=${this.address}
                           .accountDomain=${this.accountDomain}
                           .isAccountDomainLoading=${this.isAccountDomainLoading}
+                          .addresses=${this.addresses}
+                          .source=${this.source ?? ''}
+                          .availableMethods=${this.availableMethods}
                           .onDisconnectClick=${this.onDisconnectClick}
                           .onSwitchWalletClick=${this.onSwitchWalletClick}
+                          .onSelectAccount=${this.onSelectAccount}
+                          .onAddAccount=${this.onAddAccount}
+                          .onRevokeAccount=${this.onRevokeAccount}
                       ></vdk-address-modal>`
                     : html` <vdk-connect-modal
                           .mode=${this.mode}
