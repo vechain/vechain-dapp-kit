@@ -21,3 +21,9 @@ h2 {
     margin-top: 20px;
     margin-bottom: 10px;
 }
+.api-toggle {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 16px;
+}

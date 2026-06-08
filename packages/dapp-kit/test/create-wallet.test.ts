@@ -17,6 +17,7 @@ type ICreateWallet = DAppKitOptions & {
 const createOptions = (
     source: WalletSource,
     wcOptions?: WalletConnectOptions,
+    v2ApiEnabled = true,
 ): ICreateWallet => {
     return {
         node: mockedHttpClient.baseURL,
@@ -25,7 +26,7 @@ const createOptions = (
         onDisconnected: () => {},
         thor: new ThorClient(mockedHttpClient),
         v2Api: {
-            enabled: true,
+            enabled: v2ApiEnabled,
         },
     };
 };
@@ -50,6 +51,19 @@ describe('createWallet', () => {
             const wallet = await createWallet(createOptions('veworld'));
 
             expect(wallet).toBeDefined();
+        });
+
+        it('uses the legacy signer when v2Api is disabled', async () => {
+            window.vechain = {
+                request: vi.fn(),
+                newConnexSigner: () => ({}) as WalletSigner,
+            };
+
+            const wallet = await createWallet(
+                createOptions('veworld', undefined, false),
+            );
+
+            await expect(wallet.getAvailableMethods()).resolves.toBeNull();
         });
     });
 
