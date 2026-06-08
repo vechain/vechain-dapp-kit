@@ -26,6 +26,7 @@ export const createWallet = async ({
     walletConnectOptions,
     onDisconnected,
     connectionCertificate,
+    v2Api,
 }: ICreateWallet): Promise<VeChainWallet> => {
     DAppKitLogger.debug('createWallet', source);
 
@@ -63,19 +64,19 @@ export const createWallet = async ({
                     throw new Error('VeWorld Extension is not installed');
                 }
 
-                // Prefer the v2 EIP-1193-style `request` API when the extension
-                // exposes it. This avoids the legacy certificate-based connect
-                // and keeps subsequent signing on the v2 channel
-                // (`thor_signCertificate`, `thor_signTypedData`,
-                // `thor_sendTransaction`), which VeWorld would otherwise reject
-                // for a v2-connected app.
+                // Prefer the v2 EIP-1193-style `request` API only when the app
+                // explicitly enables v2. Otherwise keep the legacy
+                // certificate-based connection flow.
                 const ext = window.vechain as unknown as {
                     request?: (args: {
                         method: string;
                         params?: unknown;
                     }) => Promise<unknown>;
                 };
-                if (typeof ext.request === 'function') {
+                if (
+                    v2Api?.enabled !== false &&
+                    typeof ext.request === 'function'
+                ) {
                     const { walletSigner, walletProvider } =
                         createVeWorldV2Wallet(ext.request.bind(ext), genesisId);
                     return new CertificateBasedWallet(

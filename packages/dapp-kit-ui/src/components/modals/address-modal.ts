@@ -313,9 +313,14 @@ export class AddressModal extends LitElement {
         );
     }
 
+    private get v2ApiEnabled(): boolean {
+        return DAppKitUI.get().options.v2Api.enabled ?? false;
+    }
+
     private get showAccountManager(): boolean {
         return (
             this.source === 'veworld' &&
+            this.v2ApiEnabled &&
             this.showInlineAccounts &&
             (this.addresses.length > 1 || this.canAddAccount)
         );

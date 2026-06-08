@@ -79,6 +79,29 @@ describe('vdk-address-modal account manager', () => {
         expect(onAddAccount).toHaveBeenCalled();
     });
 
+    it('does not render the account manager when v2Api is disabled', async () => {
+        DAppKitUI.configure({
+            node: 'https://mainnet.vechain.org/',
+            v2Api: { enabled: false },
+        });
+        const modal = createAddressModal();
+        modal.source = 'veworld';
+        modal.availableMethods = [
+            'wallet_requestPermissions',
+            'wallet_revokeAccountPermission',
+        ];
+        modal.addresses = [ACCOUNT_A, ACCOUNT_B];
+        await modal.updateComplete;
+
+        const cards = modal.shadowRoot?.querySelectorAll('vdk-account-card');
+        expect(cards?.length ?? 0).toBe(0);
+
+        const addButton = modal.shadowRoot?.querySelector(
+            'button[data-testid="Change connected accounts"]',
+        );
+        expect(addButton).toBeNull();
+    });
+
     it('does not render the account manager for non-VeWorld wallets', async () => {
         const modal = createAddressModal();
         modal.source = 'wallet-connect';
