@@ -37,6 +37,6 @@
         "react-test-renderer": "^19.1.0",
         "typescript": "5.8.3",
         "vite-plugin-node-polyfills": "^0.23.0",
-        "vitest": "^3.1.1"
+        "vitest": "^3.2.6"
     }
 }
