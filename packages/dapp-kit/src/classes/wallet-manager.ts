@@ -250,6 +250,32 @@ class WalletManager {
         this.setAccountDomain(address);
     };
 
+    private recoverTypedDataSigner = async (
+        signature: string,
+        domain: TypedDataDomain,
+        types: Record<string, TypedDataParameter[]>,
+        message: Record<string, unknown>,
+    ): Promise<string> =>
+        recoverTypedDataAddress({
+            signature: signature as `0x${string}`,
+            message,
+            domain: {
+                ...domain,
+                chainId: parseChainId(
+                    domain.chainId as TypedDataMessage['domain']['chainId'],
+                ),
+            },
+            types,
+            primaryType: getPrimaryType(types),
+        });
+
+    private getTypedDataOptions = (
+        options: SignTypedDataOptions,
+    ): SignTypedDataOptions => {
+        const signer = options.signer ?? this.state.address ?? undefined;
+        return signer ? { ...options, signer } : options;
+    };
+
     /**
      * Sign a connection certificate
      * this is needed for wallet connect connections when a connection certificate is required
@@ -408,16 +434,12 @@ class WalletManager {
             typedMessage.types,
             typedMessage.value,
         );
-        const signer = await recoverTypedDataAddress({
-            signature: res as `0x${string}`,
-            message: typedMessage.value,
-            domain: {
-                ...value.domain,
-                chainId: parseChainId(value.domain.chainId),
-            },
-            types: typedMessage.types,
-            primaryType: getPrimaryType(typedMessage.types),
-        });
+        const signer = await this.recoverTypedDataSigner(
+            res,
+            typedMessage.domain,
+            typedMessage.types,
+            typedMessage.value,
+        );
         this.setAddresses(signer ? [signer] : []);
         return { signer, signature: res } as any;
     };
@@ -657,7 +679,7 @@ class WalletManager {
             const res = await this.withWallet((wallet) =>
                 wallet.signTx(msg, options),
             );
-            this.state.address = res.signer;
+            this.setAddressAndDomain(res.signer);
             void this.refreshApprovedAccounts();
             return res;
         } catch (e) {
@@ -675,7 +697,7 @@ class WalletManager {
                 wallet.signCert(msg, options),
             );
             // TODO: we should probably remove these assignment, because the user should be already logged in, and the address should be already defined, test it after e2e with transactions
-            this.state.address = res.annex.signer;
+            this.setAddressAndDomain(res.annex.signer);
             void this.refreshApprovedAccounts();
             return res;
         } catch (e) {
@@ -688,19 +710,35 @@ class WalletManager {
         domain: TypedDataDomain,
         types: Record<string, TypedDataParameter[]>,
         message: Record<string, unknown>,
-        options?: SignTypedDataOptions,
+        options: SignTypedDataOptions = {},
     ): Promise<string> => {
         const wallet = await this.getWallet();
         if (!wallet.signTypedData)
             throw new Error('signTypedData is not supported');
 
         try {
+            const typedDataOptions = this.getTypedDataOptions(options);
             const res = await wallet.signTypedData(
                 domain,
                 types,
                 message,
-                options,
+                typedDataOptions,
             );
+            try {
+                const signer = await this.recoverTypedDataSigner(
+                    res,
+                    domain,
+                    types,
+                    message,
+                );
+                this.setAddressAndDomain(signer);
+            } catch (e) {
+                DAppKitLogger.warn(
+                    'WalletManager',
+                    'signTypedData recover signer',
+                    e,
+                );
+            }
             void this.refreshApprovedAccounts();
             return res;
         } catch (e) {

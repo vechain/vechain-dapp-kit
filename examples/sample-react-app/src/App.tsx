@@ -14,7 +14,8 @@ function App() {
 
     const { open } = useWalletModal();
     const [buttonText, setButtonText] = useState('Connect Custom Button');
-    const { onConnectRequest } = useDappKitFunctions();
+    const { onConnectRequest, setV2ApiEnabled, v2ApiEnabled } =
+        useDappKitFunctions();
 
     const sendTx = () =>
         signer?.sendTransaction({
@@ -97,6 +98,17 @@ function App() {
     return (
         <div className="container">
             <h2>React JS</h2>
+            <label className="api-toggle">
+                <span>API mode</span>
+                <input
+                    checked={v2ApiEnabled}
+                    onChange={(event) =>
+                        setV2ApiEnabled(event.currentTarget.checked)
+                    }
+                    type="checkbox"
+                />
+                <span>{v2ApiEnabled ? 'v2 enabled' : 'v1'}</span>
+            </label>
             <div className="label">kit button:</div>
             <WalletButton />
             <div className="label">custom button:</div>

@@ -12,6 +12,7 @@ import {
     useContext,
     useMemo,
     useRef,
+    useState,
 } from 'react';
 
 const walletConnectOptions: WalletConnectOptions = {
@@ -34,24 +35,31 @@ type OnConnectResponse = NonNullable<
 type ContextProps = {
     onConnectRequest: RefObject<OnConnectRequest | null>;
     onConnectResponse: RefObject<OnConnectResponse | null>;
+    v2ApiEnabled: boolean;
+    setV2ApiEnabled: (enabled: boolean) => void;
 };
 
 //This context has been created only for display purposes. It's not needed to created something like this
 const FunctionContext = createContext<ContextProps>({
     onConnectRequest: createRef(),
     onConnectResponse: createRef(),
+    v2ApiEnabled: false,
+    setV2ApiEnabled: () => undefined,
 });
 
 export const Provider = ({ children }: PropsWithChildren) => {
     const onConnectRequestRef = useRef<OnConnectRequest>(null);
     const onConnectResponseRef = useRef<OnConnectResponse>(null);
+    const [v2ApiEnabled, setV2ApiEnabled] = useState(false);
 
     const ctxValue = useMemo(
         () => ({
             onConnectRequest: onConnectRequestRef,
             onConnectResponse: onConnectResponseRef,
+            v2ApiEnabled,
+            setV2ApiEnabled,
         }),
-        [],
+        [v2ApiEnabled],
     );
 
     const onConnectRequest = useCallback<OnConnectRequest>((source) => {
@@ -77,7 +85,11 @@ export const Provider = ({ children }: PropsWithChildren) => {
                 usePersistence
                 walletConnectOptions={walletConnectOptions}
                 logLevel={'DEBUG'}
-                v2Api={{ onConnectRequest, onConnectResponse }}
+                v2Api={{
+                    enabled: v2ApiEnabled,
+                    onConnectRequest,
+                    onConnectResponse,
+                }}
             >
                 {children}
             </DAppKitProvider>

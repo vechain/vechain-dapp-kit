@@ -384,6 +384,126 @@ describe('WalletManager', () => {
         });
     });
 
+    describe('signTypedData', () => {
+        it('updates the active address to the typed data signer', async () => {
+            const oldAddress = Address.random(20).toString();
+            vi.mocked(createWallet).mockImplementation(
+                async (args) =>
+                    new CertificateBasedWallet(
+                        {
+                            ...mockedConnexSigner,
+                            signTypedData(domain, types, message) {
+                                return new VeChainPrivateKeySigner(
+                                    privateKey,
+                                ).signTypedData(domain, types, message);
+                            },
+                        },
+                        null,
+                        await args.thor.blocks
+                            .getGenesisBlock()
+                            .then((res) => res!.id),
+                        undefined,
+                    ),
+            );
+            const walletManager = newWalletManager();
+            walletManager.setSource('veworld');
+            walletManager.state.address = oldAddress;
+            walletManager.state.addresses = [oldAddress, address.toString()];
+
+            const signature = await walletManager.signTypedData(
+                typedDataMessage.domain,
+                typedDataMessage.types,
+                typedDataMessage.value,
+            );
+
+            expect(signature).toBeDefined();
+            expect(walletManager.state.address).toBe(address.toString());
+        });
+
+        it('passes empty options when typed data options are omitted', async () => {
+            const signTypedData = vi
+                .fn()
+                .mockImplementation((domain, types, message) =>
+                    new VeChainPrivateKeySigner(privateKey).signTypedData(
+                        domain,
+                        types,
+                        message,
+                    ),
+                );
+            vi.mocked(createWallet).mockImplementation(
+                async (args) =>
+                    new CertificateBasedWallet(
+                        {
+                            ...mockedConnexSigner,
+                            signTypedData,
+                        },
+                        null,
+                        await args.thor.blocks
+                            .getGenesisBlock()
+                            .then((res) => res!.id),
+                        undefined,
+                    ),
+            );
+            const walletManager = newWalletManager();
+            walletManager.setSource('veworld');
+
+            await walletManager.signTypedData(
+                typedDataMessage.domain,
+                typedDataMessage.types,
+                typedDataMessage.value,
+            );
+
+            expect(signTypedData).toHaveBeenCalledWith(
+                expect.any(Object),
+                typedDataMessage.types,
+                typedDataMessage.value,
+                {},
+            );
+        });
+
+        it('passes the active address as typed data signer', async () => {
+            const signTypedData = vi
+                .fn()
+                .mockImplementation((domain, types, message) =>
+                    new VeChainPrivateKeySigner(privateKey).signTypedData(
+                        domain,
+                        types,
+                        message,
+                    ),
+                );
+            vi.mocked(createWallet).mockImplementation(
+                async (args) =>
+                    new CertificateBasedWallet(
+                        {
+                            ...mockedConnexSigner,
+                            signTypedData,
+                        },
+                        null,
+                        await args.thor.blocks
+                            .getGenesisBlock()
+                            .then((res) => res!.id),
+                        undefined,
+                    ),
+            );
+            const walletManager = newWalletManager();
+            walletManager.setSource('veworld');
+            walletManager.state.address = address.toString();
+
+            await walletManager.signTypedData(
+                typedDataMessage.domain,
+                typedDataMessage.types,
+                typedDataMessage.value,
+            );
+
+            expect(signTypedData).toHaveBeenCalledWith(
+                expect.any(Object),
+                typedDataMessage.types,
+                typedDataMessage.value,
+                { signer: address.toString() },
+            );
+        });
+    });
+
     describe('signCert', () => {
         it('should sign the cert', async () => {
             mockDefaultWallet();

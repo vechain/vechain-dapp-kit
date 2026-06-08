@@ -78,6 +78,20 @@ const safeReadApprovedAccounts = async (
     }
 };
 
+const buildTypedDataRequestParams = (
+    domain: TypedDataDomain,
+    types: Record<string, TypedDataParameter[]>,
+    value: Record<string, unknown>,
+    options: SignTypedDataOptions | undefined,
+    genesisId: string,
+) => ({
+    domain,
+    types,
+    value,
+    ...(options?.signer ? { opts: options } : {}),
+    genesisId,
+});
+
 /**
  * Build a dapp-kit `WalletProvider` + `WalletSigner` pair that talks to
  * VeWorld's v2 API (`window.vechain.request({ method, params })`).
@@ -193,13 +207,13 @@ export const createVeWorldV2Wallet = (
                     };
                     return request({
                         method: 'thor_signTypedData',
-                        params: {
-                            domain: params.domain,
-                            types: params.types,
-                            value: params.value,
-                            opts: params.options,
+                        params: buildTypedDataRequestParams(
+                            params.domain,
+                            params.types,
+                            params.value,
+                            params.options,
                             genesisId,
-                        },
+                        ),
                     });
                 }
 
@@ -250,13 +264,13 @@ export const createVeWorldV2Wallet = (
         signTypedData: async (domain, types, message, options) => {
             const res = (await request({
                 method: 'thor_signTypedData',
-                params: {
+                params: buildTypedDataRequestParams(
                     domain,
                     types,
-                    value: message,
-                    opts: options,
+                    message,
+                    options,
                     genesisId,
-                },
+                ),
             })) as string;
             return res;
         },

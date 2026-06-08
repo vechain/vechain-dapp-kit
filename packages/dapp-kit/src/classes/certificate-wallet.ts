@@ -239,7 +239,7 @@ class CertificateBasedWallet implements VeChainWallet {
             { ...domain, chainId: stringifyChainId(domain.chainId) },
             types,
             message,
-            options,
+            options ?? {},
         );
     };
 
