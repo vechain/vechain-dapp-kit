@@ -75,8 +75,37 @@ describe('vdk-address-modal account manager', () => {
         expect(addButton?.textContent?.trim()).toBe(
             'Change connected accounts',
         );
+        expect(
+            modal.shadowRoot
+                ?.querySelector('button[data-testid="Disconnect"]')
+                ?.classList.contains('secondary'),
+        ).toBe(true);
         addButton?.click();
         expect(onAddAccount).toHaveBeenCalled();
+    });
+
+    it('keeps disconnect available when switch wallet is supported', async () => {
+        const onDisconnectClick = vi.fn();
+        const onSwitchWalletClick = vi.fn();
+        const modal = createAddressModal();
+        modal.availableMethods = ['thor_switchWallet'];
+        modal.onDisconnectClick = onDisconnectClick;
+        modal.onSwitchWalletClick = onSwitchWalletClick;
+        await modal.updateComplete;
+
+        const switchWallet = modal.shadowRoot?.querySelector(
+            'button[data-testid="Switch wallet"]',
+        ) as HTMLButtonElement | null;
+        const disconnect = modal.shadowRoot?.querySelector(
+            'button[data-testid="Disconnect"]',
+        ) as HTMLButtonElement | null;
+        expect(switchWallet).toBeTruthy();
+        expect(disconnect).toBeTruthy();
+
+        switchWallet?.click();
+        disconnect?.click();
+        expect(onSwitchWalletClick).toHaveBeenCalled();
+        expect(onDisconnectClick).toHaveBeenCalled();
     });
 
     it('does not render the account manager when v2Api is disabled', async () => {

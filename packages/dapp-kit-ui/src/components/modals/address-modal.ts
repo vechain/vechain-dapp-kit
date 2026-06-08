@@ -82,25 +82,77 @@ export class AddressModal extends LitElement {
                 padding-top: 0;
             }
 
+            .modal-footer button {
+                line-height: 20px;
+            }
+
+            button.secondary.LIGHT {
+                background: transparent;
+                color: var(
+                    --vdk-color-light-quaternary,
+                    ${Colors.Light.Quaternary}
+                );
+            }
+
+            button.secondary.LIGHT:hover:not(:disabled) {
+                background: var(
+                    --vdk-color-light-primary,
+                    ${Colors.Light.Primary}
+                );
+            }
+
+            button.secondary.LIGHT:active:not(:disabled) {
+                background: var(
+                    --vdk-color-light-primary-active,
+                    ${Colors.Light.PrimaryActive}
+                );
+            }
+
+            button.secondary.DARK {
+                background: transparent;
+                color: var(
+                    --vdk-color-dark-quaternary,
+                    ${Colors.Dark.Quaternary}
+                );
+            }
+
+            button.secondary.DARK:hover:not(:disabled) {
+                background: var(
+                    --vdk-color-dark-primary,
+                    ${Colors.Dark.Primary}
+                );
+            }
+
+            button.secondary.DARK:active:not(:disabled) {
+                background: var(
+                    --vdk-color-dark-primary-active,
+                    ${Colors.Dark.PrimaryActive}
+                );
+            }
+
             .address-icon {
                 width: 30%;
                 margin-right: 4px;
                 border-radius: 50%;
             }
 
-            .disconnect-icon {
-                width: 18px;
-                height: 18px;
-            }
-
-            .switch-wallet-icon {
-                width: 18px;
-                height: 18px;
-            }
-
+            .disconnect-icon,
+            .switch-wallet-icon,
             .change-connected-accounts-icon {
-                width: 18px;
-                height: 18px;
+                align-items: center;
+                display: flex;
+                flex: 0 0 20px;
+                height: 20px;
+                justify-content: center;
+                width: 20px;
+            }
+
+            .disconnect-icon svg,
+            .switch-wallet-icon svg,
+            .change-connected-accounts-icon svg {
+                display: block;
+                height: 20px;
+                width: 20px;
             }
 
             .title {
@@ -293,9 +345,7 @@ export class AddressModal extends LitElement {
     onRevokeAccount?: (address: string) => void = undefined;
 
     private get switchWalletAvailable(): boolean {
-        return DAppKitUI.get().wallet.availableMethods.includes(
-            'thor_switchWallet',
-        );
+        return this.availableMethods.includes('thor_switchWallet');
     }
 
     private get canAddAccount(): boolean {
@@ -372,6 +422,25 @@ export class AddressModal extends LitElement {
             this.accountDomain && !this.isAccountDomainLoading
                 ? shortenedDomain(this.accountDomain, 18)
                 : friendlyAddress(this.address || '');
+        const disconnectButton = (): TemplateResult => {
+            const secondary =
+                this.switchWalletAvailable || this.showAccountManager;
+
+            return html`
+                <button
+                    class="${secondary ? 'secondary ' : ''}${this.mode}"
+                    @click=${this.onDisconnectClick}
+                    data-testid="Disconnect"
+                >
+                    <div class="disconnect-icon ${this.mode}">
+                        ${this.mode === 'LIGHT'
+                            ? LightDisconnectSvg
+                            : DarkDisconnectSvg}
+                    </div>
+                    ${translate('disconnect')}
+                </button>
+            `;
+        };
         return html`
         <vdk-fonts></vdk-fonts>
         <vdk-base-modal
@@ -484,19 +553,9 @@ export class AddressModal extends LitElement {
                                   </div>
                                   ${translate('switch-wallet')}
                               </button>`
-                            : html`<button
-                                  class="${this.mode}"
-                                  @click=${this.onDisconnectClick}
-                                  data-testid="Disconnect"
-                              >
-                                  <div class="disconnect-icon ${this.mode}">
-                                      ${this.mode === 'LIGHT'
-                                          ? LightDisconnectSvg
-                                          : DarkDisconnectSvg}
-                                  </div>
-                                  ${translate('disconnect')}
-                              </button>`
+                            : nothing
                     }
+                    ${disconnectButton()}
                 </div>
         </vdk-base-modal>
     `;
