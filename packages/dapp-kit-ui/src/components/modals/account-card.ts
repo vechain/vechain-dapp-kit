@@ -59,6 +59,18 @@ export class AccountCard extends LitElement {
                 height: 18px;
                 display: flex;
             }
+
+            .revoke-button {
+                flex: 0 0 32px;
+                height: 32px;
+                padding: 5px;
+                width: 32px;
+            }
+
+            .revoke-button svg {
+                height: 22px;
+                width: 22px;
+            }
         `,
     ];
 
@@ -122,7 +134,7 @@ export class AccountCard extends LitElement {
                 </button>
                 ${this.canRevoke
                     ? html`<div
-                          class="icon-button ${this.mode}"
+                          class="icon-button revoke-button ${this.mode}"
                           @click=${this.handleRevoke}
                           title=${this.revokeLabel}
                           aria-label=${this.revokeLabel}

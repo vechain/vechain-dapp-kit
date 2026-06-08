@@ -233,6 +233,7 @@ export class AddressModal extends LitElement {
                 padding: 8px;
                 border-radius: 12px;
                 scrollbar-width: thin;
+                scrollbar-color: rgba(180, 180, 180, 0.6) transparent;
             }
 
             .accounts-list.LIGHT {
@@ -241,21 +242,11 @@ export class AddressModal extends LitElement {
                         --vdk-color-light-primary-active,
                         ${Colors.Light.PrimaryActive}
                     );
-                scrollbar-color: var(
-                        --vdk-color-light-quaternary,
-                        ${Colors.Light.Quaternary}
-                    )
-                    transparent;
             }
 
             .accounts-list.DARK {
                 border: 1px solid
                     var(--vdk-color-dark-primary, ${Colors.Dark.Primary});
-                scrollbar-color: var(
-                        --vdk-color-dark-quaternary,
-                        ${Colors.Dark.Quaternary}
-                    )
-                    transparent;
             }
 
             .accounts-list::-webkit-scrollbar {
@@ -272,17 +263,11 @@ export class AddressModal extends LitElement {
             }
 
             .accounts-list.LIGHT::-webkit-scrollbar-thumb {
-                background: var(
-                    --vdk-color-light-quaternary,
-                    ${Colors.Light.Quaternary}
-                );
+                background: rgba(180, 180, 180, 0.6);
             }
 
             .accounts-list.DARK::-webkit-scrollbar-thumb {
-                background: var(
-                    --vdk-color-dark-quaternary,
-                    ${Colors.Dark.Quaternary}
-                );
+                background: rgba(180, 180, 180, 0.6);
             }
         `,
     ];
