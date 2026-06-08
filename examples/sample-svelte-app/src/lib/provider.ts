@@ -3,7 +3,10 @@ import type { DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 import { getContext, setContext } from 'svelte';
 
 export type DappKitFunctionsContextProps = Required<
-    Pick<DAppKitUIOptions['v2Api'], 'onConnectRequest' | 'onConnectResponse'>
+    Pick<
+        NonNullable<DAppKitUIOptions['v2Api']>,
+        'onConnectRequest' | 'onConnectResponse'
+    >
 > & {
     dappKit: DAppKit | null;
 };

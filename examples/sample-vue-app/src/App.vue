@@ -31,10 +31,10 @@ import { DAppKitUI, DAppKitUIOptions } from '@vechain/dapp-kit-ui';
 import { CertificateMessage, TypedDataMessage } from '@vechain/dapp-kit';
 
 type OnConnectRequest = NonNullable<
-    DAppKitUIOptions['v2Api']['onConnectRequest']
+    NonNullable<DAppKitUIOptions['v2Api']>['onConnectRequest']
 >;
 type OnConnectResponse = NonNullable<
-    DAppKitUIOptions['v2Api']['onConnectResponse']
+    NonNullable<DAppKitUIOptions['v2Api']>['onConnectResponse']
 >;
 
 const walletConnectOptions = {

@@ -1,5 +1,10 @@
-export default {
-    rules: {
-        'no-constant-binary-expression': 'off',
+export default [
+    {
+        ignores: ['**/.svelte-kit/**', '**/dist/**'],
     },
-};
+    {
+        rules: {
+            'no-constant-binary-expression': 'off',
+        },
+    },
+];

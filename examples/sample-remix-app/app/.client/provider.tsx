@@ -30,10 +30,10 @@ const walletConnectOptions: WalletConnectOptions = {
 };
 
 type OnConnectRequest = NonNullable<
-    DAppKitUIOptions['v2Api']['onConnectRequest']
+    NonNullable<DAppKitUIOptions['v2Api']>['onConnectRequest']
 >;
 type OnConnectResponse = NonNullable<
-    DAppKitUIOptions['v2Api']['onConnectResponse']
+    NonNullable<DAppKitUIOptions['v2Api']>['onConnectResponse']
 >;
 
 type ContextProps = {
