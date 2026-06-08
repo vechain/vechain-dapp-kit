@@ -2,6 +2,7 @@ import type {
     CertificateMessage,
     ConnectV2Response,
     DAppKitOptions,
+    NormalizedDAppKitOptions,
     TypedDataMessage,
     WalletManager,
 } from '@vechain/dapp-kit';
@@ -40,7 +41,7 @@ type OnConnectV2Callbacks = {
     ) => Promise<void>;
 };
 
-type DappKitUIV2ApiOptions = DAppKitOptions['v2Api'] &
+type DappKitUIV2ApiOptions = NonNullable<DAppKitOptions['v2Api']> &
     OnConnectV2Callbacks & {
         /**
          * Initialize the DappKit instance automatically (`DappKit.initialize()`). Function is a Promise but should resolve immediately.
@@ -58,14 +59,14 @@ let dappKit: DAppKit | null = null;
 let dappKitOptions: ParsedOptions | null = null;
 let initialized = false;
 
-export type DAppKitUIOptions = DAppKitOptions & {
+export type DAppKitUIOptions = Omit<DAppKitOptions, 'v2Api'> & {
     themeMode?: ThemeMode;
     themeVariables?: CustomizedStyle;
     i18n?: I18n;
     language?: string;
     modalParent?: HTMLElement;
     onSourceClick?: (source?: SourceInfo) => void;
-    v2Api: DappKitUIV2ApiOptions;
+    v2Api?: DappKitUIV2ApiOptions;
     /**
      * Always show the connect Modal, even if the user is connected.
      * **This feature should not be used unless you really know what you need it for**
@@ -76,35 +77,42 @@ export type DAppKitUIOptions = DAppKitOptions & {
 
 export const DAppKitUI = {
     configure(options: DAppKitUIOptions): DAppKit {
+        const parsedOptions: ParsedOptions & NormalizedDAppKitOptions = {
+            ...options,
+            v2Api: {
+                enabled: true,
+                ...options.v2Api,
+                onConnectRequest:
+                    options.v2Api?.onConnectRequest ??
+                    (() => Promise.resolve(null)),
+                onConnectResponse:
+                    options.v2Api?.onConnectResponse ??
+                    (() => Promise.resolve()),
+                autoInitialize: options.v2Api?.autoInitialize ?? true,
+            },
+            alwaysShowConnect: options.alwaysShowConnect ?? false,
+        };
         if (
-            options.walletConnectOptions &&
-            !options.walletConnectOptions.modal
+            parsedOptions.walletConnectOptions &&
+            !parsedOptions.walletConnectOptions.modal
         ) {
-            options.walletConnectOptions.modal =
+            parsedOptions.walletConnectOptions.modal =
                 CustomWalletConnectModal.getInstance();
         }
-        if (!options.v2Api.onConnectRequest)
-            options.v2Api.onConnectRequest = () => Promise.resolve(null);
-        if (!options.v2Api.onConnectResponse)
-            options.v2Api.onConnectResponse = () => Promise.resolve();
-        if (options.v2Api.autoInitialize === undefined)
-            options.v2Api.autoInitialize = true;
-        if (options.alwaysShowConnect === undefined)
-            options.alwaysShowConnect = false;
-        dappKitOptions = options as ParsedOptions;
-        dappKit = new DAppKit(options);
+        dappKitOptions = parsedOptions;
+        dappKit = new DAppKit(parsedOptions);
 
-        if (options.v2Api.autoInitialize) {
+        if (parsedOptions.v2Api.autoInitialize) {
             dappKit.initialize();
         }
 
         // init modal so that on the first opening it doesn't have to create it
         ConnectModalManager.getInstance(this.wallet, {
-            modalParent: options.modalParent,
+            modalParent: parsedOptions.modalParent,
         });
 
         // configure buttons and modals options
-        initModalAndButton(options);
+        initModalAndButton(parsedOptions);
         dispatchCustomEvent('vdk-dapp-kit-configured');
 
         initialized = true;

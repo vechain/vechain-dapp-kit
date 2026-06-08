@@ -25,10 +25,10 @@ const walletConnectOptions: WalletConnectOptions = {
 };
 
 type OnConnectRequest = NonNullable<
-    DAppKitUIOptions['v2Api']['onConnectRequest']
+    NonNullable<DAppKitUIOptions['v2Api']>['onConnectRequest']
 >;
 type OnConnectResponse = NonNullable<
-    DAppKitUIOptions['v2Api']['onConnectResponse']
+    NonNullable<DAppKitUIOptions['v2Api']>['onConnectResponse']
 >;
 
 type ContextProps = {
@@ -77,7 +77,7 @@ export const Provider = ({ children }: PropsWithChildren) => {
                 usePersistence
                 walletConnectOptions={walletConnectOptions}
                 logLevel={'DEBUG'}
-                v2Api={{ enabled: true, onConnectRequest, onConnectResponse }}
+                v2Api={{ onConnectRequest, onConnectResponse }}
             >
                 {children}
             </DAppKitProvider>

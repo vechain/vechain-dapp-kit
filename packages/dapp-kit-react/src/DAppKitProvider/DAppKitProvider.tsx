@@ -216,7 +216,7 @@ export const DAppKitProvider = ({
         onSourceClick,
         connectionCertificateData,
         allowedWallets,
-        v2Api.enabled,
+        v2Api?.enabled,
         alwaysShowConnect,
     ]);
 
