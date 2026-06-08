@@ -21,7 +21,6 @@ export default defineConfig(({ mode }) => {
             port: 5001,
             strictPort: true,
             host: true,
-            allowedHosts: ['.trycloudflare.com'],
             origin: 'http://0.0.0.0:5001',
         },
         //vitest
