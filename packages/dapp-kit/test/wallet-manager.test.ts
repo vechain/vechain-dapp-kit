@@ -8,7 +8,12 @@ import type {
     WalletConnectOptions,
     WalletSource,
 } from '../src';
-import { CertificateBasedWallet, createWallet, WalletManager } from '../src';
+import {
+    CertificateBasedWallet,
+    createWallet,
+    genesisBlocks,
+    WalletManager,
+} from '../src';
 import { mockedSignClient } from './helpers/mocked-sign-client';
 import {
     address,
@@ -415,6 +420,39 @@ describe('WalletManager', () => {
             await walletManager.disconnect(true);
 
             expect(walletManager.state.source).toEqual(null);
+        });
+    });
+
+    describe('account domains', () => {
+        it('updates the active account domain from approved account batch resolution', async () => {
+            const activeAddress = '0xFC5800000000000000000000000000000000303d';
+            const otherAddress = '0x66E9000000000000000000000000000000006E85';
+            const walletManager = newWalletManager();
+
+            vi.spyOn(
+                (walletManager as any).thor.blocks,
+                'getGenesisBlock',
+            ).mockResolvedValue(genesisBlocks.test);
+            vi.spyOn(
+                (walletManager as any).thor.contracts,
+                'executeCall',
+            ).mockResolvedValue({
+                result: {
+                    array: [['active.vet', 'other.vet']],
+                },
+            } as any);
+
+            walletManager.setAddress(activeAddress);
+            walletManager.setAddresses([activeAddress, otherAddress]);
+
+            for (let i = 0; i < 5 && !walletManager.state.accountDomain; i++) {
+                await new Promise((resolve) => setTimeout(resolve, 0));
+            }
+
+            expect(walletManager.state.accountDomain).toBe('active.vet');
+            expect(
+                walletManager.state.accountDomains[activeAddress.toLowerCase()],
+            ).toBe('active.vet');
         });
     });
 

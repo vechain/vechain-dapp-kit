@@ -26,7 +26,10 @@ import type {
 } from '../types';
 import type { TypedDataMessage } from '../types/types';
 import { createWallet, DAppKitLogger, Storage } from '../utils';
-import { getAccountDomain } from '../utils/get-account-domain';
+import {
+    getAccountDomain,
+    getAccountDomains,
+} from '../utils/get-account-domain';
 import { getPrimaryType, parseChainId } from '../utils/typed-data';
 
 class WalletManager {
@@ -43,6 +46,7 @@ class WalletManager {
                 address: null,
                 addresses: [],
                 accountDomain: null,
+                accountDomains: {},
                 isAccountDomainLoading: false,
                 availableSources: this.getAvailableSources(),
                 connectionCertificate: null,
@@ -52,6 +56,7 @@ class WalletManager {
         }
         this.state = this.initializeStateSync(options.usePersistence ?? false);
         this.initPersistence(options.usePersistence ?? false);
+        void this.resolveAccountDomains(this.state.addresses);
         DAppKitLogger.debug('WalletManager', 'constructor', this.state);
 
         if (window.vechain?.isInAppBrowser === true) {
@@ -122,11 +127,19 @@ class WalletManager {
             getAccountDomain({ address, thor: this.thor })
                 .then((domain) => {
                     this.state.accountDomain = domain;
+                    this.state.accountDomains = {
+                        ...this.state.accountDomains,
+                        [address.toLowerCase()]: domain,
+                    };
                 })
                 .catch((e) => {
                     console.error('Error getting account domain', e);
                     if (!this.state) return;
                     this.state.accountDomain = null;
+                    this.state.accountDomains = {
+                        ...this.state.accountDomains,
+                        [address.toLowerCase()]: null,
+                    };
                 })
                 .finally(() => {
                     if (!this.state) return;
@@ -150,7 +163,64 @@ class WalletManager {
      * the primary (active) signer when populated by v2 `thor_connect`.
      */
     setAddresses = (addresses: string[]): void => {
+        const previousDomains = this.state.accountDomains;
+        const missingAddresses: string[] = [];
+        const accountDomains = addresses.reduce<Record<string, string | null>>(
+            (acc, address) => {
+                const key = address.toLowerCase();
+                if (
+                    Object.prototype.hasOwnProperty.call(
+                        previousDomains,
+                        key,
+                    ) &&
+                    previousDomains[key] !== null
+                ) {
+                    acc[key] = previousDomains[key];
+                } else {
+                    acc[key] = null;
+                    missingAddresses.push(address);
+                }
+                return acc;
+            },
+            {},
+        );
+
         this.state.addresses = addresses;
+        this.state.accountDomains = accountDomains;
+        void this.resolveAccountDomains(missingAddresses);
+    };
+
+    private resolveAccountDomains = async (
+        addresses: string[],
+    ): Promise<void> => {
+        if (addresses.length === 0) return;
+
+        try {
+            const domains = await getAccountDomains({
+                addresses,
+                thor: this.thor,
+            });
+            const currentAddressKeys = new Set(
+                this.state.addresses.map((address) => address.toLowerCase()),
+            );
+            const accountDomains = { ...this.state.accountDomains };
+
+            for (const [address, domain] of Object.entries(domains)) {
+                const key = address.toLowerCase();
+                if (currentAddressKeys.has(key)) {
+                    accountDomains[key] = domain;
+                }
+            }
+
+            this.state.accountDomains = accountDomains;
+
+            const activeAddress = this.state.address?.toLowerCase();
+            if (activeAddress && activeAddress in accountDomains) {
+                this.state.accountDomain = accountDomains[activeAddress];
+            }
+        } catch (e) {
+            DAppKitLogger.warn('WalletManager', 'resolveAccountDomains', e);
+        }
     };
 
     /**
@@ -304,7 +374,7 @@ class WalletManager {
                     .annex.signer;
             }
 
-            this.setAddress(primary);
+            this.setAddressAndDomain(primary);
             const accountsFromWallet = (result as { accounts?: string[] })
                 .accounts;
             this.setAddresses(
@@ -467,7 +537,7 @@ class WalletManager {
                     wallet.switchWallet(),
                 );
                 if (!newWallet) return;
-                this.state.address = newWallet;
+                this.setAddressAndDomain(newWallet);
                 // Make sure the newly-active address is reflected in the
                 // approved set. Mobile `thor_switchWallet` returns a single
                 // address, so we don't know if other approved accounts were
@@ -688,6 +758,7 @@ class WalletManager {
                 address: null,
                 addresses: [],
                 accountDomain: null,
+                accountDomains: {},
                 isAccountDomainLoading: false,
                 availableSources,
                 connectionCertificate: null,
@@ -707,6 +778,10 @@ class WalletManager {
             address,
             addresses,
             accountDomain,
+            accountDomains:
+                address && accountDomain
+                    ? { [address.toLowerCase()]: accountDomain }
+                    : {},
             isAccountDomainLoading: false,
             availableSources,
             connectionCertificate,
@@ -813,10 +888,11 @@ class WalletManager {
         const persistedAddresses = this.options.usePersistence
             ? Storage.getAccounts()
             : [];
-        this.state.addresses =
+        this.setAddresses(
             persistedAddresses.length > 0
                 ? persistedAddresses
-                : [effectiveAddress];
+                : [effectiveAddress],
+        );
     };
 
     private initFromPersistentStore = ({
@@ -833,8 +909,12 @@ class WalletManager {
         const connectionCertificate = Storage.getConnectionCertificate();
         this.state.source = source;
         this.state.address = address;
-        this.state.addresses = addresses;
         this.state.accountDomain = accountDomain;
+        this.state.accountDomains =
+            address && accountDomain
+                ? { [address.toLowerCase()]: accountDomain }
+                : {};
+        this.setAddresses(addresses);
         this.state.isAccountDomainLoading = false;
         this.state.availableSources = availableSources;
         this.state.connectionCertificate = connectionCertificate;

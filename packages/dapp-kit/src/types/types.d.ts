@@ -212,6 +212,7 @@ interface WalletManagerState {
      */
     addresses: string[];
     accountDomain: string | null;
+    accountDomains: Record<string, string | null>;
     isAccountDomainLoading: boolean;
     availableSources: WalletSource[];
     connectionCertificate: CertificateData | null;

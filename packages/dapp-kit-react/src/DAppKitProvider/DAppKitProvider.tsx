@@ -22,6 +22,9 @@ export const DAppKitProviderData = ({
     const [accountDomain, setAccountDomain] = useState<string | null>(
         dAppKit.wallet.state.accountDomain,
     );
+    const [accountDomains, setAccountDomains] = useState<
+        Record<string, string | null>
+    >(dAppKit.wallet.state.accountDomains);
     const [isAccountDomainLoading, setIsAccountDomainLoading] = useState(
         dAppKit.wallet.state.isAccountDomainLoading,
     );
@@ -55,6 +58,13 @@ export const DAppKitProviderData = ({
                 setAccountDomain(v);
             },
         );
+        const accountDomainsSub = subscribeKey(
+            dAppKit.wallet.state,
+            'accountDomains',
+            (v) => {
+                setAccountDomains({ ...v });
+            },
+        );
         const isAccountDomainLoadingSub = subscribeKey(
             dAppKit.wallet.state,
             'isAccountDomainLoading',
@@ -77,6 +87,7 @@ export const DAppKitProviderData = ({
             addressSub();
             addressesSub();
             domainSub();
+            accountDomainsSub();
             isAccountDomainLoadingSub();
             sourceSub();
             certificateSub();
@@ -116,6 +127,7 @@ export const DAppKitProviderData = ({
                 requestPermissions: dAppKit.wallet.requestPermissions,
                 revokeAccount: dAppKit.wallet.revokeAccount,
                 accountDomain,
+                accountDomains,
                 isAccountDomainLoading,
                 source,
                 connectionCertificate,
@@ -139,6 +151,7 @@ export const DAppKitProviderData = ({
         account,
         accounts,
         accountDomain,
+        accountDomains,
         isAccountDomainLoading,
         source,
         connectionCertificate,

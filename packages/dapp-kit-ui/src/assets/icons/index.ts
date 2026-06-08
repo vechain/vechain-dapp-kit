@@ -4,5 +4,7 @@ export * from './close';
 export * from './copy';
 export * from './disconnect';
 export * from './link';
+export * from './plus';
 export * from './switch-wallet';
+export * from './trash';
 export * from './wallet-connect';

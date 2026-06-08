@@ -1,7 +1,10 @@
 import { ABIContract } from '@vechain/sdk-core';
 import { describe, expect, it, vi } from 'vitest';
 import { VNS_RESOLVER } from '../../src';
-import { getAccountDomain } from '../../src/utils/get-account-domain';
+import {
+    getAccountDomain,
+    getAccountDomains,
+} from '../../src/utils/get-account-domain';
 
 describe('getAccountDomain', () => {
     const mockThor = {
@@ -43,6 +46,32 @@ describe('getAccountDomain', () => {
             VNS_RESOLVER.main,
             ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getNames'),
             [[mockAddress]],
+        );
+    });
+
+    it('should return domains for multiple addresses', async () => {
+        const mockAddressA = '0x1234567890123456789012345678901234567890';
+        const mockAddressB = '0x223456789012345678901234567890123456789A';
+
+        mockThor.thor.contracts.executeCall.mockResolvedValue({
+            result: {
+                array: [['alice.vet', '']],
+            },
+        });
+
+        const result = await getAccountDomains({
+            addresses: [mockAddressA, mockAddressB],
+            thor: mockThor.thor,
+        });
+
+        expect(result).toEqual({
+            [mockAddressA]: 'alice.vet',
+            [mockAddressB]: null,
+        });
+        expect(mockThor.thor.contracts.executeCall).toHaveBeenCalledWith(
+            VNS_RESOLVER.main,
+            ABIContract.ofAbi(VNS_RESOLVER.abi).getFunction('getNames'),
+            [[mockAddressA, mockAddressB.toLowerCase()]],
         );
     });
 
