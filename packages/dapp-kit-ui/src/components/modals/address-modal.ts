@@ -316,8 +316,13 @@ export class AddressModal extends LitElement {
     private get showAccountManager(): boolean {
         return (
             this.source === 'veworld' &&
+            this.showInlineAccounts &&
             (this.addresses.length > 1 || this.canAddAccount)
         );
+    }
+
+    private get showInlineAccounts(): boolean {
+        return !this.switchWalletAvailable;
     }
 
     constructor() {
