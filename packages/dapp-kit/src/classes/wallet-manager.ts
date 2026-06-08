@@ -16,7 +16,7 @@ import type {
     CertificateResponse,
     ConnectResponse,
     ConnectV2Response,
-    DAppKitOptions,
+    NormalizedDAppKitOptions,
     TransactionMessage,
     TransactionOptions,
     TransactionResponse,
@@ -37,7 +37,7 @@ class WalletManager {
     private wallets: Record<string, VeChainWallet | undefined> = {};
 
     constructor(
-        private readonly options: DAppKitOptions,
+        private readonly options: NormalizedDAppKitOptions,
         private readonly thor: ThorClient,
     ) {
         if (options.v2Api.enabled) {

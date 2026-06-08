@@ -25,6 +25,10 @@ export type {
     WCSignerOptions,
 } from './wc-types';
 
-export type { DAppKitOptions } from './options';
+export type {
+    DAppKitOptions,
+    DAppKitV2ApiOptions,
+    NormalizedDAppKitOptions,
+} from './options';
 
 export * from './requests';

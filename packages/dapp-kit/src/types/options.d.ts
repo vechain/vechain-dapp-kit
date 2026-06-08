@@ -44,16 +44,22 @@ export interface DAppKitOptions {
     /**
      * V2 APIs
      */
-    v2Api: {
-        /**
-         * Whether to support the new methods.
-         * @default false
-         */
-        enabled?: boolean;
-        /**
-         * Whether the dapp uses external authentication
-         * @default false
-         */
-        external?: boolean;
-    };
+    v2Api?: DAppKitV2ApiOptions;
 }
+
+export type DAppKitV2ApiOptions = {
+    /**
+     * Whether to support the new methods.
+     * @default true
+     */
+    enabled?: boolean;
+    /**
+     * Whether the dapp uses external authentication
+     * @default false
+     */
+    external?: boolean;
+};
+
+export type NormalizedDAppKitOptions = Omit<DAppKitOptions, 'v2Api'> & {
+    v2Api: DAppKitV2ApiOptions & { enabled: boolean };
+};

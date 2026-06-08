@@ -22,9 +22,6 @@ describe('button', () => {
         DAppKitUI.configure({
             node: 'https://mainnet.vechain.org/',
             themeVariables,
-            v2Api: {
-                enabled: true,
-            },
         });
     });
 
