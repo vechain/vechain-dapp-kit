@@ -460,6 +460,48 @@ describe('WalletManager', () => {
                 {},
             );
         });
+
+        it('passes the active address as typed data signer', async () => {
+            const signTypedData = vi
+                .fn()
+                .mockImplementation((domain, types, message) =>
+                    new VeChainPrivateKeySigner(privateKey).signTypedData(
+                        domain,
+                        types,
+                        message,
+                    ),
+                );
+            vi.mocked(createWallet).mockImplementation(
+                async (args) =>
+                    new CertificateBasedWallet(
+                        {
+                            ...mockedConnexSigner,
+                            signTypedData,
+                        },
+                        null,
+                        await args.thor.blocks
+                            .getGenesisBlock()
+                            .then((res) => res!.id),
+                        undefined,
+                    ),
+            );
+            const walletManager = newWalletManager();
+            walletManager.setSource('veworld');
+            walletManager.state.address = address.toString();
+
+            await walletManager.signTypedData(
+                typedDataMessage.domain,
+                typedDataMessage.types,
+                typedDataMessage.value,
+            );
+
+            expect(signTypedData).toHaveBeenCalledWith(
+                expect.any(Object),
+                typedDataMessage.types,
+                typedDataMessage.value,
+                { signer: address.toString() },
+            );
+        });
     });
 
     describe('signCert', () => {

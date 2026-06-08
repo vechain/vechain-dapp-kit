@@ -269,6 +269,13 @@ class WalletManager {
             primaryType: getPrimaryType(types),
         });
 
+    private getTypedDataOptions = (
+        options: SignTypedDataOptions,
+    ): SignTypedDataOptions => {
+        const signer = options.signer ?? this.state.address ?? undefined;
+        return signer ? { ...options, signer } : options;
+    };
+
     /**
      * Sign a connection certificate
      * this is needed for wallet connect connections when a connection certificate is required
@@ -710,11 +717,12 @@ class WalletManager {
             throw new Error('signTypedData is not supported');
 
         try {
+            const typedDataOptions = this.getTypedDataOptions(options);
             const res = await wallet.signTypedData(
                 domain,
                 types,
                 message,
-                options,
+                typedDataOptions,
             );
             try {
                 const signer = await this.recoverTypedDataSigner(
