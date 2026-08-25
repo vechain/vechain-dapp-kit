@@ -24,9 +24,9 @@
     },
     "dependencies": {
         "@vechain/connex-wallet-buddy": "^0.1.12",
-        "@vechain/sdk-core": "^2.0.0",
-        "@vechain/sdk-errors": "^2.0.0",
-        "@vechain/sdk-network": "^2.0.0",
+        "@vechain/sdk-core": "^2.1.0",
+        "@vechain/sdk-errors": "^2.1.0",
+        "@vechain/sdk-network": "^2.1.0",
         "@walletconnect/modal": "2.7.0",
         "@walletconnect/sign-client": "2.19.2",
         "@walletconnect/utils": "2.19.2",
